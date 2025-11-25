@@ -1,4 +1,3 @@
-import enEndOfFreeTrial from '@/locales/en/end-of-free-trial.json'
 import enForgotPassword from '@/locales/en/forgot-password.json'
 import enIntro from '@/locales/en/intro.json'
 import enLogin from '@/locales/en/login.json'
@@ -17,7 +16,6 @@ const localeFiles = {
   'en/questions': enQuestions,
   'en/medical-report': enMedicalReport,
   'en/welcome-to-your-journey': enWelcomeToYourJourney,
-  'en/end-of-free-trial': enEndOfFreeTrial,
 }
 
 export function getResources() {
