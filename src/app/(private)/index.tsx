@@ -60,13 +60,6 @@ function IndexScreen() {
           />
 
           <Button
-            title="End of Free Trial"
-            onPress={() => {
-              push('/end-of-free-trial')
-            }}
-          />
-
-          <Button
             title="Logout"
             onPress={() => {
               logout().then(() => {

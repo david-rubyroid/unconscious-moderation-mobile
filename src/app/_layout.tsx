@@ -5,10 +5,15 @@ import { StatusBar } from 'expo-status-bar'
 
 import { useEffect } from 'react'
 
+import { ActivityIndicator, StyleSheet, View } from 'react-native'
+
 import Toast from 'react-native-toast-message'
 
 import { queryClient } from '@/api/query-client'
+
 import { ThemedGradient, toastConfig } from '@/components'
+
+import { Colors } from '@/constants/theme'
 
 import { AuthProvider } from '@/context/auth/provider'
 
@@ -27,8 +32,20 @@ initializeRevenueCat().catch((error) => {
   console.error('Failed to initialize RevenueCat on app startup:', error)
 })
 
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+})
+
 function AppContent() {
-  const { isInitialized, isAuthenticated, isFirstLaunch } = useAuth()
+  const {
+    isInitialized,
+    isAuthenticated,
+    isFirstLaunch,
+  } = useAuth()
 
   useEffect(() => {
     if (isInitialized) {
@@ -37,8 +54,13 @@ function AppContent() {
   }, [isInitialized])
 
   if (!isInitialized) {
-    // when we return null, the splash screen is visible
-    return null
+    return (
+      <ThemedGradient>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={Colors.light.primary} />
+        </View>
+      </ThemedGradient>
+    )
   }
 
   return (
