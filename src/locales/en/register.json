@@ -1,0 +1,17 @@
+{
+  "title": "Unconscious Moderation",
+  "already-have-account": "<0>Already have an account?</0> <1>Log In</1>",
+  "sign-up": "Sign up",
+  "log-in": "Log In",
+  "or": "OR",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "email": "Email",
+  "password": "Password",
+  "confirmPassword": "Confirm Password",
+  "this-field-is-required": "This field is required",
+  "email-is-invalid": "Email is invalid",
+  "password-must-be-at-least-8-characters": "At least 8 characters",
+  "passwords-do-not-match": "Passwords do not match",
+  "continue": "Continue"
+}

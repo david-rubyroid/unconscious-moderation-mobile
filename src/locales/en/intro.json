@@ -1,0 +1,14 @@
+{
+  "title": {
+    "1": "You're",
+    "2": "Choosing",
+    "3": "Yourself Today!"
+  },
+  "subtitle": "Be proud, you just took\n the first step.",
+  "description": "Enter your email to log in or to\n create a new account",
+  "or": "OR",
+  "support": "Having an issue? <0>Contact support@um.app</0>",
+  "terms": "By continuing, you accept the <0>Terms of Use</0> and <1>Privacy Policy</1>",
+  "next": "Next",
+  "emailPlaceholder": "Email"
+}
