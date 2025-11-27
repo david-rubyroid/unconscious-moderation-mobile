@@ -7,6 +7,8 @@ import { useEffect } from 'react'
 
 import { ActivityIndicator, StyleSheet, View } from 'react-native'
 
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+
 import Toast from 'react-native-toast-message'
 
 import { queryClient } from '@/api/query-client'
@@ -37,6 +39,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  gestureRoot: {
+    flex: 1,
   },
 })
 
@@ -89,7 +94,7 @@ function AppContent() {
 
 export default function RootLayout() {
   return (
-    <>
+    <GestureHandlerRootView style={styles.gestureRoot}>
       <StatusBar style="dark" animated />
 
       <QueryClientProvider client={queryClient}>
@@ -99,6 +104,6 @@ export default function RootLayout() {
       </QueryClientProvider>
 
       <Toast config={toastConfig} topOffset={60} visibilityTime={4000} />
-    </>
+    </GestureHandlerRootView>
   )
 }

@@ -100,6 +100,10 @@ function WelcomeToYourJourneyScreen() {
     setShowMedicalStatement(true)
   }
 
+  const handleCloseMedicalStatement = () => {
+    setShowMedicalStatement(false)
+  }
+
   const handleContinue = () => {
     replace('/')
   }
@@ -167,7 +171,10 @@ function WelcomeToYourJourneyScreen() {
         />
       </View>
 
-      <BottomSheetPopup visible={showMedicalStatement}>
+      <BottomSheetPopup
+        onClose={handleCloseMedicalStatement}
+        visible={showMedicalStatement}
+      >
         <View style={styles.medicalStatementContainer}>
           <ThemedText
             style={styles.medicalStatementTitle}

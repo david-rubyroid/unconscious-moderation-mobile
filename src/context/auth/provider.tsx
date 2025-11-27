@@ -12,20 +12,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [hasToken, setHasToken] = useState<boolean | null>(null)
   const [isFirstLaunch, setIsFirstLaunch] = useState<boolean | null>(null)
 
-  const { data: user, isLoading, isFetching, isError } = useGetCurrentUser({
+  const { data: user, isLoading, isError } = useGetCurrentUser({
     enabled: hasToken === true,
   })
 
   const isAuthenticated = Boolean(user)
   // isInitialized is true when the token is not null and the user is not loading
-  const isInitialized = hasToken !== null && (!hasToken || (!isLoading && !isFetching))
+  const isInitialized = hasToken !== null && (!hasToken || !isLoading)
 
   const value = useMemo(() => ({
     hasToken,
     setHasToken,
     isFirstLaunch: isFirstLaunch ?? true,
     user,
-    isLoading: isLoading || isFetching, // Include isFetching to catch refetches
+    isLoading,
     isInitialized,
     isAuthenticated,
   }), [
@@ -34,7 +34,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     isFirstLaunch,
     user,
     isLoading,
-    isFetching,
     isInitialized,
     isAuthenticated,
   ])

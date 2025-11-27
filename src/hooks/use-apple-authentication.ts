@@ -1,6 +1,8 @@
 import * as AppleAuthentication from 'expo-apple-authentication'
 import { randomUUID } from 'expo-crypto'
 
+import { useState } from 'react'
+
 import { Platform } from 'react-native'
 
 import { useAppleNativeLogin } from '@/api/queries/auth'
@@ -12,6 +14,7 @@ import { saveAuthTokens } from '@/utils/auth'
 function useAppleAuthentication() {
   const { setHasToken } = useAuth()
   const { mutateAsync: appleLogin, isPending: appleLoginPending } = useAppleNativeLogin()
+  const [isAuthenticating, setIsAuthenticating] = useState(false)
 
   const signInWithApple = async () => {
     if (Platform.OS !== 'ios') {
@@ -28,6 +31,7 @@ function useAppleAuthentication() {
     const rawNonce = randomUUID()
 
     try {
+      setIsAuthenticating(true)
       const credential = await AppleAuthentication.signInAsync({
         requestedScopes: [
           AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
@@ -39,23 +43,26 @@ function useAppleAuthentication() {
 
       if (!credential.identityToken) {
         console.error('No identity token in credential')
+        setIsAuthenticating(false)
         return null
       }
 
       const { accessToken, refreshToken } = await appleLogin({
         idToken: credential.identityToken,
-        firstName: credential.fullName?.givenName,
-        lastName: credential.fullName?.familyName,
+        firstName: credential.fullName?.givenName ?? null,
+        lastName: credential.fullName?.familyName ?? null,
         email: credential.email,
         rawNonce,
       })
 
       saveAuthTokens(accessToken, refreshToken)
       setHasToken(true)
+      setIsAuthenticating(false)
 
       return credential
     }
     catch (error: any) {
+      setIsAuthenticating(false)
       if (error.code === 'ERR_REQUEST_CANCELED') {
         console.error('Apple Sign In was canceled by user')
       }
@@ -76,7 +83,8 @@ function useAppleAuthentication() {
 
   return {
     signInWithApple,
-    appleLoginPending,
+    appleLoginPending: appleLoginPending || isAuthenticating,
+    isAuthenticating,
   }
 }
 

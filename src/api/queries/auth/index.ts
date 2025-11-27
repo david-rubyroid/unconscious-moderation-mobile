@@ -104,3 +104,18 @@ export function useResetPassword(options?: MutationOptions<ResetPasswordResponse
     ...options,
   })
 }
+
+export function useDeleteAccount(options?: MutationOptions) {
+  const queryClient = useQueryClient()
+  const { setHasToken } = useAuth()
+
+  return useMutation({
+    mutationFn: createMutationFn<void, void>('delete', 'users/me'),
+    onSuccess: async () => {
+      await removeAuthTokens()
+      setHasToken(false)
+      queryClient.clear()
+    },
+    ...options,
+  })
+}

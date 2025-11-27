@@ -6,7 +6,9 @@ import { useState } from 'react'
 
 import { useTranslation } from 'react-i18next'
 
-import { Pressable, StyleSheet, View } from 'react-native'
+import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native'
+
+import Animated from 'react-native-reanimated'
 
 import Play from '@/assets/icons/play'
 
@@ -14,6 +16,8 @@ import { BottomSheetPopup, Button, ThemedGradient, ThemedText } from '@/componen
 
 import { Colors, withOpacity } from '@/constants/theme'
 import { VIDEOS_LINKS } from '@/constants/video-links'
+import { useVideoFade } from '@/hooks/use-video-fade'
+import { useVideoLoading } from '@/hooks/use-video-loading'
 
 const styles = StyleSheet.create({
   container: {
@@ -53,6 +57,26 @@ const styles = StyleSheet.create({
   playButtonText: {
     color: Colors.light.primary,
   },
+  loadingOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: withOpacity(Colors.light.black, 0.4),
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+  },
+  loadingContainer: {
+    alignItems: 'center',
+    gap: 16,
+  },
+  loadingText: {
+    color: Colors.light.white,
+    fontSize: 16,
+    fontWeight: '500',
+  },
   popupContent: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -80,6 +104,9 @@ function MedicalReportScreen() {
     player.pause()
   })
 
+  const isLoading = useVideoLoading(player)
+  const animatedVideoStyle = useVideoFade(isLoading)
+
   const handlePlay = () => {
     player.play()
     setIsPlaying(true)
@@ -92,34 +119,45 @@ function MedicalReportScreen() {
 
   return (
     <ThemedGradient style={styles.container}>
-      <VideoView
-        nativeControls={false}
-        player={player}
-        style={styles.video}
-        pointerEvents="none"
-        contentFit="cover"
-      />
+      <Animated.View style={[styles.video, animatedVideoStyle]}>
+        <VideoView
+          nativeControls={false}
+          player={player}
+          style={StyleSheet.absoluteFill}
+          pointerEvents="none"
+          contentFit="cover"
+        />
+      </Animated.View>
 
       <View
         style={[
           styles.overlay,
           isPlaying && styles.overlayHidden,
         ]}
-        pointerEvents={isPlaying ? 'none' : 'auto'}
+        pointerEvents={(isPlaying || isLoading) ? 'none' : 'auto'}
       >
         <Pressable
           style={styles.playButton}
           onPress={handlePlay}
+          disabled={isLoading}
         >
-          <Play />
-
-          <ThemedText type="defaultSemiBold" style={styles.playButtonText}>
-            {t('play')}
-          </ThemedText>
+          {isLoading
+            ? (
+                <ActivityIndicator size="small" color={Colors.light.primary3} />
+              )
+            : (
+                <>
+                  <Play />
+                  <ThemedText type="defaultSemiBold" style={styles.playButtonText}>
+                    {t('play')}
+                  </ThemedText>
+                </>
+              )}
         </Pressable>
       </View>
 
       <BottomSheetPopup
+        dismissible={false}
         visible={showPopup}
       >
         <View style={styles.popupContent}>

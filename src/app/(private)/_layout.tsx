@@ -19,7 +19,7 @@ function ProtectedLayout() {
     <ThemedGradient>
       <Stack screenOptions={{ headerShown: false, animation: 'none' }}>
         <Stack.Protected guard={isHomeScreenAvailable}>
-          <Stack.Screen name="index" />
+          <Stack.Screen name="(tabs)" />
         </Stack.Protected>
 
         <Stack.Protected guard={!isBasicInfoCompleted}>
@@ -41,6 +41,8 @@ function ProtectedLayout() {
         </Stack.Protected>
 
         {/* Purchase screen is always accessible */}
+        <Stack.Screen name="medical-report" />
+        <Stack.Screen name="welcome-to-your-journey" />
         <Stack.Screen name="purchase" />
       </Stack>
     </ThemedGradient>

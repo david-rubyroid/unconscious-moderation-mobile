@@ -1,5 +1,5 @@
 import { AntDesign, FontAwesome } from '@expo/vector-icons'
-import { Platform, Pressable, StyleSheet, View } from 'react-native'
+import { ActivityIndicator, Modal, Platform, Pressable, StyleSheet, Text, View } from 'react-native'
 
 import GoogleColored from '@/assets/icons/google-colored'
 
@@ -34,6 +34,33 @@ const styles = StyleSheet.create({
     backgroundColor: withOpacity(Colors.light.white, 0.8),
     borderColor: Colors.light.white,
   },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: withOpacity(Colors.light.black, 0.6),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingContainer: {
+    backgroundColor: Colors.light.tertiaryBackground,
+    borderRadius: moderateScale(16),
+    padding: scale(32),
+    alignItems: 'center',
+    minWidth: scale(240),
+    shadowColor: Colors.light.black,
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  loadingText: {
+    marginTop: scale(16),
+    fontSize: moderateScale(16),
+    color: Colors.light.text,
+    fontWeight: '600',
+  },
 })
 
 interface SocialAuthProps {
@@ -41,33 +68,58 @@ interface SocialAuthProps {
 }
 
 function SocialAuth({ variant = 'default' }: SocialAuthProps) {
-  const { signInWithApple, appleLoginPending } = useAppleAuthentication()
-  const { signInWithGoogle, googleLoginPending } = useGoogleAuthentication()
+  const { signInWithApple, appleLoginPending, isAuthenticating: isAppleAuthenticating } = useAppleAuthentication()
+  const { signInWithGoogle, googleLoginPending, isAuthenticating: isGoogleAuthenticating } = useGoogleAuthentication()
 
   const iconSize = scale(18)
+  const isLoading = appleLoginPending || googleLoginPending || isAppleAuthenticating || isGoogleAuthenticating
+  const loadingProvider = isAppleAuthenticating ? 'Apple' : isGoogleAuthenticating ? 'Google' : null
 
   return (
-    <View style={styles.socialAuth}>
-      {Platform.OS === 'ios' && (
-        <Pressable style={[styles.socialAuthButton, styles[variant]]} onPress={signInWithApple} disabled={appleLoginPending}>
-          <FontAwesome name="apple" size={iconSize} color={variant === 'default' ? '' : 'rgba(46, 125, 96, 1)'} />
+    <>
+      <View style={styles.socialAuth}>
+        {Platform.OS === 'ios' && (
+          <Pressable style={[styles.socialAuthButton, styles[variant]]} onPress={signInWithApple} disabled={appleLoginPending}>
+            <FontAwesome name="apple" size={iconSize} color={variant === 'default' ? '' : 'rgba(46, 125, 96, 1)'} />
+          </Pressable>
+        )}
+
+        <Pressable
+          style={[styles.socialAuthButton, styles[variant]]}
+          onPress={signInWithGoogle}
+          disabled={googleLoginPending}
+        >
+          {variant === 'default' ? <GoogleColored /> : <AntDesign name="google" size={iconSize} color="rgba(46, 125, 96, 1)" />}
         </Pressable>
-      )}
 
-      <Pressable
-        style={[styles.socialAuthButton, styles[variant]]}
-        onPress={signInWithGoogle}
-        disabled={googleLoginPending}
+        {/*
+        // TODO: Add Facebook login feature not necessary for now
+        <Pressable style={[styles.socialAuthButton, styles[variant]]} onPress={() => {}}>
+          <FontAwesome name="facebook" size={18} color={variant === 'default' ? '#1877F2' : 'rgba(46, 125, 96, 1)'} />
+        </Pressable> */}
+      </View>
+
+      <Modal
+        visible={isLoading}
+        transparent
+        animationType="fade"
+        statusBarTranslucent
       >
-        {variant === 'default' ? <GoogleColored /> : <AntDesign name="google" size={iconSize} color="rgba(46, 125, 96, 1)" />}
-      </Pressable>
-
-      {/*
-      // TODO: Add Facebook login feature not necessary for now
-      <Pressable style={[styles.socialAuthButton, styles[variant]]} onPress={() => {}}>
-        <FontAwesome name="facebook" size={18} color={variant === 'default' ? '#1877F2' : 'rgba(46, 125, 96, 1)'} />
-      </Pressable> */}
-    </View>
+        <View style={styles.modalOverlay}>
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={Colors.light.primary} />
+            {loadingProvider && (
+              <Text style={styles.loadingText}>
+                Sign in with
+                {' '}
+                {loadingProvider}
+                ...
+              </Text>
+            )}
+          </View>
+        </View>
+      </Modal>
+    </>
   )
 }
 

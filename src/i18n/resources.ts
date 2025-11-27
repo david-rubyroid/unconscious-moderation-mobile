@@ -1,7 +1,9 @@
 import enForgotPassword from '@/locales/en/forgot-password.json'
+import enHome from '@/locales/en/home.json'
 import enIntro from '@/locales/en/intro.json'
 import enLogin from '@/locales/en/login.json'
 import enMedicalReport from '@/locales/en/medical-report.json'
+import enProfile from '@/locales/en/profile.json'
 import enPurchase from '@/locales/en/purchase.json'
 import enQuestions from '@/locales/en/questions.json'
 import enRegister from '@/locales/en/register.json'
@@ -16,6 +18,8 @@ const localeFiles = {
   'en/questions': enQuestions,
   'en/medical-report': enMedicalReport,
   'en/welcome-to-your-journey': enWelcomeToYourJourney,
+  'en/profile': enProfile,
+  'en/home': enHome,
 }
 
 export function getResources() {
