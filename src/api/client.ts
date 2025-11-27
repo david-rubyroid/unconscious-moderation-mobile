@@ -9,7 +9,7 @@ import { secureStore } from '@/utils/secureStore'
 export const api = ky.create({
   prefixUrl: process.env.EXPO_PUBLIC_API_URL,
   headers: { 'Content-Type': 'application/json' },
-  timeout: false,
+  timeout: 10000,
   hooks: {
     beforeRequest: [
       async (request) => {

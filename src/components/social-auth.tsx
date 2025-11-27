@@ -68,12 +68,12 @@ interface SocialAuthProps {
 }
 
 function SocialAuth({ variant = 'default' }: SocialAuthProps) {
-  const { signInWithApple, appleLoginPending, isAuthenticating: isAppleAuthenticating } = useAppleAuthentication()
-  const { signInWithGoogle, googleLoginPending, isAuthenticating: isGoogleAuthenticating } = useGoogleAuthentication()
+  const { signInWithApple, appleLoginPending } = useAppleAuthentication()
+  const { signInWithGoogle, googleLoginPending } = useGoogleAuthentication()
 
   const iconSize = scale(18)
-  const isLoading = appleLoginPending || googleLoginPending || isAppleAuthenticating || isGoogleAuthenticating
-  const loadingProvider = isAppleAuthenticating ? 'Apple' : isGoogleAuthenticating ? 'Google' : null
+  const isLoading = appleLoginPending || googleLoginPending
+  const loadingProvider = appleLoginPending ? 'Apple' : googleLoginPending ? 'Google' : null
 
   return (
     <>

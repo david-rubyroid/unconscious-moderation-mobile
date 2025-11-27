@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Pressable, StyleSheet } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
-import Animated, { Easing, runOnJS, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
+import Animated, { Easing, runOnJS, useAnimatedProps, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -129,7 +129,10 @@ function BottomSheetPopup({
 
   const animatedOverlayStyle = useAnimatedStyle(() => ({
     opacity: overlayOpacity.value,
-    pointerEvents: overlayOpacity.value > 0 ? 'auto' : 'none',
+  }))
+
+  const animatedOverlayProps = useAnimatedProps(() => ({
+    pointerEvents: overlayOpacity.value > 0 ? ('auto' as const) : ('none' as const),
   }))
 
   // Don't render if not visible and animation is complete
@@ -139,7 +142,7 @@ function BottomSheetPopup({
 
   return (
     <>
-      <Animated.View style={[styles.overlay, animatedOverlayStyle]}>
+      <Animated.View style={[styles.overlay, animatedOverlayStyle]} animatedProps={animatedOverlayProps}>
         {dismissible && (
           <Pressable style={StyleSheet.absoluteFill} onPress={handleClose} />
         )}

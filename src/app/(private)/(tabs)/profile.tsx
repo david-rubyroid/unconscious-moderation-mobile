@@ -84,30 +84,57 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   subscriptionCard: {
-    backgroundColor: withOpacity(Colors.light.primary2, 0.2),
+    backgroundColor: withOpacity(Colors.light.white, 0.9),
     borderRadius: scale(12),
     padding: scale(16),
     marginBottom: verticalScale(12),
     borderWidth: 1,
-    borderColor: withOpacity(Colors.light.primary, 0.3),
+    borderColor: withOpacity(Colors.light.primary, 0.2),
   },
   subscriptionStatus: {
     flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  subscriptionIcon: {
+    fontSize: scale(24),
+    color: Colors.light.primary,
+    marginRight: scale(12),
+    marginTop: scale(2),
+  },
+  subscriptionContent: {
+    flex: 1,
+  },
+  subscriptionHeader: {
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: verticalScale(8),
+    marginBottom: verticalScale(6),
+    flexWrap: 'wrap',
+    gap: scale(8),
+  },
+  subscriptionTitle: {
+    color: Colors.light.primary4,
+    marginRight: scale(8),
   },
   statusBadge: {
-    backgroundColor: Colors.light.primary,
-    paddingHorizontal: scale(12),
-    paddingVertical: scale(6),
-    borderRadius: scale(16),
-    marginLeft: scale(8),
+    paddingHorizontal: scale(10),
+    paddingVertical: scale(4),
+    borderRadius: scale(12),
   },
   statusText: {
     color: Colors.light.white,
-    fontSize: scale(12),
+    fontSize: scale(10),
     fontWeight: '700',
     textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  subscriptionInfo: {
+    color: Colors.light.gray1,
+    marginTop: verticalScale(4),
+  },
+  renewalText: {
+    color: Colors.light.primary,
+    marginTop: verticalScale(4),
+    fontWeight: '600',
   },
   buttonContainer: {
     marginTop: verticalScale(20),
@@ -134,6 +161,7 @@ function ProfileScreen() {
     switch (status) {
       case 'active':
       case 'trial':
+      case 'grace_period':
         return Colors.light.primary
       case 'expired':
       case 'cancelled':
@@ -180,6 +208,8 @@ function ProfileScreen() {
       ],
     )
   }
+
+  const isActiveSubscription = subscription?.status === 'active' || subscription?.status === 'trial' || subscription?.status === 'grace_period'
 
   return (
     <ThemedGradient style={[{ paddingTop: top, paddingBottom: bottom }]}>
@@ -254,47 +284,51 @@ function ProfileScreen() {
               {t('subscription')}
             </ThemedText>
 
-            <View style={styles.subscriptionCard}>
+            <View style={[
+              styles.subscriptionCard,
+              isActiveSubscription && {
+                borderColor: Colors.light.primary,
+                backgroundColor: withOpacity(Colors.light.primary2, 0.15),
+              },
+            ]}
+            >
               <View style={styles.subscriptionStatus}>
-                <ThemedText type="defaultSemiBold" style={{ color: Colors.light.primary4 }}>
-                  {t('status')}
-                </ThemedText>
-                <View style={[styles.statusBadge, { backgroundColor: getStatusColor(subscription.status) }]}>
-                  <ThemedText style={styles.statusText}>
-                    {t(`subscription-status.${subscription.status}`) || subscription.status}
-                  </ThemedText>
+                <MaterialIcons name="card-membership" style={styles.subscriptionIcon} />
+                <View style={styles.subscriptionContent}>
+                  <View style={styles.subscriptionHeader}>
+                    <ThemedText type="defaultSemiBold" style={styles.subscriptionTitle}>
+                      {t('subscription')}
+                    </ThemedText>
+                    <View style={[styles.statusBadge, { backgroundColor: getStatusColor(subscription.status) }]}>
+                      <ThemedText style={styles.statusText}>
+                        {t(`subscription-status.${subscription.status}`) || subscription.status}
+                      </ThemedText>
+                    </View>
+                  </View>
+
+                  {subscription.expiresAt && (
+                    <ThemedText type="small" style={styles.subscriptionInfo}>
+                      {t('expires')}
+                      :
+                      {formatDate(subscription.expiresAt)}
+                    </ThemedText>
+                  )}
+
+                  {subscription.trialEndsAt && (
+                    <ThemedText type="small" style={styles.subscriptionInfo}>
+                      {t('trial-ends')}
+                      :
+                      {formatDate(subscription.trialEndsAt)}
+                    </ThemedText>
+                  )}
+
+                  {subscription.willRenew && (
+                    <ThemedText type="small" style={styles.renewalText}>
+                      {t('auto-renewal-enabled')}
+                    </ThemedText>
+                  )}
                 </View>
               </View>
-
-              {subscription.expiresAt && (
-                <View style={{ marginTop: verticalScale(8) }}>
-                  <ThemedText type="small" style={{ color: Colors.light.gray1 }}>
-                    {t('expires')}
-                    :
-                    {' '}
-                    {formatDate(subscription.expiresAt)}
-                  </ThemedText>
-                </View>
-              )}
-
-              {subscription.trialEndsAt && (
-                <View style={{ marginTop: verticalScale(4) }}>
-                  <ThemedText type="small" style={{ color: Colors.light.gray1 }}>
-                    {t('trial-ends')}
-                    :
-                    {' '}
-                    {formatDate(subscription.trialEndsAt)}
-                  </ThemedText>
-                </View>
-              )}
-
-              {subscription.willRenew && (
-                <View style={{ marginTop: verticalScale(4) }}>
-                  <ThemedText type="small" style={{ color: Colors.light.primary }}>
-                    {t('auto-renewal-enabled')}
-                  </ThemedText>
-                </View>
-              )}
             </View>
           </View>
         )}

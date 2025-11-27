@@ -23,21 +23,21 @@ export function isSubscriptionActive(subscription: SubscriptionResponse | null |
 
   // Check expiration date for active/grace_period status
   if (subscription.status === 'active' || subscription.status === 'grace_period') {
-    if (subscription.expiresAt && subscription.expiresAt < now) {
+    if (subscription.expiresAt && new Date(subscription.expiresAt) < now) {
       return false
     }
   }
 
   // Check trial expiration
   if (subscription.status === 'trial') {
-    if (subscription.trialEndsAt && subscription.trialEndsAt < now) {
+    if (subscription.trialEndsAt && new Date(subscription.trialEndsAt) < now) {
       return false
     }
   }
 
   // Check grace period expiration
   if (subscription.status === 'grace_period') {
-    if (subscription.gracePeriodExpiresAt && subscription.gracePeriodExpiresAt < now) {
+    if (subscription.gracePeriodExpiresAt && new Date(subscription.gracePeriodExpiresAt) < now) {
       return false
     }
   }
