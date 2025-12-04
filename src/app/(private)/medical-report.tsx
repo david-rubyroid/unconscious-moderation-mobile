@@ -10,7 +10,7 @@ import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native'
 
 import Animated from 'react-native-reanimated'
 
-import Play from '@/assets/icons/play'
+import PlaySmall from '@/assets/icons/play-small'
 
 import { BottomSheetPopup, Button, ThemedGradient, ThemedText } from '@/components'
 
@@ -147,7 +147,8 @@ function MedicalReportScreen() {
               )
             : (
                 <>
-                  <Play />
+                  <PlaySmall />
+
                   <ThemedText type="defaultSemiBold" style={styles.playButtonText}>
                     {t('play')}
                   </ThemedText>
