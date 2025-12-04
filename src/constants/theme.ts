@@ -16,6 +16,7 @@ export const Colors = {
     // Background colors
     gray1: '#888888',
     gray2: '#E5E5E5',
+    gray3: '#545454',
     mainBackground: '#FFFFFF',
     secondaryBackground: '#F6FAFF',
     tertiaryBackground: '#E2EEE8',
@@ -29,6 +30,7 @@ export const Colors = {
     gradientEnd: '#62BC8C',
     // Error colors
     error: '#EA4335',
+    error2: '#911E3D',
   },
   // Note: Dark mode is not required yet; the colors are the same as in light mode.
   dark: {
@@ -44,6 +46,7 @@ export const Colors = {
     // Background colors
     gray1: '#888888',
     gray2: '#E5E5E5',
+    gray3: '#545454',
     mainBackground: '#FFFFFF',
     secondaryBackground: '#F6FAFF',
     tertiaryBackground: '#E2EEE8',
@@ -57,6 +60,7 @@ export const Colors = {
     gradientEnd: '#62BC8C',
     // Error colors
     error: '#EA4335',
+    error2: '#911E3D',
   },
 }
 
@@ -114,6 +118,7 @@ export const FontSizes = {
   default: 14,
   defaultSemiBold: 16,
   subtitle: 24,
+  preSubtitle: 20,
   title: 32,
   link: 16,
 } as const

@@ -125,7 +125,7 @@ function FearsScreen() {
   }
 
   return (
-    <ThemedGradient style={[{ paddingTop: top + verticalScale(41), paddingBottom: bottom + verticalScale(22) }, styles.container]}>
+    <ThemedGradient style={[{ paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }, styles.container]}>
       <ThemedText style={styles.title} type="defaultSemiBold">
         <Trans
           i18nKey="questions:opening-up-is-a-way-to-heal-let-us-know-what-fears-do-you-have-before-starting-this-new-path"

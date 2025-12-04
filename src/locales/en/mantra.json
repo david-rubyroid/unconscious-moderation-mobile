@@ -1,0 +1,20 @@
+{
+  "title": "Mantra",
+  "choose-your-mantra": "Choose Your Mantra",
+  "choose-your-mantra-description": "Choose from our suggested mantras below or create your own to guide your journey. Repeat it anytime during your session to reset and reconnect.",
+  "curated-mantras": "Curated Mantras",
+  "im-doing-just-fine": "I'm doing just fine.",
+  "i-drink-with-clarity-and-intention": "I drink with clarity and intention.",
+  "i-trust-myself": "I trust myself.",
+  "recommended": "(Recommended)",
+
+  "did-you-know": "Did You Know?",
+  "did-you-know-description": "Research shows that mantras reduce stress and help you make conscious choices during drinking situations instead of reacting on autopilot.",
+  "done": "Done",
+
+  "type-here": "Type here",
+  "my-mantras": "My Mantras",
+  "save": "Save",
+
+  "error-creating-mantra": "Mantra has to be at least 1 character long"
+}

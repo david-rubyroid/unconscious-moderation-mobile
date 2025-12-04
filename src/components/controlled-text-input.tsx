@@ -18,11 +18,17 @@ interface ControlledTextInputProps<T extends FieldValues> extends TextInputProps
   name: FieldPath<T>
   control: Control<T>
   isPassword?: boolean
+  label?: string
 }
 
 const styles = StyleSheet.create({
   container: {
     gap: 2,
+  },
+  label: {
+    color: Colors.light.primary4,
+    fontSize: 14,
+    marginBottom: 10,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -58,6 +64,7 @@ function ControlledTextInput<T extends FieldValues>({
   name,
   style,
   control,
+  label,
   isPassword = false,
   ...props
 }: ControlledTextInputProps<T>) {
@@ -72,8 +79,23 @@ function ControlledTextInput<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => {
+        const onChangeText = (text: string) => {
+          if (props.keyboardType === 'numeric') {
+            const numericValue = text.replace(/\D/g, '')
+            onChange(numericValue)
+          }
+          else {
+            onChange(text)
+          }
+        }
+
+        // Преобразуем value в строку для отображения в TextInput
+        const displayValue = value != null ? String(value) : ''
+
         return (
           <View style={styles.container}>
+            {label && <ThemedText type="defaultSemiBold" style={styles.label}>{label}</ThemedText>}
+
             <View style={styles.inputContainer}>
               <TextInput
                 style={[
@@ -81,9 +103,9 @@ function ControlledTextInput<T extends FieldValues>({
                   error && styles.errorInput,
                   isPassword && styles.passwordInput,
                 ]}
-                onChangeText={onChange}
+                onChangeText={onChangeText}
                 onBlur={onBlur}
-                value={value}
+                value={displayValue}
                 secureTextEntry={isPassword && !isPasswordVisible}
                 {...props}
               />

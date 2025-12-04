@@ -17,7 +17,7 @@ function ProtectedLayout() {
 
   return (
     <ThemedGradient>
-      <Stack screenOptions={{ headerShown: false, animation: 'none' }}>
+      <Stack screenOptions={{ headerShown: false }}>
         <Stack.Protected guard={isHomeScreenAvailable}>
           <Stack.Screen name="(tabs)" />
         </Stack.Protected>
@@ -44,6 +44,15 @@ function ProtectedLayout() {
         <Stack.Screen name="medical-report" />
         <Stack.Screen name="welcome-to-your-journey" />
         <Stack.Screen name="purchase" />
+
+        {/* Drink tracker screens are always accessible */}
+        <Stack.Screen name="drink-tracker/index" />
+        <Stack.Screen name="drink-tracker/drink-tracker-steps" />
+        <Stack.Screen name="drink-tracker/plan-and-prepare" />
+        <Stack.Screen name="drink-tracker/hypnosis" />
+        <Stack.Screen name="drink-tracker/hydration" />
+        <Stack.Screen name="drink-tracker/mantra" />
+        <Stack.Screen name="drink-tracker/pre-drink-checklist" />
       </Stack>
     </ThemedGradient>
   )

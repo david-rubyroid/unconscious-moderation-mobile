@@ -87,7 +87,7 @@ function SharedAwarenessScreen() {
     })
   }
   return (
-    <ThemedGradient style={[{ paddingTop: top + verticalScale(41), paddingBottom: bottom + verticalScale(22) }, styles.container]}>
+    <ThemedGradient style={[{ paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }, styles.container]}>
       <ThemedText style={styles.title} type="defaultSemiBold">{t('shared-awareness-title')}</ThemedText>
 
       <ThemedText style={styles.description} type="default">{t('shared-awareness-description')}</ThemedText>

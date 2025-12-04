@@ -14,6 +14,7 @@ import { Button, ControlledTextInput, TermsText, ThemedGradient, ThemedText } fr
 import { Colors, withOpacity } from '@/constants/theme'
 
 import useCountdown from '@/hooks/use-countdown'
+import { verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
   container: {
@@ -142,7 +143,7 @@ function VerifyPasswordScreen() {
   }
 
   return (
-    <ThemedGradient style={[styles.container, { paddingTop: top + 41, paddingBottom: bottom }]}>
+    <ThemedGradient style={[styles.container, { paddingTop: top + 10, paddingBottom: bottom + verticalScale(10) }]}>
       <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
         <View style={styles.titleContainer}>
           <ThemedText type="subtitle" style={styles.subtitle}>{t('title')}</ThemedText>
@@ -162,6 +163,7 @@ function VerifyPasswordScreen() {
           />
 
           <Button
+            fullWidth
             loading={isPending}
             disabled={!isValid || isPending}
             title={t('continue')}

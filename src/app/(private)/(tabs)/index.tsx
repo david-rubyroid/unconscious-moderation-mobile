@@ -157,7 +157,7 @@ function HomeScreen() {
   }
 
   return (
-    <ThemedGradient style={[{ paddingTop: top, paddingBottom: bottom }]}>
+    <ThemedGradient style={[{ paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }]}>
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.scrollContent}
@@ -253,6 +253,25 @@ function HomeScreen() {
             <Pressable
               style={styles.actionCard}
               onPress={() => {
+                push('/drink-tracker/mantra')
+              }}
+            >
+              <View style={styles.actionIcon}>
+                <MaterialIcons name="checklist" style={styles.actionIconStyle} />
+              </View>
+              <View style={styles.actionContent}>
+                <ThemedText type="defaultSemiBold" style={styles.actionTitle}>
+                  {t('pre-drink-checklist')}
+                </ThemedText>
+                <ThemedText type="small" style={styles.actionDescription}>
+                  {t('pre-drink-checklist-description')}
+                </ThemedText>
+              </View>
+            </Pressable>
+
+            <Pressable
+              style={styles.actionCard}
+              onPress={() => {
                 push('/purchase')
               }}
             >
@@ -274,6 +293,7 @@ function HomeScreen() {
 
         <View style={styles.buttonContainer}>
           <Button
+            fullWidth
             title={t('upgrade-subscription')}
             onPress={() => {
               push('/purchase')

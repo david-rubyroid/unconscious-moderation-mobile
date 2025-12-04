@@ -1,0 +1,13 @@
+{
+  "title": "Hydration",
+  "description": "Hydrate Before You Start",
+  "drink-at-least-2-glasses-of-water": "Drink at least <0>2 glasses of water</0>,\n before consuming alcohol.",
+  "already-drinking": "Already drinking? It's not too late, <0>water helps at any stage.</0>",
+  "bonus-water-with-electrolytes": "<0>Bonus:</0>\nWater with electrolytes <1>boosts\nhydration</1> even further.",
+
+  "research-confirms-what-many-suspect": "Research confirms what many suspect: alcohol <0>hijacks your body's natural hydration system</0>, forcing rapid water loss through your kidneys.",
+  "pre-hydrating-with-water": "Pre-hydrating with water helps maintain fluid balance and can <0>reduce hangover symptoms by up to 40%</0>.",
+
+  "got-it": "Got it!",
+  "i-ve-hydrated": "I've hydrated"
+}

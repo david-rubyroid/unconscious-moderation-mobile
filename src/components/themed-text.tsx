@@ -7,7 +7,7 @@ import { useThemeColor } from '@/hooks/use-theme-color'
 export type ThemedTextProps = TextProps & {
   lightColor?: string
   darkColor?: string
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'small'
+  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'small' | 'preSubtitle'
 }
 
 const baseStyles = StyleSheet.create({
@@ -22,6 +22,9 @@ const baseStyles = StyleSheet.create({
     fontWeight: '700',
   },
   subtitle: {
+    fontWeight: '700',
+  },
+  preSubtitle: {
     fontWeight: '700',
   },
   link: {
@@ -55,6 +58,11 @@ function getTextTypeStyle(type: ThemedTextProps['type']) {
       return {
         fontSize: getResponsiveFontSize(FontSizes.subtitle),
         lineHeight: getResponsiveLineHeight(FontSizes.subtitle, 1.25),
+      }
+    case 'preSubtitle':
+      return {
+        fontSize: getResponsiveFontSize(FontSizes.preSubtitle),
+        lineHeight: getResponsiveLineHeight(FontSizes.preSubtitle, 1.25),
       }
     case 'link':
       return {

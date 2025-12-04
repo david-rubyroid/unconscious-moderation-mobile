@@ -2,7 +2,7 @@
   "expo": {
     "name": "Unconscious Moderation",
     "slug": "unconscious-moderation",
-    "version": "1.0.0",
+    "version": "1.4.54",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "com.mydryjourney",
@@ -12,6 +12,7 @@
       "supportsTablet": true,
       "usesAppleSignIn": true,
       "bundleIdentifier": "com.llc.mydry30",
+      "buildNumber": "109",
       "deploymentTarget": "15.1",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
@@ -30,6 +31,7 @@
     },
     "plugins": [
       "expo-video",
+      "expo-audio",
       "expo-router",
       "expo-secure-store",
       "expo-apple-authentication",

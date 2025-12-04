@@ -1,0 +1,24 @@
+{
+  "title": "Plan Session",
+  "when-do-you-plan-to-drink": "When do you Plan to Drink?",
+  "what-time-do-you-want-to-stop": "What Time do you Want to Stop?",
+  "whats-your-maximum-number-of-drinks": "What's Your Maximum Number of Drinks?",
+  "whats-your-budget-for-the-night": "What's Your Budget for the Night?",
+  "continue": "Continue",
+
+  "select-your-date": "Select your date",
+  "set-your-planned-end-time": "Set your planned end time",
+  "set-your-drink-limit": "Set your drink limit",
+  "set-your-max-spending": "Set your max spending",
+
+  "planned-stop-time-description": "A planned stop time <0>gives you \n control</0>. Your mind prepares to wrap \n up naturally, <1>making it easier</1> to stick \n to your intention.",
+  "drink-limit-description": "Setting a <0>drink limit</0> beforehand helps \n your brain recognize when to stop. \n People typically <1>drink less</1> when they \n decide on a number first.",
+  "max-spending-description": "Setting a <0>spending limit</0> keeps \n you intentional and prevents \n morning regrets. <1>It protects both</1> \n your wallet and your wellbeing.",
+
+  "got-it": "Got it!",
+
+  "plannedEndTime-must-be-after-plannedStartTime": "Planned end time must be after planned start time",
+  "session-duration-must-not-exceed-3-hours": "Session duration must not exceed 3 hours",
+
+  "maxDrinkCount-must-be-greater-than-0": "Max drink count must be greater than 0"
+}

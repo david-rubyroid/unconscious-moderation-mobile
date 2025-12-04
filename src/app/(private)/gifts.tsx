@@ -143,7 +143,7 @@ function GiftsScreen() {
   }, [t])
 
   return (
-    <ThemedGradient style={[{ paddingTop: top + verticalScale(41), paddingBottom: bottom + verticalScale(22) }, styles.container]}>
+    <ThemedGradient style={[{ paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }, styles.container]}>
       <ThemedText style={styles.title} type="defaultSemiBold">
         <Trans
           i18nKey="questions:why-do-you-want-to-change-your-drinking-habits"

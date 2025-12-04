@@ -117,7 +117,7 @@ function WelcomeToYourJourneyScreen() {
       <View style={styles.overlay}>
       </View>
 
-      <View style={[styles.container, { paddingTop: top, paddingBottom: bottom }]}>
+      <View style={[styles.container, { paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }]}>
         <ThemedText type="title" style={styles.title}>{t('title')}</ThemedText>
 
         <View style={styles.descriptionContainer}>

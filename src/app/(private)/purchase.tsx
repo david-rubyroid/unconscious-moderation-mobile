@@ -193,7 +193,7 @@ function PurchaseScreen() {
   }
 
   return (
-    <ThemedGradient style={[{ paddingTop: top + 10, paddingBottom: bottom + 10 }, styles.container]}>
+    <ThemedGradient style={[{ paddingTop: top + 10, paddingBottom: bottom + verticalScale(10) }, styles.container]}>
       <View style={styles.crossContainer}>
         <Pressable onPress={handleClose}>
           <Cross />

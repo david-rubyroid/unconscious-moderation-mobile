@@ -1,0 +1,28 @@
+{
+  "title": "Drink Tracker",
+  "motivational-message": "We're really proud of you for being\n here and <0>being honest with yourself!</0>",
+  "actions": {
+    "start": "Start",
+    "plan-session": "Plan Session",
+    "view-calendar": "View Calendar",
+    "start-today-session": "Start Today's Session"
+  },
+  "won-days": "Won Days: [{{days}}]",
+  "drink-days": "Drink Days: [{{days}}]",
+  "key-moments": {
+    "title": "This tool supports you in <0>3 key moments</0>:",
+    "plan-prepare": {
+      "title": "Plan & Prepare (Before):",
+      "description": "Define your limits and intentions."
+    },
+    "drink-awareness": {
+      "title": "Drink with Awareness (During):",
+      "description": "Practice mindfulness and moderation."
+    },
+    "reflect-reinforce": {
+      "title": "Reflect & Reinforce (After):",
+      "description": "Learn from the experience and build momentum."
+    }
+  },
+  "tip": "Tip: Bring headphones with you!"
+}

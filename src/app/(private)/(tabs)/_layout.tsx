@@ -28,6 +28,15 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
+        name="toolkit"
+        options={{
+          title: 'Toolkit',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="dataset" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="profile"
         options={{
           title: 'Account',

@@ -1,7 +1,15 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Pressable, StyleSheet } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
-import Animated, { Easing, runOnJS, useAnimatedProps, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
+import Animated, {
+  Easing,
+  runOnJS,
+  useAnimatedProps,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated'
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -48,6 +56,7 @@ function BottomSheetPopup({
   const translateY = useSharedValue(1000)
   const overlayOpacity = useSharedValue(0)
   const startY = useSharedValue(0)
+  const [shouldRender, setShouldRender] = useState(visible)
 
   const handleClose = () => {
     if (dismissible) {
@@ -83,10 +92,18 @@ function BottomSheetPopup({
           duration: 250,
           easing: Easing.in(Easing.ease),
         })
-        overlayOpacity.value = withTiming(0, {
-          duration: 250,
-          easing: Easing.in(Easing.ease),
-        })
+        overlayOpacity.value = withTiming(
+          0,
+          {
+            duration: 250,
+            easing: Easing.in(Easing.ease),
+          },
+          (finished) => {
+            if (finished) {
+              runOnJS(setShouldRender)(false)
+            }
+          },
+        )
         runOnJS(handleClose)()
       }
       else {
@@ -107,19 +124,33 @@ function BottomSheetPopup({
         duration: 800,
         easing: Easing.out(Easing.ease),
       })
-      overlayOpacity.value = withTiming(1, {
-        duration: 300,
-      })
+      overlayOpacity.value = withTiming(
+        1,
+        {
+          duration: 300,
+        },
+        () => {
+          runOnJS(setShouldRender)(true)
+        },
+      )
     }
     else {
       translateY.value = withTiming(1000, {
         duration: 250,
         easing: Easing.in(Easing.ease),
       })
-      overlayOpacity.value = withTiming(0, {
-        duration: 250,
-        easing: Easing.in(Easing.ease),
-      })
+      overlayOpacity.value = withTiming(
+        0,
+        {
+          duration: 250,
+          easing: Easing.in(Easing.ease),
+        },
+        (finished) => {
+          if (finished) {
+            runOnJS(setShouldRender)(false)
+          }
+        },
+      )
     }
   }, [visible, translateY, overlayOpacity])
 
@@ -136,7 +167,7 @@ function BottomSheetPopup({
   }))
 
   // Don't render if not visible and animation is complete
-  if (!visible && overlayOpacity.value === 0) {
+  if (!visible && !shouldRender) {
     return null
   }
 

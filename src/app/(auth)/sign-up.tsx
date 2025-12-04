@@ -128,7 +128,7 @@ function RegisterScreen() {
   }
 
   return (
-    <ThemedGradient style={[styles.container, { paddingTop: top + verticalScale(41), paddingBottom: bottom }]}>
+    <ThemedGradient style={[styles.container, { paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }]}>
       <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
         <View style={styles.titleContainer}>
           <ThemedText type="subtitle" style={styles.subtitle}>{t('title')}</ThemedText>
@@ -198,6 +198,7 @@ function RegisterScreen() {
           />
 
           <Button
+            fullWidth
             disabled={!isValid || isPending}
             loading={isPending}
             title={t('continue')}

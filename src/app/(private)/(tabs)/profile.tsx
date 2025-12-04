@@ -212,7 +212,7 @@ function ProfileScreen() {
   const isActiveSubscription = subscription?.status === 'active' || subscription?.status === 'trial' || subscription?.status === 'grace_period'
 
   return (
-    <ThemedGradient style={[{ paddingTop: top, paddingBottom: bottom }]}>
+    <ThemedGradient style={[{ paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }]}>
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.scrollContent}
@@ -336,6 +336,7 @@ function ProfileScreen() {
         <View style={styles.buttonContainer}>
           <Button
             loading={isLoggingOut}
+            fullWidth
             title={t('logout')}
             onPress={() => {
               logout().then(() => {
@@ -344,6 +345,7 @@ function ProfileScreen() {
             }}
           />
           <Button
+            fullWidth
             loading={isDeletingAccount}
             disabled={isDeletingAccount}
             title={t('delete-account')}

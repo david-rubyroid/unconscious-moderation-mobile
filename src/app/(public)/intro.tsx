@@ -23,6 +23,7 @@ import {
 import { Colors, withOpacity } from '@/constants/theme'
 
 import { VIDEOS_LINKS } from '@/constants/video-links'
+import { verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -134,7 +135,7 @@ function IntroScreen() {
         contentFit="cover"
       />
 
-      <View style={[styles.container, { paddingTop: top, paddingBottom: bottom }]}>
+      <View style={[styles.container, { paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }]}>
         <View style={styles.titleContainer}>
           <ThemedText type="title" style={styles.title}>
             {t('title.1')}
