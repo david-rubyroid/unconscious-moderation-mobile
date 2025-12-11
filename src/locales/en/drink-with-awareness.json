@@ -1,0 +1,18 @@
+{
+  "title": "Drink with Awareness",
+  "remember": "Remember: \n \"{{mantra}}\" ",
+  "drinks": "Drinks",
+  "waters": "Waters",
+  "log-drink": "Log Drink",
+  "log-water": "Log Water",
+
+  "pro-tip": "ProTip:",
+  "pro-tip-description": "Drink <0>more water</0> than <1>drinks</1>.\nYour tomorrow self will <2>thank you!</2>",
+
+  "budget": "Budget",
+  "time-since-first-drink": "Time Since First Drink",
+
+  "self-hypnosis": "Self-hypnosis",
+  "finish-drinking": "Finish Drinking",
+  "manage-urges": "Manage Urges"
+}

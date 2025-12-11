@@ -1,18 +1,20 @@
 import { MaterialIcons } from '@expo/vector-icons'
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native'
 
+import { useGetCurrentWeekDrinkSessions } from '@/api/queries/drink-session'
+
 import { ThemedText } from '@/components'
 import { Colors, withOpacity } from '@/constants/theme'
 import { moderateScale, scale, verticalScale } from '@/utils/responsive'
 
 const DAY_NAMES_SHORT = [
-  'Mon',
-  'Tue',
-  'Wed',
-  'Thu',
-  'Fri',
-  'Sat',
-  'Sun',
+  'Mo',
+  'Tu',
+  'We',
+  'Th',
+  'Fr',
+  'Sa',
+  'Su',
 ]
 
 function getMondayOfWeek(date: Date): Date {
@@ -62,12 +64,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: scale(10),
-    paddingHorizontal: scale(11.5),
-    paddingVertical: verticalScale(14.5),
+    gap: scale(3),
+    paddingHorizontal: scale(5),
+    paddingVertical: verticalScale(8),
     borderRadius: moderateScale(9),
     backgroundColor: withOpacity(Colors.light.tertiaryBackground, 0.7),
-    minWidth: scale(100),
   },
   dayButtonToday: {
     backgroundColor: Colors.light.primary,
@@ -87,6 +88,15 @@ function DrinkTrackerWeekDays() {
   const today = new Date()
   const monday = getMondayOfWeek(today)
   const weekDays = getDaysOfWeek(monday, today)
+  const { data: sessions = [] } = useGetCurrentWeekDrinkSessions()
+
+  // Create a map of date keys to sessions for quick lookup
+  const sessionsByDate = new Map<string, boolean>()
+  sessions.forEach((session) => {
+    const sessionDate = new Date(session.plannedStartTime)
+    const sessionDateKey = formatDateKey(sessionDate)
+    sessionsByDate.set(sessionDateKey, true)
+  })
 
   return (
     <View>
@@ -98,7 +108,7 @@ function DrinkTrackerWeekDays() {
       >
         {weekDays.map((day) => {
           const dateKey = formatDateKey(day)
-          const hasSession = false
+          const hasSession = sessionsByDate.has(dateKey)
           const isCurrentDay = isToday(day, today)
           const dayIndex = day.getDay() === 0 ? 6 : day.getDay() - 1 // Monday = 0
           const dayName = DAY_NAMES_SHORT[dayIndex]

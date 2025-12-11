@@ -3,6 +3,7 @@
   "motivational-message": "We're really proud of you for being\n here and <0>being honest with yourself!</0>",
   "actions": {
     "start": "Start",
+    "continue": "Continue",
     "plan-session": "Plan Session",
     "view-calendar": "View Calendar",
     "start-today-session": "Start Today's Session"
@@ -17,12 +18,17 @@
     },
     "drink-awareness": {
       "title": "Drink with Awareness (During):",
-      "description": "Practice mindfulness and moderation."
+      "description": "Practice mindfulness and\nmoderation."
     },
     "reflect-reinforce": {
       "title": "Reflect & Reinforce (After):",
-      "description": "Learn from the experience and build momentum."
+      "description": "Learn from the experience and\nbuild momentum."
     }
   },
-  "tip": "Tip: Bring headphones with you!"
+  "tip": "Tip: Bring headphones with you!",
+
+  "info-no-session-found": "No session found",
+  "info-no-session-found-description": "Please plan a session for today",
+
+  "continue-with-today-session": "Continue with today's session"
 }

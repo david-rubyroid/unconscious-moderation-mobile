@@ -8,6 +8,7 @@ function AlertIcon(props: SvgProps) {
     <Svg
       width={19}
       height={19}
+      viewBox="0 0 19 19"
       fill="none"
       {...props}
     >
@@ -18,4 +19,5 @@ function AlertIcon(props: SvgProps) {
     </Svg>
   )
 }
+
 export default AlertIcon

@@ -1,8 +1,12 @@
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
+
 import { ImageBackground, Pressable, StyleSheet, View } from 'react-native'
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+
+import { useUpdateDrinkSession } from '@/api/queries/drink-session'
 
 import AlertIcon from '@/assets/icons/alert'
 
@@ -11,9 +15,7 @@ import DropIcon from '@/assets/icons/drop'
 import preDrinkHydrationImage from '@/assets/images/pre-drink-hydration.jpg'
 
 import { Button, Header, Modal, ThemedGradient, ThemedText } from '@/components'
-
 import { Colors, withOpacity } from '@/constants/theme'
-
 import { scale, verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
@@ -115,10 +117,14 @@ const styles = StyleSheet.create({
 })
 
 function PreDrinkHydrationScreen() {
+  const { back } = useRouter()
   const [modalVisible, setModalVisible] = useState(false)
   const { t } = useTranslation('hydration')
 
   const { top, bottom } = useSafeAreaInsets()
+  const { sessionId } = useLocalSearchParams()
+
+  const { mutate: updateDrinkSession } = useUpdateDrinkSession(Number(sessionId))
 
   const handleModalClose = () => {
     setModalVisible(false)
@@ -126,9 +132,17 @@ function PreDrinkHydrationScreen() {
   const handleModalOpen = () => {
     setModalVisible(true)
   }
+  const handleUpdateDrinkSession = () => {
+    updateDrinkSession({
+      hydrated: true,
+    }, {
+      onSuccess: () => {
+        back()
+      },
+    })
+  }
 
   return (
-
     <ThemedGradient style={[{ paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }]}>
       <Header title={t('title')} />
 
@@ -180,7 +194,7 @@ function PreDrinkHydrationScreen() {
         </ThemedText>
 
         <View style={styles.buttonContainer}>
-          <Button title={t('i-ve-hydrated')} />
+          <Button title={t('i-ve-hydrated')} onPress={handleUpdateDrinkSession} />
         </View>
       </View>
 

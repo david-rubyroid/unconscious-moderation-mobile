@@ -1,3 +1,5 @@
+import type { Href } from 'expo-router'
+
 import { MaterialIcons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import { Pressable, StyleSheet, View } from 'react-native'
@@ -10,6 +12,8 @@ import ThemedText from './themed-text'
 
 interface HeaderProps {
   title: string
+  route?: Href
+  isReplace?: boolean
 }
 
 const styles = StyleSheet.create({
@@ -27,15 +31,22 @@ const styles = StyleSheet.create({
   },
 })
 
-function Header({ title }: HeaderProps) {
-  const router = useRouter()
+function Header({ title, route, isReplace }: HeaderProps) {
+  const { push, replace, back } = useRouter()
+
+  const handleBack = () => {
+    if (route) {
+      isReplace ? replace(route) : push(route)
+    }
+    else {
+      back()
+    }
+  }
 
   return (
     <View style={styles.container}>
       <Pressable
-        onPress={() => {
-          router.back()
-        }}
+        onPress={handleBack}
       >
         <MaterialIcons name="arrow-back-ios" size={scale(24)} color={Colors.light.primary4} />
       </Pressable>

@@ -12,9 +12,19 @@ export interface MutationOptions<TData = unknown, TError = Error, TVariables = u
   'mutationFn'
 > {}
 
-export function createQueryFn<TData = unknown>(url: string) {
+export function createQueryFn<TData = unknown>(url: string, queryParams?: Record<string, string | boolean | number>) {
   return async (): Promise<TData> => {
-    const response = await api.get(url).json<TData>()
+    const searchParams = new URLSearchParams()
+    if (queryParams) {
+      Object.entries(queryParams).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          searchParams.append(key, String(value))
+        }
+      })
+    }
+    const queryString = searchParams.toString()
+    const fullUrl = queryString ? `${url}?${queryString}` : url
+    const response = await api.get(fullUrl).json<TData>()
     return response
   }
 }

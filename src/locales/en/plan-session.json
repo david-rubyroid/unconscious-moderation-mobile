@@ -1,6 +1,7 @@
 {
   "title": "Plan Session",
   "when-do-you-plan-to-drink": "When do you Plan to Drink?",
+  "what-type-of-drink-will-you-stick-with": "What Type of Drink Will you Stick With?",
   "what-time-do-you-want-to-stop": "What Time do you Want to Stop?",
   "whats-your-maximum-number-of-drinks": "What's Your Maximum Number of Drinks?",
   "whats-your-budget-for-the-night": "What's Your Budget for the Night?",
@@ -14,6 +15,7 @@
   "planned-stop-time-description": "A planned stop time <0>gives you \n control</0>. Your mind prepares to wrap \n up naturally, <1>making it easier</1> to stick \n to your intention.",
   "drink-limit-description": "Setting a <0>drink limit</0> beforehand helps \n your brain recognize when to stop. \n People typically <1>drink less</1> when they \n decide on a number first.",
   "max-spending-description": "Setting a <0>spending limit</0> keeps \n you intentional and prevents \n morning regrets. <1>It protects both</1> \n your wallet and your wellbeing.",
+  "drink-type-description": "<0>Stick to one type of drink</0> to keep your body steady. <1>Choose longer drinks</1> over shots to naturally pace yourself.",
 
   "got-it": "Got it!",
 

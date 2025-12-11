@@ -1,10 +1,13 @@
 import enDrinkTracker from '@/locales/en/drink-tracker.json'
+import enDrinkWithAwareness from '@/locales/en/drink-with-awareness.json'
 import enForgotPassword from '@/locales/en/forgot-password.json'
 import enHome from '@/locales/en/home.json'
 import enHydration from '@/locales/en/hydration.json'
 import enHypnosis from '@/locales/en/hypnosis.json'
 import enIntro from '@/locales/en/intro.json'
+import enLogDrink from '@/locales/en/log-drink.json'
 import enLogin from '@/locales/en/login.json'
+import enManageUrges from '@/locales/en/manage-urges.json'
 import enMantra from '@/locales/en/mantra.json'
 import enMedicalReport from '@/locales/en/medical-report.json'
 import enPlanSession from '@/locales/en/plan-session.json'
@@ -12,9 +15,10 @@ import enPreDrinkChecklist from '@/locales/en/pre-drink-checklist.json'
 import enProfile from '@/locales/en/profile.json'
 import enPurchase from '@/locales/en/purchase.json'
 import enQuestions from '@/locales/en/questions.json'
+import enQuickWriting from '@/locales/en/quick-writing.json'
+import enReflectReinforce from '@/locales/en/reflect-reinforce.json'
 import enRegister from '@/locales/en/register.json'
 import enToolkit from '@/locales/en/toolkit.json'
-
 import enWelcomeToYourJourney from '@/locales/en/welcome-to-your-journey.json'
 
 const localeFiles = {
@@ -35,6 +39,11 @@ const localeFiles = {
   'en/hydration': enHydration,
   'en/hypnosis': enHypnosis,
   'en/mantra': enMantra,
+  'en/drink-with-awareness': enDrinkWithAwareness,
+  'en/log-drink': enLogDrink,
+  'en/quick-writing': enQuickWriting,
+  'en/manage-urges': enManageUrges,
+  'en/reflect-reinforce': enReflectReinforce,
 }
 
 export function getResources() {

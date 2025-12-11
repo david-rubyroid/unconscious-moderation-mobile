@@ -1,9 +1,9 @@
 import { MaterialIcons } from '@expo/vector-icons'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import Animated, { Easing, runOnJS, useAnimatedProps, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
-import Svg, { Circle } from 'react-native-svg'
+import Svg, { Circle, Defs, LinearGradient, Stop } from 'react-native-svg'
 
 import PauseIcon from '@/assets/icons/pause'
 import PlayIcon from '@/assets/icons/play'
@@ -129,6 +129,7 @@ function AudioPlayer({ audioUri, instructionText = 'Close your eyes, breathe \n 
   const [sliderWidth, setSliderWidth] = useState(233)
   const thumbPosition = useSharedValue(0)
   const startX = useSharedValue(0)
+  const hasRestartedRef = useRef(false)
 
   const {
     isPlaying,
@@ -138,6 +139,8 @@ function AudioPlayer({ audioUri, instructionText = 'Close your eyes, breathe \n 
     togglePlayPause,
     setVolume,
     isLoading,
+    play,
+    seekTo,
   } = useAudioPlayer(audioUri)
 
   const progress = duration > 0 ? currentTime / duration : 0
@@ -145,8 +148,8 @@ function AudioPlayer({ audioUri, instructionText = 'Close your eyes, breathe \n 
 
   useEffect(() => {
     animatedProgress.value = withTiming(progress, {
-      duration: 300,
-      easing: Easing.out(Easing.ease),
+      duration: 1000,
+      easing: Easing.linear,
     })
   }, [progress, animatedProgress])
 
@@ -155,6 +158,33 @@ function AudioPlayer({ audioUri, instructionText = 'Close your eyes, breathe \n 
       duration: 0,
     })
   }, [volume, sliderWidth, thumbPosition])
+
+  // Automatic restart when the audio ends
+  useEffect(() => {
+    if (duration > 0 && progress >= 0.99 && !hasRestartedRef.current) {
+      hasRestartedRef.current = true
+      seekTo(0)
+      // Small delay before restarting for proper work
+      const timer = setTimeout(() => {
+        play()
+      }, 100)
+
+      // Reset the flag after a delay to allow restart
+      const resetTimer = setTimeout(() => {
+        hasRestartedRef.current = false
+      }, 1000)
+
+      return () => {
+        clearTimeout(timer)
+        clearTimeout(resetTimer)
+      }
+    }
+
+    // Reset the flag when audio is reset to beginning manually
+    if (progress < 0.01) {
+      hasRestartedRef.current = false
+    }
+  }, [progress, duration, seekTo, play])
 
   const animatedCircleProps = useAnimatedProps(() => {
     const strokeDashoffset = CIRCLE_CIRCUMFERENCE * (1 - animatedProgress.value)
@@ -205,6 +235,12 @@ function AudioPlayer({ audioUri, instructionText = 'Close your eyes, breathe \n 
       <View style={styles.progressContainer}>
         <View style={styles.progressCircle}>
           <Svg width={CIRCLE_SIZE} height={CIRCLE_SIZE}>
+            <Defs>
+              <LinearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <Stop offset="0%" stopColor="#77AF91" stopOpacity="1" />
+                <Stop offset="100%" stopColor="#65CB93" stopOpacity="1" />
+              </LinearGradient>
+            </Defs>
             <Circle
               cx={CIRCLE_SIZE / 2}
               cy={CIRCLE_SIZE / 2}
@@ -217,7 +253,7 @@ function AudioPlayer({ audioUri, instructionText = 'Close your eyes, breathe \n 
               cx={CIRCLE_SIZE / 2}
               cy={CIRCLE_SIZE / 2}
               r={CIRCLE_RADIUS}
-              stroke={Colors.light.primary}
+              stroke="url(#progressGradient)"
               strokeWidth={CIRCLE_STROKE_WIDTH}
               fill="none"
               strokeDasharray={CIRCLE_CIRCUMFERENCE}

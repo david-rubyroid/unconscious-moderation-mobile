@@ -1,23 +1,28 @@
 import { MaterialIcons } from '@expo/vector-icons'
 
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useState } from 'react'
-
 import { useTranslation } from 'react-i18next'
-
 import { ImageBackground, Pressable, ScrollView, StyleSheet, View } from 'react-native'
-
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-
 import Toast from 'react-native-toast-message'
+
+import { useUpdateDrinkSession } from '@/api/queries/drink-session'
 
 import { useCreateMantra, useDeleteMantra, useGetMantras } from '@/api/queries/mantras'
 
 import mantraBackgroundImage from '@/assets/images/mantra.jpg'
 
-import { Button, Checkbox, Header, Modal, TextInput, ThemedGradient, ThemedText } from '@/components'
-
+import {
+  Button,
+  Checkbox,
+  Header,
+  Modal,
+  TextInput,
+  ThemedGradient,
+  ThemedText,
+} from '@/components'
 import { Colors, withOpacity } from '@/constants/theme'
-
 import { scale, verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
@@ -105,9 +110,12 @@ const styles = StyleSheet.create({
 })
 
 function MantraScreen() {
+  const { sessionId } = useLocalSearchParams()
+  const { back } = useRouter()
+  const { mutate: updateDrinkSession } = useUpdateDrinkSession(Number(sessionId))
   const [modalVisible, setModalVisible] = useState(false)
   const [newMantra, setNewMantra] = useState('')
-  const [selectedMantras, setSelectedMantras] = useState('')
+  const [selectedMantra, setSelectedMantra] = useState('')
 
   const { t } = useTranslation('mantra')
   const { top, bottom } = useSafeAreaInsets()
@@ -116,8 +124,10 @@ function MantraScreen() {
   const { mutateAsync: createMantra } = useCreateMantra()
   const { mutateAsync: deleteMantra } = useDeleteMantra()
 
+  const isMantraSelected = Boolean(selectedMantra)
+
   const handleSelectMantra = (mantra: string) => {
-    setSelectedMantras(mantra)
+    setSelectedMantra(mantra)
   }
   const handleCreateMantra = () => {
     setModalVisible(true)
@@ -143,6 +153,15 @@ function MantraScreen() {
   const handleCloseModal = () => {
     setModalVisible(false)
     setNewMantra('')
+  }
+  const handleUpdateDrinkSession = () => {
+    updateDrinkSession({
+      mantra: selectedMantra,
+    }, {
+      onSuccess: () => {
+        back()
+      },
+    })
   }
 
   return (
@@ -176,18 +195,18 @@ function MantraScreen() {
 
             <Checkbox
               label={`${t('im-doing-just-fine')} ${t('recommended')}`}
-              checked={selectedMantras === 'im-doing-just-fine'}
-              onToggle={() => handleSelectMantra('im-doing-just-fine')}
+              checked={selectedMantra === t('im-doing-just-fine')}
+              onToggle={() => handleSelectMantra(t('im-doing-just-fine'))}
             />
             <Checkbox
               label={t('i-drink-with-clarity-and-intention')}
-              checked={selectedMantras === 'i-drink-with-clarity-and-intention'}
-              onToggle={() => handleSelectMantra('i-drink-with-clarity-and-intention')}
+              checked={selectedMantra === t('i-drink-with-clarity-and-intention')}
+              onToggle={() => handleSelectMantra(t('i-drink-with-clarity-and-intention'))}
             />
             <Checkbox
               label={t('i-trust-myself')}
-              checked={selectedMantras === 'i-trust-myself'}
-              onToggle={() => handleSelectMantra('i-trust-myself')}
+              checked={selectedMantra === t('i-trust-myself')}
+              onToggle={() => handleSelectMantra(t('i-trust-myself'))}
             />
           </View>
 
@@ -208,16 +227,16 @@ function MantraScreen() {
 
           {mantras && mantras.length > 0 && (
             <View style={styles.mantrasContainer}>
-              {mantras?.map(mantra => (
-                <View key={mantra.id} style={styles.myMantraContainer}>
+              {mantras?.map(({ id, mantra }) => (
+                <View key={id} style={styles.myMantraContainer}>
                   <Checkbox
-                    key={mantra.id}
-                    label={mantra.mantra}
-                    checked={selectedMantras === mantra.mantra}
-                    onToggle={() => handleSelectMantra(mantra.mantra)}
+                    key={id}
+                    label={mantra}
+                    checked={selectedMantra === mantra}
+                    onToggle={() => handleSelectMantra(mantra)}
                   />
 
-                  <Pressable onPress={() => handleDeleteMantra(mantra.id)}>
+                  <Pressable onPress={() => handleDeleteMantra(id)}>
                     <MaterialIcons name="delete" size={scale(24)} color={Colors.light.gray1} />
                   </Pressable>
                 </View>
@@ -237,10 +256,11 @@ function MantraScreen() {
         </ScrollView>
 
         <Button
+          disabled={!isMantraSelected}
           style={styles.button}
           variant="secondary"
           title={t('done')}
-          onPress={() => {}}
+          onPress={handleUpdateDrinkSession}
         />
       </View>
 

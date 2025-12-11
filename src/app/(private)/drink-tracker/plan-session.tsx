@@ -1,12 +1,14 @@
+import type { DrinkType } from '@/api/queries/drink-session/dto'
+
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'expo-router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+
 import { Trans, useTranslation } from 'react-i18next'
-
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
-
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-
+import Toast from 'react-native-toast-message'
 import z from 'zod'
 
 import { useCreateDrinkSession } from '@/api/queries/drink-session'
@@ -17,6 +19,7 @@ import {
   Button,
   ControlledDateInput,
   ControlledTextInput,
+  DrinkSelector,
   Header,
   Modal,
   ThemedGradient,
@@ -24,7 +27,6 @@ import {
 } from '@/components'
 
 import { Colors, withOpacity } from '@/constants/theme'
-
 import { scale, verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
@@ -38,9 +40,20 @@ const styles = StyleSheet.create({
   inputContainer: {
     position: 'relative',
   },
+  drinkSelectorContainer: {},
+  drinkSelectorTextContainer: {
+    flexDirection: 'row',
+    gap: scale(8),
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: verticalScale(17),
+  },
+  drinkSelectorText: {
+    color: Colors.light.primary4,
+  },
   alertIconContainer: {
     position: 'absolute',
-    top: 0,
+    top: -6,
     right: 0,
     zIndex: 1,
     padding: scale(8),
@@ -73,6 +86,9 @@ const styles = StyleSheet.create({
 })
 
 function PlanAndPrepareScreen() {
+  const { push } = useRouter()
+
+  const [selectedDrink, setSelectedDrink] = useState<DrinkType>('wine')
   const [modalTextKey, setModalTextKey] = useState<string>('')
   const [modalVisible, setModalVisible] = useState(false)
 
@@ -80,7 +96,7 @@ function PlanAndPrepareScreen() {
 
   const { top, bottom } = useSafeAreaInsets()
 
-  const createDrinkSessionMutation = useCreateDrinkSession()
+  const { mutate: createDrinkSession } = useCreateDrinkSession()
 
   const createDrinkSessionSchema = z
     .object({
@@ -119,10 +135,29 @@ function PlanAndPrepareScreen() {
       return
     }
 
-    createDrinkSessionMutation.mutate({
+    createDrinkSession({
       plannedStartTime: plannedStartTime.toISOString(),
       maxDrinkCount: numberOfDrinks,
       budget: budgetAmount,
+      drinkType: selectedDrink as any,
+    }, {
+      onSuccess: (data) => {
+        const { id } = data
+
+        push({
+          pathname: '/drink-tracker/pre-drink-checklist',
+          params: {
+            sessionId: id,
+          },
+        })
+      },
+      onError: (error) => {
+        Toast.show({
+          type: 'error',
+          text1: 'Oops! Something went wrong',
+          text2: error.message,
+        })
+      },
     })
   }
 
@@ -141,6 +176,25 @@ function PlanAndPrepareScreen() {
             label={t('when-do-you-plan-to-drink')}
             mode="datetime"
           />
+
+          <View style={styles.drinkSelectorContainer}>
+            <View style={styles.drinkSelectorTextContainer}>
+              <ThemedText style={styles.drinkSelectorText} type="defaultSemiBold">
+                {t('what-type-of-drink-will-you-stick-with')}
+              </ThemedText>
+
+              <TouchableOpacity
+                onPress={() => {
+                  openModal('drink-type-description')
+                }}
+                activeOpacity={0.7}
+              >
+                <AlertIcon />
+              </TouchableOpacity>
+            </View>
+
+            <DrinkSelector selectedDrink={selectedDrink} onSelectDrink={setSelectedDrink} />
+          </View>
 
           <View style={styles.inputContainer}>
             <TouchableOpacity
@@ -201,11 +255,11 @@ function PlanAndPrepareScreen() {
         onClose={closeModal}
         children={(
           <View style={styles.modalContainer}>
-            <AlertIcon transform={[{ scale: 2.5 }]} />
+            <AlertIcon width={50} height={50} />
 
             <ThemedText style={styles.modalText}>
               <Trans
-                i18nKey={`plan-and-prepare:${modalTextKey}`}
+                i18nKey={t(`${modalTextKey}`)}
                 components={[
                   <ThemedText key="0" style={styles.modalTextBold} />,
                   <ThemedText key="1" style={styles.modalTextBold} />,

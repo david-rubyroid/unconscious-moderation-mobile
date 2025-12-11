@@ -1,19 +1,19 @@
 import type { Step } from '@/components/progress-steps'
 
+import { useLocalSearchParams, useRouter } from 'expo-router'
+
 import { Trans, useTranslation } from 'react-i18next'
-
-import { ImageBackground, ScrollView, StyleSheet, View } from 'react-native'
-
+import { ImageBackground, Pressable, ScrollView, StyleSheet, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
+import { useGetDrinkSession } from '@/api/queries/drink-session'
 import selfHypnosisImage from '@/assets/images/end-of-trial.png'
 import mantraImage from '@/assets/images/plan-and-prepare.jpg'
+
 import hydrationImage from '@/assets/images/reflect-and-reinforce.jpg'
 
 import { Button, Header, ProgressSteps, ThemedGradient, ThemedText } from '@/components'
-
 import { Colors, withOpacity } from '@/constants/theme'
-
 import { scale, verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
@@ -85,7 +85,12 @@ const styles = StyleSheet.create({
   },
 })
 
-function PlanAndPrepareScreen() {
+function PreDrinkChecklistScreen() {
+  const { push } = useRouter()
+  const { sessionId } = useLocalSearchParams()
+
+  const { data: session } = useGetDrinkSession(Number(sessionId))
+
   const { t } = useTranslation('pre-drink-checklist')
 
   const { top, bottom } = useSafeAreaInsets()
@@ -93,17 +98,42 @@ function PlanAndPrepareScreen() {
   const steps = [
     {
       id: 'hydration',
-      status: 'pending',
+      status: session?.hydrated ? 'completed' : 'pending',
     },
     {
       id: 'self-hypnosis',
-      status: 'pending',
+      status: session?.selfHypnosis ? 'completed' : 'pending',
     },
     {
       id: 'mantra',
-      status: 'pending',
+      status: session?.mantra ? 'completed' : 'pending',
     },
   ] as Step[]
+
+  const navigateToHydration = () => {
+    push({
+      pathname: '/drink-tracker/hydration',
+      params: { sessionId },
+    })
+  }
+  const navigateToSelfHypnosis = () => {
+    push({
+      pathname: '/drink-tracker/hypnosis',
+      params: { sessionId },
+    })
+  }
+  const navigateToMantra = () => {
+    push({
+      pathname: '/drink-tracker/mantra',
+      params: { sessionId },
+    })
+  }
+  const navigateToDrinkTrackerSteps = () => {
+    push({
+      pathname: '/drink-tracker/drink-tracker-steps',
+      params: { sessionId },
+    })
+  }
 
   return (
     <ThemedGradient style={[{ paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }]}>
@@ -131,53 +161,60 @@ function PlanAndPrepareScreen() {
             </View>
 
             <View style={styles.keyMomentsCardsContainer}>
-              <ImageBackground
-                source={hydrationImage}
-                style={styles.preparationStepItem}
-                imageStyle={styles.preparationStepItemImageStyle}
-              >
-                <View style={styles.preparationStepItemOverlay} />
 
-                <ThemedText type="defaultSemiBold" style={styles.preparationStepItemTitle}>
-                  {t('hydration')}
-                </ThemedText>
+              <Pressable onPress={navigateToHydration}>
+                <ImageBackground
+                  source={hydrationImage}
+                  style={styles.preparationStepItem}
+                  imageStyle={styles.preparationStepItemImageStyle}
+                >
+                  <View style={styles.preparationStepItemOverlay} />
 
-                <ThemedText type="default" style={styles.preparationStepItemDescription}>
-                  {t('hydration-description')}
-                </ThemedText>
-              </ImageBackground>
+                  <ThemedText type="defaultSemiBold" style={styles.preparationStepItemTitle}>
+                    {t('hydration')}
+                  </ThemedText>
 
-              <ImageBackground
-                source={selfHypnosisImage}
-                style={styles.preparationStepItem}
-                imageStyle={styles.preparationStepItemImageStyle}
-              >
-                <View style={styles.preparationStepItemOverlay} />
+                  <ThemedText type="default" style={styles.preparationStepItemDescription}>
+                    {t('hydration-description')}
+                  </ThemedText>
+                </ImageBackground>
+              </Pressable>
 
-                <ThemedText type="defaultSemiBold" style={styles.preparationStepItemTitle}>
-                  {t('self-hypnosis')}
-                </ThemedText>
+              <Pressable onPress={navigateToSelfHypnosis}>
+                <ImageBackground
+                  source={selfHypnosisImage}
+                  style={styles.preparationStepItem}
+                  imageStyle={styles.preparationStepItemImageStyle}
+                >
+                  <View style={styles.preparationStepItemOverlay} />
 
-                <ThemedText type="default" style={styles.preparationStepItemDescription}>
-                  {t('self-hypnosis-description')}
-                </ThemedText>
-              </ImageBackground>
+                  <ThemedText type="defaultSemiBold" style={styles.preparationStepItemTitle}>
+                    {t('self-hypnosis')}
+                  </ThemedText>
 
-              <ImageBackground
-                source={mantraImage}
-                style={styles.preparationStepItem}
-                imageStyle={styles.preparationStepItemImageStyle}
-              >
-                <View style={styles.preparationStepItemOverlay} />
+                  <ThemedText type="default" style={styles.preparationStepItemDescription}>
+                    {t('self-hypnosis-description')}
+                  </ThemedText>
+                </ImageBackground>
+              </Pressable>
 
-                <ThemedText type="defaultSemiBold" style={styles.preparationStepItemTitle}>
-                  {t('mantra')}
-                </ThemedText>
+              <Pressable onPress={navigateToMantra}>
+                <ImageBackground
+                  source={mantraImage}
+                  style={styles.preparationStepItem}
+                  imageStyle={styles.preparationStepItemImageStyle}
+                >
+                  <View style={styles.preparationStepItemOverlay} />
 
-                <ThemedText type="default" style={styles.preparationStepItemDescription}>
-                  {t('mantra-description')}
-                </ThemedText>
-              </ImageBackground>
+                  <ThemedText type="defaultSemiBold" style={styles.preparationStepItemTitle}>
+                    {t('mantra')}
+                  </ThemedText>
+
+                  <ThemedText type="default" style={styles.preparationStepItemDescription}>
+                    {t('mantra-description')}
+                  </ThemedText>
+                </ImageBackground>
+              </Pressable>
             </View>
           </View>
         </ScrollView>
@@ -186,7 +223,7 @@ function PlanAndPrepareScreen() {
           <Button
             variant="secondary"
             title={t('ready')}
-            onPress={() => {}}
+            onPress={navigateToDrinkTrackerSteps}
           />
         </View>
       </View>
@@ -195,4 +232,4 @@ function PlanAndPrepareScreen() {
   )
 }
 
-export default PlanAndPrepareScreen
+export default PreDrinkChecklistScreen

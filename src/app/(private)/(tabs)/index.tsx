@@ -253,7 +253,7 @@ function HomeScreen() {
             <Pressable
               style={styles.actionCard}
               onPress={() => {
-                push('/drink-tracker/mantra')
+                push('/drink-tracker/quick-writing')
               }}
             >
               <View style={styles.actionIcon}>

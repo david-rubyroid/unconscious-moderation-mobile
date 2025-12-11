@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   label: {
     color: Colors.light.primary4,
     fontSize: 14,
-    marginBottom: 10,
+    marginBottom: 4,
   },
   inputContainer: {
     flexDirection: 'row',

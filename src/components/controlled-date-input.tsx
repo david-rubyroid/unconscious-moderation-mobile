@@ -200,7 +200,6 @@ function ControlledDateInput<T extends FieldValues>({
             setShowPicker(false)
             if (event.type === 'set' && selectedDate) {
               if (mode === 'datetime') {
-                // На Android для datetime нужно два шага
                 const newDate = new Date(selectedDate)
                 const existingDate = value && typeof value === 'object' && 'getTime' in value
                   ? new Date(value)
@@ -214,7 +213,6 @@ function ControlledDateInput<T extends FieldValues>({
                   setShowPicker(true)
                 }
                 else {
-                  // Сохраняем выбранное время
                   existingDate.setHours(newDate.getHours())
                   existingDate.setMinutes(newDate.getMinutes())
                   onChange(existingDate)
@@ -294,54 +292,20 @@ function ControlledDateInput<T extends FieldValues>({
                         </TouchableOpacity>
                       </View>
 
-                      {mode === 'datetime'
-                        ? (
-                            <View style={styles.pickerContent}>
-                              <View style={styles.datePickerContainer}>
-                                <DateTimePicker
-                                  value={currentDate}
-                                  mode="date"
-                                  display="spinner"
-                                  onChange={(event, date) => {
-                                    if (date) {
-                                      onChange(date)
-                                    }
-                                  }}
-                                  minimumDate={minimumDate}
-                                  maximumDate={maximumDate}
-                                />
-                              </View>
-                              <View style={styles.pickerDivider} />
-                              <View style={styles.timePickerContainer}>
-                                <DateTimePicker
-                                  value={currentDate}
-                                  mode="time"
-                                  display="spinner"
-                                  onChange={(event, date) => {
-                                    if (date) {
-                                      onChange(date)
-                                    }
-                                  }}
-                                />
-                              </View>
-                            </View>
-                          )
-                        : (
-                            <View style={styles.singlePickerContainer}>
-                              <DateTimePicker
-                                value={currentDate}
-                                mode={mode}
-                                display="spinner"
-                                onChange={(event, date) => {
-                                  if (date) {
-                                    onChange(date)
-                                  }
-                                }}
-                                minimumDate={minimumDate}
-                                maximumDate={maximumDate}
-                              />
-                            </View>
-                          )}
+                      <View style={styles.singlePickerContainer}>
+                        <DateTimePicker
+                          value={currentDate}
+                          mode={mode}
+                          display={mode === 'datetime' ? 'inline' : 'spinner'}
+                          onChange={(event, date) => {
+                            if (date) {
+                              onChange(date)
+                            }
+                          }}
+                          minimumDate={minimumDate}
+                          maximumDate={maximumDate}
+                        />
+                      </View>
                     </Animated.View>
                   </TouchableOpacity>
                 </Animated.View>

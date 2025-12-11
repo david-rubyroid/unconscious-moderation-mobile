@@ -53,6 +53,9 @@ function ProtectedLayout() {
         <Stack.Screen name="drink-tracker/hydration" />
         <Stack.Screen name="drink-tracker/mantra" />
         <Stack.Screen name="drink-tracker/pre-drink-checklist" />
+        <Stack.Screen name="drink-tracker/drink-with-awareness" />
+        <Stack.Screen name="drink-tracker/log-drink" />
+        <Stack.Screen name="drink-tracker/manage-urges" />
       </Stack>
     </ThemedGradient>
   )
