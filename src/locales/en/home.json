@@ -1,24 +1,11 @@
 {
-  "welcome": "Welcome back",
-  "subtitle": "Continue your journey to self-awareness",
-  "subscription": "Subscription",
-  "status": "Status",
-  "expires": "Expires",
-  "trial-ends": "Trial ends",
-  "auto-renewal-enabled": "Auto-renewal enabled",
-  "not-available": "N/A",
-  "quick-actions": "Quick Actions",
-  "medical-report": "Medical Report",
-  "medical-report-description": "View your personalized medical report",
-  "subscription-management": "Subscription",
-  "subscription-management-description": "Manage your subscription and billing",
-  "upgrade-subscription": "Upgrade Subscription",
-  "subscription-status": {
-    "active": "Active",
-    "trial": "Trial",
-    "expired": "Expired",
-    "cancelled": "Cancelled",
-    "billing_issue": "Billing Issue",
-    "grace_period": "Grace Period"
-  }
+  "welcome": "Welcome, {{name}}",
+  "reminder": "Reminder:",
+  "brene-brown-quote": "\"We cannot grow when we are in shame, and we can't use shame to change ourselves or others.\"",
+  "brene-brown-quote-author": "-Brené Brown",
+  "last-drink": "Last Drink:",
+  "start": "Start",
+  "reset": "Reset",
+  "my-progress": "My progress",
+  "journey-streak": "Journey Streak: <0>{{days}}</0> {{days, plural, =1 {day} other {days}}}"
 }

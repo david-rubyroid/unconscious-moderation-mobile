@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router'
 
-import { ThemedGradient } from '@/components'
+import { ThemedGradient, TrophyManager } from '@/components'
 
 import { useAuth } from '@/context/auth/use'
 
@@ -17,6 +17,8 @@ function ProtectedLayout() {
 
   return (
     <ThemedGradient>
+      <TrophyManager />
+
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Protected guard={isHomeScreenAvailable}>
           <Stack.Screen name="(tabs)" />
@@ -56,6 +58,13 @@ function ProtectedLayout() {
         <Stack.Screen name="drink-tracker/drink-with-awareness" />
         <Stack.Screen name="drink-tracker/log-drink" />
         <Stack.Screen name="drink-tracker/manage-urges" />
+
+        {/* Free drink tracker screens are always accessible */}
+        <Stack.Screen name="free-drink-tracker/start-tracking" />
+        <Stack.Screen name="free-drink-tracker/reset-tracking" />
+
+        {/* My progress screens are always accessible */}
+        <Stack.Screen name="my-progress" />
       </Stack>
     </ThemedGradient>
   )

@@ -217,7 +217,7 @@ function ReflectReinforceScreen() {
 
   return (
     <ThemedGradient style={[{ paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }]}>
-      <Header title={t('title')} route="/drink-tracker" isReplace />
+      <Header title={t('title')} />
 
       <View style={styles.container}>
         <ScrollView

@@ -81,7 +81,7 @@ function DrinkTrackerScreen() {
       paddingBottom: bottom + verticalScale(10),
     }]}
     >
-      <Header title={t('title')} route="/toolkit" isReplace />
+      <Header title={t('title')} />
 
       <View style={styles.container}>
         <ThemedText

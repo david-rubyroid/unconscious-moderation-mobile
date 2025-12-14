@@ -45,3 +45,40 @@ export interface Subscription {
   createdAt: Date
   updatedAt: Date
 }
+
+// Sobriety Tracker Types
+export type TrophyType = '24h' | '3d' | '7d' | '14d' | '21d' | '30d' | '60d' | '90d'
+
+export interface SobrietyStreak {
+  id: number
+  user_id: number
+  started_at: Date
+  ended_at: Date | null
+  is_active: boolean
+  duration_days: number | null
+  created_at: Date
+  updated_at: Date
+}
+
+export interface SobrietyTrophy {
+  id: number
+  user_id: number
+  trophy_type: TrophyType
+  earned_at: Date
+  shown_at: Date | null
+  streak_id: number
+  created_at: Date
+  updated_at: Date
+}
+
+export interface SobrietyReset {
+  id: number
+  user_id: number
+  streak_id: number
+  reset_at: Date
+  reason: string
+  feelings: string
+  support_needed: string
+  created_at: Date
+  updated_at: Date
+}

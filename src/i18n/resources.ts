@@ -1,6 +1,7 @@
 import enDrinkTracker from '@/locales/en/drink-tracker.json'
 import enDrinkWithAwareness from '@/locales/en/drink-with-awareness.json'
 import enForgotPassword from '@/locales/en/forgot-password.json'
+import enFreeDrinkTracker from '@/locales/en/free-drink-tracker.json'
 import enHome from '@/locales/en/home.json'
 import enHydration from '@/locales/en/hydration.json'
 import enHypnosis from '@/locales/en/hypnosis.json'
@@ -10,6 +11,7 @@ import enLogin from '@/locales/en/login.json'
 import enManageUrges from '@/locales/en/manage-urges.json'
 import enMantra from '@/locales/en/mantra.json'
 import enMedicalReport from '@/locales/en/medical-report.json'
+import enMyProgress from '@/locales/en/my-progress.json'
 import enPlanSession from '@/locales/en/plan-session.json'
 import enPreDrinkChecklist from '@/locales/en/pre-drink-checklist.json'
 import enProfile from '@/locales/en/profile.json'
@@ -19,6 +21,7 @@ import enQuickWriting from '@/locales/en/quick-writing.json'
 import enReflectReinforce from '@/locales/en/reflect-reinforce.json'
 import enRegister from '@/locales/en/register.json'
 import enToolkit from '@/locales/en/toolkit.json'
+import enTrophies from '@/locales/en/trophies.json'
 import enWelcomeToYourJourney from '@/locales/en/welcome-to-your-journey.json'
 
 const localeFiles = {
@@ -44,6 +47,9 @@ const localeFiles = {
   'en/quick-writing': enQuickWriting,
   'en/manage-urges': enManageUrges,
   'en/reflect-reinforce': enReflectReinforce,
+  'en/free-drink-tracker': enFreeDrinkTracker,
+  'en/my-progress': enMyProgress,
+  'en/trophies': enTrophies,
 }
 
 export function getResources() {
