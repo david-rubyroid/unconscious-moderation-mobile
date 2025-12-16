@@ -1,11 +1,14 @@
 import enDrinkTracker from '@/locales/en/drink-tracker.json'
 import enDrinkWithAwareness from '@/locales/en/drink-with-awareness.json'
+import enEditProfile from '@/locales/en/edit-profile.json'
 import enForgotPassword from '@/locales/en/forgot-password.json'
 import enFreeDrinkTracker from '@/locales/en/free-drink-tracker.json'
 import enHome from '@/locales/en/home.json'
 import enHydration from '@/locales/en/hydration.json'
+import enHypnosisAdventure from '@/locales/en/hypnosis-adventure.json'
 import enHypnosis from '@/locales/en/hypnosis.json'
 import enIntro from '@/locales/en/intro.json'
+import enJournaling from '@/locales/en/journaling.json'
 import enLogDrink from '@/locales/en/log-drink.json'
 import enLogin from '@/locales/en/login.json'
 import enManageUrges from '@/locales/en/manage-urges.json'
@@ -50,6 +53,9 @@ const localeFiles = {
   'en/free-drink-tracker': enFreeDrinkTracker,
   'en/my-progress': enMyProgress,
   'en/trophies': enTrophies,
+  'en/journaling': enJournaling,
+  'en/hypnosis-adventure': enHypnosisAdventure,
+  'en/edit-profile': enEditProfile,
 }
 
 export function getResources() {

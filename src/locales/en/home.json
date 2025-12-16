@@ -5,7 +5,30 @@
   "brene-brown-quote-author": "-Brené Brown",
   "last-drink": "Last Drink:",
   "start": "Start",
+  "start-session": "Start Session",
   "reset": "Reset",
   "my-progress": "My progress",
-  "journey-streak": "Journey Streak: <0>{{days}}</0> {{days, plural, =1 {day} other {days}}}"
+  "journey-streak": "Journey Streak: <0>{{days}}</0> {{days, plural, =1 {day} other {days}}}",
+
+  "todays-adventure": "Todays Adventure",
+  "hypnosis": "Hypnosis",
+  "journaling": "Journaling",
+
+  "journaling-with-dr-nada-obrien": "Journaling with\n Dr. Nada O'rien",
+  "meet-your-inner-voice": "Meet your Inner Voice",
+  "meet-your-inner-voice-description": "Your unconscious mind has been running the show. These prompts help you finally hear what it's been trying to say.",
+  "three-things-to-remember": "Three things to remember:",
+  "first-thought-best-thought": "First thought, best thought. Write whatever surfaces first. That's your unconscious speaking before your logical mind takes over.",
+  "no-wrong-answers": "No wrong answers. Some days the words flow easily. Other days you might stare at the prompt thinking \"I have no idea.\" Write that. Write whatever's there. It all counts.",
+  "patterns-emerge-slowly": "Patterns emerge slowly. You're not looking for instant insights. You're building awareness, one day at a time.",
+  "this-space-is-yours-alone": "This space is yours alone. Write freely.",
+
+  "hypnosis-session": "Hypnosis Session",
+  "get-ready-for-your-session": "Get Ready for Your Session",
+  "this-is-your-time-to-pause-breathe-and-reconnect-with-yourself": "This is your time to pause, breathe, and reconnect with yourself.",
+  "find-a-quiet-comfortable-place-where-you-won-t-be-interrupted": "Find a quiet, comfortable place where you won't be interrupted.",
+  "for-the-best-experience-we-recommend-using-headphones": "For the best experience, we recommend using headphones.",
+  "when-you-re-ready-press-play-to-begin-your-session-with-dr-john-obrien": "When you're ready, press play to begin your session with Dr. John O'Brien.",
+  "let-the-shift-begin-from-the-inside-out": "Let the shift begin from the inside out."
+
 }

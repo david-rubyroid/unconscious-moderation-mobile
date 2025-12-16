@@ -65,6 +65,10 @@ function ProtectedLayout() {
 
         {/* My progress screens are always accessible */}
         <Stack.Screen name="my-progress" />
+
+        {/* Journaling screens are always accessible */}
+        <Stack.Screen name="journaling/day" />
+        <Stack.Screen name="journaling/intro" />
       </Stack>
     </ThemedGradient>
   )

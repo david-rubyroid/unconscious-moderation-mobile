@@ -8,7 +8,7 @@ import { Colors } from '@/constants/theme'
 interface ThemedGradientProps {
   children: React.ReactNode
   style?: StyleProp<ViewStyle>
-  colors?: [string, string]
+  colors?: readonly [string, string, ...string[]]
 }
 
 const styles = StyleSheet.create({
@@ -17,11 +17,16 @@ const styles = StyleSheet.create({
   },
 })
 
+// Default gradient colors (old): #E5E5E5 -> #62BC8C
+const defaultGradientColors = [Colors.light.gradientStart, Colors.light.gradientEnd] as const
+
 function ThemedGradient({ children, style, colors }: ThemedGradientProps) {
   return (
     <LinearGradient
       style={[styles.container, style]}
-      colors={colors || [Colors.light.gradientStart, Colors.light.gradientEnd]}
+      colors={colors || defaultGradientColors}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 1 }}
     >
       {children}
     </LinearGradient>

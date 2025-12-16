@@ -1,28 +1,11 @@
 {
-  "personal-information": "Personal Information",
-  "email": "Email",
-  "age": "Age",
-  "gender": "Gender",
-  "subscription": "Subscription",
-  "status": "Status",
-  "expires": "Expires",
-  "trial-ends": "Trial ends",
-  "auto-renewal-enabled": "Auto-renewal enabled",
-  "logout": "Logout",
-  "delete-account": "Delete Account",
-  "delete-account-title": "Delete Account",
-  "delete-account-message": "Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently deleted.",
-  "cancel": "Cancel",
-  "delete": "Delete",
-  "error": "Error",
-  "delete-account-error": "Failed to delete account. Please try again.",
-  "not-available": "N/A",
-  "subscription-status": {
-    "active": "Active",
-    "trial": "Trial",
-    "expired": "Expired",
-    "cancelled": "Cancelled",
-    "billing_issue": "Billing Issue",
-    "grace_period": "Grace Period"
-  }
+  "title": "My Account",
+  "current-streak": "Current Streak",
+  "my-t-line": "My T-Line",
+  "gifts": "Gifts",
+  "fears": "Fears",
+  "settings": "Settings",
+  "privacy-policy": "Privacy Policy",
+  "terms-of-service": "Terms of Service",
+  "your-trophies": "Your Trophies"
 }

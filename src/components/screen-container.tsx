@@ -13,6 +13,7 @@ interface ScreenContainerProps {
   scrollable?: boolean
   showsScrollIndicator?: boolean
   contentContainerStyle?: StyleProp<ViewStyle>
+  gradientColors?: readonly [string, string, ...string[]]
 }
 
 const styles = StyleSheet.create({
@@ -27,6 +28,7 @@ function ScreenContainer({
   scrollable = true,
   showsScrollIndicator = false,
   contentContainerStyle,
+  gradientColors,
 }: ScreenContainerProps) {
   const { top, bottom } = useSafeAreaInsets()
 
@@ -43,6 +45,7 @@ function ScreenContainer({
 
   return (
     <ThemedGradient
+      colors={gradientColors}
       style={{
         paddingTop: top + verticalScale(10),
         paddingBottom: bottom + verticalScale(10),

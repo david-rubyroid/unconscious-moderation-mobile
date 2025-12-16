@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react'
-import { Pressable, StyleSheet } from 'react-native'
+import type { StyleProp, ViewStyle } from 'react-native'
+
+import { useEffect, useRef, useState } from 'react'
+import { Modal, Pressable, StyleSheet } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import Animated, {
   Easing,
@@ -10,11 +12,12 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated'
-
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { Colors } from '@/constants/theme'
+
 import { moderateScale, scale } from '@/utils/responsive'
+
 import ThemedGradient from './themed-gradient'
 
 interface BottomSheetPopupProps {
@@ -23,6 +26,8 @@ interface BottomSheetPopupProps {
   onClose?: () => void
   dismissible?: boolean
   radius?: number
+  style?: StyleProp<ViewStyle>
+  gradientColors?: readonly [string, string, ...string[]]
 }
 
 const styles = StyleSheet.create({
@@ -51,12 +56,16 @@ function BottomSheetPopup({
   onClose,
   dismissible = true,
   radius = 20,
+  style,
+  gradientColors,
 }: BottomSheetPopupProps) {
   const { bottom } = useSafeAreaInsets()
   const translateY = useSharedValue(1000)
   const overlayOpacity = useSharedValue(0)
   const startY = useSharedValue(0)
   const [shouldRender, setShouldRender] = useState(visible)
+  const [modalVisible, setModalVisible] = useState(visible)
+  const prevVisibleRef = useRef(visible)
 
   const handleClose = () => {
     if (dismissible) {
@@ -86,7 +95,7 @@ function BottomSheetPopup({
     .onEnd((event) => {
       if (!dismissible)
         return
-      const threshold = 100 // Minimum drag distance to close
+      const threshold = 100
       if (event.translationY > threshold || event.velocityY > 500) {
         translateY.value = withTiming(1000, {
           duration: 250,
@@ -100,6 +109,7 @@ function BottomSheetPopup({
           },
           (finished) => {
             if (finished) {
+              runOnJS(setModalVisible)(false)
               runOnJS(setShouldRender)(false)
             }
           },
@@ -118,41 +128,7 @@ function BottomSheetPopup({
       }
     })
 
-  useEffect(() => {
-    if (visible) {
-      translateY.value = withTiming(0, {
-        duration: 800,
-        easing: Easing.out(Easing.ease),
-      })
-      overlayOpacity.value = withTiming(
-        1,
-        {
-          duration: 300,
-        },
-        () => {
-          runOnJS(setShouldRender)(true)
-        },
-      )
-    }
-    else {
-      translateY.value = withTiming(1000, {
-        duration: 250,
-        easing: Easing.in(Easing.ease),
-      })
-      overlayOpacity.value = withTiming(
-        0,
-        {
-          duration: 250,
-          easing: Easing.in(Easing.ease),
-        },
-        (finished) => {
-          if (finished) {
-            runOnJS(setShouldRender)(false)
-          }
-        },
-      )
-    }
-  }, [visible, translateY, overlayOpacity])
+  const defaultGradientColors = [Colors.light.gradientEnd, Colors.light.gradientStart] as const
 
   const animatedPopupStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: translateY.value }],
@@ -166,13 +142,59 @@ function BottomSheetPopup({
     pointerEvents: overlayOpacity.value > 0 ? ('auto' as const) : ('none' as const),
   }))
 
+  useEffect(() => {
+    if (visible !== prevVisibleRef.current) {
+      prevVisibleRef.current = visible
+
+      if (visible) {
+        setModalVisible(true)
+        setShouldRender(true)
+        translateY.value = withTiming(0, {
+          duration: 400,
+          easing: Easing.out(Easing.ease),
+        })
+        overlayOpacity.value = withTiming(
+          1,
+          {
+            duration: 200,
+          },
+        )
+      }
+      else {
+        translateY.value = withTiming(1000, {
+          duration: 250,
+          easing: Easing.in(Easing.ease),
+        })
+        overlayOpacity.value = withTiming(
+          0,
+          {
+            duration: 250,
+            easing: Easing.in(Easing.ease),
+          },
+          (finished) => {
+            if (finished) {
+              runOnJS(setModalVisible)(false)
+              runOnJS(setShouldRender)(false)
+            }
+          },
+        )
+      }
+    }
+  }, [visible, translateY, overlayOpacity])
+
   // Don't render if not visible and animation is complete
-  if (!visible && !shouldRender) {
+  if (!modalVisible && !shouldRender) {
     return null
   }
 
   return (
-    <>
+    <Modal
+      visible={modalVisible}
+      transparent
+      animationType="none"
+      statusBarTranslucent
+      onRequestClose={dismissible ? handleClose : undefined}
+    >
       <Animated.View style={[styles.overlay, animatedOverlayStyle]} animatedProps={animatedOverlayProps}>
         {dismissible && (
           <Pressable style={StyleSheet.absoluteFill} onPress={handleClose} />
@@ -199,14 +221,15 @@ function BottomSheetPopup({
                 borderTopLeftRadius: moderateScale(radius),
                 borderTopRightRadius: moderateScale(radius),
               },
+              style,
             ]}
-            colors={[Colors.light.gradientEnd, Colors.light.gradientStart]}
+            colors={gradientColors || defaultGradientColors}
           >
             {children}
           </ThemedGradient>
         </Animated.View>
       </GestureDetector>
-    </>
+    </Modal>
   )
 }
 

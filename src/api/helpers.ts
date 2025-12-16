@@ -31,10 +31,18 @@ export function createQueryFn<TData = unknown>(url: string, queryParams?: Record
 
 export function createMutationFn<TData = unknown, TVariables = unknown>(
   method: 'post' | 'put' | 'patch' | 'delete',
-  url: string,
+  url: string | ((_variables: TVariables) => string),
+  options?: {
+    skipBody?: boolean // If true, don't send variables as JSON body
+  },
 ) {
   return async (variables: TVariables): Promise<TData> => {
-    const response = await api[method](url, { json: variables }).json<TData>()
-    return response
+    const finalUrl = typeof url === 'function' ? url(variables) : url
+
+    if (options?.skipBody) {
+      return await api[method](finalUrl).json<TData>()
+    }
+
+    return await api[method](finalUrl, { json: variables }).json<TData>()
   }
 }

@@ -7,8 +7,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { useGetUserFears, useGetUserGifts, useUpdateUser } from '@/api/queries/user'
 
-import { Button, ThemedGradient, ThemedText } from '@/components'
-import { Colors, withOpacity } from '@/constants/theme'
+import { AwarenessSection, Button, ThemedGradient, ThemedText } from '@/components'
+import { Colors } from '@/constants/theme'
 import { verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
@@ -33,30 +33,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 25,
-  },
-  sectionContent: {
-    gap: 12,
-    flex: 1,
-    width: '48%',
-  },
-  sectionTitle: {
-    color: Colors.light.primary,
-    fontWeight: 700,
-    fontSize: 20,
-    textAlign: 'center',
-  },
-  sectionItem: {
-    minHeight: 45,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 15,
-    borderRadius: 15,
-    backgroundColor: withOpacity(Colors.light.white, 0.5),
-  },
-  sectionItemText: {
-    textAlign: 'center',
-    color: Colors.light.primary4,
   },
   buttonContainer: {
     alignItems: 'center',
@@ -94,35 +70,14 @@ function SharedAwarenessScreen() {
 
       <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
         <View style={styles.section}>
-          <View style={styles.sectionContent}>
-            <ThemedText
-              type="defaultSemiBold"
-              style={styles.sectionTitle}
-            >
-              {t('shared-awareness-gifts')}
-            </ThemedText>
-
-            {gifts?.map(({ gift, id }) => (
-              <View style={styles.sectionItem} key={id}>
-                <ThemedText style={styles.sectionItemText} type="default">{t(gift)}</ThemedText>
-              </View>
-            ))}
-          </View>
-
-          <View style={styles.sectionContent}>
-            <ThemedText
-              type="defaultSemiBold"
-              style={styles.sectionTitle}
-            >
-              {t('shared-awareness-fears')}
-            </ThemedText>
-
-            {fears?.map(({ fear, id }) => (
-              <View style={styles.sectionItem} key={id}>
-                <ThemedText style={styles.sectionItemText} type="default">{t(fear)}</ThemedText>
-              </View>
-            ))}
-          </View>
+          <AwarenessSection
+            title={t('shared-awareness-gifts')}
+            items={gifts}
+          />
+          <AwarenessSection
+            title={t('shared-awareness-fears')}
+            items={fears}
+          />
         </View>
       </ScrollView>
 

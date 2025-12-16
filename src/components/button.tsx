@@ -4,6 +4,7 @@ import { ActivityIndicator, Pressable, StyleSheet, Text } from 'react-native'
 import { Colors, getResponsiveFontSize, withOpacity } from '@/constants/theme'
 
 interface ButtonProps extends PressableProps {
+  icon?: React.ReactNode
   title: string
   variant?: 'primary' | 'secondary' | 'primary2'
   loading?: boolean
@@ -13,6 +14,8 @@ interface ButtonProps extends PressableProps {
 
 const styles = StyleSheet.create({
   button: {
+    flexDirection: 'row',
+    gap: 8,
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
@@ -53,6 +56,7 @@ const styles = StyleSheet.create({
 })
 
 function Button({
+  icon,
   title,
   variant = 'primary',
   loading = false,
@@ -74,6 +78,7 @@ function Button({
       disabled={disabled || loading}
       {...props}
     >
+      {icon && icon}
       {loading
         ? (
             <ActivityIndicator color="white" />

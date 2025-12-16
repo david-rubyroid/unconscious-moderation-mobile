@@ -1,0 +1,22 @@
+{
+  "title": "Edit Profile",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "age": "Age",
+  "email": "Email",
+  "gender": "Gender",
+  "save": "Save Changes",
+
+  "male": "Male",
+  "female": "Female",
+  "non-specified": "Non-specified",
+  "18-29": "18-29",
+  "30-39": "30-39",
+  "40-49": "40-49",
+  "50-59": "50-59",
+
+  "success": "Success",
+  "profile-updated-successfully": "Profile updated successfully",
+  "error": "Error",
+  "failed-to-update-profile": "Failed to update profile"
+}

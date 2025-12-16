@@ -1,15 +1,24 @@
-import { MaterialIcons } from '@expo/vector-icons'
-
 import { useRouter } from 'expo-router'
 
+import { openBrowserAsync, WebBrowserPresentationStyle } from 'expo-web-browser'
 import { useTranslation } from 'react-i18next'
-import { Alert, StyleSheet, View } from 'react-native'
+
+import { Alert, Pressable, StyleSheet, View } from 'react-native'
 
 import { useDeleteAccount, useGetCurrentUser, useLogout } from '@/api/queries/auth'
 
 import { useGetSubscription } from '@/api/queries/subscriptions'
-
-import { Button, ScreenContainer, ThemedText } from '@/components'
+import AlertIcon from '@/assets/icons/alert'
+import ShieldIcon from '@/assets/icons/shield'
+import {
+  AwarenessSection,
+  Header,
+  ProfileCard,
+  ScreenContainer,
+  SobrietyTimer,
+  ThemedText,
+  TrophyCards,
+} from '@/components'
 import { Colors, withOpacity } from '@/constants/theme'
 import { scale, verticalScale } from '@/utils/responsive'
 
@@ -38,94 +47,63 @@ const styles = StyleSheet.create({
     color: Colors.light.primary4,
     marginBottom: verticalScale(4),
   },
-  emailText: {
-    color: Colors.light.gray1,
+  currentStreakContainer: {
+    gap: verticalScale(14),
+    borderRadius: scale(8),
+    paddingVertical: scale(21),
+    paddingHorizontal: scale(28),
+    backgroundColor: withOpacity(Colors.light.white, 0.5),
+    marginBottom: verticalScale(20),
   },
-  section: {
-    marginBottom: verticalScale(24),
-  },
-  sectionTitle: {
+  currentStreakText: {
+    textAlign: 'center',
     color: Colors.light.primary4,
-    marginBottom: verticalScale(12),
-    fontWeight: '700',
   },
-  infoCard: {
-    backgroundColor: withOpacity(Colors.light.white, 0.6),
-    borderRadius: scale(12),
-    padding: scale(16),
-    marginBottom: verticalScale(12),
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  infoIcon: {
-    marginRight: scale(12),
-    fontSize: scale(24),
-    color: Colors.light.primary,
-  },
-  infoContent: {
-    flex: 1,
-  },
-  infoLabel: {
-    color: Colors.light.gray1,
-    fontSize: scale(12),
-    marginBottom: verticalScale(4),
-  },
-  infoValue: {
+  myTLineTitle: {
+    textAlign: 'center',
     color: Colors.light.primary4,
-    fontWeight: '600',
+    marginBottom: verticalScale(20),
   },
-  subscriptionCard: {
-    backgroundColor: withOpacity(Colors.light.white, 0.9),
-    borderRadius: scale(12),
+  awarenessSection: {
     padding: scale(16),
-    marginBottom: verticalScale(12),
-    borderWidth: 1,
-    borderColor: withOpacity(Colors.light.primary, 0.2),
-  },
-  subscriptionStatus: {
+    borderRadius: scale(10),
     flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  subscriptionIcon: {
-    fontSize: scale(24),
-    color: Colors.light.primary,
-    marginRight: scale(12),
-    marginTop: scale(2),
-  },
-  subscriptionContent: {
-    flex: 1,
-  },
-  subscriptionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: verticalScale(6),
     flexWrap: 'wrap',
-    gap: scale(8),
+    gap: scale(25),
+    marginBottom: verticalScale(20),
   },
-  subscriptionTitle: {
+  settingsTitle: {
+    textAlign: 'center',
     color: Colors.light.primary4,
-    marginRight: scale(8),
+    marginBottom: verticalScale(20),
   },
-  statusBadge: {
-    paddingHorizontal: scale(10),
-    paddingVertical: scale(4),
-    borderRadius: scale(12),
+  settingsContainer: {
+    gap: scale(10),
+    marginBottom: verticalScale(20),
   },
-  statusText: {
-    color: Colors.light.white,
-    fontSize: scale(10),
-    fontWeight: '700',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
+  settingsItem: {
+    gap: scale(10),
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: scale(12),
+    borderRadius: scale(8),
+    backgroundColor: withOpacity(Colors.light.white, 0.5),
   },
-  subscriptionInfo: {
-    color: Colors.light.gray1,
-    marginTop: verticalScale(4),
+  settingsItemIcon: {
+    width: scale(46),
+    height: scale(46),
+    borderRadius: scale(10),
+    backgroundColor: Colors.light.white,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  renewalText: {
-    color: Colors.light.primary,
-    marginTop: verticalScale(4),
-    fontWeight: '600',
+  settingsItemText: {
+    fontWeight: 400,
+  },
+  trophiesTitle: {
+    textAlign: 'center',
+    color: Colors.light.primary4,
+    marginBottom: verticalScale(20),
   },
   buttonContainer: {
     marginTop: verticalScale(20),
@@ -145,32 +123,6 @@ function ProfileScreen() {
   const { data: subscription } = useGetSubscription()
   const { mutateAsync: logout, isPending: isLoggingOut } = useLogout()
   const { mutateAsync: deleteAccount, isPending: isDeletingAccount } = useDeleteAccount()
-
-  const getStatusColor = (status?: string) => {
-    switch (status) {
-      case 'active':
-      case 'trial':
-      case 'grace_period':
-        return Colors.light.primary
-      case 'expired':
-      case 'cancelled':
-        return Colors.light.error
-      default:
-        return Colors.light.gray1
-    }
-  }
-
-  const formatDate = (dateString: string | null) => {
-    if (!dateString) {
-      return 'N/A'
-    }
-    const date = new Date(dateString)
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    })
-  }
 
   const handleDeleteAccount = () => {
     Alert.alert(
@@ -197,146 +149,85 @@ function ProfileScreen() {
       ],
     )
   }
-
-  const isActiveSubscription = subscription?.status === 'active' || subscription?.status === 'trial' || subscription?.status === 'grace_period'
+  const handlePrivacyPolicy = () => {
+    openBrowserAsync('https://um.app/privacy-policy/', {
+      presentationStyle: WebBrowserPresentationStyle.AUTOMATIC,
+    })
+  }
+  const handleTermsOfService = () => {
+    openBrowserAsync('https://um.app/terms-and-conditions/', {
+      presentationStyle: WebBrowserPresentationStyle.AUTOMATIC,
+    })
+  }
+  const gifts = user?.gifts
+  const fears = user?.fears
 
   return (
-    <ScreenContainer>
-      <View style={styles.header}>
-        <View style={styles.avatarContainer}>
-          <MaterialIcons name="person" style={styles.avatarIcon} />
-        </View>
-        <ThemedText type="title" style={styles.nameText}>
-          {user?.firstName}
-          {' '}
-          {user?.lastName}
+    <ScreenContainer gradientColors={['#BDE5E2', '#DCF1EE', '#E4F4ED', '#B9E2E6']}>
+      <Header title={t('title')} />
+
+      <ProfileCard />
+
+      <View style={styles.currentStreakContainer}>
+        <ThemedText type="defaultSemiBold" style={styles.currentStreakText}>
+          {t('current-streak')}
         </ThemedText>
-        <ThemedText type="default" style={styles.emailText}>
-          {user?.email}
-        </ThemedText>
+
+        <SobrietyTimer size="large" />
       </View>
 
-      <View style={styles.section}>
-        <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
-          {t('personal-information')}
-        </ThemedText>
+      <ThemedText type="preSubtitle" style={styles.myTLineTitle}>
+        {t('my-t-line')}
+      </ThemedText>
 
-        <View style={styles.infoCard}>
-          <MaterialIcons name="email" style={styles.infoIcon} />
-          <View style={styles.infoContent}>
-            <ThemedText type="small" style={styles.infoLabel}>
-              {t('email')}
-            </ThemedText>
-            <ThemedText type="default" style={styles.infoValue}>
-              {user?.email || t('not-available')}
-            </ThemedText>
-          </View>
-        </View>
-
-        {user?.age && (
-          <View style={styles.infoCard}>
-            <MaterialIcons name="cake" style={styles.infoIcon} />
-            <View style={styles.infoContent}>
-              <ThemedText type="small" style={styles.infoLabel}>
-                {t('age')}
-              </ThemedText>
-              <ThemedText type="default" style={styles.infoValue}>
-                {user.age}
-              </ThemedText>
+      {((gifts && gifts.length > 0) || (fears && fears.length > 0))
+        ? (
+            <View style={styles.awarenessSection}>
+              <AwarenessSection
+                title={t('gifts')}
+                items={gifts}
+                translationNamespace="questions"
+              />
+              <AwarenessSection
+                title={t('fears')}
+                items={fears}
+                translationNamespace="questions"
+              />
             </View>
-          </View>
-        )}
+          )
+        : null}
 
-        {user?.gender && (
-          <View style={styles.infoCard}>
-            <MaterialIcons name="person-outline" style={styles.infoIcon} />
-            <View style={styles.infoContent}>
-              <ThemedText type="small" style={styles.infoLabel}>
-                {t('gender')}
-              </ThemedText>
-              <ThemedText type="default" style={styles.infoValue}>
-                {user.gender}
-              </ThemedText>
-            </View>
-          </View>
-        )}
-      </View>
+      <ThemedText type="preSubtitle" style={styles.trophiesTitle}>
+        {t('Settings')}
+      </ThemedText>
 
-      {subscription && (
-        <View style={styles.section}>
-          <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
-            {t('subscription')}
+      <View style={styles.settingsContainer}>
+        <Pressable style={styles.settingsItem} onPress={handlePrivacyPolicy}>
+          <View style={styles.settingsItemIcon}>
+            <ShieldIcon />
+          </View>
+
+          <ThemedText type="defaultSemiBold" style={styles.settingsItemText}>
+            {t('privacy-policy')}
           </ThemedText>
+        </Pressable>
 
-          <View style={[
-            styles.subscriptionCard,
-            isActiveSubscription && {
-              borderColor: Colors.light.primary,
-              backgroundColor: withOpacity(Colors.light.primary2, 0.15),
-            },
-          ]}
-          >
-            <View style={styles.subscriptionStatus}>
-              <MaterialIcons name="card-membership" style={styles.subscriptionIcon} />
-              <View style={styles.subscriptionContent}>
-                <View style={styles.subscriptionHeader}>
-                  <ThemedText type="defaultSemiBold" style={styles.subscriptionTitle}>
-                    {t('subscription')}
-                  </ThemedText>
-                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(subscription.status) }]}>
-                    <ThemedText style={styles.statusText}>
-                      {t(`subscription-status.${subscription.status}`) || subscription.status}
-                    </ThemedText>
-                  </View>
-                </View>
-
-                {subscription.expiresAt && (
-                  <ThemedText type="small" style={styles.subscriptionInfo}>
-                    {t('expires')}
-                    :
-                    {formatDate(subscription.expiresAt)}
-                  </ThemedText>
-                )}
-
-                {subscription.trialEndsAt && (
-                  <ThemedText type="small" style={styles.subscriptionInfo}>
-                    {t('trial-ends')}
-                    :
-                    {formatDate(subscription.trialEndsAt)}
-                  </ThemedText>
-                )}
-
-                {subscription.willRenew && (
-                  <ThemedText type="small" style={styles.renewalText}>
-                    {t('auto-renewal-enabled')}
-                  </ThemedText>
-                )}
-              </View>
-            </View>
+        <Pressable style={styles.settingsItem} onPress={handleTermsOfService}>
+          <View style={styles.settingsItemIcon}>
+            <AlertIcon width={25} height={25} color={Colors.light.primary} />
           </View>
-        </View>
-      )}
 
-      <View style={styles.buttonContainer}>
-        <Button
-          loading={isLoggingOut}
-          fullWidth
-          title={t('logout')}
-          onPress={() => {
-            logout().then(() => {
-              replace('/(auth)/sign-in')
-            })
-          }}
-        />
-        <Button
-          fullWidth
-          loading={isDeletingAccount}
-          disabled={isDeletingAccount}
-          title={t('delete-account')}
-          style={styles.deleteButton}
-          onPress={handleDeleteAccount}
-        />
+          <ThemedText type="defaultSemiBold" style={styles.settingsItemText}>
+            {t('terms-of-service')}
+          </ThemedText>
+        </Pressable>
       </View>
+
+      <ThemedText type="preSubtitle" style={styles.trophiesTitle}>
+        {t('your-trophies')}
+      </ThemedText>
+
+      <TrophyCards />
     </ScreenContainer>
   )
 }

@@ -1,0 +1,314 @@
+{
+  "journaling": "Journaling",
+  "your-answer": "Your answer here...",
+  "next": "Next",
+  "previous": "Previous",
+  "done": "Done",
+  "day-1": {
+    "title": "DAY 1\n Happiness vs. Pleasure",
+    "prompts": {
+      "1": {
+        "title": "Check in with yourself",
+        "description": "Close your eyes and take three deep breaths. How are you feeling right now? Notice what's happening in your body, any tension, relaxation, or sensations. What's going on in your mind? What thoughts are floating around, and what emotions are present? Just observe without judgment and write about this moment exactly as it is."
+      },
+      "2": {
+        "title": "Happiness vs Pleasure",
+        "description": "Think about the difference between happiness and pleasure. Can you remember a moment of genuine happiness, maybe a deep conversation or feeling completely present? Now recall a moment of pure pleasure, that first sip of wine or perfect bite of chocolate. What did each feel like in your body, and what do you notice about how long each feeling lasted?"
+      }
+    }
+  },
+  "day-2": {
+    "title": "DAY 2\n When Emotions Hit Like Waves",
+    "prompts": {
+      "1": {
+        "title": "RAIN technique",
+        "description": "Close your eyes and take three deep breaths. Try the RAIN technique with whatever emotions showed up for you today: Recognize what you're feeling, Allow the emotions, Investigate where you feel them in your body, and offer yourself Natural kindness. Write about what you discovered when you didn’t resist your emotions."
+      }
+    }
+  },
+  "day-3": {
+    "title": "DAY 3\n The Myth of Functional Drinking",
+    "prompts": {
+      "1": {
+        "title": "Who are you without alcohol?",
+        "description": "Think about moments when you believed alcohol made you more fun, confident, or easygoing. What were you doing or feeling? If you remove alcohol, what parts of you were already there naturally?"
+      },
+      "2": {
+        "title": "Redefining fun",
+        "description": "Have there been times you drank and didn’t feel more fun or social? What happened? Now imagine fun coming from genuine presence and connection instead of alcohol. How would that feel in your body and mind? Are you truly a functional drinker, or is it just a story?"
+      }
+    }
+  },
+  "day-4": {
+    "title": "DAY 4\n Gratitude as Your New Happy Hour",
+    "prompts": {
+      "1": {
+        "title": "Thank yourself",
+        "description": "Write a thank-you note to yourself for having the courage to make this change. What are you grateful for about your resilience and strength? How have struggles, including alcohol, helped shape who you’re becoming?"
+      }
+    }
+  },
+  "day-5": {
+    "title": "DAY 5\n Your Sleep Is Getting Better",
+    "prompts": {
+      "1": {
+        "title": "Letter to future you",
+        "description": "Compare how you feel waking up now versus after drinking. Write a letter to your future self describing how it feels to wake up clear, rested, and present."
+      }
+    }
+  },
+  "day-6": {
+    "title": "DAY 6\n Guilt vs Shame",
+    "prompts": {
+      "1": {
+        "title": "Understanding guilt and shame",
+        "description": "Think of a recent moment you felt bad. Was it guilt about an action or shame about who you are? Write about the difference and reframe it to focus on behavior, not worth."
+      },
+      "2": {
+        "title": "Talk to yourself like a friend",
+        "description": "Imagine a close friend shared the same story. What would you say to them? Now read those words back to yourself."
+      }
+    }
+  },
+  "day-7": {
+    "title": "DAY 7\n Finding Your Ground",
+    "prompts": {
+      "1": {
+        "title": "Body check-in",
+        "description": "Notice how you feel right now. What emotions or sensations are present in your body?"
+      },
+      "2": {
+        "title": "Grounding through senses",
+        "description": "Pause and engage all your senses. What do you see, hear, smell, and feel?"
+      },
+      "3": {
+        "title": "Reflection",
+        "description": "Write what changed when you focused on your senses. Which sense felt most grounding?"
+      }
+    }
+  },
+  "day-8": {
+    "title": "DAY 8\n Why Chess Is Your Secret Weapon",
+    "prompts": {
+      "1": {
+        "title": "Practicing patience",
+        "description": "Reflect on a time when patience led to a better outcome. How does patience feel in your body? What happens when you don’t act immediately?"
+      }
+    }
+  },
+  "day-9": {
+    "title": "DAY 9\n Alcohol and Sugar: The Not-So-Dynamic Duo",
+    "prompts": {
+      "1": {
+        "title": "Cravings with curiosity",
+        "description": "Write honestly about your relationship with sugar since stopping alcohol. What patterns do you notice? What might your body be asking for?"
+      }
+    }
+  },
+  "day-10": {
+    "title": "DAY 10\n Your Body Is Talking to You",
+    "prompts": {
+      "1": {
+        "title": "Body scan and reflection",
+        "description": "Do a gentle body scan. Reflect on your T-Line from Day 1. What fears have shifted? What have you gained? Write one way you’ll honor your body tomorrow."
+      }
+    }
+  },
+  "day-11": {
+    "title": "DAY 11\n Cravings, Triggers, and Sneaky Signals",
+    "prompts": {
+      "1": {
+        "title": "Become a detective",
+        "description": "Identify situations, emotions, or times that trigger cravings. What were you truly seeking in those moments?"
+      }
+    }
+  },
+  "day-12": {
+    "title": "DAY 12\n Riding the Waves",
+    "prompts": {
+      "1": {
+        "title": "Urge surfing plan",
+        "description": "Reflect on a craving you experienced. What happened in your body and mind? Create a personal plan to surf the next urge."
+      }
+    }
+  },
+  "day-13": {
+    "title": "DAY 13\n A Day of Kindness",
+    "prompts": {
+      "1": {
+        "title": "Kindness to others",
+        "description": "Reflect on a recent act of kindness and how it affected your mood and sense of purpose."
+      },
+      "2": {
+        "title": "Kindness today",
+        "description": "Write about one act of kindness you can offer today and how it strengthens your own journey."
+      }
+    }
+  },
+  "day-14": {
+    "title": "DAY 14\n Rebuilding Self-Esteem",
+    "prompts": {
+      "1": {
+        "title": "Rediscovering yourself",
+        "description": "Write about the authentic strengths and qualities you’ve rediscovered over these 14 days."
+      }
+    }
+  },
+  "day-15": {
+    "title": "DAY 15\n Practicing Patience",
+    "prompts": {
+      "1": {
+        "title": "Slow growth",
+        "description": "Reflect on how patience has helped you in the past and how it’s supporting your relationship with alcohol now."
+      }
+    }
+  },
+  "day-16": {
+    "title": "DAY 16\n Navigating Peer Pressure",
+    "prompts": {
+      "1": {
+        "title": "Past experiences",
+        "description": "Reflect on a social situation where you felt pressure to drink. What worked and what would you change?"
+      },
+      "2": {
+        "title": "Your response toolkit",
+        "description": "Write down specific phrases you’ll use when offered a drink or questioned."
+      }
+    }
+  },
+  "day-17": {
+    "title": "DAY 17\n Building New Habits",
+    "prompts": {
+      "1": {
+        "title": "Replacing old cues",
+        "description": "Identify your strongest drinking cue and the new habit you’re building to replace it."
+      }
+    }
+  },
+  "day-18": {
+    "title": "DAY 18\n Hypnotherapy and Journaling",
+    "prompts": {
+      "1": {
+        "title": "Integration",
+        "description": "Reflect on how hypnotherapy and journaling have changed the way you process emotions and cravings."
+      }
+    }
+  },
+  "day-19": {
+    "title": "DAY 19\n Understanding Forgiveness",
+    "prompts": {
+      "1": {
+        "title": "Letter of forgiveness",
+        "description": "Write a letter of forgiveness to someone or yourself, allowing space for pain and healing."
+      }
+    }
+  },
+  "day-20": {
+    "title": "DAY 20\n Using Fear as Fuel",
+    "prompts": {
+      "1": {
+        "title": "Facing fear",
+        "description": "Reflect on fears from Day 1. Write about a moment you felt afraid but chose growth anyway."
+      }
+    }
+  },
+  "day-21": {
+    "title": "DAY 21\n Beyond Labels",
+    "prompts": {
+      "1": {
+        "title": "Old labels",
+        "description": "Write down labels you’ve used in the past that now feel limiting."
+      },
+      "2": {
+        "title": "Who you are now",
+        "description": "List three qualities or passions that define you today without alcohol."
+      }
+    }
+  },
+  "day-22": {
+    "title": "DAY 22\n Facing Denial",
+    "prompts": {
+      "1": {
+        "title": "Choosing truth",
+        "description": "Write about a story you told yourself to justify drinking and the truth beneath it."
+      }
+    }
+  },
+  "day-23": {
+    "title": "DAY 23\n The Mirror of Self-Honesty",
+    "prompts": {
+      "1": {
+        "title": "Compassionate observer",
+        "description": "Write about your drinking patterns and progress with compassionate honesty."
+      }
+    }
+  },
+  "day-24": {
+    "title": "DAY 24\n The Inner Voice",
+    "prompts": {
+      "1": {
+        "title": "Rewrite the story",
+        "description": "Describe a struggle using your old critical voice, then rewrite it with kindness."
+      }
+    }
+  },
+  "day-25": {
+    "title": "DAY 25\n Understanding Blood Pressure",
+    "prompts": {
+      "1": {
+        "title": "Thank your body",
+        "description": "Reflect on changes in energy and sleep. Write a short thank-you note to your body."
+      }
+    }
+  },
+  "day-26": {
+    "title": "DAY 26\n Authentic Connection",
+    "prompts": {
+      "1": {
+        "title": "Being present",
+        "description": "Reflect on how your social interactions feel different now without alcohol."
+      }
+    }
+  },
+  "day-27": {
+    "title": "DAY 27\n The Gift of Clear Mornings",
+    "prompts": {
+      "1": {
+        "title": "Reclaimed time",
+        "description": "Write about what you’re doing with the time and energy you’ve gained."
+      }
+    }
+  },
+  "day-28": {
+    "title": "DAY 28\n Stress Without the Crutch",
+    "prompts": {
+      "1": {
+        "title": "Healthy coping",
+        "description": "Reflect on how you handled stress without alcohol and what it taught you."
+      }
+    }
+  },
+  "day-29": {
+    "title": "DAY 29\n Your Internal Compass",
+    "prompts": {
+      "1": {
+        "title": "Core values",
+        "description": "Identify three core values and how your choices this month honored them."
+      }
+    }
+  },
+  "day-30": {
+    "title": "DAY 30\n Standing at Your Own Crossroads",
+    "prompts": {
+      "1": {
+        "title": "Choosing your path",
+        "description": "Reflect on your 30-day journey and describe the choice you want to make moving forward."
+      }
+    }
+  },
+  "intro": {
+    "title": "Journaling",
+    "start": "Start",
+    "start-description": "Start your journaling journey today!"
+  }
+}

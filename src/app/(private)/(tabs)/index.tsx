@@ -1,13 +1,20 @@
 import { useRouter } from 'expo-router'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { Pressable, StyleSheet, View } from 'react-native'
 
 import { useGetCurrentUser } from '@/api/queries/auth'
-
 import { useGetCurrentStreak } from '@/api/queries/sobriety-tracker'
 
-import { JourneyStreak, ScreenContainer, SobrietyTimer, ThemedText } from '@/components'
+import {
+  DailyActivitiesDays,
+  JourneyStreak,
+  ScreenContainer,
+  SobrietyTimer,
+  ThemedText,
+  TodaysAdventure,
+} from '@/components'
 import { Colors, withOpacity } from '@/constants/theme'
 import { scale, verticalScale } from '@/utils/responsive'
 
@@ -46,8 +53,6 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     // Android shadow
     elevation: 2,
-
-    marginBottom: verticalScale(20),
   },
   lastDrinkText: {
     fontWeight: 500,
@@ -93,6 +98,7 @@ function HomeScreen() {
   const { data: currentStreak } = useGetCurrentStreak()
 
   const hasActiveStreak = currentStreak?.streak?.is_active
+  const [dailyActivitiesDay, setDailyActivitiesDay] = useState<number>(1)
 
   const navigateToStartTracking = () => {
     if (hasActiveStreak) {
@@ -102,55 +108,67 @@ function HomeScreen() {
 
     push('/free-drink-tracker/start-tracking')
   }
-
   const navigateToMyProgress = () => {
     push('/my-progress')
   }
 
+  const handleSetDailyActivitiesDay = (day: number) => {
+    setDailyActivitiesDay(day)
+  }
+
   return (
-    <ScreenContainer>
-      <ThemedText type="subtitle" style={styles.welcome}>
-        {t('welcome', { name: user?.firstName })}
-      </ThemedText>
-
-      <View style={styles.quoteContainer}>
-        <ThemedText type="defaultSemiBold" style={styles.reminder}>
-          {t('reminder')}
+    <>
+      <ScreenContainer scrollable>
+        <ThemedText type="subtitle" style={styles.welcome}>
+          {t('welcome', { name: user?.firstName })}
         </ThemedText>
 
-        <ThemedText type="defaultSemiBold" style={styles.breneBrownQuote}>
-          {t('brene-brown-quote')}
-        </ThemedText>
+        <View style={styles.quoteContainer}>
+          <ThemedText type="defaultSemiBold" style={styles.reminder}>
+            {t('reminder')}
+          </ThemedText>
 
-        <ThemedText type="defaultSemiBold" style={styles.breneBrownQuoteAuthor}>
-          {t('brene-brown-quote-author')}
-        </ThemedText>
-      </View>
+          <ThemedText type="defaultSemiBold" style={styles.breneBrownQuote}>
+            {t('brene-brown-quote')}
+          </ThemedText>
 
-      <View style={styles.lastDrinkContainer}>
-        <ThemedText type="defaultSemiBold" style={styles.lastDrinkText}>
-          {t('last-drink')}
-        </ThemedText>
-
-        <SobrietyTimer showIcon />
-
-        <View style={styles.buttonsContainer}>
-          <Pressable onPress={navigateToMyProgress} style={styles.myProgressButton}>
-            <ThemedText style={styles.myProgressButtonText}>{t('my-progress')}</ThemedText>
-          </Pressable>
-
-          <Pressable onPress={navigateToStartTracking} style={styles.startTrackingButton}>
-            <ThemedText
-              style={styles.startTrackingButtonText}
-            >
-              {hasActiveStreak ? t('reset') : t('start')}
-            </ThemedText>
-          </Pressable>
+          <ThemedText type="defaultSemiBold" style={styles.breneBrownQuoteAuthor}>
+            {t('brene-brown-quote-author')}
+          </ThemedText>
         </View>
-      </View>
 
-      <JourneyStreak />
-    </ScreenContainer>
+        <View style={styles.lastDrinkContainer}>
+          <ThemedText type="defaultSemiBold" style={styles.lastDrinkText}>
+            {t('last-drink')}
+          </ThemedText>
+
+          <SobrietyTimer showIcon />
+
+          <View style={styles.buttonsContainer}>
+            <Pressable onPress={navigateToMyProgress} style={styles.myProgressButton}>
+              <ThemedText style={styles.myProgressButtonText}>{t('my-progress')}</ThemedText>
+            </Pressable>
+
+            <Pressable onPress={navigateToStartTracking} style={styles.startTrackingButton}>
+              <ThemedText
+                style={styles.startTrackingButtonText}
+              >
+                {hasActiveStreak ? t('reset') : t('start')}
+              </ThemedText>
+            </Pressable>
+          </View>
+        </View>
+
+        <DailyActivitiesDays
+          onDayPress={handleSetDailyActivitiesDay}
+          dailyActivitiesDay={dailyActivitiesDay}
+        />
+
+        <JourneyStreak />
+
+        <TodaysAdventure dailyActivitiesDay={dailyActivitiesDay} />
+      </ScreenContainer>
+    </>
   )
 }
 

@@ -27,6 +27,7 @@ export default function TabsLayout() {
           ),
         }}
       />
+      {/* TODO: need more business logic to show this tab */}
       <Tabs.Screen
         name="toolkit"
         options={{

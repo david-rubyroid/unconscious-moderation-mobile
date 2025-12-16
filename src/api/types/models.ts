@@ -2,10 +2,12 @@ export type UserGender = 'male' | 'female' | 'non-specified'
 export type UserAge = '18-29' | '30-39' | '40-49' | '50-59' | 'more-than-60'
 export type UserReferralSource = 'referral' | 'instagram' | 'tiktok' | 'facebook' | 'youtube' | 'mind-over-glass-podcast' | 'other-podcast' | 'online-article' | 'online-search' | 'advertisement' | 'other'
 export interface Gift {
+  id: number
   gift: string
 }
 
 export interface Fear {
+  id: number
   fear: string
 }
 
