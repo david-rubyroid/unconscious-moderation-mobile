@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { Pressable, StyleSheet, View } from 'react-native'
@@ -115,6 +115,11 @@ function HomeScreen() {
   const handleSetDailyActivitiesDay = (day: number) => {
     setDailyActivitiesDay(day)
   }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
+    setDailyActivitiesDay(currentStreak?.durationDays ?? 1)
+  }, [currentStreak?.durationDays])
 
   return (
     <>

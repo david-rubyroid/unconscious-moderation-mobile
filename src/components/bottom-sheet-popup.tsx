@@ -28,6 +28,7 @@ interface BottomSheetPopupProps {
   radius?: number
   style?: StyleProp<ViewStyle>
   gradientColors?: readonly [string, string, ...string[]]
+  useSafeAreaPadding?: boolean
 }
 
 const styles = StyleSheet.create({
@@ -58,6 +59,7 @@ function BottomSheetPopup({
   radius = 20,
   style,
   gradientColors,
+  useSafeAreaPadding = false,
 }: BottomSheetPopupProps) {
   const { bottom } = useSafeAreaInsets()
   const translateY = useSharedValue(1000)
@@ -217,9 +219,9 @@ function BottomSheetPopup({
             style={[
               styles.popup,
               {
-                paddingBottom: bottom,
                 borderTopLeftRadius: moderateScale(radius),
                 borderTopRightRadius: moderateScale(radius),
+                ...(useSafeAreaPadding && { paddingBottom: bottom }),
               },
               style,
             ]}

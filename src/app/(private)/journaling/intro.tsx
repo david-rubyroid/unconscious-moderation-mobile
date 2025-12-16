@@ -114,7 +114,10 @@ function JournalingIntroScreen() {
   }
 
   const handleReady = () => {
-    replace('/(private)/(tabs)')
+    replace({
+      pathname: '/journaling/day',
+      params: { day: 1 },
+    })
   }
 
   return (
