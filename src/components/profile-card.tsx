@@ -1,13 +1,15 @@
 import { useRouter } from 'expo-router'
 
-import { StyleSheet, View } from 'react-native'
+import { Pressable, StyleSheet, View } from 'react-native'
 
 import { useGetCurrentUser } from '@/api/queries/auth'
+
+import EditIcon from '@/assets/icons/edit'
 
 import { Colors, withOpacity } from '@/constants/theme'
 
 import { scale, verticalScale } from '@/utils/responsive'
-import Button from './button'
+
 import ThemedText from './themed-text'
 
 const styles = StyleSheet.create({
@@ -79,12 +81,11 @@ function ProfileCard() {
         </ThemedText>
       </View>
 
-      <Button
+      <Pressable
         onPress={navigateToEditProfile}
-        variant="secondary"
-        title="Edit"
-        style={styles.editButton}
-      />
+      >
+        <EditIcon />
+      </Pressable>
     </View>
   )
 }

@@ -1,5 +1,5 @@
+import { MaterialIcons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
-
 import { openBrowserAsync, WebBrowserPresentationStyle } from 'expo-web-browser'
 import { useTranslation } from 'react-i18next'
 
@@ -7,12 +7,12 @@ import { Alert, Pressable, StyleSheet, View } from 'react-native'
 
 import { useDeleteAccount, useGetCurrentUser, useLogout } from '@/api/queries/auth'
 
-import { useGetSubscription } from '@/api/queries/subscriptions'
 import AlertIcon from '@/assets/icons/alert'
 import ShieldIcon from '@/assets/icons/shield'
 import {
   AwarenessSection,
   Header,
+  PremiumPlanButton,
   ProfileCard,
   ScreenContainer,
   SobrietyTimer,
@@ -79,7 +79,6 @@ const styles = StyleSheet.create({
   },
   settingsContainer: {
     gap: scale(10),
-    marginBottom: verticalScale(20),
   },
   settingsItem: {
     gap: scale(10),
@@ -100,18 +99,13 @@ const styles = StyleSheet.create({
   settingsItemText: {
     fontWeight: 400,
   },
+  settingsItemTextDanger: {
+    color: Colors.light.error,
+  },
   trophiesTitle: {
     textAlign: 'center',
     color: Colors.light.primary4,
     marginBottom: verticalScale(20),
-  },
-  buttonContainer: {
-    marginTop: verticalScale(20),
-    marginBottom: verticalScale(20),
-    gap: verticalScale(12),
-  },
-  deleteButton: {
-    backgroundColor: Colors.light.error,
   },
 })
 
@@ -120,10 +114,34 @@ function ProfileScreen() {
   const { t } = useTranslation('profile')
 
   const { data: user } = useGetCurrentUser()
-  const { data: subscription } = useGetSubscription()
-  const { mutateAsync: logout, isPending: isLoggingOut } = useLogout()
-  const { mutateAsync: deleteAccount, isPending: isDeletingAccount } = useDeleteAccount()
+  const { mutateAsync: logout } = useLogout()
+  const { mutateAsync: deleteAccount } = useDeleteAccount()
 
+  const handleLogout = () => {
+    Alert.alert(
+      t('logout-title'),
+      t('logout-message'),
+      [
+        {
+          text: t('cancel'),
+          style: 'cancel',
+        },
+        {
+          text: t('logout'),
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await logout()
+              replace('/(auth)/sign-in')
+            }
+            catch {
+              Alert.alert(t('error'), t('logout-error'))
+            }
+          },
+        },
+      ],
+    )
+  }
   const handleDeleteAccount = () => {
     Alert.alert(
       t('delete-account-title'),
@@ -166,6 +184,8 @@ function ProfileScreen() {
     <ScreenContainer gradientColors={['#BDE5E2', '#DCF1EE', '#E4F4ED', '#B9E2E6']}>
       <Header title={t('title')} />
 
+      <PremiumPlanButton />
+
       <ProfileCard />
 
       <View style={styles.currentStreakContainer}>
@@ -175,6 +195,12 @@ function ProfileScreen() {
 
         <SobrietyTimer size="large" />
       </View>
+
+      <ThemedText type="preSubtitle" style={styles.trophiesTitle}>
+        {t('your-achievements')}
+      </ThemedText>
+
+      <TrophyCards />
 
       <ThemedText type="preSubtitle" style={styles.myTLineTitle}>
         {t('my-t-line')}
@@ -221,13 +247,27 @@ function ProfileScreen() {
             {t('terms-of-service')}
           </ThemedText>
         </Pressable>
+
+        <Pressable style={styles.settingsItem} onPress={handleLogout}>
+          <View style={styles.settingsItemIcon}>
+            <MaterialIcons name="logout" size={25} color={Colors.light.primary} />
+          </View>
+
+          <ThemedText type="defaultSemiBold" style={styles.settingsItemText}>
+            {t('logout')}
+          </ThemedText>
+        </Pressable>
+
+        <Pressable style={styles.settingsItem} onPress={handleDeleteAccount}>
+          <View style={styles.settingsItemIcon}>
+            <MaterialIcons name="delete" size={25} color={Colors.light.error} />
+          </View>
+
+          <ThemedText type="defaultSemiBold" style={styles.settingsItemTextDanger}>
+            {t('delete-account')}
+          </ThemedText>
+        </Pressable>
       </View>
-
-      <ThemedText type="preSubtitle" style={styles.trophiesTitle}>
-        {t('your-trophies')}
-      </ThemedText>
-
-      <TrophyCards />
     </ScreenContainer>
   )
 }

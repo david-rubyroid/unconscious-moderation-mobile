@@ -7,5 +7,16 @@
   "settings": "Settings",
   "privacy-policy": "Privacy Policy",
   "terms-of-service": "Terms of Service",
-  "your-trophies": "Your Trophies"
+  "your-achievements": "Your Achievements",
+  "logout": "Log Out",
+  "delete-account": "Delete Account",
+  "delete-account-title": "Delete Account",
+  "delete-account-message": "Are you sure you want to delete your account? This action cannot be undone.",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "error": "Error",
+  "delete-account-error": "Failed to delete account. Please try again.",
+  "logout-title": "Log Out",
+  "logout-message": "Are you sure you want to log out?",
+  "logout-error": "Failed to log out. Please try again."
 }

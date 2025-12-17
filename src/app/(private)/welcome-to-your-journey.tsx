@@ -1,9 +1,7 @@
 import { useRouter } from 'expo-router'
 
-import { useState } from 'react'
-
 import { Trans, useTranslation } from 'react-i18next'
-import { Image, ImageBackground, StyleSheet, View } from 'react-native'
+import { Image, ImageBackground, ScrollView, StyleSheet, View } from 'react-native'
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -12,14 +10,13 @@ import { useGetCurrentUser } from '@/api/queries/auth'
 import teamImage from '@/assets/images/the-team-at-um.png'
 import welcomeImage from '@/assets/images/welcome-to-your-journey.jpg'
 
-import { BottomSheetPopup, Button, ThemedText } from '@/components'
+import { Button, ThemedText } from '@/components'
 
 import { Colors, withOpacity } from '@/constants/theme'
 import { moderateScale, scale, scaleWithMax, verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingHorizontal: scale(39),
   },
   backgroundImage: {
@@ -59,50 +56,42 @@ const styles = StyleSheet.create({
     paddingBottom: verticalScale(33),
     borderRadius: moderateScale(15),
     backgroundColor: withOpacity(Colors.light.primary4, 0.8),
+    marginBottom: verticalScale(81),
   },
   teamImage: {
     position: 'absolute',
-    bottom: verticalScale(100),
-    right: scale(50),
+    bottom: verticalScale(-130),
+    right: scale(10),
     width: scaleWithMax(199, 1.4),
     height: undefined,
     aspectRatio: 1,
     resizeMode: 'contain',
   },
   medicalStatementContainer: {
-    alignItems: 'center',
-    gap: verticalScale(26),
+    borderTopEndRadius: moderateScale(40),
+    borderTopStartRadius: moderateScale(40),
+    paddingHorizontal: scale(64),
+    paddingVertical: verticalScale(80),
+    backgroundColor: Colors.light.tertiaryBackground,
   },
   medicalStatementTitle: {
     textAlign: 'center',
     color: Colors.light.primary4,
+    marginBottom: verticalScale(26),
   },
   medicalStatementText: {
     textAlign: 'center',
     color: Colors.light.primary4,
-  },
-  medicalStatementButton: {
-    marginTop: 'auto',
-    backgroundColor: withOpacity(Colors.light.primary4, 0.8),
+    marginBottom: verticalScale(22),
   },
 })
 
 function WelcomeToYourJourneyScreen() {
-  const [showMedicalStatement, setShowMedicalStatement] = useState(false)
-
   const { replace } = useRouter()
   const { t } = useTranslation('welcome-to-your-journey')
-  const { top, bottom } = useSafeAreaInsets()
+  const { top } = useSafeAreaInsets()
 
   const { data: user } = useGetCurrentUser()
-
-  const handleShowMedicalStatement = () => {
-    setShowMedicalStatement(true)
-  }
-
-  const handleCloseMedicalStatement = () => {
-    setShowMedicalStatement(false)
-  }
 
   const handleContinue = () => {
     replace('/')
@@ -117,87 +106,85 @@ function WelcomeToYourJourneyScreen() {
       <View style={styles.overlay}>
       </View>
 
-      <View style={[styles.container, { paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }]}>
+      <ScrollView
+        contentContainerStyle={[{ paddingTop: top + verticalScale(10) }]}
+        showsVerticalScrollIndicator={false}
+      >
         <ThemedText type="title" style={styles.title}>{t('title')}</ThemedText>
 
-        <View style={styles.descriptionContainer}>
-          <ThemedText type="default" style={styles.description}>{t('description1', { name: user?.firstName })}</ThemedText>
+        <View style={styles.container}>
+          <View style={styles.descriptionContainer}>
+            <ThemedText type="default" style={styles.description}>
+              <Trans
+                i18nKey="welcome-to-your-journey:description1"
+                values={{ name: user?.firstName }}
+                components={[
+                  <ThemedText key="0" type="default" style={styles.descriptionBold} />,
+                ]}
+              />
+            </ThemedText>
 
-          <ThemedText type="default" style={styles.description}>
-            <Trans
-              i18nKey="welcome-to-your-journey:description2"
-              components={[
-                <ThemedText key="0" type="default" style={styles.descriptionBold} />,
-              ]}
-            />
-          </ThemedText>
+            <ThemedText type="default" style={styles.description}>
+              <Trans
+                i18nKey="welcome-to-your-journey:description2"
+                components={[
+                  <ThemedText key="0" type="default" style={styles.descriptionBold} />,
+                ]}
+              />
+            </ThemedText>
 
-          <ThemedText type="default" style={styles.description}>
-            <Trans
-              i18nKey="welcome-to-your-journey:description3"
-              components={[
-                <ThemedText key="0" type="default" style={styles.descriptionBold} />,
-              ]}
-            />
-          </ThemedText>
+            <ThemedText type="default" style={styles.description}>
+              <Trans
+                i18nKey="welcome-to-your-journey:description3"
+                components={[
+                  <ThemedText key="0" type="default" style={styles.descriptionBold} />,
+                ]}
+              />
+            </ThemedText>
 
-          <ThemedText type="default" style={styles.description}>
-            <Trans
-              i18nKey="welcome-to-your-journey:description4"
-              components={[
-                <ThemedText key="0" type="default" style={styles.descriptionBold} />,
-              ]}
-            />
-          </ThemedText>
+            <ThemedText type="default" style={styles.description}>
+              <Trans
+                i18nKey="welcome-to-your-journey:description4"
+                components={[
+                  <ThemedText key="0" type="default" style={styles.descriptionBold} />,
+                ]}
+              />
+            </ThemedText>
 
-          <ThemedText type="default" style={styles.description}>
-            <Trans
-              i18nKey="welcome-to-your-journey:description5"
-              components={[
-                <ThemedText key="0" type="default" style={styles.descriptionBold} />,
-              ]}
-            />
-          </ThemedText>
+            <ThemedText type="default" style={styles.description}>
+              <Trans
+                i18nKey="welcome-to-your-journey:description5"
+                components={[
+                  <ThemedText key="0" type="default" style={styles.descriptionBold} />,
+                ]}
+              />
+            </ThemedText>
+
+            <Image source={teamImage} style={styles.teamImage} />
+          </View>
         </View>
 
-        <Image source={teamImage} style={styles.teamImage} />
-
-        <Button
-          style={styles.medicalStatementButton}
-          fullWidth
-          variant="secondary"
-          title={t('continue')}
-          onPress={handleShowMedicalStatement}
-        />
-      </View>
-
-      <BottomSheetPopup
-        onClose={handleCloseMedicalStatement}
-        visible={showMedicalStatement}
-      >
         <View style={styles.medicalStatementContainer}>
           <ThemedText
-            style={styles.medicalStatementTitle}
             type="subtitle"
+            style={styles.medicalStatementTitle}
           >
             {t('medicalStatement.title')}
           </ThemedText>
 
           <ThemedText
-            style={styles.medicalStatementText}
             type="default"
+            style={styles.medicalStatementText}
           >
             {t('medicalStatement.text')}
           </ThemedText>
 
           <Button
-            fullWidth
-            variant="primary"
             title={t('medicalStatement.button')}
             onPress={handleContinue}
           />
         </View>
-      </BottomSheetPopup>
+      </ScrollView>
     </ImageBackground>
   )
 }

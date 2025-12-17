@@ -77,9 +77,9 @@ function QuestionsScreen() {
 
   const { mutate: updateUser, isPending: isUpdatingUser } = useUpdateUser()
 
-  const [gender, setGender] = useState<UserGender>(GENDER_OPTIONS[0].value as UserGender)
-  const [age, setAge] = useState<UserAge>(AGE_OPTIONS[0].value as UserAge)
-  const [referralSource, setReferralSource] = useState<UserReferralSource>(REFERRAL_SOURCE_OPTIONS[0].value as UserReferralSource)
+  const [gender, setGender] = useState<UserGender | null>(null)
+  const [age, setAge] = useState<UserAge | null>(null)
+  const [referralSource, setReferralSource] = useState<UserReferralSource | null>(null)
 
   const genderOptions = useMemo(() => GENDER_OPTIONS.map(option => ({
     ...option,
@@ -94,7 +94,13 @@ function QuestionsScreen() {
     label: t(option.label),
   })), [t])
 
+  const isButtonDisabled = Boolean(gender && age && referralSource)
+
   const handleContinue = () => {
+    if (!gender || !age || !referralSource) {
+      return
+    }
+
     updateUser({
       gender,
       age,
@@ -140,7 +146,7 @@ function QuestionsScreen() {
       <View style={styles.buttonContainer}>
         <Button
           loading={isUpdatingUser}
-          disabled={isUpdatingUser}
+          disabled={isUpdatingUser || !isButtonDisabled}
           style={styles.button}
           title={t('continue')}
           onPress={handleContinue}

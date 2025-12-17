@@ -1,6 +1,6 @@
 import type { TrophyType } from '@/api/queries/sobriety-tracker/dto'
 
-import { Trans } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import { Image, ScrollView, StyleSheet, View } from 'react-native'
 
 import { useGetTrophies } from '@/api/queries/sobriety-tracker'
@@ -37,6 +37,7 @@ const TROPHY_ORDER: TrophyType[] = ['24h', '3d', '7d', '14d', '21d', '30d', '60d
 const styles = StyleSheet.create({
   scrollView: {
     marginHorizontal: -scale(21),
+    marginBottom: verticalScale(20),
   },
   scrollContent: {
     paddingHorizontal: scale(21),
@@ -78,17 +79,23 @@ const styles = StyleSheet.create({
   trophyDescriptionBold: {
     color: Colors.light.primary4,
   },
+  emptyContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: verticalScale(20),
+  },
+  emptyText: {
+    textAlign: 'center',
+    color: Colors.light.primary4,
+  },
 })
 
 function TrophyCards() {
+  const { t } = useTranslation('trophies')
   const { data: trophies } = useGetTrophies()
 
-  if (!trophies || trophies.length === 0) {
-    return null
-  }
-
   // Get earned trophy types
-  const earnedTrophyTypes = new Set(trophies.map(t => t.trophy_type))
+  const earnedTrophyTypes = new Set(trophies?.map(t => t.trophy_type) ?? [])
 
   // Filter and sort trophies by order
   const earnedTrophies = TROPHY_ORDER
@@ -99,7 +106,13 @@ function TrophyCards() {
     }))
 
   if (earnedTrophies.length === 0) {
-    return null
+    return (
+      <View style={styles.emptyContainer}>
+        <ThemedText type="default" style={styles.emptyText}>
+          {t('no-trophies')}
+        </ThemedText>
+      </View>
+    )
   }
 
   return (

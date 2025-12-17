@@ -1,6 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons'
 import { StyleSheet, View } from 'react-native'
 
+import OutlineLockIcon from '@/assets/icons/outline-lock'
 import { Colors } from '@/constants/theme'
 import { scale, verticalScale } from '@/utils/responsive'
 
@@ -15,6 +16,7 @@ export interface Step {
 interface ProgressStepsProps {
   steps: Step[]
   connectorHeight?: number
+  locked?: boolean
 }
 
 const styles = StyleSheet.create({
@@ -44,6 +46,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.light.primary,
     borderColor: Colors.light.primary4,
   },
+  circleLocked: {
+    backgroundColor: Colors.light.white,
+    borderColor: Colors.light.primary4,
+  },
   connector: {
     width: 1,
     borderLeftWidth: 1,
@@ -56,7 +62,11 @@ const styles = StyleSheet.create({
   },
 })
 
-function ProgressSteps({ steps, connectorHeight = 40 }: ProgressStepsProps) {
+function ProgressSteps({
+  locked,
+  steps,
+  connectorHeight = 40,
+}: ProgressStepsProps) {
   return (
     <View style={styles.container}>
       {steps.map((step, index) => {
@@ -70,19 +80,27 @@ function ProgressSteps({ steps, connectorHeight = 40 }: ProgressStepsProps) {
             <View
               style={[
                 styles.circle,
-                isCompleted && styles.circleCompleted,
-                isPending && styles.circlePending,
-                isActive && styles.circleActive,
+                locked && styles.circleLocked,
+                !locked && isCompleted && styles.circleCompleted,
+                !locked && isPending && styles.circlePending,
+                !locked && isActive && styles.circleActive,
               ]}
             >
-              {isCompleted && (
-                <MaterialIcons
-                  name="check"
-                  size={scale(20)}
-                  color={Colors.light.white}
-                />
-              )}
+              {locked
+                ? <OutlineLockIcon />
+                : (
+                    <>
+                      {isCompleted && (
+                        <MaterialIcons
+                          name="check"
+                          size={scale(20)}
+                          color={Colors.light.white}
+                        />
+                      )}
+                    </>
+                  )}
             </View>
+
             {!isLast && (
               <View
                 style={[

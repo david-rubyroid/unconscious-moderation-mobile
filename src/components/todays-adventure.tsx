@@ -7,9 +7,11 @@ import { useTranslation } from 'react-i18next'
 import { ImageBackground, Pressable, StyleSheet, View } from 'react-native'
 
 import { useGetDayDetails } from '@/api/queries/daily-activities'
+import { useGetSubscription } from '@/api/queries/subscriptions'
 
 import PlaySmall from '@/assets/icons/play-small'
 import hypnotherapyImage from '@/assets/images/hypnotherapy.jpg'
+
 import journalingImage from '@/assets/images/journaling.jpg'
 
 import { BottomSheetPopup, Button, ProgressSteps, ThemedText } from '@/components'
@@ -17,6 +19,7 @@ import { BottomSheetPopup, Button, ProgressSteps, ThemedText } from '@/component
 import { Colors, withOpacity } from '@/constants/theme'
 
 import { moderateScale, scale, verticalScale } from '@/utils/responsive'
+import { isSubscriptionActive } from '@/utils/subscription'
 
 const styles = StyleSheet.create({
   container: {
@@ -117,10 +120,14 @@ interface TodaysAdventureProps {
 function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
   const { push } = useRouter()
   const { t } = useTranslation('home')
+
+  const { data: subscription } = useGetSubscription()
   const { data: dayDetails } = useGetDayDetails(dailyActivitiesDay)
 
   const [showHypnosisBottomSheet, setShowHypnosisBottomSheet] = useState(false)
   const [showJournalingBottomSheet, setShowJournalingBottomSheet] = useState(false)
+
+  const isPremium = isSubscriptionActive(subscription)
 
   // Get activity completion status
   const hypnosisActivity = dayDetails?.activities.find(a => a.type === 'hypnosis')
@@ -141,7 +148,13 @@ function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
     },
   ]
 
+  // handle open journaling bottom sheet
   const handleOpenJournalingBottomSheet = () => {
+    if (!isPremium) {
+      push('/(private)/purchase')
+      return
+    }
+
     setShowJournalingBottomSheet(true)
   }
   const handleCloseJournalingBottomSheet = () => {
@@ -160,7 +173,13 @@ function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
     }
   }
 
+  // handle open hypnosis bottom sheet
   const handleOpenHypnosisBottomSheet = () => {
+    if (!isPremium) {
+      push('/(private)/purchase')
+      return
+    }
+
     setShowHypnosisBottomSheet(true)
   }
   const handleCloseHypnosisBottomSheet = () => {
@@ -183,7 +202,7 @@ function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
 
         <View style={styles.contentWrapper}>
           <View style={styles.progressStepsContainer}>
-            <ProgressSteps steps={steps} connectorHeight={verticalScale(50)} />
+            <ProgressSteps locked={!isPremium} steps={steps} connectorHeight={verticalScale(50)} />
           </View>
 
           <View style={styles.content}>

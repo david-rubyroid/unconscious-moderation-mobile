@@ -1,18 +1,25 @@
 import type { UserAge, UserGender } from '@/api/types/models'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { StyleSheet, View } from 'react-native'
-
 import Toast from 'react-native-toast-message'
-
 import z from 'zod'
 
 import { useGetCurrentUser } from '@/api/queries/auth'
+
 import { useUpdateUser } from '@/api/queries/user'
-import { Button, ControlledSelectInput, ControlledTextInput, Header, ScreenContainer } from '@/components'
+
+import {
+  Button,
+  ControlledSelectInput,
+  ControlledTextInput,
+  Header,
+  PremiumPlanButton,
+  ScreenContainer,
+} from '@/components'
+
 import { AGE_OPTIONS, GENDER_OPTIONS } from '@/constants/personalization'
 import { Colors, withOpacity } from '@/constants/theme'
 
@@ -61,6 +68,7 @@ function EditProfileScreen() {
         email: user?.email || '',
       },
     })
+
   const onSubmit = (data: z.infer<typeof editProfileFormSchema>) => {
     updateUser({
       firstName: data.firstName,
@@ -89,6 +97,8 @@ function EditProfileScreen() {
   return (
     <ScreenContainer gradientColors={gradientColors}>
       <Header title="Edit Profile" />
+
+      <PremiumPlanButton />
 
       <View style={styles.formContainer}>
         <ControlledTextInput

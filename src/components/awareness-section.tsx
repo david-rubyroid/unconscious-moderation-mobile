@@ -68,7 +68,7 @@ function AwarenessSection({ title, items, translationNamespace = 'questions' }: 
           return null
 
         return (
-          <View style={styles.sectionItem} key={item.id}>
+          <View style={styles.sectionItem} key={textKey}>
             <ThemedText style={styles.sectionItemText} type="default">
               {t(textKey)}
             </ThemedText>

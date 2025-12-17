@@ -97,8 +97,9 @@ function HomeScreen() {
   const { data: user } = useGetCurrentUser()
   const { data: currentStreak } = useGetCurrentStreak()
 
-  const hasActiveStreak = currentStreak?.streak?.is_active
   const [dailyActivitiesDay, setDailyActivitiesDay] = useState<number>(1)
+
+  const hasActiveStreak = currentStreak?.streak?.is_active
 
   const navigateToStartTracking = () => {
     if (hasActiveStreak) {
@@ -111,14 +112,13 @@ function HomeScreen() {
   const navigateToMyProgress = () => {
     push('/my-progress')
   }
-
   const handleSetDailyActivitiesDay = (day: number) => {
     setDailyActivitiesDay(day)
   }
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
-    setDailyActivitiesDay(currentStreak?.durationDays ?? 1)
+    setDailyActivitiesDay(currentStreak?.durationDays ? currentStreak.durationDays : 1)
   }, [currentStreak?.durationDays])
 
   return (
