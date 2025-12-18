@@ -1,5 +1,7 @@
 import type { PurchasesPackage } from 'react-native-purchases'
 
+import { useQueryClient } from '@tanstack/react-query'
+
 import { useRouter } from 'expo-router'
 
 import { useEffect, useState } from 'react'
@@ -144,6 +146,7 @@ function PurchaseScreen() {
   const { t } = useTranslation('purchase')
   const { top, bottom } = useSafeAreaInsets()
   const router = useRouter()
+  const queryClient = useQueryClient()
 
   const { getOfferings, purchasePackage, isLoading } = useRevenueCat()
 
@@ -174,8 +177,9 @@ function PurchaseScreen() {
 
     const customerInfo = await purchasePackage(selectedPackage)
 
-    // If purchase was successful, navigate back
+    // If purchase was successful, invalidate subscription cache and navigate back
     if (customerInfo) {
+      queryClient.invalidateQueries({ queryKey: ['subscriptions', 'me'] })
       router.back()
     }
   }

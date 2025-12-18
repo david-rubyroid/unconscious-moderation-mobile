@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router'
 
 import { useVideoPlayer, VideoView } from 'expo-video'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useTranslation } from 'react-i18next'
 
@@ -15,9 +15,14 @@ import PlaySmall from '@/assets/icons/play-small'
 import { BottomSheetPopup, Button, ThemedGradient, ThemedText } from '@/components'
 
 import { Colors, withOpacity } from '@/constants/theme'
+
 import { VIDEOS_LINKS } from '@/constants/video-links'
+
+import { useCanStartPlayback } from '@/hooks/use-video-buffering'
 import { useVideoFade } from '@/hooks/use-video-fade'
 import { useVideoLoading } from '@/hooks/use-video-loading'
+
+import { logStreamingInfo } from '@/utils/video-streaming'
 
 const styles = StyleSheet.create({
   container: {
@@ -97,21 +102,49 @@ function MedicalReportScreen() {
   const { t } = useTranslation('medical-report')
   const [isPlaying, setIsPlaying] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false)
 
-  const player = useVideoPlayer(VIDEOS_LINKS.medicalReportVideo, (player) => {
-    player.loop = true
-    player.currentTime = 0.5
-    player.pause()
-  })
+  const player = useVideoPlayer(
+    shouldLoadVideo ? VIDEOS_LINKS.medicalReportVideo : null,
+    (player) => {
+      player.loop = true
+      player.currentTime = 0.5
+      player.pause()
+      logStreamingInfo(VIDEOS_LINKS.medicalReportVideo, player.status)
+    },
+  )
 
-  const isLoading = useVideoLoading(player)
-  const animatedVideoStyle = useVideoFade(isLoading)
+  const loadingState = useVideoLoading(player)
+  const canStartPlayback = useCanStartPlayback(player, 5)
+  const animatedVideoStyle = useVideoFade(loadingState.isLoading)
 
   const handlePlay = () => {
-    player.play()
-    setIsPlaying(true)
-    setShowPopup(true)
+    if (!shouldLoadVideo) {
+      setShouldLoadVideo(true)
+      return
+    }
+
+    if (loadingState.isLoading && !canStartPlayback) {
+      return
+    }
+
+    if (player && canStartPlayback) {
+      player.play()
+      setIsPlaying(true)
+      setShowPopup(true)
+    }
   }
+
+  useEffect(() => {
+    if (shouldLoadVideo && player && canStartPlayback && !isPlaying) {
+      const timer = setTimeout(() => {
+        player.play()
+        setIsPlaying(true)
+        setShowPopup(true)
+      }, 100)
+      return () => clearTimeout(timer)
+    }
+  }, [shouldLoadVideo, player, canStartPlayback, isPlaying])
 
   const handleReady = () => {
     replace('/(private)/welcome-to-your-journey')
@@ -119,29 +152,31 @@ function MedicalReportScreen() {
 
   return (
     <ThemedGradient style={styles.container}>
-      <Animated.View style={[styles.video, animatedVideoStyle]}>
-        <VideoView
-          nativeControls={false}
-          player={player}
-          style={StyleSheet.absoluteFill}
-          pointerEvents="none"
-          contentFit="cover"
-        />
-      </Animated.View>
+      {shouldLoadVideo && player && (
+        <Animated.View style={[styles.video, animatedVideoStyle]}>
+          <VideoView
+            nativeControls={false}
+            player={player}
+            style={StyleSheet.absoluteFill}
+            pointerEvents="none"
+            contentFit="cover"
+          />
+        </Animated.View>
+      )}
 
       <View
         style={[
           styles.overlay,
           isPlaying && styles.overlayHidden,
         ]}
-        pointerEvents={(isPlaying || isLoading) ? 'none' : 'auto'}
+        pointerEvents={(isPlaying || loadingState.isLoading) ? 'none' : 'auto'}
       >
         <Pressable
           style={styles.playButton}
           onPress={handlePlay}
-          disabled={isLoading}
+          disabled={loadingState.isLoading && !canStartPlayback}
         >
-          {isLoading
+          {loadingState.isLoading && !canStartPlayback
             ? (
                 <ActivityIndicator size="small" color={Colors.light.primary3} />
               )

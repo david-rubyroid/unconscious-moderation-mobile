@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router'
 import { useVideoPlayer, VideoView } from 'expo-video'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Trans, useTranslation } from 'react-i18next'
 import { StyleSheet, View } from 'react-native'
@@ -24,6 +24,7 @@ import { Colors, withOpacity } from '@/constants/theme'
 
 import { VIDEOS_LINKS } from '@/constants/video-links'
 import { verticalScale } from '@/utils/responsive'
+import { logStreamingInfo } from '@/utils/video-streaming'
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -105,14 +106,27 @@ const styles = StyleSheet.create({
 function IntroScreen() {
   const router = useRouter()
   const [email, setEmail] = useState<string | undefined>(undefined)
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false)
 
   const { t } = useTranslation('intro')
   const { top, bottom } = useSafeAreaInsets()
 
-  const player = useVideoPlayer(VIDEOS_LINKS.introVideo, (player) => {
-    player.loop = true
-    player.play()
-  })
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShouldLoadVideo(true)
+    }, 100)
+    return () => clearTimeout(timer)
+  }, [])
+
+  const player = useVideoPlayer(
+    shouldLoadVideo ? VIDEOS_LINKS.introVideo : null,
+    (player) => {
+      player.loop = true
+      player.play()
+      logStreamingInfo(VIDEOS_LINKS.introVideo, player.status)
+    },
+  )
+
   const handleEmailChange = (text: string) => {
     setEmail(text)
   }
@@ -127,13 +141,15 @@ function IntroScreen() {
 
   return (
     <View style={styles.wrapper}>
-      <VideoView
-        nativeControls={false}
-        player={player}
-        style={styles.video}
-        pointerEvents="none"
-        contentFit="cover"
-      />
+      {shouldLoadVideo && player && (
+        <VideoView
+          nativeControls={false}
+          player={player}
+          style={styles.video}
+          pointerEvents="none"
+          contentFit="cover"
+        />
+      )}
 
       <View style={[styles.container, { paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }]}>
         <View style={styles.titleContainer}>

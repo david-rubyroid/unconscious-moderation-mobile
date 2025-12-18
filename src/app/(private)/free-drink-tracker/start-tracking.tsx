@@ -104,7 +104,7 @@ function StartTrackingScreen() {
 
   // Check for existing active streak
   const { data: currentStreak, isLoading: isLoadingStreak } = useGetCurrentStreak()
-  const startStreak = useStartSobrietyStreak()
+  const { mutateAsync: startStreak, isPending: isStartingStreak } = useStartSobrietyStreak()
 
   const hasActiveStreak = currentStreak?.streak?.is_active
 
@@ -122,7 +122,7 @@ function StartTrackingScreen() {
       const lastDrinkDateTime = combineDateTime(data.date, data.time)
 
       // Start the streak with the last drink date/time
-      await startStreak.mutateAsync({
+      await startStreak({
         startedAt: lastDrinkDateTime.toISOString(),
       })
 
@@ -207,7 +207,7 @@ function StartTrackingScreen() {
         style={styles.button}
         title={hasActiveStreak ? t('continue-tracking') : t('start-tracking')}
         onPress={hasActiveStreak ? () => router.back() : handleSubmit(onSubmit)}
-        disabled={startStreak.isPending}
+        disabled={isStartingStreak}
       />
 
       <ThemedText type="defaultSemiBold" style={styles.footerText}>

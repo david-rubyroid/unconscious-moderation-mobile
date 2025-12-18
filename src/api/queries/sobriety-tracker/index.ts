@@ -26,6 +26,7 @@ export function useStartSobrietyStreak(
       'sobriety-tracker/start',
     ),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['daily-activities'] })
       queryClient.invalidateQueries({ queryKey: ['sobriety-tracker', 'current'] })
       queryClient.invalidateQueries({ queryKey: ['sobriety-tracker', 'stats'] })
       queryClient.invalidateQueries({ queryKey: ['sobriety-tracker', 'trophies'] })
