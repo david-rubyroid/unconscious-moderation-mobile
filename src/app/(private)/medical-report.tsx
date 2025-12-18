@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router'
 
 import { useVideoPlayer, VideoView } from 'expo-video'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { useTranslation } from 'react-i18next'
 
@@ -102,7 +102,7 @@ function MedicalReportScreen() {
   const { t } = useTranslation('medical-report')
   const [isPlaying, setIsPlaying] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
-  const [shouldLoadVideo, setShouldLoadVideo] = useState(false)
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(true)
 
   const player = useVideoPlayer(
     shouldLoadVideo ? VIDEOS_LINKS.medicalReportVideo : null,
@@ -134,17 +134,6 @@ function MedicalReportScreen() {
       setShowPopup(true)
     }
   }
-
-  useEffect(() => {
-    if (shouldLoadVideo && player && canStartPlayback && !isPlaying) {
-      const timer = setTimeout(() => {
-        player.play()
-        setIsPlaying(true)
-        setShowPopup(true)
-      }, 100)
-      return () => clearTimeout(timer)
-    }
-  }, [shouldLoadVideo, player, canStartPlayback, isPlaying])
 
   const handleReady = () => {
     replace('/(private)/welcome-to-your-journey')
