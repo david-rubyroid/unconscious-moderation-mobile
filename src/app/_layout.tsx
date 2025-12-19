@@ -1,5 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query'
-import { SplashScreen, Stack } from 'expo-router'
+import { SplashScreen, Stack, usePathname } from 'expo-router'
 
 import { StatusBar } from 'expo-status-bar'
 
@@ -21,6 +21,7 @@ import { AuthProvider } from '@/context/auth/provider'
 
 import { useAuth } from '@/context/auth/use'
 
+import { initializeMixpanel, isMixpanelInitialized, trackScreenView } from '@/services/mixpanel'
 import { initializeRevenueCat } from '@/services/revenuecat'
 
 import '@/i18n/config'
@@ -33,6 +34,18 @@ SplashScreen.preventAutoHideAsync()
 initializeRevenueCat().catch((error) => {
   console.error('Failed to initialize RevenueCat on app startup:', error)
 })
+
+// Initialize Mixpanel on app startup
+initializeMixpanel()
+  .then(() => {
+    if (__DEV__) {
+      // eslint-disable-next-line no-console
+      console.log('[Mixpanel] Initialization check:', isMixpanelInitialized() ? 'OK' : 'FAILED')
+    }
+  })
+  .catch((error) => {
+    console.error('[Mixpanel] Failed to initialize on app startup:', error)
+  })
 
 const styles = StyleSheet.create({
   loadingContainer: {
@@ -51,12 +64,20 @@ function AppContent() {
     isAuthenticated,
     isFirstLaunch,
   } = useAuth()
+  const pathname = usePathname()
 
   useEffect(() => {
     if (isInitialized) {
       SplashScreen.hideAsync()
     }
   }, [isInitialized])
+
+  // Track screen views when pathname changes
+  useEffect(() => {
+    if (pathname && isInitialized) {
+      trackScreenView(pathname)
+    }
+  }, [pathname, isInitialized])
 
   if (!isInitialized) {
     return (
