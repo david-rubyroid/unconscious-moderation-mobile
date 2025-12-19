@@ -6,7 +6,7 @@ import type { SubscriptionResponse } from '@/api/queries/subscriptions/dto'
  */
 export function isSubscriptionActive(subscription: SubscriptionResponse | null | undefined): boolean {
   if (!subscription) {
-    return true
+    return false
   }
 
   const activeStatuses: Array<SubscriptionResponse['status']> = [
