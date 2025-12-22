@@ -212,7 +212,7 @@ function MyProgressScreen() {
         </View>
       </View>
 
-      <Button style={styles.continueButton} title={t('continue')} onPress={() => push('/trophies')} />
+      <Button style={styles.continueButton} title={t('my-trophies')} onPress={() => push('/trophies')} />
     </ScreenContainer>
   )
 }

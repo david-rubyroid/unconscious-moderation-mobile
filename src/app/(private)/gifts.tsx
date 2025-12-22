@@ -10,11 +10,11 @@ import Toast from 'react-native-toast-message'
 
 import { useUserGiftsAdd } from '@/api/queries/user'
 
-import { Button, ThemedGradient, ThemedText } from '@/components'
+import { Button, Modal, TextInput, ThemedGradient, ThemedText } from '@/components'
 
 import { LIFESTYLE_UPGRADES, MENTAL_EMOTIONAL_CLARITY, PHYSICAL_EMOTIONAL_BENEFITS } from '@/constants/gifts-and-fears'
 
-import { Colors } from '@/constants/theme'
+import { Colors, withOpacity } from '@/constants/theme'
 import { moderateScale, scale, scaleWithMax, verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
@@ -82,6 +82,20 @@ const styles = StyleSheet.create({
   button: {
     width: scaleWithMax(233, 1.3),
   },
+  modalTitle: {
+    textAlign: 'center',
+    color: Colors.light.primary4,
+    marginBottom: verticalScale(30),
+  },
+  input: {
+    borderWidth: 0,
+    backgroundColor: Colors.light.white,
+    color: withOpacity(Colors.light.black, 0.50),
+    marginBottom: verticalScale(30),
+  },
+  modalButtonContainer: {
+    alignItems: 'center',
+  },
 })
 
 function GiftsScreen() {
@@ -92,6 +106,11 @@ function GiftsScreen() {
   const { mutate: addGifts, isPending: isAddingGifts } = useUserGiftsAdd()
 
   const [selectedGifts, setSelectedGifts] = useState<string[]>([])
+  const [modalVisible, setModalVisible] = useState(false)
+
+  // Others
+  const [newOther, setNewOther] = useState('')
+  const [others, setOthers] = useState<string[]>([])
 
   const handleSelectGift = (gift: string) => {
     setSelectedGifts((prev) => {
@@ -101,6 +120,12 @@ function GiftsScreen() {
 
       return [...prev, gift]
     })
+  }
+  const handleSaveOther = (newOther: string) => {
+    setOthers((prev) => {
+      return [...prev, newOther]
+    })
+    setModalVisible(false)
   }
   const handleContinue = () => {
     addGifts({ gifts: selectedGifts }, {
@@ -237,9 +262,62 @@ function GiftsScreen() {
                   key={item.value}
                   onPress={() => handleSelectGift(item.value)}
                 >
-                  <ThemedText style={[styles.sectionItemText, selectedGifts.includes(item.value) && styles.sectionItemSelectedText]}>{item.label}</ThemedText>
+                  <ThemedText style={[
+                    styles.sectionItemText,
+                    selectedGifts.includes(item.value) && styles.sectionItemSelectedText,
+                  ]}
+                  >
+                    {item.label}
+                  </ThemedText>
                 </TouchableOpacity>
               ))}
+            </View>
+          </View>
+
+          <View style={styles.section}>
+            <ThemedText
+              style={styles.sectionTitle}
+              type="defaultSemiBold"
+            >
+              {t('Others')}
+            </ThemedText>
+
+            <View style={styles.sectionContent}>
+              {others.map((item, index) => (
+                <TouchableOpacity
+                  style={[
+                    styles.sectionItem,
+                    index === others.length - 1 && styles.lastItem,
+                    selectedGifts.includes(item) && styles.sectionItemSelected,
+                  ]}
+                  key={item}
+                  onPress={() => handleSelectGift(item)}
+                >
+                  <ThemedText style={[
+                    styles.sectionItemText,
+                    selectedGifts.includes(item) && styles.sectionItemSelectedText,
+                  ]}
+                  >
+                    {item}
+                  </ThemedText>
+                </TouchableOpacity>
+              ))}
+
+              <TouchableOpacity
+                style={styles.sectionItem}
+                onPress={() => setModalVisible(true)}
+              >
+                <ThemedText style={styles.sectionItemText}>{t('type-here')}</ThemedText>
+              </TouchableOpacity>
+
+              {others.length === 0 && (
+                <TouchableOpacity
+                  style={styles.sectionItem}
+                  onPress={() => setModalVisible(true)}
+                >
+                  <ThemedText style={styles.sectionItemText}>{t('type-here')}</ThemedText>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         </View>
@@ -254,6 +332,26 @@ function GiftsScreen() {
           onPress={handleContinue}
         />
       </View>
+
+      <Modal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+      >
+        <ThemedText type="subtitle" style={styles.modalTitle}>{t('add-other')}</ThemedText>
+        <TextInput
+          placeholder={t('type-here')}
+          style={styles.input}
+          value={newOther}
+          onChangeText={setNewOther}
+        />
+
+        <View style={styles.modalButtonContainer}>
+          <Button
+            title={t('save')}
+            onPress={() => handleSaveOther(newOther)}
+          />
+        </View>
+      </Modal>
     </ThemedGradient>
   )
 }

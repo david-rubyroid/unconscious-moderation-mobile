@@ -88,5 +88,9 @@
   "error-title": "Hi there! It looks like you didn't add any gifts.",
   "error-description": "Please add at least one gift that will help you achieve your goals",
   "error-title-fears": "Hi there! It looks like you didn't add any fears.",
-  "error-description-fears": "Please add at least one fear that will help you achieve your goals"
+  "error-description-fears": "Please add at least one fear that will help you achieve your goals",
+
+  "others": "Others",
+  "type-here": "Type here...",
+  "add-other": "Add:"
 }

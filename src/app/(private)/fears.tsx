@@ -9,20 +9,23 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Toast from 'react-native-toast-message'
 
 import { useUserFearsAdd } from '@/api/queries/user'
-import { Button, ThemedGradient, ThemedText } from '@/components'
+
+import { Button, Modal, TextInput, ThemedGradient, ThemedText } from '@/components'
+
 import { FEARS } from '@/constants/gifts-and-fears'
-import { Colors } from '@/constants/theme'
-import { verticalScale } from '@/utils/responsive'
+import { Colors, withOpacity } from '@/constants/theme'
+
+import { moderateScale, scale, scaleWithMax, verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: scale(16),
   },
   title: {
     textAlign: 'center',
     color: Colors.light.primary4,
-    marginBottom: 22,
+    marginBottom: verticalScale(22),
     fontWeight: 400,
   },
   titleBold: {
@@ -30,12 +33,12 @@ const styles = StyleSheet.create({
     fontWeight: 700,
   },
   gifts: {
-    gap: 22,
+    gap: verticalScale(22),
   },
   section: {
-    padding: 16,
-    borderRadius: 10,
-    gap: 20,
+    padding: scale(16),
+    borderRadius: moderateScale(10),
+    gap: verticalScale(20),
     backgroundColor: Colors.light.white,
   },
   sectionTitle: {
@@ -44,17 +47,17 @@ const styles = StyleSheet.create({
     fontWeight: 700,
   },
   sectionContent: {
-    gap: 12,
+    gap: scale(12),
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
   sectionItem: {
-    minHeight: 56,
-    width: '48%', // (100% - gap) / 2
+    minHeight: verticalScale(56),
+    width: '48%',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 12,
-    borderRadius: 10,
+    padding: scale(12),
+    borderRadius: moderateScale(10),
     backgroundColor: Colors.light.tertiaryBackground,
   },
   sectionItemSelected: {
@@ -74,10 +77,24 @@ const styles = StyleSheet.create({
   buttonContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 22,
+    marginTop: verticalScale(22),
   },
   button: {
-    width: 233,
+    width: scaleWithMax(233, 1.3),
+  },
+  modalTitle: {
+    textAlign: 'center',
+    color: Colors.light.primary4,
+    marginBottom: verticalScale(30),
+  },
+  input: {
+    borderWidth: 0,
+    backgroundColor: Colors.light.white,
+    color: withOpacity(Colors.light.black, 0.50),
+    marginBottom: verticalScale(30),
+  },
+  modalButtonContainer: {
+    alignItems: 'center',
   },
 })
 
@@ -87,6 +104,11 @@ function FearsScreen() {
   const { top, bottom } = useSafeAreaInsets()
 
   const [selectedFears, setSelectedFears] = useState<string[]>([])
+  const [modalVisible, setModalVisible] = useState(false)
+
+  // Others
+  const [newOther, setNewOther] = useState('')
+  const [others, setOthers] = useState<string[]>([])
 
   const { mutate: addFears, isPending: isAddingFears } = useUserFearsAdd()
 
@@ -98,6 +120,14 @@ function FearsScreen() {
 
       return [...prev, fear]
     })
+  }
+
+  const handleSaveOther = (newOther: string) => {
+    setOthers((prev) => {
+      return [...prev, newOther]
+    })
+    setNewOther('')
+    setModalVisible(false)
   }
 
   const fears = useMemo(() => {
@@ -162,6 +192,53 @@ function FearsScreen() {
               ))}
             </View>
           </View>
+
+          <View style={styles.section}>
+            <ThemedText
+              style={styles.sectionTitle}
+              type="defaultSemiBold"
+            >
+              {t('Others')}
+            </ThemedText>
+
+            <View style={styles.sectionContent}>
+              {others.map((item, index) => (
+                <TouchableOpacity
+                  style={[
+                    styles.sectionItem,
+                    index === others.length - 1 && styles.lastItem,
+                    selectedFears.includes(item) && styles.sectionItemSelected,
+                  ]}
+                  key={item}
+                  onPress={() => handleSelectFear(item)}
+                >
+                  <ThemedText style={[
+                    styles.sectionItemText,
+                    selectedFears.includes(item) && styles.sectionItemSelectedText,
+                  ]}
+                  >
+                    {item}
+                  </ThemedText>
+                </TouchableOpacity>
+              ))}
+
+              <TouchableOpacity
+                style={styles.sectionItem}
+                onPress={() => setModalVisible(true)}
+              >
+                <ThemedText style={styles.sectionItemText}>{t('type-here')}</ThemedText>
+              </TouchableOpacity>
+
+              {others.length === 0 && (
+                <TouchableOpacity
+                  style={styles.sectionItem}
+                  onPress={() => setModalVisible(true)}
+                >
+                  <ThemedText style={styles.sectionItemText}>{t('type-here')}</ThemedText>
+                </TouchableOpacity>
+              )}
+            </View>
+          </View>
         </View>
       </ScrollView>
 
@@ -174,6 +251,26 @@ function FearsScreen() {
           onPress={handleSaveFears}
         />
       </View>
+
+      <Modal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+      >
+        <ThemedText type="subtitle" style={styles.modalTitle}>{t('add-other')}</ThemedText>
+        <TextInput
+          placeholder={t('type-here')}
+          style={styles.input}
+          value={newOther}
+          onChangeText={setNewOther}
+        />
+
+        <View style={styles.modalButtonContainer}>
+          <Button
+            title={t('save')}
+            onPress={() => handleSaveOther(newOther)}
+          />
+        </View>
+      </Modal>
     </ThemedGradient>
   )
 }

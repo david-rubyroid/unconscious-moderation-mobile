@@ -107,7 +107,6 @@ function MedicalReportScreen() {
   const player = useVideoPlayer(
     shouldLoadVideo ? VIDEOS_LINKS.medicalReportVideo : null,
     (player) => {
-      player.loop = true
       player.currentTime = 0.5
       player.pause()
       logStreamingInfo(VIDEOS_LINKS.medicalReportVideo, player.status)
