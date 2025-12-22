@@ -2,7 +2,7 @@
   "expo": {
     "name": "Unconscious Moderation",
     "slug": "unconscious-moderation",
-    "version": "1.4.54",
+    "version": "1.4.55",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "com.mydryjourney",
@@ -38,6 +38,7 @@
     "plugins": [
       "expo-video",
       "expo-audio",
+      "expo-asset",
       "expo-router",
       "expo-secure-store",
       "expo-apple-authentication",

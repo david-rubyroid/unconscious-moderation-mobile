@@ -22,6 +22,29 @@ export function isMixpanelInitialized(): boolean {
 }
 
 /**
+ * Checks if analytics should be enabled
+ * Analytics are disabled in:
+ * - Development mode (__DEV__)
+ * - Preview builds (EXPO_PUBLIC_BUILD_ENV === 'preview')
+ * @returns true if analytics should be sent, false otherwise
+ */
+function shouldSendAnalytics(): boolean {
+  // Don't send in development mode
+  if (__DEV__) {
+    return false
+  }
+
+  // Don't send in preview builds
+  const buildEnv = process.env.EXPO_PUBLIC_BUILD_ENV
+  if (buildEnv === 'preview') {
+    return false
+  }
+
+  // Send in production builds or if build env is not set (for backward compatibility)
+  return buildEnv === 'production' || buildEnv === undefined
+}
+
+/**
  * Initializes Mixpanel SDK with the project token
  * Should be called once at app startup
  * Uses JavaScript mode (useNative: false) for Expo compatibility
@@ -87,10 +110,12 @@ export function trackScreenView(screenName: string): void {
     platform: Platform.OS,
   }
 
-  // Don't send events in development mode
-  if (__DEV__) {
-    // eslint-disable-next-line no-console
-    console.log('[Mixpanel] [DEV] Would track screen view:', properties)
+  // Check if analytics should be sent
+  if (!shouldSendAnalytics()) {
+    if (__DEV__) {
+      // eslint-disable-next-line no-console
+      console.log('[Mixpanel] [DEV/PREVIEW] Would track screen view:', properties)
+    }
     return
   }
 
@@ -117,10 +142,12 @@ export function identifyUser(userId: string | number): void {
 
   const userIdString = typeof userId === 'number' ? userId.toString() : userId
 
-  // Don't send events in development mode
-  if (__DEV__) {
-    // eslint-disable-next-line no-console
-    console.log('[Mixpanel] [DEV] Would identify user:', userIdString)
+  // Check if analytics should be sent
+  if (!shouldSendAnalytics()) {
+    if (__DEV__) {
+      // eslint-disable-next-line no-console
+      console.log('[Mixpanel] [DEV/PREVIEW] Would identify user:', userIdString)
+    }
     return
   }
 
@@ -144,10 +171,12 @@ export function resetMixpanel(): void {
     return
   }
 
-  // Don't send events in development mode
-  if (__DEV__) {
-    // eslint-disable-next-line no-console
-    console.log('[Mixpanel] [DEV] Would reset user identity')
+  // Check if analytics should be sent
+  if (!shouldSendAnalytics()) {
+    if (__DEV__) {
+      // eslint-disable-next-line no-console
+      console.log('[Mixpanel] [DEV/PREVIEW] Would reset user identity')
+    }
     return
   }
 
