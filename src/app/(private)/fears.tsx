@@ -121,7 +121,6 @@ function FearsScreen() {
       return [...prev, fear]
     })
   }
-
   const handleSaveOther = (newOther: string) => {
     setOthers((prev) => {
       return [...prev, newOther]
@@ -129,7 +128,6 @@ function FearsScreen() {
     setNewOther('')
     setModalVisible(false)
   }
-
   const fears = useMemo(() => {
     return FEARS.map(item => (
       {
@@ -146,7 +144,7 @@ function FearsScreen() {
       },
       onError: () => {
         Toast.show({
-          type: 'success',
+          type: 'error',
           text1: t('error-title-fears'),
           text2: t('error-description-fears'),
         })
@@ -267,6 +265,7 @@ function FearsScreen() {
         <View style={styles.modalButtonContainer}>
           <Button
             title={t('save')}
+            disabled={!newOther.trim()}
             onPress={() => handleSaveOther(newOther)}
           />
         </View>

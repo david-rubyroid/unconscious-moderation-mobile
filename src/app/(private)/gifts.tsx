@@ -125,6 +125,7 @@ function GiftsScreen() {
     setOthers((prev) => {
       return [...prev, newOther]
     })
+    setNewOther('')
     setModalVisible(false)
   }
   const handleContinue = () => {
@@ -134,7 +135,7 @@ function GiftsScreen() {
       },
       onError: () => {
         Toast.show({
-          type: 'success',
+          type: 'error',
           text1: t('error-title'),
           text2: t('error-description'),
         })
@@ -348,6 +349,7 @@ function GiftsScreen() {
         <View style={styles.modalButtonContainer}>
           <Button
             title={t('save')}
+            disabled={!newOther.trim()}
             onPress={() => handleSaveOther(newOther)}
           />
         </View>
