@@ -146,6 +146,8 @@ function ControlledDateInput<T extends FieldValues>({
 }: ControlledDateInputProps<T>) {
   const [showPicker, setShowPicker] = useState(false)
   const [pickerMode, setPickerMode] = useState<'date' | 'time'>('date')
+  // iOS: Store temporary date selection to avoid calling onChange on every picker change
+  const [iosTempDate, setIosTempDate] = useState<Date | null>(null)
 
   const translateY = useSharedValue(1000)
   const overlayOpacity = useSharedValue(0)
@@ -187,9 +189,13 @@ function ControlledDateInput<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field: { onChange, value }, fieldState: { error } }) => {
-        const currentDate = value && typeof value === 'object' && 'getTime' in value
-          ? new Date(value)
-          : new Date()
+        // Use temporary date for iOS picker, or fall back to value
+        const pickerDate = Platform.OS === 'ios' && iosTempDate !== null
+          ? iosTempDate
+          : (value && typeof value === 'object' && 'getTime' in value
+              ? new Date(value)
+              : new Date())
+        const currentDate = pickerDate
 
         const displayValue = value && typeof value === 'object' && 'getTime' in value
           ? formatDateTime(value, mode)
@@ -238,6 +244,13 @@ function ControlledDateInput<T extends FieldValues>({
           if (mode === 'datetime' && Platform.OS === 'android') {
             setPickerMode('date')
           }
+          // Initialize iOS temp date with current value when opening picker
+          if (Platform.OS === 'ios') {
+            const initialDate = value && typeof value === 'object' && 'getTime' in value
+              ? new Date(value)
+              : new Date()
+            setIosTempDate(initialDate)
+          }
           setShowPicker(true)
         }
 
@@ -273,7 +286,11 @@ function ControlledDateInput<T extends FieldValues>({
                       <View style={styles.pickerHeader}>
                         <TouchableOpacity
                           style={styles.pickerHeaderButton}
-                          onPress={() => setShowPicker(false)}
+                          onPress={() => {
+                            // Reset temp date on cancel
+                            setIosTempDate(null)
+                            setShowPicker(false)
+                          }}
                         >
                           <ThemedText style={{ color: Colors.light.primary, fontSize: 16 }}>
                             Cancel
@@ -282,7 +299,9 @@ function ControlledDateInput<T extends FieldValues>({
                         <TouchableOpacity
                           style={styles.pickerHeaderButton}
                           onPress={() => {
-                            onChange(currentDate)
+                            const finalDate = iosTempDate !== null ? iosTempDate : currentDate
+                            onChange(finalDate)
+                            setIosTempDate(null) // Reset temp date
                             setShowPicker(false)
                           }}
                         >
@@ -299,7 +318,10 @@ function ControlledDateInput<T extends FieldValues>({
                           display={mode === 'datetime' ? 'inline' : 'spinner'}
                           onChange={(event, date) => {
                             if (date) {
-                              onChange(date)
+                              // Fix: Store in local state instead of calling onChange immediately
+                              // This prevents multiple onChange calls during scrolling
+                              // onChange will only be called when Done is pressed
+                              setIosTempDate(date)
                             }
                           }}
                           minimumDate={minimumDate}
