@@ -8,13 +8,13 @@ import Svg, { Circle, Defs, LinearGradient, Stop } from 'react-native-svg'
 import PauseIcon from '@/assets/icons/pause'
 import PlayIcon from '@/assets/icons/play'
 
-import { ThemedText } from '@/components'
-
 import { Colors, Fonts } from '@/constants/theme'
 
 import { useAudioPlayer } from '@/hooks/use-audio-player'
 
 import { scale, verticalScale } from '@/utils/responsive'
+
+import ThemedText from './themed-text'
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle)
 

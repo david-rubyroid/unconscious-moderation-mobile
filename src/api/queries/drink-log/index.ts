@@ -3,6 +3,8 @@ import type { DrinkLogResponse, LogDrinkRequest } from './dto'
 import type { MutationOptions, QueryOptions } from '@/api/helpers'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
+import { QUERY_SHORT_CACHE } from '@/api/constants'
+
 import { createMutationFn, createQueryFn } from '@/api/helpers'
 
 export function useGetSessionDrinks(
@@ -13,8 +15,8 @@ export function useGetSessionDrinks(
     queryKey: ['drink-tracker', 'sessions', sessionId, 'drinks'],
     queryFn: createQueryFn<DrinkLogResponse[]>(`drink-tracker/sessions/${sessionId}/drinks`),
     enabled: !!sessionId,
-    staleTime: 30000, // 30 seconds
-    retry: false,
+    staleTime: QUERY_SHORT_CACHE.STALE_TIME,
+    retry: QUERY_SHORT_CACHE.RETRY,
     ...options,
   })
 }

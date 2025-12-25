@@ -4,9 +4,9 @@ import { memo } from 'react'
 import { StyleSheet, View } from 'react-native'
 import Svg, { Circle } from 'react-native-svg'
 
-import { ThemedText } from '@/components'
-
 import { Colors } from '@/constants/theme'
+
+import ThemedText from '../themed-text'
 
 import { formatUnitValue } from './time-calculator'
 

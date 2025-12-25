@@ -8,7 +8,6 @@ import { useForm } from 'react-hook-form'
 import { Trans, useTranslation } from 'react-i18next'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import Toast from 'react-native-toast-message'
 import z from 'zod'
 
 import { useCreateDrinkSession } from '@/api/queries/drink-session'
@@ -27,7 +26,10 @@ import {
 } from '@/components'
 
 import { Colors, withOpacity } from '@/constants/theme'
+
+import { getErrorMessage } from '@/utils/error-handler'
 import { scale, verticalScale } from '@/utils/responsive'
+import { showErrorToast } from '@/utils/toast'
 
 const styles = StyleSheet.create({
   container: {
@@ -139,7 +141,7 @@ function PlanAndPrepareScreen() {
       plannedStartTime: plannedStartTime.toISOString(),
       maxDrinkCount: numberOfDrinks,
       budget: budgetAmount,
-      drinkType: selectedDrink as any,
+      drinkType: selectedDrink,
     }, {
       onSuccess: (data) => {
         const { id } = data
@@ -152,11 +154,7 @@ function PlanAndPrepareScreen() {
         })
       },
       onError: (error) => {
-        Toast.show({
-          type: 'error',
-          text1: 'Oops! Something went wrong',
-          text2: error.message,
-        })
+        showErrorToast('Oops! Something went wrong', getErrorMessage(error))
       },
     })
   }

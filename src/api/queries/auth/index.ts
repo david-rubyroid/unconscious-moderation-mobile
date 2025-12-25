@@ -1,6 +1,8 @@
 import type {
   AppleAuthRequest,
   AppleAuthResponse,
+  FacebookAuthRequest,
+  FacebookAuthResponse,
   ForgotPasswordRequest,
   ForgotPasswordResponse,
   GoogleAuthRequest,
@@ -21,6 +23,8 @@ import type { User } from '@/api/types'
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
+import { QUERY_SHORT_CACHE } from '@/api/constants'
+
 import { createMutationFn, createQueryFn } from '@/api/helpers'
 
 import { useAuth } from '@/context/auth/use'
@@ -31,7 +35,7 @@ export function useGetCurrentUser(options?: QueryOptions<User>) {
   return useQuery({
     queryKey: ['auth', 'current'],
     queryFn: createQueryFn<User>('auth/current'),
-    retry: false,
+    retry: QUERY_SHORT_CACHE.RETRY,
     ...options,
   })
 }
@@ -46,6 +50,13 @@ export function useLogin(options?: MutationOptions) {
 export function useGoogleLogin(options?: MutationOptions) {
   return useMutation({
     mutationFn: createMutationFn<GoogleAuthResponse, GoogleAuthRequest>('post', 'auth/google'),
+    ...options,
+  })
+}
+
+export function useFacebookLogin(options?: MutationOptions<FacebookAuthResponse, Error, FacebookAuthRequest>) {
+  return useMutation({
+    mutationFn: createMutationFn<FacebookAuthResponse, FacebookAuthRequest>('post', 'auth/facebook'),
     ...options,
   })
 }

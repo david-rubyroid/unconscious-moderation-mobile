@@ -2,6 +2,8 @@ import { Mixpanel } from 'mixpanel-react-native'
 
 import { Platform } from 'react-native'
 
+import { logDebug, logError, logInfo, logWarn } from '@/utils/logger'
+
 let isConfigured = false
 let mixpanelInstance: Mixpanel | null = null
 
@@ -51,28 +53,21 @@ function shouldSendAnalytics(): boolean {
  */
 export async function initializeMixpanel(): Promise<void> {
   if (isConfigured && mixpanelInstance) {
-    if (__DEV__) {
-      // eslint-disable-next-line no-console
-      console.log('[Mixpanel] Already initialized')
-    }
+    logDebug('[Mixpanel] Already initialized')
     return
   }
 
   const token = getMixpanelToken()
 
   if (!token) {
-    console.warn(
-      '[Mixpanel] Token is not configured. '
-      + 'Set EXPO_PUBLIC_MIXPANEL_TOKEN environment variable.',
+    logWarn(
+      '[Mixpanel] Token is not configured. Set EXPO_PUBLIC_MIXPANEL_TOKEN environment variable.',
     )
     return
   }
 
   try {
-    if (__DEV__) {
-      // eslint-disable-next-line no-console
-      console.log('[Mixpanel] Initializing with token:', `${token.substring(0, 8)}...`)
-    }
+    logDebug('[Mixpanel] Initializing with token', { tokenPrefix: `${token.substring(0, 8)}...` })
 
     // Use JavaScript mode for Expo compatibility
     // trackAutomaticEvents: false - disable legacy mobile autotrack
@@ -82,13 +77,10 @@ export async function initializeMixpanel(): Promise<void> {
 
     isConfigured = true
 
-    if (__DEV__) {
-      // eslint-disable-next-line no-console
-      console.log('[Mixpanel] Successfully initialized')
-    }
+    logInfo('[Mixpanel] Successfully initialized')
   }
   catch (error) {
-    console.error('[Mixpanel] Failed to initialize:', error)
+    logError('[Mixpanel] Failed to initialize', error)
     throw error
   }
 }
@@ -99,9 +91,7 @@ export async function initializeMixpanel(): Promise<void> {
  */
 export function trackScreenView(screenName: string): void {
   if (!isConfigured || !mixpanelInstance) {
-    if (__DEV__) {
-      console.warn('[Mixpanel] Cannot track screen view - Mixpanel not initialized')
-    }
+    logWarn('[Mixpanel] Cannot track screen view - Mixpanel not initialized')
     return
   }
 
@@ -112,10 +102,7 @@ export function trackScreenView(screenName: string): void {
 
   // Check if analytics should be sent
   if (!shouldSendAnalytics()) {
-    if (__DEV__) {
-      // eslint-disable-next-line no-console
-      console.log('[Mixpanel] [DEV/PREVIEW] Would track screen view:', properties)
-    }
+    logDebug('[Mixpanel] [DEV/PREVIEW] Would track screen view', properties)
     return
   }
 
@@ -123,7 +110,7 @@ export function trackScreenView(screenName: string): void {
     mixpanelInstance.track('Screen Viewed', properties)
   }
   catch (error) {
-    console.error('[Mixpanel] Failed to track screen view:', error)
+    logError('[Mixpanel] Failed to track screen view', error, properties)
   }
 }
 
@@ -134,9 +121,7 @@ export function trackScreenView(screenName: string): void {
  */
 export function identifyUser(userId: string | number): void {
   if (!isConfigured || !mixpanelInstance) {
-    if (__DEV__) {
-      console.warn('[Mixpanel] Cannot identify user - Mixpanel not initialized')
-    }
+    logWarn('[Mixpanel] Cannot identify user - Mixpanel not initialized')
     return
   }
 
@@ -144,10 +129,7 @@ export function identifyUser(userId: string | number): void {
 
   // Check if analytics should be sent
   if (!shouldSendAnalytics()) {
-    if (__DEV__) {
-      // eslint-disable-next-line no-console
-      console.log('[Mixpanel] [DEV/PREVIEW] Would identify user:', userIdString)
-    }
+    logDebug('[Mixpanel] [DEV/PREVIEW] Would identify user', { userId: userIdString })
     return
   }
 
@@ -155,7 +137,7 @@ export function identifyUser(userId: string | number): void {
     mixpanelInstance.identify(userIdString)
   }
   catch (error) {
-    console.error('[Mixpanel] Failed to identify user:', error)
+    logError('[Mixpanel] Failed to identify user', error, { userId: userIdString })
   }
 }
 
@@ -165,18 +147,13 @@ export function identifyUser(userId: string | number): void {
  */
 export function resetMixpanel(): void {
   if (!isConfigured || !mixpanelInstance) {
-    if (__DEV__) {
-      console.warn('[Mixpanel] Cannot reset - Mixpanel not initialized')
-    }
+    logWarn('[Mixpanel] Cannot reset - Mixpanel not initialized')
     return
   }
 
   // Check if analytics should be sent
   if (!shouldSendAnalytics()) {
-    if (__DEV__) {
-      // eslint-disable-next-line no-console
-      console.log('[Mixpanel] [DEV/PREVIEW] Would reset user identity')
-    }
+    logDebug('[Mixpanel] [DEV/PREVIEW] Would reset user identity')
     return
   }
 
@@ -184,7 +161,7 @@ export function resetMixpanel(): void {
     mixpanelInstance.reset()
   }
   catch (error) {
-    console.error('[Mixpanel] Failed to reset:', error)
+    logError('[Mixpanel] Failed to reset', error)
     // Don't throw - reset should not fail the app
   }
 }

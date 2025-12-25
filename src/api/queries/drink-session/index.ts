@@ -9,6 +9,8 @@ import type {
 import type { MutationOptions, QueryOptions } from '@/api/helpers'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
+import { QUERY_SHORT_CACHE } from '@/api/constants'
+
 import { createMutationFn, createQueryFn } from '@/api/helpers'
 
 export function useCreateDrinkSession(
@@ -38,8 +40,8 @@ export function useGetDrinkSession(
     queryKey: ['drink-tracker', 'sessions', sessionId],
     queryFn: createQueryFn<DrinkSessionResponse>(`drink-tracker/sessions/${sessionId}`),
     enabled: !!sessionId,
-    staleTime: 30000, // 30 seconds
-    retry: false,
+    staleTime: QUERY_SHORT_CACHE.STALE_TIME,
+    retry: QUERY_SHORT_CACHE.RETRY,
     ...options,
   })
 }
@@ -48,8 +50,8 @@ export function useGetDrinkSessions(options?: QueryOptions<DrinkSessionResponse[
   return useQuery({
     queryKey: ['drink-tracker', 'sessions'],
     queryFn: createQueryFn<DrinkSessionResponse[]>('drink-tracker/sessions'),
-    staleTime: 30000, // 30 seconds
-    retry: false,
+    staleTime: QUERY_SHORT_CACHE.STALE_TIME,
+    retry: QUERY_SHORT_CACHE.RETRY,
     ...options,
   })
 }
@@ -58,8 +60,8 @@ export function useGetCurrentWeekDrinkSessions(options?: QueryOptions<DrinkSessi
   return useQuery({
     queryKey: ['drink-tracker', 'sessions', 'current-week'],
     queryFn: createQueryFn<DrinkSessionResponse[]>('drink-tracker/sessions', { currentWeek: true }),
-    staleTime: 30000, // 30 seconds
-    retry: false,
+    staleTime: QUERY_SHORT_CACHE.STALE_TIME,
+    retry: QUERY_SHORT_CACHE.RETRY,
     ...options,
   })
 }
@@ -68,8 +70,8 @@ export function useGetCurrentDrinkSession(options?: QueryOptions<DrinkSessionRes
   return useQuery({
     queryKey: ['drink-tracker', 'current-session'],
     queryFn: createQueryFn<DrinkSessionResponse | null>('drink-tracker/sessions/current'),
-    staleTime: 30000, // 30 seconds
-    retry: false,
+    staleTime: QUERY_SHORT_CACHE.STALE_TIME,
+    retry: QUERY_SHORT_CACHE.RETRY,
     ...options,
   })
 }

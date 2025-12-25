@@ -1,14 +1,15 @@
+import type { z } from 'zod'
+
 import type { UserAge, UserGender } from '@/api/types/models'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+
 import { useTranslation } from 'react-i18next'
 import { StyleSheet, View } from 'react-native'
 import Toast from 'react-native-toast-message'
-import z from 'zod'
 
 import { useGetCurrentUser } from '@/api/queries/auth'
-
 import { useUpdateUser } from '@/api/queries/user'
 
 import {
@@ -22,6 +23,8 @@ import {
 
 import { AGE_OPTIONS, GENDER_OPTIONS } from '@/constants/personalization'
 import { Colors, withOpacity } from '@/constants/theme'
+
+import { createEditProfileSchema } from '@/validations/user-schemas'
 
 const styles = StyleSheet.create({
   formContainer: {
@@ -39,13 +42,7 @@ function EditProfileScreen() {
   const { data: user } = useGetCurrentUser()
   const { mutateAsync: updateUser, isPending: isUpdatingUser } = useUpdateUser()
 
-  const editProfileFormSchema = z.object({
-    firstName: z.string().min(1, { error: t('this-field-is-required') }),
-    lastName: z.string().min(1, { error: t('this-field-is-required') }),
-    age: z.string().min(1, { error: t('this-field-is-required') }),
-    gender: z.string().min(1, { error: t('this-field-is-required') }),
-    email: z.email({ error: t('email-is-invalid') }),
-  })
+  const editProfileFormSchema = createEditProfileSchema(t)
 
   const gradientColors = ['#BDE5E2', '#DCF1EE', '#E4F4ED', '#B9E2E6'] as const
   const ageOptions = AGE_OPTIONS.map(option => ({

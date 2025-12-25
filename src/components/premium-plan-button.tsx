@@ -7,10 +7,10 @@ import { useGetSubscription } from '@/api/queries/subscriptions'
 import CrownIcon from '@/assets/icons/crown'
 import LockIcon from '@/assets/icons/lock'
 
-import { ThemedText } from '@/components'
 import { Colors, withOpacity } from '@/constants/theme'
-
 import { isSubscriptionActive } from '@/utils/subscription'
+
+import ThemedText from './themed-text'
 
 const styles = StyleSheet.create({
   premiumPlanContainer: {

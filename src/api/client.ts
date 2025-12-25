@@ -2,18 +2,20 @@ import type { ApiErrorResponse, AuthTokens } from '@/api/types'
 
 import ky from 'ky'
 
+import { HTTP_CONFIG } from '@/api/constants'
+
 import { removeAuthTokens, saveAuthTokens } from '@/utils/auth'
 
-import { secureStore } from '@/utils/secureStore'
+import { secureStore, SecureStoreKey } from '@/utils/secureStore'
 
 export const api = ky.create({
   prefixUrl: process.env.EXPO_PUBLIC_API_URL,
   headers: { 'Content-Type': 'application/json' },
-  timeout: 10000,
+  timeout: HTTP_CONFIG.TIMEOUT, // 10 seconds
   hooks: {
     beforeRequest: [
       async (request) => {
-        const token = await secureStore.get('accessToken')
+        const token = await secureStore.get(SecureStoreKey.ACCESS_TOKEN)
         if (token)
           request.headers.set('Authorization', `Bearer ${token}`)
       },
@@ -21,7 +23,7 @@ export const api = ky.create({
     afterResponse: [
       async (request, options, response) => {
         if (response.status === 401) {
-          const refreshToken = await secureStore.get('refreshToken')
+          const refreshToken = await secureStore.get(SecureStoreKey.REFRESH_TOKEN)
 
           if (!refreshToken) {
             await removeAuthTokens()
@@ -37,13 +39,16 @@ export const api = ky.create({
 
             await saveAuthTokens(newTokens.accessToken, newTokens.refreshToken)
 
-            return ky(request, {
+            // Retry the original request with the new token
+            const retryResponse = await ky(request, {
               ...options,
               headers: {
                 ...options.headers,
                 Authorization: `Bearer ${newTokens.accessToken}`,
               },
             })
+
+            return retryResponse
           }
           catch (error) {
             await removeAuthTokens()
@@ -57,9 +62,17 @@ export const api = ky.create({
       async (error) => {
         const { response } = error
 
-        if (response.json) {
-          const errorData = await response.json<ApiErrorResponse>()
-          error.message = errorData.message
+        if (response?.json) {
+          try {
+            const errorData = await response.json<ApiErrorResponse>()
+            if (errorData?.message) {
+              error.message = errorData.message
+            }
+          }
+          catch {
+            // If response is not valid JSON, keep original error message
+            // This can happen with non-JSON error responses (e.g., 500 HTML errors)
+          }
         }
 
         return error

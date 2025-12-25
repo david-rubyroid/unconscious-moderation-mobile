@@ -8,6 +8,8 @@ import type { MutationOptions, QueryOptions } from '@/api/helpers'
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
+import { QUERY_SHORT_CACHE } from '@/api/constants'
+
 import { createMutationFn, createQueryFn } from '@/api/helpers'
 
 export function useGetSessionReflections(
@@ -18,8 +20,8 @@ export function useGetSessionReflections(
     queryKey: ['drink-tracker', 'sessions', sessionId, 'reflections'],
     queryFn: createQueryFn<ReflectionResponse[]>(`drink-tracker/sessions/${sessionId}/reflections`),
     enabled: !!sessionId,
-    staleTime: 30000, // 30 seconds
-    retry: false,
+    staleTime: QUERY_SHORT_CACHE.STALE_TIME,
+    retry: QUERY_SHORT_CACHE.RETRY,
     ...options,
   })
 }
@@ -37,7 +39,7 @@ export function useGetSessionReflection(
       return reflection
     },
     enabled: !!sessionId,
-    retry: false,
+    retry: QUERY_SHORT_CACHE.RETRY,
     ...options,
   })
 }

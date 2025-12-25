@@ -9,11 +9,19 @@ import { z } from 'zod'
 
 import { useForgotPassword, useVerifyCode } from '@/api/queries/auth'
 
-import { Button, ControlledTextInput, TermsText, ThemedGradient, ThemedText } from '@/components'
+import {
+  Button,
+  ControlledTextInput,
+  TermsText,
+  ThemedGradient,
+  ThemedText,
+} from '@/components'
 
 import { Colors, withOpacity } from '@/constants/theme'
 
 import useCountdown from '@/hooks/use-countdown'
+
+import { getErrorMessage } from '@/utils/error-handler'
 import { verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
@@ -119,7 +127,7 @@ function VerifyPasswordScreen() {
           })
         },
         onError: (error) => {
-          setError('code', { message: error.message })
+          setError('code', { message: getErrorMessage(error) })
         },
       },
     )
@@ -136,7 +144,7 @@ function VerifyPasswordScreen() {
           resetTimer()
         },
         onError: (error) => {
-          setError('code', { message: error.message })
+          setError('code', { message: getErrorMessage(error) })
         },
       },
     )

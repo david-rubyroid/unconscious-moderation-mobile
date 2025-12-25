@@ -4,14 +4,16 @@ import type { QueryOptions } from '@/api/helpers'
 
 import { useQuery } from '@tanstack/react-query'
 
+import { QUERY_SHORT_CACHE } from '@/api/constants'
+
 import { createQueryFn } from '@/api/helpers'
 
 export function useGetSubscription(options?: QueryOptions<SubscriptionResponse>) {
   return useQuery({
     queryKey: ['subscriptions', 'me'],
     queryFn: createQueryFn<SubscriptionResponse>('subscriptions/me'),
-    staleTime: 30000, // 30 seconds
-    retry: false,
+    staleTime: QUERY_SHORT_CACHE.STALE_TIME,
+    retry: QUERY_SHORT_CACHE.RETRY,
     ...options,
   })
 }

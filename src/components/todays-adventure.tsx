@@ -1,4 +1,4 @@
-import type { Step } from '@/components/progress-steps'
+import type { Step } from './progress-steps'
 
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
@@ -14,12 +14,14 @@ import hypnotherapyImage from '@/assets/images/hypnotherapy.jpg'
 
 import journalingImage from '@/assets/images/journaling.jpg'
 
-import { BottomSheetPopup, Button, ProgressSteps, ThemedText } from '@/components'
-
 import { Colors, withOpacity } from '@/constants/theme'
-
 import { moderateScale, scale, verticalScale } from '@/utils/responsive'
 import { isSubscriptionActive } from '@/utils/subscription'
+
+import BottomSheetPopup from './bottom-sheet-popup'
+import Button from './button'
+import ProgressSteps from './progress-steps'
+import ThemedText from './themed-text'
 
 const styles = StyleSheet.create({
   container: {

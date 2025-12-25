@@ -1,3 +1,5 @@
+import { logDebug, logWarn } from './logger'
+
 /**
  * Utilities for working with video streaming
  */
@@ -58,7 +60,7 @@ export async function getVideoFileSize(videoUrl: string): Promise<number | null>
     return contentLength ? Number.parseInt(contentLength, 10) : null
   }
   catch (error) {
-    console.warn('Failed to get video file size:', error)
+    logWarn('Failed to get video file size', undefined, { videoUrl })
     return null
   }
 }
@@ -88,12 +90,9 @@ export function logStreamingInfo(
   videoUrl: string,
   playerStatus: string,
 ): void {
-  if (__DEV__) {
-    // eslint-disable-next-line no-console
-    console.log('[Video Streaming]', {
-      url: videoUrl,
-      status: playerStatus,
-      timestamp: new Date().toISOString(),
-    })
-  }
+  logDebug('[Video Streaming]', {
+    url: videoUrl,
+    status: playerStatus,
+    timestamp: new Date().toISOString(),
+  })
 }

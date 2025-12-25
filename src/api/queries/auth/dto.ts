@@ -48,6 +48,16 @@ interface AppleAuthRequest {
   rawNonce: string
 }
 
+interface FacebookAuthResponse {
+  accessToken: string
+  refreshToken: string
+  user: User
+}
+
+interface FacebookAuthRequest {
+  accessToken: string
+}
+
 interface ForgotPasswordRequest {
   email: string
 }
@@ -78,6 +88,8 @@ interface ResetPasswordResponse {
 export type {
   AppleAuthRequest,
   AppleAuthResponse,
+  FacebookAuthRequest,
+  FacebookAuthResponse,
   ForgotPasswordRequest,
   ForgotPasswordResponse,
   GoogleAuthRequest,
@@ -89,5 +101,6 @@ export type {
   ResetPasswordRequest,
   ResetPasswordResponse,
   VerifyCodeRequest,
-  VerifyCodeResponse,
+  VerifyCodeResponse
 }
+

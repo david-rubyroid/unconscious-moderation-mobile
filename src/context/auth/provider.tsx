@@ -5,6 +5,8 @@ import { useGetCurrentUser } from '@/api/queries/auth'
 import { identifyUser, resetMixpanel } from '@/services/mixpanel'
 import { logoutRevenueCat, setRevenueCatUserId } from '@/services/revenuecat'
 
+import { logError } from '@/utils/logger'
+
 import { checkAuthToken, checkFirstLaunch, removeAuthTokens } from '@/utils/auth'
 
 import { AuthContext } from './context'
@@ -54,7 +56,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       removeAuthTokens().then(() => {
         setHasToken(false)
         logoutRevenueCat().catch((error) => {
-          console.error('Failed to logout RevenueCat:', error)
+          logError('Failed to logout RevenueCat', error)
         })
         resetMixpanel()
       })
@@ -65,7 +67,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (user?.id) {
       setRevenueCatUserId(user.id).catch((error) => {
-        console.error('Failed to set RevenueCat user ID:', error)
+        logError('Failed to set RevenueCat user ID', error, { userId: user.id })
       })
       identifyUser(user.id)
     }

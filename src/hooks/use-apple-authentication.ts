@@ -7,24 +7,24 @@ import { Platform } from 'react-native'
 
 import { useAppleNativeLogin } from '@/api/queries/auth'
 
-import { useAuth } from '@/context/auth/use'
+import { useAuthSuccess } from '@/hooks/use-auth-success'
 
-import { saveAuthTokens } from '@/utils/auth'
+import { logError, logWarn } from '@/utils/logger'
 
 function useAppleAuthentication() {
-  const { setHasToken } = useAuth()
+  const { handleAuthSuccess } = useAuthSuccess()
   const { mutateAsync: appleLogin, isPending: appleLoginPending } = useAppleNativeLogin()
   const [isAuthenticating, setIsAuthenticating] = useState(false)
 
   const signInWithApple = async () => {
     if (Platform.OS !== 'ios') {
-      console.warn('Apple Sign In is only available on iOS')
+      logWarn('Apple Sign In is only available on iOS', { platform: Platform.OS })
       return null
     }
 
     const isAvailable = await AppleAuthentication.isAvailableAsync()
     if (!isAvailable) {
-      console.error('Apple Sign In is not available on this device')
+      logError('Apple Sign In is not available on this device')
       return null
     }
 
@@ -42,7 +42,7 @@ function useAppleAuthentication() {
       })
 
       if (!credential.identityToken) {
-        console.error('No identity token in credential')
+        logError('No identity token in credential')
         setIsAuthenticating(false)
         return null
       }
@@ -55,8 +55,7 @@ function useAppleAuthentication() {
         rawNonce,
       })
 
-      saveAuthTokens(accessToken, refreshToken)
-      setHasToken(true)
+      await handleAuthSuccess(accessToken, refreshToken)
       setIsAuthenticating(false)
 
       return credential
@@ -64,18 +63,19 @@ function useAppleAuthentication() {
     catch (error: any) {
       setIsAuthenticating(false)
       if (error.code === 'ERR_REQUEST_CANCELED') {
-        console.error('Apple Sign In was canceled by user')
+        logError('Apple Sign In was canceled by user', error)
       }
       else if (error.code === 'ERR_INVALID_RESPONSE') {
-        console.error('Apple Sign In: Invalid response from Apple')
+        logError('Apple Sign In: Invalid response from Apple', error)
       }
       else if (error.code === 'ERR_REQUEST_FAILED') {
-        console.error('Apple Sign In: Request failed - check Apple Developer Console configuration')
+        logError('Apple Sign In: Request failed - check Apple Developer Console configuration', error)
       }
       else {
-        console.error('Apple login failed:', error)
-        console.error('Error code:', error.code)
-        console.error('Error message:', error.message)
+        logError('Apple login failed', error, {
+          errorCode: error.code,
+          errorMessage: error.message,
+        })
       }
       return null
     }

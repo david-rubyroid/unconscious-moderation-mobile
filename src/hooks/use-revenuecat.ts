@@ -10,6 +10,29 @@ import { useGetSubscription } from '@/api/queries/subscriptions'
 
 import { getCustomerInfo } from '@/services/revenuecat'
 
+import { logError } from '@/utils/logger'
+
+/**
+ * RevenueCat error interface
+ * Based on the structure of errors thrown by react-native-purchases
+ */
+interface PurchasesError {
+  message?: string
+  underlyingErrorMessage?: string
+  code?: string
+}
+
+/**
+ * Type guard to check if error is a PurchasesError
+ */
+function isPurchasesError(error: unknown): error is PurchasesError {
+  return (
+    typeof error === 'object'
+    && error !== null
+    && ('message' in error || 'code' in error || 'underlyingErrorMessage' in error)
+  )
+}
+
 export function useRevenueCat() {
   const [isLoading, setIsLoading] = useState(false)
 
@@ -19,7 +42,15 @@ export function useRevenueCat() {
   /**
    * Gets a user-friendly error message based on the error
    */
-  const getErrorMessage = useCallback((error: any): string => {
+  const getErrorMessage = useCallback((error: unknown): string => {
+    if (!isPurchasesError(error)) {
+      if (error instanceof Error) {
+        return error.message || 'Please try again later'
+      }
+
+      return 'Please try again later'
+    }
+
     const errorMessage = error.message || ''
     const underlyingErrorMessage = error.underlyingErrorMessage || ''
     const errorCode = error.code
@@ -61,7 +92,7 @@ export function useRevenueCat() {
       return offerings
     }
     catch (error) {
-      console.error('Failed to get offerings:', error)
+      logError('Failed to get offerings', error)
       Toast.show({
         type: 'error',
         text1: 'Failed to load subscriptions',
@@ -93,15 +124,15 @@ export function useRevenueCat() {
 
       return customerInfo
     }
-    catch (error: any) {
+    catch (error: unknown) {
       // Handle user cancellation
-      if (error.code === PURCHASES_ERROR_CODE.PURCHASE_CANCELLED_ERROR) {
+      if (isPurchasesError(error) && error.code === PURCHASES_ERROR_CODE.PURCHASE_CANCELLED_ERROR) {
         // User cancelled, don't show error
         return null
       }
 
       // Handle other errors
-      console.error('Purchase failed:', error)
+      logError('Purchase failed', error)
       const errorMessage = getErrorMessage(error)
 
       Toast.show({
@@ -137,8 +168,8 @@ export function useRevenueCat() {
 
       return customerInfo
     }
-    catch (error: any) {
-      console.error('Failed to restore purchases:', error)
+    catch (error: unknown) {
+      logError('Failed to restore purchases', error)
       const errorMessage = getErrorMessage(error)
 
       Toast.show({
@@ -163,7 +194,7 @@ export function useRevenueCat() {
       return customerInfo
     }
     catch (error) {
-      console.error('Failed to check subscription status:', error)
+      logError('Failed to check subscription status', error)
       return null
     }
   }, [])
@@ -176,7 +207,7 @@ export function useRevenueCat() {
       await refetchSubscription()
     }
     catch (error) {
-      console.error('Failed to sync with backend:', error)
+      logError('Failed to sync with backend', error)
     }
   }, [refetchSubscription])
 

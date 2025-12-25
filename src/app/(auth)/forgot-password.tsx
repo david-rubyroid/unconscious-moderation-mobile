@@ -3,7 +3,7 @@ import { Link, router } from 'expo-router'
 import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { Trans, useTranslation } from 'react-i18next'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { z } from 'zod'
 
@@ -18,41 +18,11 @@ import {
 } from '@/components'
 
 import { Colors, withOpacity } from '@/constants/theme'
-import { verticalScale } from '@/utils/responsive'
 
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 18,
-    backgroundColor: Colors.light.mainBackground,
-  },
-  titleContainer: {
-    gap: 8,
-    marginBottom: 30,
-  },
-  subtitle: {
-    color: Colors.light.primary4,
-    fontWeight: '700',
-  },
-  alreadyHaveAccount: {
-    color: withOpacity(Colors.light.black, 0.45),
-    fontWeight: '700',
-  },
-  logIn: {
-    textDecorationLine: 'underline',
-  },
-  form: {
-    gap: 25,
-  },
-  input: {
-    color: withOpacity(Colors.light.black, 0.85),
-    borderColor: withOpacity(Colors.light.black, 0.15),
-    backgroundColor: Colors.light.white,
-  },
-  termsContainer: {
-    textAlign: 'center',
-    marginTop: 'auto',
-  },
-})
+import { authFormStyles } from '@/styles/auth-forms'
+
+import { getErrorMessage } from '@/utils/error-handler'
+import { verticalScale } from '@/utils/responsive'
 
 function ForgotPasswordScreen() {
   const { t } = useTranslation('forgot-password')
@@ -91,32 +61,32 @@ function ForgotPasswordScreen() {
         })
       },
       onError: (error) => {
-        setError('email', { message: error.message })
+        setError('email', { message: getErrorMessage(error) })
       },
     })
   }
 
   return (
-    <ThemedGradient style={[styles.container, { paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }]}>
+    <ThemedGradient style={[authFormStyles.container, { paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }]}>
       <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
-        <View style={styles.titleContainer}>
-          <ThemedText type="subtitle" style={styles.subtitle}>{t('title')}</ThemedText>
-          <ThemedText type="subtitle" style={styles.subtitle}>{t('forgot-password')}</ThemedText>
+        <View style={authFormStyles.titleContainer}>
+          <ThemedText type="subtitle" style={authFormStyles.subtitle}>{t('title')}</ThemedText>
+          <ThemedText type="subtitle" style={authFormStyles.subtitle}>{t('forgot-password')}</ThemedText>
 
           <ThemedText>
             <Trans
               i18nKey="forgot-password:back-to-login"
               components={[
-                <ThemedText key="0" style={styles.alreadyHaveAccount} />,
-                <Link key="1" href="/(auth)/sign-in" replace style={styles.logIn} />,
+                <ThemedText key="0" style={authFormStyles.alreadyHaveAccount} />,
+                <Link key="1" href="/(auth)/sign-in" replace style={authFormStyles.logIn} />,
               ]}
             />
           </ThemedText>
         </View>
 
-        <View style={styles.form}>
+        <View style={authFormStyles.form}>
           <ControlledTextInput
-            style={styles.input}
+            style={authFormStyles.input}
             control={control}
             name="email"
             placeholder={t('email')}
@@ -134,7 +104,7 @@ function ForgotPasswordScreen() {
         </View>
       </ScrollView>
 
-      <TermsText style={styles.termsContainer} />
+      <TermsText style={authFormStyles.termsContainer} />
     </ThemedGradient>
   )
 }

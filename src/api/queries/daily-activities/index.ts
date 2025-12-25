@@ -3,6 +3,8 @@ import type { DailyActivitiesResponse, DailyActivityProgress, DailyJournalingAct
 import type { MutationOptions, QueryOptions } from '@/api/helpers'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
+import { QUERY_SHORT_CACHE } from '@/api/constants'
+
 import { createMutationFn, createQueryFn } from '@/api/helpers'
 
 export function useGetDaysWithActivities(
@@ -11,8 +13,8 @@ export function useGetDaysWithActivities(
   return useQuery({
     queryKey: ['daily-activities'],
     queryFn: createQueryFn<DailyActivitiesResponse>('daily-activities'),
-    staleTime: 30000, // 30 seconds
-    retry: false,
+    staleTime: QUERY_SHORT_CACHE.STALE_TIME,
+    retry: QUERY_SHORT_CACHE.RETRY,
     ...options,
   })
 }
@@ -25,8 +27,8 @@ export function useGetDayDetails(
     queryKey: ['daily-activities', 'day', day],
     queryFn: createQueryFn<DayResponse>(`daily-activities/${day}`),
     enabled: day !== undefined && day >= 1 && day <= 30,
-    staleTime: 30000, // 30 seconds
-    retry: false,
+    staleTime: QUERY_SHORT_CACHE.STALE_TIME,
+    retry: QUERY_SHORT_CACHE.RETRY,
     ...options,
   })
 }
@@ -77,8 +79,8 @@ export function useGetJournalingAnswers(
     queryKey: ['daily-activities', 'journaling', day, 'answers'],
     queryFn: createQueryFn<DailyJournalingActivityAnswer[]>(`daily-activities/journaling/${day}/answers`),
     enabled: day !== undefined && day >= 1 && day <= 30,
-    staleTime: 30000, // 30 seconds
-    retry: false,
+    staleTime: QUERY_SHORT_CACHE.STALE_TIME,
+    retry: QUERY_SHORT_CACHE.RETRY,
     ...options,
   })
 }

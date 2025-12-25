@@ -5,6 +5,7 @@ import type { MutationOptions, QueryOptions } from '@/api/helpers'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import { api } from '@/api/client'
+import { QUERY_SHORT_CACHE } from '@/api/constants'
 
 import { createMutationFn, createQueryFn } from '@/api/helpers'
 
@@ -12,8 +13,8 @@ export function useGetMantras(options?: QueryOptions<MantraResponse[]>) {
   return useQuery({
     queryKey: ['users', 'mantras'],
     queryFn: createQueryFn<MantraResponse[]>('users/me/mantras'),
-    staleTime: 30000, // 30 seconds
-    retry: false,
+    staleTime: QUERY_SHORT_CACHE.STALE_TIME,
+    retry: QUERY_SHORT_CACHE.RETRY,
     ...options,
   })
 }

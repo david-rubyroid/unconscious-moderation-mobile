@@ -3,6 +3,8 @@ import type { CustomerInfo } from 'react-native-purchases'
 import { Platform } from 'react-native'
 import Purchases, { LOG_LEVEL } from 'react-native-purchases'
 
+import { logError, logWarn } from '@/utils/logger'
+
 let isConfigured = false
 
 /**
@@ -35,9 +37,9 @@ export async function initializeRevenueCat(): Promise<void> {
   const apiKey = getRevenueCatApiKey()
 
   if (!apiKey) {
-    console.warn(
-      `RevenueCat API key is not configured for ${Platform.OS}. `
-      + `Set EXPO_PUBLIC_REVENUECAT_API_KEY_${Platform.OS.toUpperCase()} or EXPO_PUBLIC_REVENUECAT_API_KEY environment variable.`,
+    logWarn(
+      `RevenueCat API key is not configured for ${Platform.OS}. Set EXPO_PUBLIC_REVENUECAT_API_KEY_${Platform.OS.toUpperCase()} or EXPO_PUBLIC_REVENUECAT_API_KEY environment variable.`,
+      { platform: Platform.OS },
     )
     return
   }
@@ -54,7 +56,7 @@ export async function initializeRevenueCat(): Promise<void> {
     isConfigured = true
   }
   catch (error) {
-    console.error('Failed to initialize RevenueCat:', error)
+    logError('Failed to initialize RevenueCat', error, { platform: Platform.OS })
     throw error
   }
 }
@@ -75,7 +77,7 @@ export async function setRevenueCatUserId(userId: number): Promise<CustomerInfo 
     return customerInfo
   }
   catch (error) {
-    console.error('Failed to set RevenueCat user ID:', error)
+    logError('Failed to set RevenueCat user ID', error, { userId })
     throw error
   }
 }
@@ -93,7 +95,7 @@ export async function logoutRevenueCat(): Promise<void> {
     await Purchases.logOut()
   }
   catch (error) {
-    console.error('Failed to logout RevenueCat user:', error)
+    logError('Failed to logout RevenueCat user', error)
     // Don't throw - logout should not fail the app
   }
 }
@@ -111,7 +113,7 @@ export async function getCustomerInfo(): Promise<CustomerInfo | null> {
     return customerInfo
   }
   catch (error) {
-    console.error('Failed to get customer info:', error)
+    logError('Failed to get customer info', error)
     return null
   }
 }

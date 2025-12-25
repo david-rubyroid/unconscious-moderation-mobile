@@ -7,13 +7,15 @@ import { useCallback, useState } from 'react'
 import { Platform } from 'react-native'
 
 import { useGoogleLogin } from '@/api/queries/auth'
-import { useAuth } from '@/context/auth/use'
-import { saveAuthTokens } from '@/utils/auth'
+
+import { useAuthSuccess } from '@/hooks/use-auth-success'
+
+import { logError, logWarn } from '@/utils/logger'
 
 WebBrowser.maybeCompleteAuthSession()
 
 function useGoogleAuthentication() {
-  const { setHasToken } = useAuth()
+  const { handleAuthSuccess } = useAuthSuccess()
   const { mutateAsync: googleLogin, isPending: googleLoginPending } = useGoogleLogin()
   const [isAuthenticating, setIsAuthenticating] = useState(false)
   const [request, _, promptAsync] = useIdTokenAuthRequest({
@@ -29,13 +31,13 @@ function useGoogleAuthentication() {
       const resp = await promptAsync()
 
       if (resp?.type !== 'success' || !resp.params?.code) {
-        console.warn('Google sign-in was not successful:', resp?.type)
+        logWarn('Google sign-in was not successful', { responseType: resp?.type })
         setIsAuthenticating(false)
         return null
       }
 
       if (!request?.codeVerifier) {
-        console.error('Missing codeVerifier on request')
+        logError('Missing codeVerifier on request')
         setIsAuthenticating(false)
         return null
       }
@@ -61,23 +63,22 @@ function useGoogleAuthentication() {
       const idToken = tokenResult.idToken ?? null
 
       if (!idToken) {
-        console.error('No id_token in token response', tokenResult)
+        logError('No id_token in token response', undefined, { tokenResult })
         setIsAuthenticating(false)
         return null
       }
 
       const { accessToken, refreshToken } = await googleLogin({ idToken })
 
-      saveAuthTokens(accessToken, refreshToken)
-      setHasToken(true)
+      await handleAuthSuccess(accessToken, refreshToken)
       setIsAuthenticating(false)
     }
     catch (error) {
-      console.error('Error during Google sign-in:', error)
+      logError('Error during Google sign-in', error)
       setIsAuthenticating(false)
       return null
     }
-  }, [promptAsync, request, googleLogin, setHasToken])
+  }, [promptAsync, request, googleLogin, handleAuthSuccess])
 
   return {
     signInWithGoogle,

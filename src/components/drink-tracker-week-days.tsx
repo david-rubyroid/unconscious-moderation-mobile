@@ -3,9 +3,11 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native'
 
 import { useGetCurrentWeekDrinkSessions } from '@/api/queries/drink-session'
 
-import { ThemedText } from '@/components'
 import { Colors, withOpacity } from '@/constants/theme'
+
 import { moderateScale, scale, verticalScale } from '@/utils/responsive'
+
+import ThemedText from './themed-text'
 
 const DAY_NAMES_SHORT = [
   'Mo',

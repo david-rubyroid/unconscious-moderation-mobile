@@ -6,11 +6,11 @@ import { useGetCurrentStreak } from '@/api/queries/sobriety-tracker'
 
 import FireIcon from '@/assets/icons/fire'
 
-import { ThemedText } from '@/components'
-
 import { Colors, withOpacity } from '@/constants/theme'
 
 import { scale, verticalScale } from '@/utils/responsive'
+
+import ThemedText from './themed-text'
 
 const styles = StyleSheet.create({
   container: {

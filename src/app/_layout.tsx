@@ -24,6 +24,8 @@ import { useAuth } from '@/context/auth/use'
 import { initializeMixpanel, isMixpanelInitialized, trackScreenView } from '@/services/mixpanel'
 import { initializeRevenueCat } from '@/services/revenuecat'
 
+import { logDebug, logError } from '@/utils/logger'
+
 import '@/i18n/config'
 
 import 'react-native-reanimated'
@@ -32,19 +34,16 @@ SplashScreen.preventAutoHideAsync()
 
 // Initialize RevenueCat on app startup
 initializeRevenueCat().catch((error) => {
-  console.error('Failed to initialize RevenueCat on app startup:', error)
+  logError('Failed to initialize RevenueCat on app startup', error)
 })
 
 // Initialize Mixpanel on app startup
 initializeMixpanel()
   .then(() => {
-    if (__DEV__) {
-      // eslint-disable-next-line no-console
-      console.log('[Mixpanel] Initialization check:', isMixpanelInitialized() ? 'OK' : 'FAILED')
-    }
+    logDebug('[Mixpanel] Initialization check', { status: isMixpanelInitialized() ? 'OK' : 'FAILED' })
   })
   .catch((error) => {
-    console.error('[Mixpanel] Failed to initialize on app startup:', error)
+    logError('[Mixpanel] Failed to initialize on app startup', error)
   })
 
 const styles = StyleSheet.create({

@@ -11,6 +11,8 @@ import type { MutationOptions, QueryOptions } from '@/api/helpers'
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
+import { QUERY_SHORT_CACHE } from '@/api/constants'
+
 import { createMutationFn, createQueryFn } from '@/api/helpers'
 
 export function useUpdateUser(options?: MutationOptions<UserUpdateResponse, UserUpdateRequest>) {
@@ -55,8 +57,8 @@ export function useGetUserFears(options?: QueryOptions<UserFearResponse[]>) {
   return useQuery({
     queryKey: ['users', 'fears'],
     queryFn: createQueryFn<UserFearResponse[]>('users/me/fears'),
-    staleTime: 30000, // 30 seconds
-    retry: false,
+    staleTime: QUERY_SHORT_CACHE.STALE_TIME,
+    retry: QUERY_SHORT_CACHE.RETRY,
     ...options,
   })
 }
@@ -65,8 +67,8 @@ export function useGetUserGifts(options?: QueryOptions<UserGiftResponse[]>) {
   return useQuery({
     queryKey: ['users', 'gifts'],
     queryFn: createQueryFn<UserGiftResponse[]>('users/me/gifts'),
-    staleTime: 30000, // 30 seconds
-    retry: false,
+    staleTime: QUERY_SHORT_CACHE.STALE_TIME,
+    retry: QUERY_SHORT_CACHE.RETRY,
     ...options,
   })
 }

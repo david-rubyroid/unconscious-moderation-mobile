@@ -13,6 +13,8 @@ import type {
 import type { MutationOptions, QueryOptions } from '@/api/helpers'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
+import { QUERY_SHORT_CACHE } from '@/api/constants'
+
 import { createMutationFn, createQueryFn } from '@/api/helpers'
 
 export function useStartSobrietyStreak(
@@ -40,8 +42,8 @@ export function useGetCurrentStreak(options?: QueryOptions<CurrentStreakResponse
   return useQuery({
     queryKey: ['sobriety-tracker', 'current'],
     queryFn: createQueryFn<CurrentStreakResponse>('sobriety-tracker/current'),
-    staleTime: 30000, // 30 seconds
-    retry: false,
+    staleTime: QUERY_SHORT_CACHE.STALE_TIME,
+    retry: QUERY_SHORT_CACHE.RETRY,
     ...options,
   })
 }
@@ -71,8 +73,8 @@ export function useGetTrophies(options?: QueryOptions<SobrietyTrophyResponse[]>)
   return useQuery({
     queryKey: ['sobriety-tracker', 'trophies'],
     queryFn: createQueryFn<SobrietyTrophyResponse[]>('sobriety-tracker/trophies'),
-    staleTime: 30000, // 30 seconds
-    retry: false,
+    staleTime: QUERY_SHORT_CACHE.STALE_TIME,
+    retry: QUERY_SHORT_CACHE.RETRY,
     ...options,
   })
 }
@@ -81,8 +83,8 @@ export function useGetPendingTrophies(options?: QueryOptions<SobrietyTrophyRespo
   return useQuery({
     queryKey: ['sobriety-tracker', 'trophies', 'pending'],
     queryFn: createQueryFn<SobrietyTrophyResponse[]>('sobriety-tracker/trophies/pending'),
-    staleTime: 30000, // 30 seconds
-    retry: false,
+    staleTime: QUERY_SHORT_CACHE.STALE_TIME,
+    retry: QUERY_SHORT_CACHE.RETRY,
     ...options,
   })
 }
@@ -120,8 +122,8 @@ export function useGetResetHistory(
   return useQuery({
     queryKey: ['sobriety-tracker', 'resets', { limit, offset }],
     queryFn: createQueryFn<SobrietyResetResponse[]>('sobriety-tracker/resets', queryParams),
-    staleTime: 30000, // 30 seconds
-    retry: false,
+    staleTime: QUERY_SHORT_CACHE.STALE_TIME,
+    retry: QUERY_SHORT_CACHE.RETRY,
     ...options,
   })
 }
@@ -130,8 +132,8 @@ export function useGetSobrietyStats(options?: QueryOptions<StatsResponse>) {
   return useQuery({
     queryKey: ['sobriety-tracker', 'stats'],
     queryFn: createQueryFn<StatsResponse>('sobriety-tracker/stats'),
-    staleTime: 30000, // 30 seconds
-    retry: false,
+    staleTime: QUERY_SHORT_CACHE.STALE_TIME,
+    retry: QUERY_SHORT_CACHE.RETRY,
     ...options,
   })
 }
