@@ -21,6 +21,7 @@ import enProfile from '@/locales/en/profile.json'
 import enPurchase from '@/locales/en/purchase.json'
 import enQuestions from '@/locales/en/questions.json'
 import enQuickWriting from '@/locales/en/quick-writing.json'
+import enReading from '@/locales/en/reading.json'
 import enReflectReinforce from '@/locales/en/reflect-reinforce.json'
 import enRegister from '@/locales/en/register.json'
 import enToolkit from '@/locales/en/toolkit.json'
@@ -56,6 +57,7 @@ const localeFiles = {
   'en/journaling': enJournaling,
   'en/hypnosis-adventure': enHypnosisAdventure,
   'en/edit-profile': enEditProfile,
+  'en/reading': enReading,
 }
 
 export function getResources() {

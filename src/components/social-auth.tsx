@@ -6,7 +6,7 @@ import GoogleColored from '@/assets/icons/google-colored'
 import { Colors, withOpacity } from '@/constants/theme'
 
 import useAppleAuthentication from '@/hooks/use-apple-authentication'
-import useFacebookAuthentication from '@/hooks/use-facebook-authentication'
+// import useFacebookAuthentication from '@/hooks/use-facebook-authentication'
 import useGoogleAuthentication from '@/hooks/use-google-authentication'
 
 import { moderateScale, scale } from '@/utils/responsive'

@@ -42,7 +42,6 @@ function HypnosisScreen() {
       <View style={styles.container}>
         <AudioPlayer audioUri={HYPNOSIS_LINKS.hypnosisForAdventure[`day${day}` as keyof typeof HYPNOSIS_LINKS.hypnosisForAdventure]} />
       </View>
-
     </ThemedGradient>
   )
 }

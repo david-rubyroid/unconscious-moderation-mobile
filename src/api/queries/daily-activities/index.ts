@@ -1,4 +1,4 @@
-import type { DailyActivitiesResponse, DailyActivityProgress, DailyJournalingActivityAnswer, DayResponse, SaveJournalingAnswerRequest } from './dto'
+import type { ActivityType, DailyActivitiesResponse, DailyActivityProgress, DailyJournalingActivityAnswer, DayResponse, SaveJournalingAnswerRequest } from './dto'
 
 import type { MutationOptions, QueryOptions } from '@/api/helpers'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -34,12 +34,12 @@ export function useGetDayDetails(
 }
 
 export function useCompleteActivity(
-  options?: MutationOptions<DailyActivityProgress, Error, { day: number, activityType: 'hypnosis' | 'journaling' }>,
+  options?: MutationOptions<DailyActivityProgress, Error, { day: number, activityType: ActivityType }>,
 ) {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: createMutationFn<DailyActivityProgress, { day: number, activityType: 'hypnosis' | 'journaling' }>(
+    mutationFn: createMutationFn<DailyActivityProgress, { day: number, activityType: ActivityType }>(
       'post',
       ({ day, activityType }) => `daily-activities/${day}/${activityType}/complete`,
       { skipBody: true },

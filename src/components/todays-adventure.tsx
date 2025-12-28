@@ -11,8 +11,8 @@ import { useGetSubscription } from '@/api/queries/subscriptions'
 
 import PlaySmall from '@/assets/icons/play-small'
 import hypnotherapyImage from '@/assets/images/hypnotherapy.jpg'
-
 import journalingImage from '@/assets/images/journaling.jpg'
+import readingImage from '@/assets/images/reading/reading.jpg'
 
 import { Colors, withOpacity } from '@/constants/theme'
 import { moderateScale, scale, verticalScale } from '@/utils/responsive'
@@ -134,15 +134,21 @@ function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
   // Get activity completion status
   const hypnosisActivity = dayDetails?.activities.find(a => a.type === 'hypnosis')
   const journalingActivity = dayDetails?.activities.find(a => a.type === 'journaling')
+  const readingActivity = dayDetails?.activities.find(a => a.type === 'reading')
 
   const isHypnosisCompleted = hypnosisActivity?.isCompleted ?? false
   const isJournalingCompleted = journalingActivity?.isCompleted ?? false
+  const isReadingCompleted = readingActivity?.isCompleted ?? false
 
   // Create steps for ProgressSteps
   const steps: Step[] = [
     {
       id: 'hypnosis',
       status: isHypnosisCompleted ? 'completed' : 'pending',
+    },
+    {
+      id: 'reading',
+      status: isReadingCompleted ? 'completed' : 'pending',
     },
     {
       id: 'journaling',
@@ -174,7 +180,6 @@ function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
       })
     }
   }
-
   // handle open hypnosis bottom sheet
   const handleOpenHypnosisBottomSheet = () => {
     if (!isPremium) {
@@ -191,6 +196,12 @@ function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
     handleCloseHypnosisBottomSheet()
     push({
       pathname: '/hypnosis',
+      params: { day: dailyActivitiesDay },
+    })
+  }
+  const handleStartReading = () => {
+    push({
+      pathname: '/reading',
       params: { day: dailyActivitiesDay },
     })
   }
@@ -214,6 +225,16 @@ function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
 
                 <ThemedText type="defaultSemiBold" style={styles.contentText}>
                   {t('hypnosis')}
+                </ThemedText>
+              </ImageBackground>
+            </Pressable>
+
+            <Pressable onPress={handleStartReading}>
+              <ImageBackground source={readingImage} style={styles.contentImage}>
+                <View style={styles.contentOverlay} />
+
+                <ThemedText type="defaultSemiBold" style={styles.contentText}>
+                  {t('reading')}
                 </ThemedText>
               </ImageBackground>
             </Pressable>

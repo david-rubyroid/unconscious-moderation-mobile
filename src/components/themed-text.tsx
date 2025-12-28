@@ -12,8 +12,10 @@ export type ThemedTextProps = TextProps & {
 
 const baseStyles = StyleSheet.create({
   small: {
+    fontWeight: '400',
   },
   default: {
+    fontWeight: '400',
   },
   defaultSemiBold: {
     fontWeight: '700',

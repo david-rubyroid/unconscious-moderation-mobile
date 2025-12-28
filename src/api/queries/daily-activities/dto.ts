@@ -1,4 +1,4 @@
-export type ActivityType = 'hypnosis' | 'journaling'
+export type ActivityType = 'hypnosis' | 'journaling' | 'reading'
 
 export interface ActivityCompletion {
   type: ActivityType

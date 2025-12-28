@@ -13,6 +13,7 @@ interface ScreenContainerProps {
   scrollable?: boolean
   showsScrollIndicator?: boolean
   contentContainerStyle?: StyleProp<ViewStyle>
+  withoutPadding?: boolean
   gradientColors?: readonly [string, string, ...string[]]
 }
 
@@ -28,6 +29,7 @@ function ScreenContainer({
   scrollable = true,
   showsScrollIndicator = false,
   contentContainerStyle,
+  withoutPadding = false,
   gradientColors,
 }: ScreenContainerProps) {
   const { top, bottom } = useSafeAreaInsets()
@@ -36,7 +38,7 @@ function ScreenContainer({
 
   const containerStyle = {
     flex: 1,
-    paddingHorizontal: scale(horizontalPadding),
+    paddingHorizontal: withoutPadding ? 0 : scale(horizontalPadding),
   }
 
   const scrollContentStyle = scrollable
