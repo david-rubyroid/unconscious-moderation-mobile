@@ -8,15 +8,15 @@ import Svg, { Path } from 'react-native-svg'
 import { useGetCurrentStreak, useGetTrophies } from '@/api/queries/sobriety-tracker'
 
 import LockedTrophyIcon from '@/assets/icons/locked-trophy'
-import threeDays from '@/assets/images/3-days.png'
-import sevenDays from '@/assets/images/7-days.png'
+import threeDays from '@/assets/images/trophies/3-days.png'
+import sevenDays from '@/assets/images/trophies/7-days.png'
 
-import fourteenDays from '@/assets/images/14-days.png'
-import twentyOneDays from '@/assets/images/21-days.png'
-import twentyFourHours from '@/assets/images/24-hours.png'
-import thirtyDays from '@/assets/images/30-days.png'
-import sixtyDays from '@/assets/images/60-days.png'
-import ninetyDays from '@/assets/images/90-days.png'
+import fourteenDays from '@/assets/images/trophies/14-days.png'
+import twentyOneDays from '@/assets/images/trophies/21-days.png'
+import twentyFourHours from '@/assets/images/trophies/24-hours.png'
+import thirtyDays from '@/assets/images/trophies/30-days.png'
+import sixtyDays from '@/assets/images/trophies/60-days.png'
+import ninetyDays from '@/assets/images/trophies/90-days.png'
 
 import { Header, ScreenContainer, ThemedText } from '@/components'
 

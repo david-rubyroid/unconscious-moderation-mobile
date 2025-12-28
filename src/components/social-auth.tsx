@@ -71,11 +71,11 @@ interface SocialAuthProps {
 function SocialAuth({ variant = 'default' }: SocialAuthProps) {
   const { signInWithApple, appleLoginPending } = useAppleAuthentication()
   const { signInWithGoogle, googleLoginPending } = useGoogleAuthentication()
-  const { signInWithFacebook, facebookLoginPending } = useFacebookAuthentication()
+  // const { signInWithFacebook, facebookLoginPending } = useFacebookAuthentication()
 
   const iconSize = scale(18)
-  const isLoading = appleLoginPending || googleLoginPending || facebookLoginPending
-  const loadingProvider = appleLoginPending ? 'Apple' : googleLoginPending ? 'Google' : facebookLoginPending ? 'Facebook' : null
+  const isLoading = appleLoginPending || googleLoginPending // || facebookLoginPending
+  const loadingProvider = appleLoginPending ? 'Apple' : googleLoginPending ? 'Google' : null // facebookLoginPending ? 'Facebook' : null
 
   return (
     <>
@@ -94,13 +94,13 @@ function SocialAuth({ variant = 'default' }: SocialAuthProps) {
           {variant === 'default' ? <GoogleColored /> : <AntDesign name="google" size={iconSize} color="rgba(46, 125, 96, 1)" />}
         </Pressable>
 
-        <Pressable
+        {/* <Pressable
           style={[styles.socialAuthButton, styles[variant]]}
           onPress={signInWithFacebook}
           disabled={facebookLoginPending}
         >
           <FontAwesome name="facebook" size={iconSize} color={variant === 'default' ? '#1877F2' : 'rgba(46, 125, 96, 1)'} />
-        </Pressable>
+        </Pressable> */}
       </View>
 
       <Modal
