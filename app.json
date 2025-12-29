@@ -12,7 +12,7 @@
       "supportsTablet": false,
       "usesAppleSignIn": true,
       "bundleIdentifier": "com.llc.mydry30",
-      "buildNumber": "9",
+      "buildNumber": "11",
       "deploymentTarget": "15.1",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,

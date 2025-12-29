@@ -200,6 +200,11 @@ function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
     })
   }
   const handleStartReading = () => {
+    if (!isPremium) {
+      push('/(private)/purchase')
+      return
+    }
+
     push({
       pathname: '/reading',
       params: { day: dailyActivitiesDay },
