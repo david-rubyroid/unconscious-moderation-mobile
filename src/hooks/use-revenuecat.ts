@@ -58,6 +58,16 @@ export function useRevenueCat() {
     const errorCode = error.code
     const fullErrorText = `${errorMessage} ${underlyingErrorMessage}`.toLowerCase()
 
+    // Handle App Store Connect configuration issues (expired agreements, products not available)
+    if (
+      fullErrorText.includes('none of the products registered')
+      || fullErrorText.includes('could not be fetched from app store connect')
+      || fullErrorText.includes('there is an issue with your configuration')
+      || fullErrorText.includes('why-are-offerings-empty')
+    ) {
+      return 'Products are not available from App Store Connect. Please check that your Paid Apps agreement is up to date in App Store Connect and products are properly configured.'
+    }
+
     // Handle Android app not published error
     if (
       fullErrorText.includes('app version has been published')
@@ -95,14 +105,15 @@ export function useRevenueCat() {
     }
     catch (error) {
       logError('Failed to get offerings', error)
+      const errorMessage = getErrorMessage(error)
       Toast.show({
         type: 'error',
         text1: 'Failed to load subscriptions',
-        text2: 'Please try again later',
+        text2: errorMessage,
       })
       return null
     }
-  }, [])
+  }, [getErrorMessage])
 
   /**
    * Purchases a package from RevenueCat
@@ -215,7 +226,7 @@ export function useRevenueCat() {
 
   /**
    * Presents the native iOS offer code redemption sheet
-   * Only available on iOS
+   * Only available on iOS real devices (not on simulator)
    * Note: Offer codes for new subscriptions must be redeemed BEFORE purchasing
    */
   const presentOfferCodeRedemption = useCallback(async (): Promise<void> => {
@@ -239,13 +250,26 @@ export function useRevenueCat() {
         text2: 'The offer will be applied when you purchase your subscription',
       })
     }
-    catch (error) {
+    catch (error: unknown) {
       logError('Failed to present offer code redemption', error)
-      Toast.show({
-        type: 'error',
-        text1: 'Failed to redeem offer code',
-        text2: 'Please try again later',
-      })
+
+      // Check if it's a simulator error (presentCodeRedemptionSheet doesn't work on simulator)
+      const errorMessage = isPurchasesError(error) ? error.message?.toLowerCase() || '' : ''
+
+      if (errorMessage.includes('simulator') || errorMessage.includes('not available')) {
+        Toast.show({
+          type: 'info',
+          text1: 'Offer code redemption',
+          text2: 'Available only on real iOS devices. Please test on a physical device.',
+        })
+      }
+      else {
+        Toast.show({
+          type: 'error',
+          text1: 'Failed to redeem offer code',
+          text2: 'Please try again later',
+        })
+      }
     }
   }, [])
 
