@@ -8,5 +8,8 @@
   "life-changing-shift-for-just-1-a-day": "A life-changing shift for just \n <0>$1 A DAY...</0>  or if you think about it, \n that's the cost of two cocktails a month.",
   "start-your-journey-today-only": "Start your journey today with a 1-week free trial, then just",
   "start-your-journey-today-only-price": "{{price}}/month",
-  "checkout": "Checkout"
+  "checkout": "Checkout",
+  "redeem-offer-code": "Redeem Offer Code",
+  "have-offer-code": "Have an offer code?",
+  "redeem-before-purchase": "Redeem your offer code before purchasing to get your discount"
 }

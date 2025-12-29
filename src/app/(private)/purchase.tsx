@@ -1,32 +1,23 @@
 import type { PurchasesPackage } from 'react-native-purchases'
 
 import { useQueryClient } from '@tanstack/react-query'
-
 import { useRouter } from 'expo-router'
-
 import { useEffect, useState } from 'react'
-
 import { Trans, useTranslation } from 'react-i18next'
-
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native'
-
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { Platform, Pressable, StyleSheet, View } from 'react-native'
 
 import Check from '@/assets/icons/check'
 import Cross from '@/assets/icons/cross'
 
-import { Button, ThemedGradient, ThemedText } from '@/components'
+import { Button, ScreenContainer, ThemedText } from '@/components'
 
 import { Colors, withOpacity } from '@/constants/theme'
+
 import { useRevenueCat } from '@/hooks/use-revenuecat'
 
 import { moderateScale, scale, verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: scale(34),
-  },
   crossContainer: {
     justifyContent: 'center',
     alignItems: 'flex-end',
@@ -37,12 +28,6 @@ const styles = StyleSheet.create({
     color: Colors.light.primary4,
     marginBottom: verticalScale(30),
     paddingHorizontal: scale(10),
-  },
-  scrollView: {
-    flex: 1,
-  },
-  scrollViewContent: {
-    paddingBottom: verticalScale(20),
   },
   content: {
     justifyContent: 'center',
@@ -135,20 +120,32 @@ const styles = StyleSheet.create({
     lineHeight: moderateScale(34),
   },
   loadingContainer: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: verticalScale(40),
+    minHeight: verticalScale(200),
+  },
+  offerCodeContainer: {
+
+    alignItems: 'center',
+  },
+  offerCodeButton: {
+    paddingVertical: verticalScale(12),
+  },
+  offerCodeText: {
+    textAlign: 'center',
+    color: Colors.light.primary,
+    fontSize: moderateScale(14),
+    textDecorationLine: 'underline',
   },
 })
 
 function PurchaseScreen() {
   const { t } = useTranslation('purchase')
-  const { top, bottom } = useSafeAreaInsets()
   const router = useRouter()
   const queryClient = useQueryClient()
 
-  const { getOfferings, purchasePackage, isLoading } = useRevenueCat()
+  const { getOfferings, purchasePackage, isLoading, presentOfferCodeRedemption } = useRevenueCat()
 
   const [selectedPackage, setSelectedPackage] = useState<PurchasesPackage | null>(null)
   const [isLoadingOfferings, setIsLoadingOfferings] = useState(true)
@@ -159,9 +156,9 @@ function PurchaseScreen() {
       setIsLoadingOfferings(true)
       const loadedOfferings = await getOfferings()
 
-      const monthlyPackageWithWeeklyTrial = loadedOfferings?.all.default.availablePackages[0]
-      if (monthlyPackageWithWeeklyTrial) {
-        setSelectedPackage(monthlyPackageWithWeeklyTrial)
+      const monthlyPackageWith3DaysTrial = loadedOfferings?.all.default.availablePackages[0]
+      if (monthlyPackageWith3DaysTrial) {
+        setSelectedPackage(monthlyPackageWith3DaysTrial)
       }
 
       setIsLoadingOfferings(false)
@@ -197,7 +194,7 @@ function PurchaseScreen() {
   }
 
   return (
-    <ThemedGradient style={[{ paddingTop: top + 10, paddingBottom: bottom + verticalScale(10) }, styles.container]}>
+    <ScreenContainer>
       <View style={styles.crossContainer}>
         <Pressable onPress={handleClose}>
           <Cross />
@@ -206,104 +203,97 @@ function PurchaseScreen() {
 
       <ThemedText type="title" style={styles.title}>{t('title')}</ThemedText>
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollViewContent}
-      >
-        {isLoadingOfferings
-          ? (
-              <View style={styles.loadingContainer}>
-                <ThemedText type="default" style={{ color: Colors.light.primary4 }}>
-                  Loading...
-                </ThemedText>
-              </View>
-            )
-          : (
-              <View style={styles.content}>
-                <View style={styles.item}>
-                  <Check />
+      {isLoadingOfferings
+        ? (
+            <View style={styles.loadingContainer}>
+              <ThemedText type="default" style={{ color: Colors.light.primary4 }}>
+                Loading...
+              </ThemedText>
+            </View>
+          )
+        : (
+            <View style={styles.content}>
+              <View style={styles.item}>
+                <Check />
 
-                  <View style={styles.itemTextContainer}>
-                    <ThemedText>
-                      <Trans
-                        i18nKey="purchase:everything-in-one-app"
-                        components={[
-                          <ThemedText key="0" style={styles.itemTextBold} />,
-                          <ThemedText key="1" style={styles.itemText} />,
-                        ]}
-                      />
-                    </ThemedText>
-                  </View>
-                </View>
-
-                <View style={styles.item}>
-                  <Check />
-
-                  <View style={styles.itemTextContainer}>
-                    <ThemedText>
-                      <Trans
-                        i18nKey="purchase:science-backed-daily-tools"
-                        components={[
-                          <ThemedText key="0" style={styles.itemTextBold} />,
-                          <ThemedText key="1" style={styles.itemText} />,
-                        ]}
-                      />
-                    </ThemedText>
-                  </View>
-                </View>
-
-                <View style={styles.item}>
-                  <Check />
-
-                  <View style={styles.itemTextContainer}>
-                    <ThemedText>
-                      <Trans
-                        i18nKey="purchase:expert-guidance-on-tap"
-                        components={[
-                          <ThemedText key="0" style={styles.itemTextBold} />,
-                          <ThemedText key="1" style={styles.itemText} />,
-                        ]}
-                      />
-                    </ThemedText>
-                  </View>
-                </View>
-
-                <View style={styles.item}>
-                  <Check />
-
-                  <View style={styles.itemTextContainer}>
-                    <ThemedText>
-                      <Trans
-                        i18nKey="purchase:works-anywhere-anytime"
-                        components={[
-                          <ThemedText key="0" style={styles.itemTextBold} />,
-                          <ThemedText key="1" style={styles.itemText} />,
-                        ]}
-                      />
-                    </ThemedText>
-                  </View>
-                </View>
-
-                <View style={styles.item}>
-                  <Check />
-
-                  <View style={styles.itemTextContainer}>
-                    <ThemedText>
-                      <Trans
-                        i18nKey="purchase:zero-shame-zero-labels"
-                        components={[
-                          <ThemedText key="0" style={styles.itemTextBold} />,
-                          <ThemedText key="1" style={styles.itemText} />,
-                        ]}
-                      />
-                    </ThemedText>
-                  </View>
+                <View style={styles.itemTextContainer}>
+                  <ThemedText>
+                    <Trans
+                      i18nKey="purchase:everything-in-one-app"
+                      components={[
+                        <ThemedText key="0" style={styles.itemTextBold} />,
+                        <ThemedText key="1" style={styles.itemText} />,
+                      ]}
+                    />
+                  </ThemedText>
                 </View>
               </View>
-            )}
-      </ScrollView>
+
+              <View style={styles.item}>
+                <Check />
+
+                <View style={styles.itemTextContainer}>
+                  <ThemedText>
+                    <Trans
+                      i18nKey="purchase:science-backed-daily-tools"
+                      components={[
+                        <ThemedText key="0" style={styles.itemTextBold} />,
+                        <ThemedText key="1" style={styles.itemText} />,
+                      ]}
+                    />
+                  </ThemedText>
+                </View>
+              </View>
+
+              <View style={styles.item}>
+                <Check />
+
+                <View style={styles.itemTextContainer}>
+                  <ThemedText>
+                    <Trans
+                      i18nKey="purchase:expert-guidance-on-tap"
+                      components={[
+                        <ThemedText key="0" style={styles.itemTextBold} />,
+                        <ThemedText key="1" style={styles.itemText} />,
+                      ]}
+                    />
+                  </ThemedText>
+                </View>
+              </View>
+
+              <View style={styles.item}>
+                <Check />
+
+                <View style={styles.itemTextContainer}>
+                  <ThemedText>
+                    <Trans
+                      i18nKey="purchase:works-anywhere-anytime"
+                      components={[
+                        <ThemedText key="0" style={styles.itemTextBold} />,
+                        <ThemedText key="1" style={styles.itemText} />,
+                      ]}
+                    />
+                  </ThemedText>
+                </View>
+              </View>
+
+              <View style={styles.item}>
+                <Check />
+
+                <View style={styles.itemTextContainer}>
+                  <ThemedText>
+                    <Trans
+                      i18nKey="purchase:zero-shame-zero-labels"
+                      components={[
+                        <ThemedText key="0" style={styles.itemTextBold} />,
+                        <ThemedText key="1" style={styles.itemText} />,
+                      ]}
+                    />
+                  </ThemedText>
+                </View>
+              </View>
+            </View>
+          )}
 
       <View style={styles.lifeChangingShiftContainer}>
         <ThemedText type="default" style={styles.lifeChangingShift}>
@@ -342,8 +332,26 @@ function PurchaseScreen() {
           disabled={!selectedPackage || isLoading || isLoadingOfferings}
           onPress={handleCheckout}
         />
+
+        {Platform.OS === 'ios' && (
+          <View style={styles.offerCodeContainer}>
+            <Pressable
+              style={styles.offerCodeButton}
+              onPress={presentOfferCodeRedemption}
+              disabled={isLoading || isLoadingOfferings}
+            >
+              <ThemedText type="default" style={styles.offerCodeText}>
+                {t('redeem-offer-code')}
+              </ThemedText>
+            </Pressable>
+
+            <ThemedText type="default" style={styles.offerCodeText}>
+              {t('redeem-before-purchase')}
+            </ThemedText>
+          </View>
+        )}
       </View>
-    </ThemedGradient>
+    </ScreenContainer>
   )
 }
 

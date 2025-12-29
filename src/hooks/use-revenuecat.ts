@@ -2,6 +2,8 @@ import type { CustomerInfo, PurchasesOfferings, PurchasesPackage } from 'react-n
 
 import { useCallback, useState } from 'react'
 
+import { Platform } from 'react-native'
+
 import Purchases, { PURCHASES_ERROR_CODE } from 'react-native-purchases'
 
 import Toast from 'react-native-toast-message'
@@ -211,6 +213,42 @@ export function useRevenueCat() {
     }
   }, [refetchSubscription])
 
+  /**
+   * Presents the native iOS offer code redemption sheet
+   * Only available on iOS
+   * Note: Offer codes for new subscriptions must be redeemed BEFORE purchasing
+   */
+  const presentOfferCodeRedemption = useCallback(async (): Promise<void> => {
+    if (Platform.OS !== 'ios') {
+      Toast.show({
+        type: 'info',
+        text1: 'Offer codes',
+        text2: 'Offer code redemption is only available on iOS',
+      })
+      return
+    }
+
+    try {
+      await Purchases.presentCodeRedemptionSheet()
+
+      // After redemption, show success message
+      // The offer will be automatically applied when user purchases subscription
+      Toast.show({
+        type: 'success',
+        text1: 'Offer code redeemed',
+        text2: 'The offer will be applied when you purchase your subscription',
+      })
+    }
+    catch (error) {
+      logError('Failed to present offer code redemption', error)
+      Toast.show({
+        type: 'error',
+        text1: 'Failed to redeem offer code',
+        text2: 'Please try again later',
+      })
+    }
+  }, [])
+
   return {
     isLoading,
     subscription,
@@ -219,6 +257,7 @@ export function useRevenueCat() {
     restorePurchases,
     checkSubscriptionStatus,
     syncWithBackend,
+    presentOfferCodeRedemption,
     refetchSubscription,
   }
 }
