@@ -11,6 +11,10 @@ import day9Image from '@/assets/images/reading/day-9.jpg'
 import day10Image from '@/assets/images/reading/day-10.jpg'
 import day11Image from '@/assets/images/reading/day-11.jpg'
 import day12Image from '@/assets/images/reading/day-12.jpg'
+import day13Image from '@/assets/images/reading/day-13.jpg'
+import day14Image from '@/assets/images/reading/day-14.jpg'
+import day15Image from '@/assets/images/reading/day-15.jpg'
+import day16Image from '@/assets/images/reading/day-16.jpg'
 
 export const READING_IMAGES: Record<number, any> = {
   1: day1Image,
@@ -25,7 +29,11 @@ export const READING_IMAGES: Record<number, any> = {
   10: day10Image,
   11: day11Image,
   12: day12Image,
-  // For days 13-30, assign random images from days 1-12 each time
+  13: day13Image,
+  14: day14Image,
+  15: day15Image,
+  16: day16Image,
+  // For days 17-30, assign random images from days 1-16 each time
 }
 
 export function getReadingImage(day: number | string | string[]) {
