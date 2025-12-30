@@ -7,7 +7,7 @@ import { ImageBackground, Pressable, ScrollView, StyleSheet, View } from 'react-
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { useGetDrinkSession } from '@/api/queries/drink-session'
-import selfHypnosisImage from '@/assets/images/end-of-trial.png'
+import selfHypnosisImage from '@/assets/images/end-of-trial.jpg'
 import mantraImage from '@/assets/images/plan-and-prepare.jpg'
 
 import hydrationImage from '@/assets/images/reflect-and-reinforce.jpg'
