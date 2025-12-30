@@ -46,5 +46,8 @@ app-example
 # cursor
 .cursor/
 
+# scripts
+scripts/
+
 # pnpm
 .pnpm-store/
