@@ -31,7 +31,6 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="toolkit"
         options={{
-          href: null,
           title: 'Toolkit',
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="dataset" size={size} color={color} />

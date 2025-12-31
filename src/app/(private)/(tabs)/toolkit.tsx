@@ -2,8 +2,10 @@ import { useRouter } from 'expo-router'
 import { useTranslation } from 'react-i18next'
 import { ImageBackground, Pressable, StyleSheet, View } from 'react-native'
 
-import DrinkIcon from '@/assets/icons/drink'
-import toolkitImage from '@/assets/images/toolkit.jpg'
+import BoxBreathingIcon from '@/assets/icons/box-breathing'
+// import DrinkIcon from '@/assets/icons/drink'
+import boxBreathingImage from '@/assets/images/toolkit/box-breathing.jpg'
+// import drinkTrackerImage from '@/assets/images/toolkit/drink-tracker.jpg'
 
 import { ScreenContainer, ThemedText } from '@/components'
 
@@ -20,6 +22,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   toolkit: {
+    minHeight: verticalScale(75),
     paddingVertical: verticalScale(17.5),
     paddingHorizontal: scale(20),
     alignItems: 'center',
@@ -44,35 +47,60 @@ const styles = StyleSheet.create({
   toolkitText: {
     color: Colors.light.white,
   },
+  toolkitContainer: {
+    gap: verticalScale(20),
+  },
 })
 
 function ToolkitScreen() {
   const { t } = useTranslation('toolkit')
   const router = useRouter()
 
+  // const navigateToDrinkTracker = () => {
+  //   router.push('/drink-tracker')
+  // }
+
+  const navigateToBoxBreathing = () => {
+    router.push('/box-breathing')
+  }
+
   return (
-    <ScreenContainer scrollable={false}>
+    <ScreenContainer>
       <ThemedText style={styles.title} type="subtitle">Toolkit</ThemedText>
 
-      <Pressable
-        onPress={() => {
-          router.push('/drink-tracker')
-        }}
-      >
-        <ImageBackground
-          source={toolkitImage}
-          style={styles.toolkit}
-          imageStyle={styles.toolkitImageStyle}
-        >
-          <View style={styles.toolkitOverlay} />
+      <View style={styles.toolkitContainer}>
+        {/* <Pressable onPress={navigateToDrinkTracker}>
+          <ImageBackground
+            source={drinkTrackerImage}
+            style={styles.toolkit}
+            imageStyle={styles.toolkitImageStyle}
+          >
+            <View style={styles.toolkitOverlay} />
 
-          <ThemedText style={styles.toolkitText} type="defaultSemiBold">
-            {t('drink-tracker')}
-          </ThemedText>
+            <ThemedText style={styles.toolkitText} type="defaultSemiBold">
+              {t('drink-tracker')}
+            </ThemedText>
 
-          <DrinkIcon />
-        </ImageBackground>
-      </Pressable>
+            <DrinkIcon />
+          </ImageBackground>
+        </Pressable> */}
+
+        <Pressable onPress={navigateToBoxBreathing}>
+          <ImageBackground
+            source={boxBreathingImage}
+            style={styles.toolkit}
+            imageStyle={styles.toolkitImageStyle}
+          >
+            <View style={styles.toolkitOverlay} />
+
+            <ThemedText style={styles.toolkitText} type="defaultSemiBold">
+              {t('box-breathing')}
+            </ThemedText>
+
+            <BoxBreathingIcon />
+          </ImageBackground>
+        </Pressable>
+      </View>
     </ScreenContainer>
   )
 }

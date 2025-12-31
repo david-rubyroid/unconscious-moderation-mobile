@@ -69,6 +69,9 @@ function ProtectedLayout() {
         {/* Journaling screens are always accessible */}
         <Stack.Screen name="journaling/day" />
         <Stack.Screen name="journaling/intro" />
+
+        {/* Box breathing screens are always accessible */}
+        <Stack.Screen name="box-breathing" />
       </Stack>
     </ThemedGradient>
   )

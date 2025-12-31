@@ -14,6 +14,7 @@ interface HeaderProps {
   title: string
   route?: Href
   isReplace?: boolean
+  whiteTitle?: boolean
 }
 
 const styles = StyleSheet.create({
@@ -29,9 +30,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: Colors.light.primary4,
   },
+  whiteTitle: {
+    color: Colors.light.white,
+  },
 })
 
-function Header({ title, route, isReplace }: HeaderProps) {
+function Header({ title, route, isReplace, whiteTitle = false }: HeaderProps) {
   const { push, replace, back } = useRouter()
 
   const handleBack = () => {
@@ -48,10 +52,14 @@ function Header({ title, route, isReplace }: HeaderProps) {
       <Pressable
         onPress={handleBack}
       >
-        <MaterialIcons name="arrow-back-ios" size={scale(24)} color={Colors.light.primary4} />
+        <MaterialIcons
+          name="arrow-back-ios"
+          size={scale(24)}
+          color={whiteTitle ? Colors.light.white : Colors.light.primary4}
+        />
       </Pressable>
 
-      <ThemedText type="subtitle" style={styles.title}>
+      <ThemedText type="subtitle" style={[styles.title, whiteTitle && styles.whiteTitle]}>
         {title}
       </ThemedText>
     </View>

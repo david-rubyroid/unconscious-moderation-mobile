@@ -1,0 +1,11 @@
+{
+  "title": "Box Breathing",
+  "description": "The “Box Breathing” method helps reduce stress and improve focus. Breathe slowly, following the instructions.",
+  "inhale": "Inhale",
+  "hold": "Hold",
+  "exhale": "Exhale",
+  "repeat": "Repeat",
+
+  "start": "Start",
+  "reset": "Reset"
+}

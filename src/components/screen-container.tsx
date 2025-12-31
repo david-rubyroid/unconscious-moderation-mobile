@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
-import type { StyleProp, ViewStyle } from 'react-native'
+import type { ImageSourcePropType, StyleProp, ViewStyle } from 'react-native'
 
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { ImageBackground, ScrollView, StyleSheet, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { scale, verticalScale } from '@/utils/responsive'
@@ -14,11 +14,15 @@ interface ScreenContainerProps {
   showsScrollIndicator?: boolean
   contentContainerStyle?: StyleProp<ViewStyle>
   gradientColors?: readonly [string, string, ...string[]]
+  backgroundImage?: ImageSourcePropType
 }
 
 const styles = StyleSheet.create({
   scrollContent: {
     paddingBottom: verticalScale(20),
+  },
+  imageBackground: {
+    flex: 1,
   },
 })
 
@@ -29,6 +33,7 @@ function ScreenContainer({
   showsScrollIndicator = false,
   contentContainerStyle,
   gradientColors,
+  backgroundImage,
 }: ScreenContainerProps) {
   const { top, bottom } = useSafeAreaInsets()
 
@@ -43,21 +48,35 @@ function ScreenContainer({
     ? [styles.scrollContent, contentContainerStyle]
     : undefined
 
-  return (
-    <ThemedGradient
-      colors={gradientColors}
-      style={{
-        paddingTop: top + verticalScale(10),
-        paddingBottom: bottom + verticalScale(10),
-      }}
+  const paddingStyle = {
+    paddingTop: top + verticalScale(10),
+    paddingBottom: bottom + verticalScale(10),
+  }
+
+  const content = (
+    <Container
+      style={containerStyle}
+      contentContainerStyle={scrollContentStyle}
+      showsVerticalScrollIndicator={showsScrollIndicator}
     >
-      <Container
-        style={containerStyle}
-        contentContainerStyle={scrollContentStyle}
-        showsVerticalScrollIndicator={showsScrollIndicator}
+      {children}
+    </Container>
+  )
+
+  if (backgroundImage) {
+    return (
+      <ImageBackground
+        source={backgroundImage}
+        style={[styles.imageBackground, paddingStyle]}
       >
-        {children}
-      </Container>
+        {content}
+      </ImageBackground>
+    )
+  }
+
+  return (
+    <ThemedGradient colors={gradientColors} style={paddingStyle}>
+      {content}
     </ThemedGradient>
   )
 }

@@ -6,7 +6,7 @@ import { Colors, getResponsiveFontSize, withOpacity } from '@/constants/theme'
 interface ButtonProps extends PressableProps {
   icon?: React.ReactNode
   title: string
-  variant?: 'primary' | 'secondary' | 'primary2'
+  variant?: 'primary' | 'secondary' | 'primary2' | 'white'
   loading?: boolean
   disabled?: boolean
   fullWidth?: boolean
@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
   secondary: {
     backgroundColor: 'rgba(1, 48, 84, 1)',
   },
-  tertiary: {
-    backgroundColor: Colors.light.tertiaryBackground,
+  white: {
+    backgroundColor: withOpacity(Colors.light.white, 0.8),
   },
   pressed: {
     opacity: 0.7,
@@ -43,9 +43,20 @@ const styles = StyleSheet.create({
     backgroundColor: withOpacity(Colors.light.black, 0.04),
   },
   text: {
-    color: Colors.light.white,
     fontSize: getResponsiveFontSize(16),
     fontWeight: '600',
+  },
+  whiteText: {
+    color: Colors.light.primary4,
+  },
+  primaryText: {
+    color: Colors.light.white,
+  },
+  secondaryText: {
+    color: Colors.light.white,
+  },
+  primary2Text: {
+    color: Colors.light.white,
   },
   disabledText: {
     color: withOpacity(Colors.light.black, 0.25),
@@ -84,7 +95,12 @@ function Button({
             <ActivityIndicator color="white" />
           )
         : (
-            <Text style={[styles.text, disabled && styles.disabledText]}>
+            <Text style={[
+              styles.text,
+              styles[`${variant}Text` as keyof typeof styles],
+              disabled && styles.disabledText,
+            ]}
+            >
               {title}
             </Text>
           )}

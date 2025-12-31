@@ -1,3 +1,4 @@
+import enBoxBreathing from '@/locales/en/box-breathing.json'
 import enDrinkTracker from '@/locales/en/drink-tracker.json'
 import enDrinkWithAwareness from '@/locales/en/drink-with-awareness.json'
 import enEditProfile from '@/locales/en/edit-profile.json'
@@ -58,6 +59,7 @@ const localeFiles = {
   'en/hypnosis-adventure': enHypnosisAdventure,
   'en/edit-profile': enEditProfile,
   'en/reading': enReading,
+  'en/box-breathing': enBoxBreathing,
 }
 
 export function getResources() {
