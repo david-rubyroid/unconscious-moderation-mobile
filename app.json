@@ -49,13 +49,6 @@
           "resizeMode": "contain",
           "backgroundColor": "#2E7D60"
         }
-      ],
-      [
-        "react-native-fbsdk-next",
-        {
-          "appID": "4137329806597421",
-          "displayName": "Unconscious Moderation"
-        }
       ]
     ],
     "experiments": {
