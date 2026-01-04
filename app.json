@@ -12,7 +12,6 @@
       "usesAppleSignIn": true,
       "bundleIdentifier": "com.llc.mydry30",
       "buildNumber": "13",
-      "deploymentTarget": "15.1",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "CFBundleDisplayName": "Unconscious Moderation"
@@ -25,7 +24,6 @@
     },
     "android": {
       "package": "com.mydryjourney",
-      "label": "Unconscious Moderation",
       "adaptiveIcon": {
         "backgroundColor": "#FFFFFF",
         "foregroundImage": "./assets/app-icons/adaptive-icon.png",
@@ -49,7 +47,10 @@
           "resizeMode": "contain",
           "backgroundColor": "#2E7D60"
         }
-      ]
+      ],
+      "expo-font",
+      "expo-localization",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
