@@ -93,6 +93,7 @@ function HomeScreen() {
   const { push } = useRouter()
 
   const { t } = useTranslation('home')
+  const { t: tQuotes } = useTranslation('quotes')
 
   const { data: user } = useGetCurrentUser()
   const { data: currentStreak } = useGetCurrentStreak()
@@ -134,11 +135,11 @@ function HomeScreen() {
           </ThemedText>
 
           <ThemedText type="defaultSemiBold" style={styles.breneBrownQuote}>
-            {t('brene-brown-quote')}
+            {tQuotes(`day-${dailyActivitiesDay}.quote`)}
           </ThemedText>
 
           <ThemedText type="defaultSemiBold" style={styles.breneBrownQuoteAuthor}>
-            {t('brene-brown-quote-author')}
+            {tQuotes(`day-${dailyActivitiesDay}.author`)}
           </ThemedText>
         </View>
 

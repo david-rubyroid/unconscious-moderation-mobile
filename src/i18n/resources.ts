@@ -23,6 +23,7 @@ import enProfile from '@/locales/en/profile.json'
 import enPurchase from '@/locales/en/purchase.json'
 import enQuestions from '@/locales/en/questions.json'
 import enQuickWriting from '@/locales/en/quick-writing.json'
+import enQuotes from '@/locales/en/quotes.json'
 import enReading from '@/locales/en/reading.json'
 import enReflectReinforce from '@/locales/en/reflect-reinforce.json'
 import enRegister from '@/locales/en/register.json'
@@ -62,6 +63,7 @@ const localeFiles = {
   'en/reading': enReading,
   'en/box-breathing': enBoxBreathing,
   'en/movement': enMovement,
+  'en/quotes': enQuotes,
 }
 
 export function getResources() {

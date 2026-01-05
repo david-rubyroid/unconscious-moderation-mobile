@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native'
 
 import { useGetDaysWithActivities } from '@/api/queries/daily-activities'
@@ -16,6 +18,10 @@ interface DailyActivitiesDaysProps {
 }
 
 const styles = StyleSheet.create({
+  wrapper: {
+    gap: verticalScale(19),
+    marginVertical: verticalScale(20),
+  },
   scrollContainer: {
     marginHorizontal: -scale(15),
   },
@@ -23,7 +29,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: scale(22),
     paddingHorizontal: scale(15),
-    paddingVertical: verticalScale(20),
+  },
+  title: {
+    color: Colors.light.primary4,
   },
   dayContainer: {
     position: 'relative',
@@ -52,12 +60,15 @@ const styles = StyleSheet.create({
 })
 
 function DailyActivitiesDays({ onDayPress, dailyActivitiesDay }: DailyActivitiesDaysProps) {
+  const { t } = useTranslation('quotes')
   const { data: daysWithActivities } = useGetDaysWithActivities()
 
   const days = daysWithActivities?.days.filter(day => day.isUnlocked) ?? []
 
   return (
-    <View>
+    <View style={styles.wrapper}>
+      <ThemedText type="defaultSemiBold" style={styles.title}>{t(`day-${dailyActivitiesDay}.title`)}</ThemedText>
+
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}

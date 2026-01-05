@@ -1,8 +1,6 @@
 {
   "welcome": "Welcome, {{name}}",
   "reminder": "Reminder:",
-  "brene-brown-quote": "\"We cannot grow when we are in shame, and we can't use shame to change ourselves or others.\"",
-  "brene-brown-quote-author": "-Brené Brown",
   "last-drink": "Last Drink:",
   "start": "Start",
   "start-session": "Start Session",
