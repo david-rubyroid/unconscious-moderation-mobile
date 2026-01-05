@@ -10,9 +10,10 @@ import { useGetDayDetails } from '@/api/queries/daily-activities'
 import { useGetSubscription } from '@/api/queries/subscriptions'
 
 import PlaySmall from '@/assets/icons/play-small'
-import hypnotherapyImage from '@/assets/images/hypnotherapy.jpg'
-import journalingImage from '@/assets/images/journaling.jpg'
-import readingImage from '@/assets/images/reading/reading.jpg'
+import hypnotherapyImage from '@/assets/images/today-adventure/hypnotherapy.png'
+import journalingImage from '@/assets/images/today-adventure/journaling.jpg'
+import movementImage from '@/assets/images/today-adventure/movement.jpg'
+import readingImage from '@/assets/images/today-adventure/reading.jpg'
 
 import { Colors, withOpacity } from '@/constants/theme'
 import { moderateScale, scale, verticalScale } from '@/utils/responsive'
@@ -102,6 +103,11 @@ const styles = StyleSheet.create({
   },
   bottomSheetContentTitle: {
     color: Colors.light.primary4,
+    textAlign: 'center',
+    marginBottom: verticalScale(20),
+  },
+  bottomSheetContentDescriptionBold: {
+    textAlign: 'center',
     marginBottom: verticalScale(20),
   },
   bottomSheetContentDescription: {
@@ -109,6 +115,7 @@ const styles = StyleSheet.create({
     marginBottom: verticalScale(20),
     textAlign: 'center',
   },
+
   bottomSheetButton: {
     width: 156,
     borderRadius: 15,
@@ -128,6 +135,7 @@ function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
 
   const [showHypnosisBottomSheet, setShowHypnosisBottomSheet] = useState(false)
   const [showJournalingBottomSheet, setShowJournalingBottomSheet] = useState(false)
+  const [showMovementBottomSheet, setShowMovementBottomSheet] = useState(false)
 
   const isPremium = isSubscriptionActive(subscription)
 
@@ -135,10 +143,12 @@ function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
   const hypnosisActivity = dayDetails?.activities.find(a => a.type === 'hypnosis')
   const journalingActivity = dayDetails?.activities.find(a => a.type === 'journaling')
   const readingActivity = dayDetails?.activities.find(a => a.type === 'reading')
+  const movementActivity = dayDetails?.activities.find(a => a.type === 'movement')
 
   const isHypnosisCompleted = hypnosisActivity?.isCompleted ?? false
   const isJournalingCompleted = journalingActivity?.isCompleted ?? false
   const isReadingCompleted = readingActivity?.isCompleted ?? false
+  const isMovementCompleted = movementActivity?.isCompleted ?? false
 
   // Create steps for ProgressSteps
   const steps: Step[] = [
@@ -154,7 +164,31 @@ function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
       id: 'journaling',
       status: isJournalingCompleted ? 'completed' : 'pending',
     },
+    {
+      id: 'movement',
+      status: isMovementCompleted ? 'completed' : 'pending',
+    },
   ]
+
+  // handle open movement bottom sheet
+  const handleOpenMovementBottomSheet = () => {
+    if (!isPremium) {
+      push('/(private)/purchase')
+      return
+    }
+
+    setShowMovementBottomSheet(true)
+  }
+  const handleCloseMovementBottomSheet = () => {
+    setShowMovementBottomSheet(false)
+  }
+  const handleStartMovement = () => {
+    handleCloseMovementBottomSheet()
+    push({
+      pathname: '/movement',
+      params: { day: dailyActivitiesDay },
+    })
+  }
 
   // handle open journaling bottom sheet
   const handleOpenJournalingBottomSheet = () => {
@@ -250,6 +284,16 @@ function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
 
                 <ThemedText type="defaultSemiBold" style={styles.contentText}>
                   {t('journaling')}
+                </ThemedText>
+              </ImageBackground>
+            </Pressable>
+
+            <Pressable onPress={handleOpenMovementBottomSheet}>
+              <ImageBackground source={movementImage} style={styles.contentImage}>
+                <View style={styles.contentOverlay} />
+
+                <ThemedText type="defaultSemiBold" style={styles.contentText}>
+                  {t('movement')}
                 </ThemedText>
               </ImageBackground>
             </Pressable>
@@ -358,6 +402,42 @@ function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
             icon={<PlaySmall />}
             title={t('start')}
             onPress={handleStartJournaling}
+            style={styles.bottomSheetButton}
+          />
+        </View>
+      </BottomSheetPopup>
+
+      <BottomSheetPopup
+        visible={showMovementBottomSheet}
+        onClose={handleCloseMovementBottomSheet}
+        radius={40}
+        style={styles.bottomSheetPopup}
+      >
+        <ImageBackground source={movementImage} style={styles.bottomSheetHeaderImage}>
+          <View style={styles.bottomSheetHeaderOverlay} />
+
+          <ThemedText type="title" style={styles.bottomSheetHeaderText}>
+            {t('movement-matters')}
+          </ThemedText>
+        </ImageBackground>
+
+        <View style={styles.bottomSheetContent}>
+          <ThemedText type="preSubtitle" style={styles.bottomSheetContentTitle}>
+            {t('movement-matters-description')}
+          </ThemedText>
+
+          <ThemedText type="defaultSemiBold" style={styles.bottomSheetContentDescription}>
+            {t('movement-matters-description-2')}
+          </ThemedText>
+
+          <ThemedText type="defaultSemiBold" style={styles.bottomSheetContentDescriptionBold}>
+            {t('movement-matters-description-3')}
+          </ThemedText>
+
+          <Button
+            icon={<PlaySmall />}
+            title={t('start')}
+            onPress={handleStartMovement}
             style={styles.bottomSheetButton}
           />
         </View>

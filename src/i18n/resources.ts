@@ -15,6 +15,7 @@ import enLogin from '@/locales/en/login.json'
 import enManageUrges from '@/locales/en/manage-urges.json'
 import enMantra from '@/locales/en/mantra.json'
 import enMedicalReport from '@/locales/en/medical-report.json'
+import enMovement from '@/locales/en/movement.json'
 import enMyProgress from '@/locales/en/my-progress.json'
 import enPlanSession from '@/locales/en/plan-session.json'
 import enPreDrinkChecklist from '@/locales/en/pre-drink-checklist.json'
@@ -60,6 +61,7 @@ const localeFiles = {
   'en/edit-profile': enEditProfile,
   'en/reading': enReading,
   'en/box-breathing': enBoxBreathing,
+  'en/movement': enMovement,
 }
 
 export function getResources() {
