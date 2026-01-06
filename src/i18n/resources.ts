@@ -1,7 +1,9 @@
+import enBlinkist from '@/locales/en/blinkist.json'
 import enBoxBreathing from '@/locales/en/box-breathing.json'
 import enDrinkTracker from '@/locales/en/drink-tracker.json'
 import enDrinkWithAwareness from '@/locales/en/drink-with-awareness.json'
 import enEditProfile from '@/locales/en/edit-profile.json'
+import enExternalResources from '@/locales/en/external-resources.json'
 import enForgotPassword from '@/locales/en/forgot-password.json'
 import enFreeDrinkTracker from '@/locales/en/free-drink-tracker.json'
 import enHome from '@/locales/en/home.json'
@@ -64,6 +66,8 @@ const localeFiles = {
   'en/box-breathing': enBoxBreathing,
   'en/movement': enMovement,
   'en/quotes': enQuotes,
+  'en/blinkist': enBlinkist,
+  'en/external-resources': enExternalResources,
 }
 
 export function getResources() {

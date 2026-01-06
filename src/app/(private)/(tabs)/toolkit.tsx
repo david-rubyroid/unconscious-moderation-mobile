@@ -7,7 +7,7 @@ import BoxBreathingIcon from '@/assets/icons/box-breathing'
 import boxBreathingImage from '@/assets/images/toolkit/box-breathing.jpg'
 // import drinkTrackerImage from '@/assets/images/toolkit/drink-tracker.jpg'
 
-import { ScreenContainer, ThemedText } from '@/components'
+import { ExternalResources, ScreenContainer, ThemedText } from '@/components'
 
 import { Colors, withOpacity } from '@/constants/theme'
 import { scale, verticalScale } from '@/utils/responsive'
@@ -101,6 +101,8 @@ function ToolkitScreen() {
           </ImageBackground>
         </Pressable>
       </View>
+
+      <ExternalResources />
     </ScreenContainer>
   )
 }

@@ -9,6 +9,8 @@ interface ThemedGradientProps {
   children: React.ReactNode
   style?: StyleProp<ViewStyle>
   colors?: readonly [string, string, ...string[]]
+  start?: { x: number, y: number }
+  end?: { x: number, y: number }
 }
 
 const styles = StyleSheet.create({
@@ -20,13 +22,13 @@ const styles = StyleSheet.create({
 // Default gradient colors (old): #E5E5E5 -> #62BC8C
 const defaultGradientColors = [Colors.light.gradientStart, Colors.light.gradientEnd] as const
 
-function ThemedGradient({ children, style, colors }: ThemedGradientProps) {
+function ThemedGradient({ children, style, colors, start, end }: ThemedGradientProps) {
   return (
     <LinearGradient
       style={[styles.container, style]}
       colors={colors || defaultGradientColors}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 0, y: 1 }}
+      start={start || { x: 0, y: 0 }}
+      end={end || { x: 0, y: 1 }}
     >
       {children}
     </LinearGradient>

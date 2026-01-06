@@ -42,12 +42,11 @@ function ProtectedLayout() {
           <Stack.Screen name="shared-awareness" />
         </Stack.Protected>
 
-        {/* Purchase screen is always accessible */}
+        {/* screen is always accessible */}
         <Stack.Screen name="medical-report" />
         <Stack.Screen name="welcome-to-your-journey" />
         <Stack.Screen name="purchase" />
 
-        {/* Drink tracker screens are always accessible */}
         <Stack.Screen name="drink-tracker/index" />
         <Stack.Screen name="drink-tracker/drink-tracker-steps" />
         <Stack.Screen name="drink-tracker/plan-and-prepare" />
@@ -59,19 +58,17 @@ function ProtectedLayout() {
         <Stack.Screen name="drink-tracker/log-drink" />
         <Stack.Screen name="drink-tracker/manage-urges" />
 
-        {/* Free drink tracker screens are always accessible */}
         <Stack.Screen name="free-drink-tracker/start-tracking" />
         <Stack.Screen name="free-drink-tracker/reset-tracking" />
 
-        {/* My progress screens are always accessible */}
         <Stack.Screen name="my-progress" />
 
-        {/* Journaling screens are always accessible */}
         <Stack.Screen name="journaling/day" />
         <Stack.Screen name="journaling/intro" />
 
-        {/* Box breathing screens are always accessible */}
         <Stack.Screen name="box-breathing" />
+
+        <Stack.Screen name="blinkist" />
       </Stack>
     </ThemedGradient>
   )

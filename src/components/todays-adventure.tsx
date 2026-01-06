@@ -26,7 +26,7 @@ import ThemedText from './themed-text'
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: verticalScale(20),
+    marginVertical: verticalScale(20),
   },
   title: {
     color: Colors.light.primary4,

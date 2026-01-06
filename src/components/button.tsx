@@ -1,15 +1,20 @@
-import type { PressableProps } from 'react-native'
+import type { PressableProps, PressableStateCallbackType } from 'react-native'
+
+import { openBrowserAsync, WebBrowserPresentationStyle } from 'expo-web-browser'
 import { ActivityIndicator, Pressable, StyleSheet, Text } from 'react-native'
 
 import { Colors, getResponsiveFontSize, withOpacity } from '@/constants/theme'
 
-interface ButtonProps extends PressableProps {
+interface ButtonProps extends Omit<PressableProps, 'onPress'> {
   icon?: React.ReactNode
   title: string
   variant?: 'primary' | 'secondary' | 'primary2' | 'white'
   loading?: boolean
   disabled?: boolean
   fullWidth?: boolean
+  as?: 'button' | 'external-link'
+  href?: string
+  onPress?: PressableProps['onPress']
 }
 
 const styles = StyleSheet.create({
@@ -74,21 +79,13 @@ function Button({
   disabled = false,
   fullWidth = false,
   style,
+  as = 'button',
+  href,
+  onPress,
   ...props
 }: ButtonProps) {
-  return (
-    <Pressable
-      style={({ pressed }) => [
-        styles.button,
-        styles[variant],
-        (pressed || loading || disabled) && styles.pressed,
-        disabled && styles.disabled,
-        fullWidth && styles.fullWidth,
-        typeof style === 'function' ? style({ pressed, hovered: false }) : style,
-      ]}
-      disabled={disabled || loading}
-      {...props}
-    >
+  const buttonContent = (
+    <>
       {icon && icon}
       {loading
         ? (
@@ -104,6 +101,48 @@ function Button({
               {title}
             </Text>
           )}
+    </>
+  )
+  const buttonStyle = ({ pressed }: PressableStateCallbackType) => {
+    return [
+      styles.button,
+      styles[variant],
+      (pressed || loading || disabled) && styles.pressed,
+      disabled && styles.disabled,
+      fullWidth && styles.fullWidth,
+      typeof style === 'function' ? style({ pressed, hovered: false }) : style,
+    ]
+  }
+  // handle external link press
+  const handleExternalLinkPress = async () => {
+    if (!disabled && !loading && href) {
+      await openBrowserAsync(href, {
+        presentationStyle: WebBrowserPresentationStyle.AUTOMATIC,
+      })
+    }
+  }
+
+  if (as === 'external-link' && href) {
+    return (
+      <Pressable
+        style={buttonStyle}
+        disabled={disabled || loading}
+        onPress={handleExternalLinkPress}
+        {...props}
+      >
+        {buttonContent}
+      </Pressable>
+    )
+  }
+
+  return (
+    <Pressable
+      style={buttonStyle}
+      disabled={disabled || loading}
+      onPress={onPress}
+      {...props}
+    >
+      {buttonContent}
     </Pressable>
   )
 }

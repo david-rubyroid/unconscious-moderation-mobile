@@ -9,6 +9,8 @@ import { useGetCurrentStreak } from '@/api/queries/sobriety-tracker'
 
 import {
   DailyActivitiesDays,
+  ExternalResources,
+  ExtraCredit,
   JourneyStreak,
   ScreenContainer,
   SobrietyTimer,
@@ -173,6 +175,10 @@ function HomeScreen() {
         <JourneyStreak />
 
         <TodaysAdventure dailyActivitiesDay={dailyActivitiesDay} />
+
+        <ExtraCredit dailyActivitiesDay={dailyActivitiesDay} />
+
+        <ExternalResources />
       </ScreenContainer>
     </>
   )
