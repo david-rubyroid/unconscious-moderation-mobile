@@ -75,6 +75,19 @@ function ExtraCredit({ dailyActivitiesDay }: ExtraCreditProps) {
       },
     })
   }
+  const handleOpenMasterClass = () => {
+    if (!isPremium) {
+      push('/(private)/purchase')
+      return
+    }
+
+    push({
+      pathname: '/master-class',
+      params: {
+        day: dailyActivitiesDay,
+      },
+    })
+  }
 
   return (
     <Accordion
@@ -96,7 +109,7 @@ function ExtraCredit({ dailyActivitiesDay }: ExtraCreditProps) {
           {isPremium ? <ArrowIcon color={Colors.light.primary4} style={styles.icon} /> : <LockIcon style={styles.icon} />}
         </Pressable>
 
-        <Pressable style={styles.item}>
+        <Pressable style={styles.item} onPress={handleOpenMasterClass}>
           <View style={styles.iconContainer}>
             <MasterClassIcon />
           </View>

@@ -69,6 +69,7 @@ function ProtectedLayout() {
         <Stack.Screen name="box-breathing" />
 
         <Stack.Screen name="blinkist" />
+        <Stack.Screen name="master-class" />
       </Stack>
     </ThemedGradient>
   )
