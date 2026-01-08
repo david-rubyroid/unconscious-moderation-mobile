@@ -1,12 +1,11 @@
-import { useLocalSearchParams } from 'expo-router'
 import { VideoView } from 'expo-video'
 
 import { ActivityIndicator, StyleSheet, View } from 'react-native'
 
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-import { getMovementVideoUrl } from '@/constants/movement'
 import { Colors, withOpacity } from '@/constants/theme'
+import { VIDEOS_LINKS } from '@/constants/video-links'
 
 import { useVideoActivity } from '@/hooks/use-video-activity'
 
@@ -28,24 +27,12 @@ const styles = StyleSheet.create({
   },
 })
 
-function MovementScreen() {
-  const { day } = useLocalSearchParams()
-  const dayNumber = Number(day)
+function UrgeSurfingMeditationScreen() {
+  const videoUrl = VIDEOS_LINKS.urgeSurfingMeditationVideo
 
-  const videoUrl = getMovementVideoUrl(dayNumber) ?? null
+  const { player, loadingState, canStartPlayback } = useVideoActivity({ videoUrl })
 
-  const { player, loadingState, canStartPlayback } = useVideoActivity({
-    videoUrl,
-    activityCompletion: dayNumber >= 1 && dayNumber <= 30
-      ? {
-          day: dayNumber,
-          activityType: 'movement',
-        }
-      : undefined,
-  })
-
-  // If day is invalid or video is not found
-  if (!dayNumber || dayNumber < 1 || dayNumber > 30 || !videoUrl) {
+  if (!videoUrl) {
     return (
       <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
         <View style={styles.container} />
@@ -75,4 +62,4 @@ function MovementScreen() {
   )
 }
 
-export default MovementScreen
+export default UrgeSurfingMeditationScreen
