@@ -2,7 +2,7 @@
   "expo": {
     "name": "Unconscious Moderation",
     "slug": "unconscious-moderation",
-    "version": "1.4.55",
+    "version": "1.4.56",
     "orientation": "portrait",
     "scheme": "com.mydryjourney",
     "userInterfaceStyle": "automatic",
@@ -11,7 +11,7 @@
       "supportsTablet": false,
       "usesAppleSignIn": true,
       "bundleIdentifier": "com.llc.mydry30",
-      "buildNumber": "14",
+      "buildNumber": "15",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "CFBundleDisplayName": "Unconscious Moderation"
