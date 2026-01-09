@@ -70,7 +70,7 @@ function DrinkTrackerScreen() {
     }
 
     push({
-      pathname: '/drink-tracker/drink-tracker-steps',
+      pathname: '/drink-tracker/pre-drink-checklist',
       params: { sessionId: currentDrinkSession?.id },
     })
   }

@@ -3,11 +3,12 @@ import { useTranslation } from 'react-i18next'
 import { ImageBackground, Pressable, StyleSheet, View } from 'react-native'
 
 import BoxBreathingIcon from '@/assets/icons/box-breathing'
+import DrinkIcon from '@/assets/icons/drink'
+
 import UrgeSurfingMeditationIcon from '@/assets/icons/urge-surfing-meditation'
-// import DrinkIcon from '@/assets/icons/drink'
 import boxBreathingImage from '@/assets/images/toolkit/box-breathing.jpg'
+import drinkTrackerImage from '@/assets/images/toolkit/drink-tracker.jpg'
 import urgeSurfingMeditationImage from '@/assets/images/toolkit/urge-surfing-meditation.jpg'
-// import drinkTrackerImage from '@/assets/images/toolkit/drink-tracker.jpg'
 
 import { ExternalResources, ScreenContainer, ThemedText } from '@/components'
 
@@ -58,14 +59,12 @@ function ToolkitScreen() {
   const { t } = useTranslation('toolkit')
   const router = useRouter()
 
-  // const navigateToDrinkTracker = () => {
-  //   router.push('/drink-tracker')
-  // }
-
+  const navigateToDrinkTracker = () => {
+    router.push('/drink-tracker')
+  }
   const navigateToBoxBreathing = () => {
     router.push('/box-breathing')
   }
-
   const navigateToUrgeSurfingMeditation = () => {
     router.push('/urge-surfing-meditation')
   }
@@ -75,7 +74,7 @@ function ToolkitScreen() {
       <ThemedText style={styles.title} type="subtitle">Toolkit</ThemedText>
 
       <View style={styles.toolkitContainer}>
-        {/* <Pressable onPress={navigateToDrinkTracker}>
+        <Pressable onPress={navigateToDrinkTracker}>
           <ImageBackground
             source={drinkTrackerImage}
             style={styles.toolkit}
@@ -89,7 +88,7 @@ function ToolkitScreen() {
 
             <DrinkIcon />
           </ImageBackground>
-        </Pressable> */}
+        </Pressable>
 
         <Pressable onPress={navigateToBoxBreathing}>
           <ImageBackground

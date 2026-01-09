@@ -1,30 +1,33 @@
 import type { Step } from '@/components/progress-steps'
 
 import { useLocalSearchParams, useRouter } from 'expo-router'
-
 import { Trans, useTranslation } from 'react-i18next'
 import { ImageBackground, Pressable, ScrollView, StyleSheet, View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { useGetDrinkSession } from '@/api/queries/drink-session'
+
 import selfHypnosisImage from '@/assets/images/end-of-trial.jpg'
 import mantraImage from '@/assets/images/plan-and-prepare.jpg'
-
 import hydrationImage from '@/assets/images/reflect-and-reinforce.jpg'
 
-import { Button, Header, ProgressSteps, ThemedGradient, ThemedText } from '@/components'
+import {
+  Button,
+  DrinkTrackerWeekDays,
+  Header,
+  ProgressSteps,
+  ScreenContainer,
+  ThemedText,
+} from '@/components'
+
 import { Colors, withOpacity } from '@/constants/theme'
+
 import { scale, verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: scale(15),
-  },
   preparationMessage: {
     textAlign: 'center',
     color: Colors.light.primary4,
-    marginBottom: verticalScale(26),
+    marginVertical: verticalScale(28),
     fontWeight: '400',
   },
   preparationMessageBold: {
@@ -79,7 +82,12 @@ const styles = StyleSheet.create({
   preparationStepItemDescription: {
     color: Colors.light.white,
   },
+  tip: {
+    fontSize: 16,
+    color: Colors.light.primary4,
+  },
   buttonContainer: {
+    gap: scale(26),
     marginTop: 'auto',
     alignItems: 'center',
   },
@@ -92,8 +100,6 @@ function PreDrinkChecklistScreen() {
   const { data: session } = useGetDrinkSession(Number(sessionId))
 
   const { t } = useTranslation('pre-drink-checklist')
-
-  const { top, bottom } = useSafeAreaInsets()
 
   const steps = [
     {
@@ -130,14 +136,16 @@ function PreDrinkChecklistScreen() {
   }
   const navigateToDrinkTrackerSteps = () => {
     push({
-      pathname: '/drink-tracker/drink-tracker-steps',
+      pathname: '/drink-tracker/plan-session',
       params: { sessionId },
     })
   }
 
   return (
-    <ThemedGradient style={[{ paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }]}>
+    <ScreenContainer scrollable={false}>
       <Header title={t('title')} />
+
+      <DrinkTrackerWeekDays />
 
       <ThemedText type="defaultSemiBold" style={styles.preparationMessage}>
         <Trans
@@ -149,86 +157,92 @@ function PreDrinkChecklistScreen() {
         />
       </ThemedText>
 
-      <View style={styles.container}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.scrollContent}
-        >
-          <View style={styles.preparationStepsWrapper}>
-            <View style={styles.progressStepsContainer}>
-              <ProgressSteps steps={steps} connectorHeight={verticalScale(80)} />
-            </View>
-
-            <View style={styles.keyMomentsCardsContainer}>
-
-              <Pressable onPress={navigateToHydration}>
-                <ImageBackground
-                  source={hydrationImage}
-                  style={styles.preparationStepItem}
-                  imageStyle={styles.preparationStepItemImageStyle}
-                >
-                  <View style={styles.preparationStepItemOverlay} />
-
-                  <ThemedText type="defaultSemiBold" style={styles.preparationStepItemTitle}>
-                    {t('hydration')}
-                  </ThemedText>
-
-                  <ThemedText type="default" style={styles.preparationStepItemDescription}>
-                    {t('hydration-description')}
-                  </ThemedText>
-                </ImageBackground>
-              </Pressable>
-
-              <Pressable onPress={navigateToSelfHypnosis}>
-                <ImageBackground
-                  source={selfHypnosisImage}
-                  style={styles.preparationStepItem}
-                  imageStyle={styles.preparationStepItemImageStyle}
-                >
-                  <View style={styles.preparationStepItemOverlay} />
-
-                  <ThemedText type="defaultSemiBold" style={styles.preparationStepItemTitle}>
-                    {t('self-hypnosis')}
-                  </ThemedText>
-
-                  <ThemedText type="default" style={styles.preparationStepItemDescription}>
-                    {t('self-hypnosis-description')}
-                  </ThemedText>
-                </ImageBackground>
-              </Pressable>
-
-              <Pressable onPress={navigateToMantra}>
-                <ImageBackground
-                  source={mantraImage}
-                  style={styles.preparationStepItem}
-                  imageStyle={styles.preparationStepItemImageStyle}
-                >
-                  <View style={styles.preparationStepItemOverlay} />
-
-                  <ThemedText type="defaultSemiBold" style={styles.preparationStepItemTitle}>
-                    {t('mantra')}
-                  </ThemedText>
-
-                  <ThemedText type="default" style={styles.preparationStepItemDescription}>
-                    {t('mantra-description')}
-                  </ThemedText>
-                </ImageBackground>
-              </Pressable>
-            </View>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
+        <View style={styles.preparationStepsWrapper}>
+          <View style={styles.progressStepsContainer}>
+            <ProgressSteps steps={steps} connectorHeight={verticalScale(80)} />
           </View>
-        </ScrollView>
 
-        <View style={styles.buttonContainer}>
-          <Button
-            variant="secondary"
-            title={t('ready')}
-            onPress={navigateToDrinkTrackerSteps}
-          />
+          <View style={styles.keyMomentsCardsContainer}>
+
+            <Pressable onPress={navigateToHydration}>
+              <ImageBackground
+                source={hydrationImage}
+                style={styles.preparationStepItem}
+                imageStyle={styles.preparationStepItemImageStyle}
+              >
+                <View style={styles.preparationStepItemOverlay} />
+
+                <ThemedText type="defaultSemiBold" style={styles.preparationStepItemTitle}>
+                  {t('hydration')}
+                </ThemedText>
+
+                <ThemedText type="default" style={styles.preparationStepItemDescription}>
+                  {t('hydration-description')}
+                </ThemedText>
+              </ImageBackground>
+            </Pressable>
+
+            <Pressable onPress={navigateToSelfHypnosis}>
+              <ImageBackground
+                source={selfHypnosisImage}
+                style={styles.preparationStepItem}
+                imageStyle={styles.preparationStepItemImageStyle}
+              >
+                <View style={styles.preparationStepItemOverlay} />
+
+                <ThemedText type="defaultSemiBold" style={styles.preparationStepItemTitle}>
+                  {t('self-hypnosis')}
+                </ThemedText>
+
+                <ThemedText type="default" style={styles.preparationStepItemDescription}>
+                  {t('self-hypnosis-description')}
+                </ThemedText>
+              </ImageBackground>
+            </Pressable>
+
+            <Pressable onPress={navigateToMantra}>
+              <ImageBackground
+                source={mantraImage}
+                style={styles.preparationStepItem}
+                imageStyle={styles.preparationStepItemImageStyle}
+              >
+                <View style={styles.preparationStepItemOverlay} />
+
+                <ThemedText type="defaultSemiBold" style={styles.preparationStepItemTitle}>
+                  {t('mantra')}
+                </ThemedText>
+
+                <ThemedText type="default" style={styles.preparationStepItemDescription}>
+                  {t('mantra-description')}
+                </ThemedText>
+              </ImageBackground>
+            </Pressable>
+          </View>
         </View>
-      </View>
+      </ScrollView>
 
-    </ThemedGradient>
+      <View style={styles.buttonContainer}>
+        <ThemedText type="default" style={styles.tip}>
+          <Trans
+            i18nKey="pre-drink-checklist:tip"
+            components={[
+              <ThemedText type="defaultSemiBold" key="0" style={styles.tip} />,
+            ]}
+          />
+        </ThemedText>
+
+        <Button
+          variant="secondary"
+          title={t('start')}
+          onPress={navigateToDrinkTrackerSteps}
+        />
+      </View>
+    </ScreenContainer>
   )
 }
 
