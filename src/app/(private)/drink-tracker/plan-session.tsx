@@ -1,16 +1,19 @@
 import type { DrinkType } from '@/api/queries/drink-session/dto'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter } from 'expo-router'
-import { useState } from 'react'
+import { useLocalSearchParams, useRouter } from 'expo-router'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { Trans, useTranslation } from 'react-i18next'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import z from 'zod'
 
-import { useCreateDrinkSession } from '@/api/queries/drink-session'
+import {
+  useCreateDrinkSession,
+  useGetDrinkSession,
+  useUpdateDrinkSession,
+} from '@/api/queries/drink-session'
 
 import AlertIcon from '@/assets/icons/alert'
 
@@ -21,21 +24,18 @@ import {
   DrinkSelector,
   Header,
   Modal,
-  ThemedGradient,
+  ScreenContainer,
   ThemedText,
 } from '@/components'
 
 import { Colors, withOpacity } from '@/constants/theme'
 
+import { dateToUTCNoon, normalizeDateToDay } from '@/utils/calendar-date'
 import { getErrorMessage } from '@/utils/error-handler'
 import { scale, verticalScale } from '@/utils/responsive'
 import { showErrorToast } from '@/utils/toast'
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: scale(15),
-  },
   inputs: {
     gap: verticalScale(12),
   },
@@ -88,7 +88,8 @@ const styles = StyleSheet.create({
 })
 
 function PlanAndPrepareScreen() {
-  const { push } = useRouter()
+  const { replace, back } = useRouter()
+  const { sessionId } = useLocalSearchParams()
 
   const [selectedDrink, setSelectedDrink] = useState<DrinkType>('wine')
   const [modalTextKey, setModalTextKey] = useState<string>('')
@@ -96,28 +97,63 @@ function PlanAndPrepareScreen() {
 
   const { t } = useTranslation('plan-session')
 
-  const { top, bottom } = useSafeAreaInsets()
-
-  const { mutate: createDrinkSession } = useCreateDrinkSession()
+  const { mutate: createDrinkSession, isPending: isCreatingDrinkSession } = useCreateDrinkSession()
+  const { mutate: updateDrinkSession, isPending: isUpdatingDrinkSession } = useUpdateDrinkSession(
+    Number(sessionId),
+  )
+  const { data: drinkSession } = useGetDrinkSession(Number(sessionId))
 
   const createDrinkSessionSchema = z
     .object({
-      plannedStartTime: z.date(),
-      maxDrinkCount: z.string(),
-      budget: z.string(),
+      plannedStartTime: z
+        .date({
+          error: t('select-your-date'),
+        })
+        .refine(
+          (date) => {
+            const selectedDay = normalizeDateToDay(date)
+            const today = normalizeDateToDay(new Date())
+            return selectedDay >= today
+          },
+          {
+            message: t('plannedStartTime-cannot-be-in-past'),
+          },
+        ),
+      maxDrinkCount: z
+        .string()
+        .min(1, t('maxDrinkCount-is-required'))
+        .refine(
+          (val) => {
+            const num = Number(val)
+            return !Number.isNaN(num) && num > 0 && Number.isInteger(num)
+          },
+          {
+            message: t('maxDrinkCount-must-be-greater-than-0'),
+          },
+        ),
+      budget: z
+        .string()
+        .min(1, t('budget-is-required'))
+        .refine(
+          (val) => {
+            const num = Number(val)
+            return !Number.isNaN(num) && num > 0
+          },
+          {
+            message: t('budget-must-be-positive'),
+          },
+        ),
     })
 
   const {
     control,
-    setError,
     handleSubmit,
+    setValue,
+    formState: { isValid },
   } = useForm<z.infer<typeof createDrinkSessionSchema>>({
     resolver: zodResolver(createDrinkSessionSchema),
-    defaultValues: {
-      plannedStartTime: new Date(),
-      maxDrinkCount: '1',
-      budget: '0',
-    },
+    mode: 'onChange',
+    reValidateMode: 'onChange',
   })
 
   const openModal = (textKey: string) => {
@@ -132,13 +168,26 @@ function PlanAndPrepareScreen() {
     const numberOfDrinks = Number(maxDrinkCount)
     const budgetAmount = Number(budget)
 
-    if (numberOfDrinks <= 0) {
-      setError('maxDrinkCount', { message: t('maxDrinkCount-must-be-greater-than-0') })
+    if (sessionId) {
+      updateDrinkSession({
+        plannedStartTime: dateToUTCNoon(plannedStartTime),
+        maxDrinkCount: numberOfDrinks,
+        budget: budgetAmount,
+        drinkType: selectedDrink,
+      }, {
+        onSuccess: () => {
+          back()
+        },
+        onError: (error) => {
+          showErrorToast('Oops! Something went wrong', getErrorMessage(error))
+        },
+      })
+
       return
     }
 
     createDrinkSession({
-      plannedStartTime: plannedStartTime.toISOString(),
+      plannedStartTime: dateToUTCNoon(plannedStartTime),
       maxDrinkCount: numberOfDrinks,
       budget: budgetAmount,
       drinkType: selectedDrink,
@@ -146,7 +195,7 @@ function PlanAndPrepareScreen() {
       onSuccess: (data) => {
         const { id } = data
 
-        push({
+        replace({
           pathname: '/drink-tracker/pre-drink-checklist',
           params: {
             sessionId: id,
@@ -159,11 +208,21 @@ function PlanAndPrepareScreen() {
     })
   }
 
-  return (
-    <ThemedGradient style={[{ paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }]}>
-      <Header title={t('title')} />
+  useEffect(() => {
+    if (drinkSession) {
+      setValue('plannedStartTime', drinkSession.plannedStartTime
+        ? new Date(drinkSession.plannedStartTime)
+        : new Date())
+      setValue('maxDrinkCount', drinkSession.maxDrinkCount?.toString() || '1')
+      setValue('budget', drinkSession.budget?.toString() || '0')
+    }
+  }, [drinkSession, setValue])
 
-      <View style={styles.container}>
+  return (
+    <>
+      <ScreenContainer scrollable={false}>
+        <Header title={t('title')} />
+
         <View style={styles.inputs}>
           <ControlledDateInput
             control={control}
@@ -172,7 +231,7 @@ function PlanAndPrepareScreen() {
             placeholder={t('select-your-date')}
             style={styles.input}
             label={t('when-do-you-plan-to-drink')}
-            mode="datetime"
+            mode="date"
           />
 
           <View style={styles.drinkSelectorContainer}>
@@ -241,12 +300,14 @@ function PlanAndPrepareScreen() {
 
         <View style={styles.buttonContainer}>
           <Button
-            title={t('continue')}
+            title={sessionId ? t('update') : t('continue')}
             variant="secondary"
             onPress={handleSubmit(onSubmit)}
+            loading={isCreatingDrinkSession || isUpdatingDrinkSession}
+            disabled={isCreatingDrinkSession || isUpdatingDrinkSession || !isValid}
           />
         </View>
-      </View>
+      </ScreenContainer>
 
       <Modal
         visible={modalVisible}
@@ -274,7 +335,7 @@ function PlanAndPrepareScreen() {
           </View>
         )}
       />
-    </ThemedGradient>
+    </>
   )
 }
 

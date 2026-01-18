@@ -1,44 +1,52 @@
-import { useLocalSearchParams } from 'expo-router'
-import { useState } from 'react'
+import { useLocalSearchParams, useRouter } from 'expo-router'
+import { useEffect, useRef, useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-import { ImageBackground, Pressable, TextInput as RNTextInput, ScrollView, StyleSheet, View } from 'react-native'
-
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import {
+  ImageBackground,
+  Pressable,
+  TextInput as RNTextInput,
+  StyleSheet,
+  View,
+} from 'react-native'
 
 import { useGetSessionDrinks } from '@/api/queries/drink-log'
 import { useGetDrinkSession } from '@/api/queries/drink-session'
 import { useGetSessionReflection, useUpdateReflection } from '@/api/queries/reflections'
+
+import { FEELINGS } from '@/api/queries/reflections/dto'
+
 import { useGetSessionWater } from '@/api/queries/water-log'
 
-import DropIcon from '@/assets/icons/drop'
-import MoneyIcon from '@/assets/icons/money'
-import TimeSinceIcon from '@/assets/icons/time-since'
-import WineIcon from '@/assets/icons/wine'
+import AlertIcon from '@/assets/icons/alert'
 
+import CheckCircleIcon from '@/assets/icons/check-circle'
 import reflectReinforceImage from '@/assets/images/reflect-reinforce.jpg'
-
-import { Button, Header, Modal, TextInput, ThemedGradient, ThemedText } from '@/components'
+import {
+  Button,
+  Header,
+  Modal,
+  ScreenContainer,
+  SelectInput,
+  SessionMetrics,
+  TextInput,
+  ThemedText,
+} from '@/components'
 import { Colors, withOpacity } from '@/constants/theme'
 import { scale, verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: scale(15),
-  },
   scrollView: {
     flex: 1,
   },
   contentContainer: {
     alignItems: 'center',
-    paddingBottom: verticalScale(20),
+    gap: verticalScale(18),
   },
   imageBackground: {
     width: '100%',
     borderRadius: scale(20),
     paddingVertical: verticalScale(31),
     overflow: 'hidden',
-    marginBottom: verticalScale(18),
   },
   imageBackgroundOverlay: {
     position: 'absolute',
@@ -55,43 +63,6 @@ const styles = StyleSheet.create({
   postDrinkingSummary: {
     color: Colors.light.primary4,
     fontWeight: '400',
-    marginBottom: verticalScale(18),
-  },
-  metricsContainer: {
-    width: '100%',
-    gap: verticalScale(12),
-    marginBottom: verticalScale(20),
-  },
-  metricBlock: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: withOpacity(Colors.light.white, 0.5),
-    borderRadius: scale(12),
-    paddingVertical: verticalScale(16),
-    paddingHorizontal: scale(16),
-    gap: scale(12),
-  },
-  metricIconContainer: {
-    width: scale(44),
-    height: scale(44),
-    borderRadius: '50%',
-    backgroundColor: withOpacity(Colors.light.black, 0.05),
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  metricContent: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  metricLabel: {
-    color: withOpacity(Colors.light.black, 0.5),
-    fontWeight: '400',
-  },
-  metricValue: {
-    color: Colors.light.black,
-    fontWeight: '400',
   },
   reflectReinforceInput: {
     width: '100%',
@@ -102,9 +73,10 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     gap: scale(18),
-    marginVertical: verticalScale(18),
   },
   postSessionHypnosisButton: {
+    flexDirection: 'row',
+    gap: scale(14),
     alignItems: 'center',
     justifyContent: 'center',
     width: 336,
@@ -125,6 +97,10 @@ const styles = StyleSheet.create({
     color: Colors.light.primary4,
     marginBottom: verticalScale(16),
     textAlign: 'center',
+    fontWeight: '400',
+  },
+  modalDescriptionBold: {
+    color: Colors.light.primary4,
   },
   modalTextInput: {
     minHeight: verticalScale(120),
@@ -138,13 +114,14 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
     marginBottom: verticalScale(20),
   },
-  modalRememberContainer: {
+  rememberText: {
     textAlign: 'center',
     color: Colors.light.primary4,
     marginBottom: verticalScale(24),
+    fontWeight: '400',
   },
   modalRememberLabel: {
-    fontWeight: '700',
+    color: Colors.light.primary4,
   },
   modalRememberText: {
     textAlign: 'center',
@@ -152,17 +129,24 @@ const styles = StyleSheet.create({
   modalButtonContainer: {
     alignItems: 'center',
   },
+  hydrationModalContainer: {
+    alignItems: 'center',
+    gap: verticalScale(16),
+  },
 })
 
 function ReflectReinforceScreen() {
+  const { push, back } = useRouter()
+  const { t } = useTranslation('reflect-reinforce')
+
   const [reflectReinforce, setReflectReinforce] = useState('')
   const [modalText, setModalText] = useState('')
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isHydrationModalVisible, setIsHydrationModalVisible] = useState(false)
 
-  const { top, bottom } = useSafeAreaInsets()
+  const isInitialMount = useRef(true)
+
   const { sessionId } = useLocalSearchParams()
-
-  const { t } = useTranslation('reflect-reinforce')
 
   const { data: drinkSession } = useGetDrinkSession(Number(sessionId))
   const { data: sessionDrinks } = useGetSessionDrinks(Number(sessionId))
@@ -173,10 +157,16 @@ function ReflectReinforceScreen() {
     sessionReflection?.id,
   )
 
+  // Initialize feeling from sessionReflection, update when it changes
+  const feeling = sessionReflection?.feeling || ''
+
   const actualDrinksCount = sessionDrinks?.length || 0
   const maxDrinksCount = drinkSession?.maxDrinkCount || 0
   const totalWaterCups = sessionWater?.reduce((sum, water) => sum + water.cups, 0) || 0
   const actualSpent = Number(drinkSession?.actualSpent) || 0
+
+  const isHydrated = sessionReflection?.hydrated || false
+  const isPostSessionHypnosis = sessionReflection?.postSessionHypnosis || false
 
   // Format session end time
   const formatEndTime = () => {
@@ -197,7 +187,9 @@ function ReflectReinforceScreen() {
     setModalText(sessionReflection?.learnings || reflectReinforce)
     setIsModalVisible(true)
   }
-
+  const handleOpenHydrationModal = () => {
+    setIsHydrationModalVisible(true)
+  }
   const handleSaveModal = () => {
     if (!sessionReflection?.id) {
       setIsModalVisible(false)
@@ -214,127 +206,125 @@ function ReflectReinforceScreen() {
       },
     )
   }
+  const handleUpdateReflectionHydrated = () => {
+    updateReflection({
+      hydrated: true,
+    }, {
+      onSuccess: () => {
+        setIsHydrationModalVisible(false)
+      },
+    })
+  }
+  const navigateToPostSessionHypnosis = () => {
+    push({
+      pathname: '/drink-tracker/hypnosis',
+      params: {
+        sessionId,
+        reflectionId: sessionReflection?.id,
+        title: t('post-session-hypnosis'),
+        postSessionHypnosis: 1, // 1 = true, 0 = false
+      },
+    })
+  }
+
+  useEffect(() => {
+    if (sessionReflection?.id) {
+      isInitialMount.current = false
+    }
+  }, [sessionReflection?.id])
+
+  // Update feeling when user selects a new one
+  const handleFeelingChange = (newFeeling: string) => {
+    if (!isInitialMount.current && newFeeling && sessionReflection?.id) {
+      updateReflection({
+        feeling: newFeeling,
+      })
+    }
+  }
 
   return (
-    <ThemedGradient style={[{ paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }]}>
+    <ScreenContainer contentContainerStyle={styles.contentContainer}>
       <Header title={t('title')} />
 
-      <View style={styles.container}>
-        <ScrollView
-          style={styles.scrollView}
-          contentContainerStyle={styles.contentContainer}
-          showsVerticalScrollIndicator={false}
-        >
-          <ImageBackground
-            source={reflectReinforceImage}
-            style={styles.imageBackground}
+      <ImageBackground
+        source={reflectReinforceImage}
+        style={styles.imageBackground}
+      >
+        <View style={styles.imageBackgroundOverlay} />
+        <ThemedText type="defaultSemiBold" style={styles.description}>
+          {t('description')}
+        </ThemedText>
+      </ImageBackground>
+
+      <ThemedText
+        type="defaultSemiBold"
+        style={styles.postDrinkingSummary}
+      >
+        {t('post-drinking-summary')}
+      </ThemedText>
+
+      <SessionMetrics
+        actualDrinksCount={actualDrinksCount}
+        maxDrinksCount={maxDrinksCount}
+        totalWaterCups={totalWaterCups}
+        actualSpent={actualSpent}
+        sessionEndTime={formatEndTime()}
+        showEndTime={true}
+      />
+
+      <SelectInput
+        options={FEELINGS.map(feeling => ({
+          label: feeling,
+          value: feeling,
+        }))}
+        value={feeling}
+        onChange={handleFeelingChange}
+        label={t('how-are-you-feeling')}
+        placeholder={t('select-your-feeling')}
+        style={styles.reflectReinforceInput}
+
+      />
+
+      <Pressable onPress={handleOpenModal}>
+        <TextInput
+          pointerEvents="none"
+          style={styles.reflectReinforceInput}
+          placeholder={t('take-a-moment-to-reflect-on-your-experience')}
+          placeholderTextColor={withOpacity(Colors.light.black, 0.5)}
+          label={t('what-did-you-learn-from-last-night')}
+          value={sessionReflection?.learnings || reflectReinforce}
+          onChangeText={setReflectReinforce}
+          editable={false}
+        />
+      </Pressable>
+
+      <View style={styles.postSessionHypnosisContainer}>
+        <Pressable style={styles.postSessionHypnosisButton} onPress={navigateToPostSessionHypnosis}>
+          {isPostSessionHypnosis && <CheckCircleIcon />}
+
+          <ThemedText
+            type="defaultSemiBold"
+            style={styles.postSessionHypnosisText}
           >
-            <View style={styles.imageBackgroundOverlay} />
-            <ThemedText type="defaultSemiBold" style={styles.description}>
-              {t('description')}
-            </ThemedText>
-          </ImageBackground>
+            {t('post-session-hypnosis')}
+          </ThemedText>
+        </Pressable>
 
-          <ThemedText type="defaultSemiBold" style={styles.postDrinkingSummary}>{t('post-drinking-summary')}</ThemedText>
+        <Pressable style={styles.postSessionHypnosisButton} onPress={handleOpenHydrationModal}>
+          {isHydrated && <CheckCircleIcon />}
 
-          <View style={styles.metricsContainer}>
-            {/* Drinks Block */}
-            <View style={styles.metricBlock}>
-              <View style={styles.metricIconContainer}>
-                <WineIcon width={scale(14)} height={scale(24)} />
-              </View>
-              <View style={styles.metricContent}>
-                <ThemedText type="default" style={styles.metricLabel}>
-                  {t('drinks')}
-                </ThemedText>
-                <ThemedText type="defaultSemiBold" style={styles.metricValue}>
-                  {`${actualDrinksCount}/${maxDrinksCount}*`}
-                </ThemedText>
-              </View>
-            </View>
+          <ThemedText
+            type="defaultSemiBold"
+            style={styles.postSessionHypnosisText}
+          >
+            {t('stay-hydrated')}
+          </ThemedText>
 
-            {/* Water Block */}
-            <View style={styles.metricBlock}>
-              <View style={styles.metricIconContainer}>
-                <DropIcon color={Colors.light.primary} width={scale(19)} height={scale(25)} />
-              </View>
-              <View style={styles.metricContent}>
-                <ThemedText type="default" style={styles.metricLabel}>
-                  {t('water')}
-                </ThemedText>
-                <ThemedText type="defaultSemiBold" style={styles.metricValue}>
-                  {`${totalWaterCups}*`}
-                </ThemedText>
-              </View>
-            </View>
-
-            {/* Cost Block */}
-            <View style={styles.metricBlock}>
-              <View style={styles.metricIconContainer}>
-                <MoneyIcon width={scale(45)} height={scale(45)} />
-              </View>
-              <View style={styles.metricContent}>
-                <ThemedText type="default" style={styles.metricLabel}>
-                  {t('const')}
-                </ThemedText>
-                <ThemedText type="defaultSemiBold" style={styles.metricValue}>
-                  {`$${actualSpent.toFixed(2)}*`}
-                </ThemedText>
-              </View>
-            </View>
-
-            {/* Session End Time Block */}
-            <View style={styles.metricBlock}>
-              <View style={styles.metricIconContainer}>
-                <TimeSinceIcon width={scale(26)} height={scale(26)} />
-              </View>
-              <View style={styles.metricContent}>
-                <ThemedText type="default" style={styles.metricLabel}>
-                  {t('session-end-time')}
-                </ThemedText>
-                <ThemedText type="defaultSemiBold" style={styles.metricValue}>
-                  {formatEndTime()}
-                </ThemedText>
-              </View>
-            </View>
-          </View>
-
-          <Pressable onPress={handleOpenModal}>
-            <TextInput
-              pointerEvents="none"
-              style={styles.reflectReinforceInput}
-              placeholder={t('take-a-moment-to-reflect-on-your-experience')}
-              placeholderTextColor={withOpacity(Colors.light.black, 0.5)}
-              label={t('what-did-you-learn-from-last-night')}
-              value={sessionReflection?.learnings || reflectReinforce}
-              onChangeText={setReflectReinforce}
-              editable={false}
-            />
-          </Pressable>
-
-          <View style={styles.postSessionHypnosisContainer}>
-            <Pressable style={styles.postSessionHypnosisButton}>
-              <ThemedText
-                type="defaultSemiBold"
-                style={styles.postSessionHypnosisText}
-              >
-                {t('post-session-hypnosis')}
-              </ThemedText>
-            </Pressable>
-
-            <Pressable style={styles.postSessionHypnosisButton}>
-              <ThemedText
-                type="defaultSemiBold"
-                style={styles.postSessionHypnosisText}
-              >
-                {t('stay-hydrated')}
-              </ThemedText>
-            </Pressable>
-          </View>
-
-          <Button title={t('continue')} variant="secondary" onPress={() => {}} />
-        </ScrollView>
+          <AlertIcon />
+        </Pressable>
       </View>
+
+      <Button title={t('done')} variant="secondary" onPress={back} />
 
       <Modal visible={isModalVisible} onClose={() => setIsModalVisible(false)}>
         <ThemedText type="defaultSemiBold" style={styles.modalTitle}>
@@ -357,13 +347,12 @@ function ReflectReinforceScreen() {
           />
         </View>
 
-        <ThemedText type="default" style={styles.modalRememberContainer}>
+        <ThemedText type="defaultSemiBold" style={styles.rememberText}>
           <Trans
-            i18nKey="remember-when-you-mess-up-those-moments-are-golden-opportunities-to-learn-adjust-and-grow"
-            ns="reflect-reinforce"
-            components={{
-              0: <ThemedText key="0" type="defaultSemiBold" style={styles.modalRememberLabel} />,
-            }}
+            i18nKey="reflect-reinforce:remember-when-you-mess-up"
+            components={[
+              <ThemedText key="0" type="defaultSemiBold" style={styles.modalRememberLabel} />,
+            ]}
           />
         </ThemedText>
 
@@ -376,7 +365,23 @@ function ReflectReinforceScreen() {
           />
         </View>
       </Modal>
-    </ThemedGradient>
+
+      <Modal visible={isHydrationModalVisible} onClose={() => setIsHydrationModalVisible(false)}>
+        <View style={styles.hydrationModalContainer}>
+          <ThemedText type="defaultSemiBold" style={styles.modalDescription}>
+            <Trans
+              i18nKey="reflect-reinforce:stay-hydrated-description"
+              components={[
+                <ThemedText key="0" type="defaultSemiBold" style={styles.modalDescriptionBold} />,
+                <ThemedText key="1" type="defaultSemiBold" style={styles.modalDescriptionBold} />,
+              ]}
+            />
+          </ThemedText>
+
+          <Button title={t('got-it')} onPress={handleUpdateReflectionHydrated} />
+        </View>
+      </Modal>
+    </ScreenContainer>
   )
 }
 

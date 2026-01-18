@@ -2,11 +2,9 @@ import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useTranslation } from 'react-i18next'
 import { ImageBackground, Pressable, StyleSheet, View } from 'react-native'
 
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-
 import manageUrgesBackgroundImage from '@/assets/images/manage-urges.jpg'
 
-import { Button, Header, ThemedGradient, ThemedText } from '@/components'
+import { Button, Header, ScreenContainer, ThemedText } from '@/components'
 
 import { Colors, withOpacity } from '@/constants/theme'
 import { scale, verticalScale } from '@/utils/responsive'
@@ -15,7 +13,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    paddingHorizontal: scale(15),
   },
   imageBackground: {
     width: '100%',
@@ -38,12 +35,13 @@ const styles = StyleSheet.create({
   },
   exercisesContainer: {
     gap: verticalScale(18),
+    marginBottom: verticalScale(20),
   },
   exerciseItem: {
     paddingHorizontal: scale(20),
     paddingVertical: verticalScale(15),
     borderRadius: scale(20),
-    backgroundColor: withOpacity(Colors.light.white, 0.8),
+    backgroundColor: withOpacity(Colors.light.tertiaryBackground, 0.8),
   },
   actionItem: {
     flexDirection: 'row',
@@ -58,8 +56,21 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: Colors.light.primary4,
   },
+  manageUrgesContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: scale(20),
+    paddingVertical: verticalScale(19),
+    alignSelf: 'center',
+    width: 240,
+    backgroundColor: withOpacity(Colors.light.tertiaryBackground, 0.8),
+    marginBottom: verticalScale(30),
+  },
+  manageUrgesTitle: {
+    color: Colors.light.error2,
+  },
   button: {
-    marginTop: 'auto',
+    alignSelf: 'center',
   },
 })
 
@@ -67,16 +78,15 @@ function ManageUrgesScreen() {
   const { push } = useRouter()
 
   const { t } = useTranslation('manage-urges')
-  const { top, bottom } = useSafeAreaInsets()
 
   const { sessionId } = useLocalSearchParams()
 
-  // const navigateToBoxBreathing = () => {
-  //   push({
-  //     pathname: '/drink-tracker/box-breathing',
-  //     params: { sessionId },
-  //   })
-  // }
+  const navigateToBoxBreathing = () => {
+    push('/box-breathing')
+  }
+  const navigateToManageUrges = () => {
+    push('/urge-surfing-meditation')
+  }
   const navigateToQuickWriting = () => {
     push({
       pathname: '/drink-tracker/quick-writing',
@@ -91,53 +101,57 @@ function ManageUrgesScreen() {
   }
 
   return (
-    <ThemedGradient style={[{ paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }]}>
+    <ScreenContainer>
       <Header title={t('title')} />
 
-      <View style={styles.container}>
-        <ImageBackground source={manageUrgesBackgroundImage} style={styles.imageBackground}>
-          <View style={styles.backgroundImageOverlay} />
+      <ImageBackground source={manageUrgesBackgroundImage} style={styles.imageBackground}>
+        <View style={styles.backgroundImageOverlay} />
 
-          <ThemedText type="preSubtitle" style={styles.rememberText}>
-            {t('remember', { mantra: 'I\'m doing just fine!' })}
+        <ThemedText type="preSubtitle" style={styles.rememberText}>
+          {t('remember', { mantra: 'I\'m doing just fine!' })}
+        </ThemedText>
+      </ImageBackground>
+
+      <View style={styles.exercisesContainer}>
+        <Pressable style={styles.exerciseItem} onPress={navigateToBoxBreathing}>
+          <ThemedText type="defaultSemiBold" style={styles.exerciseItemTitle}>
+            {t('box-breathing')}
           </ThemedText>
-        </ImageBackground>
 
-        <View style={styles.exercisesContainer}>
-          {/* <View style={styles.exerciseItem}>
-            <ThemedText type="defaultSemiBold" style={styles.exerciseItemTitle}>
-              {t('box-breathing')}
-            </ThemedText>
+          <ThemedText type="defaultSemiBold" style={styles.exerciseItemDescription}>
+            {t('box-breathing-description')}
+          </ThemedText>
+        </Pressable>
 
-            <ThemedText type="defaultSemiBold" style={styles.exerciseItemDescription}>
-              {t('box-breathing-description')}
-            </ThemedText>
-          </View> */}
+        <Pressable style={styles.exerciseItem} onPress={navigateToSelfHypnosis}>
+          <ThemedText type="defaultSemiBold" style={styles.exerciseItemTitle}>
+            {t('self-hypnosis')}
+          </ThemedText>
 
-          <Pressable style={styles.exerciseItem} onPress={navigateToSelfHypnosis}>
-            <ThemedText type="defaultSemiBold" style={styles.exerciseItemTitle}>
-              {t('self-hypnosis')}
-            </ThemedText>
+          <ThemedText type="defaultSemiBold" style={styles.exerciseItemDescription}>
+            {t('self-hypnosis-description')}
+          </ThemedText>
+        </Pressable>
 
-            <ThemedText type="defaultSemiBold" style={styles.exerciseItemDescription}>
-              {t('self-hypnosis-description')}
-            </ThemedText>
-          </Pressable>
+        <Pressable style={styles.exerciseItem} onPress={navigateToQuickWriting}>
+          <ThemedText type="defaultSemiBold" style={styles.exerciseItemTitle}>
+            {t('quick-writing')}
+          </ThemedText>
 
-          <Pressable style={styles.exerciseItem} onPress={navigateToQuickWriting}>
-            <ThemedText type="defaultSemiBold" style={styles.exerciseItemTitle}>
-              {t('quick-writing')}
-            </ThemedText>
-
-            <ThemedText type="defaultSemiBold" style={styles.exerciseItemDescription}>
-              {t('quick-writing-description')}
-            </ThemedText>
-          </Pressable>
-        </View>
-
-        <Button variant="secondary" title={t('done')} style={styles.button} />
+          <ThemedText type="defaultSemiBold" style={styles.exerciseItemDescription}>
+            {t('quick-writing-description')}
+          </ThemedText>
+        </Pressable>
       </View>
-    </ThemedGradient>
+
+      <Pressable style={styles.manageUrgesContainer} onPress={navigateToManageUrges}>
+        <ThemedText type="defaultSemiBold" style={styles.manageUrgesTitle}>
+          {t('manage-urge-video')}
+        </ThemedText>
+      </Pressable>
+
+      <Button variant="secondary" title={t('done')} style={styles.button} />
+    </ScreenContainer>
   )
 }
 

@@ -22,6 +22,7 @@ export interface User {
   gifts?: Gift[]
   fears?: Fear[]
   medicalQuestionsCompletedAt: Date | null
+  createdAt: Date
 }
 
 export type SubscriptionStatus = 'trial' | 'active' | 'expired' | 'cancelled' | 'billing_issue' | 'grace_period'

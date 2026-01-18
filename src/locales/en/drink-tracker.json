@@ -1,6 +1,7 @@
 {
   "title": "Drink Tracker",
   "motivational-message": "We're really proud of you for being\n here and <0>being honest with yourself!</0>",
+  "insights-dashboard": "Insights Dashboard",
   "actions": {
     "start": "Start",
     "continue": "Continue",
@@ -25,10 +26,32 @@
       "description": "Learn from the experience and\nbuild momentum."
     }
   },
-  "tip": "Tip: Bring headphones with you!",
+  "tip": "<0>Tip:</0> Bring headphones with you!",
 
   "info-no-session-found": "No session found",
   "info-no-session-found-description": "Please plan a session for today",
 
-  "continue-with-today-session": "Continue with today's session"
+  "continue-with-active-session": "Continue with active session",
+  "completed-session": "Completed Session",
+
+  "day-summary": {
+    "exceeded-limit": "You drank more than intended. \n <0>Golden opportunity here</0>, what \n can you learn from this?",
+    "followed-plan": "You followed your plan! That's \n what <0>conscious drinking</0> \n looks like.",
+    "abstained": "You won the day! No drinks \n today, and that's everything. \n <0>One day at a time.</0>",
+
+    "planned-session-reminder": "A reminder of what you <0>committed to</0>:",
+    "drink-type": "Drink Type: [*{{type}}]",
+    "max-drinks": "Max Drinks: [*{{maxDrinks}}]",
+    "budget": "Budget: [*${{budget}}]",
+
+    "edit-session": "Edit",
+    "delete-session": "Delete",
+    "delete-session-title": "Delete Session",
+    "delete-session-message": "Are you sure you want to delete this session? This action cannot be undone.",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "delete-session-success": "Session deleted",
+    "delete-session-success-message": "The session has been successfully deleted.",
+    "delete-session-error": "Error"
+  }
 }

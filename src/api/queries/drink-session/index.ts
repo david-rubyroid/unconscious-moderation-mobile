@@ -2,6 +2,7 @@ import type {
   CreateDrinkSessionRequest,
   CreateDrinkSessionResponse,
   DrinkSessionResponse,
+  DrinkSessionWithStatsResponse,
   UpdateDrinkSessionRequest,
   UpdateDrinkSessionResponse,
 } from './dto'
@@ -27,6 +28,7 @@ export function useCreateDrinkSession(
       queryClient.invalidateQueries({ queryKey: ['drink-tracker', 'sessions'] })
       queryClient.invalidateQueries({ queryKey: ['drink-tracker', 'current-session'] })
       queryClient.invalidateQueries({ queryKey: ['drink-tracker', 'sessions', 'current-week'] })
+      queryClient.invalidateQueries({ queryKey: ['drink-tracker', 'sessions', 'calendar'] })
     },
     ...options,
   })
@@ -76,6 +78,23 @@ export function useGetCurrentDrinkSession(options?: QueryOptions<DrinkSessionRes
   })
 }
 
+export function useGetDrinkSessionsCalendar(
+  month: number,
+  year: number,
+  options?: QueryOptions<DrinkSessionWithStatsResponse[]>,
+) {
+  return useQuery({
+    queryKey: ['drink-tracker', 'sessions', 'calendar', month, year],
+    queryFn: createQueryFn<DrinkSessionWithStatsResponse[]>('drink-tracker/sessions/month', {
+      month,
+      year,
+    }),
+    staleTime: QUERY_SHORT_CACHE.STALE_TIME,
+    retry: QUERY_SHORT_CACHE.RETRY,
+    ...options,
+  })
+}
+
 export function useUpdateDrinkSession(
   sessionId: number,
   options?: MutationOptions<UpdateDrinkSessionResponse, Error, UpdateDrinkSessionRequest>,
@@ -92,6 +111,28 @@ export function useUpdateDrinkSession(
       queryClient.invalidateQueries({ queryKey: ['drink-tracker', 'sessions'] })
       queryClient.invalidateQueries({ queryKey: ['drink-tracker', 'current-session'] })
       queryClient.invalidateQueries({ queryKey: ['drink-tracker', 'sessions', 'current-week'] })
+      queryClient.invalidateQueries({ queryKey: ['drink-tracker', 'sessions', 'calendar'] })
+    },
+    ...options,
+  })
+}
+
+export function useDeleteDrinkSession(
+  options?: MutationOptions<void, Error, number>,
+) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: createMutationFn<void, number>(
+      'delete',
+      (id: number) => `drink-tracker/sessions/${id}`,
+      { skipBody: true },
+    ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['drink-tracker', 'sessions'] })
+      queryClient.invalidateQueries({ queryKey: ['drink-tracker', 'current-session'] })
+      queryClient.invalidateQueries({ queryKey: ['drink-tracker', 'sessions', 'current-week'] })
+      queryClient.invalidateQueries({ queryKey: ['drink-tracker', 'sessions', 'calendar'] })
     },
     ...options,
   })

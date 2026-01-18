@@ -217,7 +217,7 @@ function MantraScreen() {
 
             <Pressable onPress={handleCreateMantra}>
               <TextInput
-                placeholder={t('type-here')}
+                placeholder={t('create-a-new-one')}
                 style={styles.textInput}
                 editable={false}
                 pointerEvents="none"

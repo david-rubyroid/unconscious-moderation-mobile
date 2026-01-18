@@ -50,7 +50,14 @@
       ],
       "expo-font",
       "expo-localization",
-      "expo-web-browser"
+      "expo-web-browser",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow access to your photos.",
+          "cameraPermission": "Allow access to your camera."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

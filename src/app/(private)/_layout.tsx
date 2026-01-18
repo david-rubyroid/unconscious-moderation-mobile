@@ -48,15 +48,14 @@ function ProtectedLayout() {
         <Stack.Screen name="purchase" />
 
         <Stack.Screen name="drink-tracker/index" />
-        <Stack.Screen name="drink-tracker/drink-tracker-steps" />
-        <Stack.Screen name="drink-tracker/plan-and-prepare" />
         <Stack.Screen name="drink-tracker/hypnosis" />
         <Stack.Screen name="drink-tracker/hydration" />
         <Stack.Screen name="drink-tracker/mantra" />
         <Stack.Screen name="drink-tracker/pre-drink-checklist" />
-        <Stack.Screen name="drink-tracker/drink-with-awareness" />
+        <Stack.Screen name="drink-tracker/drink-with-awareness/index" />
         <Stack.Screen name="drink-tracker/log-drink" />
         <Stack.Screen name="drink-tracker/manage-urges" />
+        <Stack.Screen name="drink-tracker/photo-record" />
 
         <Stack.Screen name="free-drink-tracker/start-tracking" />
         <Stack.Screen name="free-drink-tracker/reset-tracking" />

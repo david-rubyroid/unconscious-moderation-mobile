@@ -15,6 +15,7 @@
   "type-here": "Type here",
   "my-mantras": "My Mantras",
   "save": "Save",
+  "create-a-new-one": "Create a new one",
 
   "error-creating-mantra": "Mantra has to be at least 1 character long"
 }

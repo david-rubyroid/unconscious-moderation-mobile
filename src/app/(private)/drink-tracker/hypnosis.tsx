@@ -3,13 +3,15 @@ import { useTranslation } from 'react-i18next'
 
 import { StyleSheet, View } from 'react-native'
 
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-
 import { useUpdateDrinkSession } from '@/api/queries/drink-session'
 
-import { AudioPlayer, Button, Header, ThemedGradient } from '@/components'
+import { useUpdateReflection } from '@/api/queries/reflections'
+
+import { AudioPlayer, Button, Header, ScreenContainer } from '@/components'
+
 import { HYPNOSIS_LINKS } from '@/constants/hypnosis-links'
-import { scale, verticalScale } from '@/utils/responsive'
+
+import { scale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
   container: {
@@ -26,11 +28,22 @@ function PreDrinkHypnosisScreen() {
   const { back } = useRouter()
   const { t } = useTranslation('hypnosis')
 
-  const { top, bottom } = useSafeAreaInsets()
-  const { sessionId } = useLocalSearchParams()
+  const { sessionId, reflectionId, title, postSessionHypnosis } = useLocalSearchParams()
   const { mutate: updateDrinkSession } = useUpdateDrinkSession(Number(sessionId))
+  const { mutate: updateReflection } = useUpdateReflection(Number(reflectionId))
 
-  const handleUpdateDrinkSession = () => {
+  const handleUpdate = () => {
+    if (postSessionHypnosis) {
+      updateReflection({
+        postSessionHypnosis: true,
+      }, {
+        onSuccess: () => {
+          back()
+        },
+      })
+      return
+    }
+
     updateDrinkSession({
       selfHypnosis: true,
     }, {
@@ -41,8 +54,8 @@ function PreDrinkHypnosisScreen() {
   }
 
   return (
-    <ThemedGradient style={[{ paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }]}>
-      <Header title={t('title')} />
+    <ScreenContainer>
+      <Header title={title as string || t('title')} />
 
       <View style={styles.container}>
         <AudioPlayer audioUri={HYPNOSIS_LINKS.preDrinkHypnosis} />
@@ -51,12 +64,12 @@ function PreDrinkHypnosisScreen() {
           <Button
             variant="secondary"
             title={t('done')}
-            onPress={handleUpdateDrinkSession}
+            onPress={handleUpdate}
           />
         </View>
       </View>
 
-    </ThemedGradient>
+    </ScreenContainer>
   )
 }
 

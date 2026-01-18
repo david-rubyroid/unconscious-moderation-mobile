@@ -19,7 +19,6 @@ interface HeaderProps {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: scale(23),
     paddingVertical: verticalScale(12),
     marginBottom: verticalScale(26),
     flexDirection: 'row',

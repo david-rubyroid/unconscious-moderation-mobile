@@ -32,6 +32,7 @@ interface DrinkSessionResponse {
   userId: number
   plannedStartTime: string
   maxDrinkCount: number
+  drinkType: DrinkType
   budget?: number
   actualStartTime?: string
   actualEndTime?: string
@@ -80,10 +81,16 @@ interface UpdateDrinkSessionResponse {
   mantra?: string
 }
 
+interface DrinkSessionWithStatsResponse extends DrinkSessionResponse {
+  totalDrinks: number
+  totalWaterCups: number
+}
+
 export type {
   CreateDrinkSessionRequest,
   CreateDrinkSessionResponse,
   DrinkSessionResponse,
+  DrinkSessionWithStatsResponse,
   UpdateDrinkSessionRequest,
   UpdateDrinkSessionResponse,
 }

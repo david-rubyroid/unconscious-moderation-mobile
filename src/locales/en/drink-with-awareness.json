@@ -1,10 +1,12 @@
 {
   "title": "Drink with Awareness",
-  "remember": "Remember: \n \"{{mantra}}\" ",
+  "remember": "Remember: \"{{mantra}}\" ",
   "drinks": "Drinks",
   "waters": "Waters",
   "log-drink": "Log Drink",
   "log-water": "Log Water",
+
+  "logged-drinks": "Logged Drinks",
 
   "pro-tip": "ProTip:",
   "pro-tip-description": "Drink <0>more water</0> than <1>drinks</1>.\nYour tomorrow self will <2>thank you!</2>",
@@ -14,5 +16,26 @@
 
   "self-hypnosis": "Self-hypnosis",
   "finish-drinking": "Finish Drinking",
-  "manage-urges": "Manage Urges"
+
+  "manage-urges": "Manage Urges",
+  "we-get-it": "We Get It",
+  "struggling-with-an-urge": "<0>Struggling with an urge?</0>\n That's part of the process. Here are some tools that can help you right now:",
+  "first-things-first": "<0>First things first:</0> Order a glass of water. Take a moment to check in with yourself.",
+  "if-the-urge-feels-overwhelming": "<0>If the urge feels overwhelming:</0>\n Go home. Your tomorrow self will thank you. There's no shame in removing yourself from a situation that doesn't feel right.",
+  "you-ve-got-this": "You've got this.",
+
+  "warning-exceeding-app-recommendation": "Warning: Exceeding App Recommendation",
+  "warning-exceeding-app-recommendation-description": "You're going over <0>the app's recommended limit of 3 long drinks.</0> Remember, this limit exists to support your transformation and help you stay in control. Consider pausing here, your future self will thank you.",
+
+  "warning-exceeding-your-planned-limit": "Warning: Exceeding Your Planned Limit",
+  "warning-exceeding-your-planned-limit-description": "<0>You've gone past the drink limit you set for yourself.</0> Take a moment to check in, what's driving this choice? You have the power to stop here and honor the commitment you made to yourself.",
+
+  "time-for-your-hypnosis": "Time For Your Hypnosis!",
+  "time-for-your-hypnosis-description": "Take 60 seconds to reset and reconnect with your intention. This quick practice helps you stay conscious and in control throughout the night.",
+
+  "great-job-tracking-your-drinks-tonight": "Great Job Tracking Your Drinks Tonight!",
+  "great-job-tracking-your-drinks-tonight-description": "You can do the Reflect and Reinforce exercise when you get home or tomorrow, whatever works best for you. Right now, the most important thing is to hydrate before going to sleep. You can decide when to complete the rest.",
+
+  "continue": "Continue",
+  "okay": "Okay"
 }
