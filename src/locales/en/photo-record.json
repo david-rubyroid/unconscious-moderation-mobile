@@ -1,0 +1,11 @@
+{
+  "photo-record": "Photo Record",
+  "take-photo": "Take Photo",
+  "choose-from-gallery": "Gallery Photos",
+  "retake": "Retake",
+  "attach": "Attach",
+  "select-photo": "Select a photo",
+  "photo-permission-denied": "Camera permission is required to take photos",
+  "gallery-permission-denied": "Gallery permission is required to select photos",
+  "photo-error": "Failed to take photo"
+}

@@ -19,6 +19,7 @@ import enMantra from '@/locales/en/mantra.json'
 import enMedicalReport from '@/locales/en/medical-report.json'
 import enMovement from '@/locales/en/movement.json'
 import enMyProgress from '@/locales/en/my-progress.json'
+import enPhotoRecord from '@/locales/en/photo-record.json'
 import enPlanSession from '@/locales/en/plan-session.json'
 import enPreDrinkChecklist from '@/locales/en/pre-drink-checklist.json'
 import enProfile from '@/locales/en/profile.json'
@@ -68,6 +69,7 @@ const localeFiles = {
   'en/quotes': enQuotes,
   'en/blinkist': enBlinkist,
   'en/external-resources': enExternalResources,
+  'en/photo-record': enPhotoRecord,
 }
 
 export function getResources() {

@@ -4,7 +4,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router'
 import { Trans, useTranslation } from 'react-i18next'
 import { ImageBackground, Pressable, ScrollView, StyleSheet, View } from 'react-native'
 
-import { useGetDrinkSession } from '@/api/queries/drink-session'
+import { useGetDrinkSession, useUpdateDrinkSession } from '@/api/queries/drink-session'
 
 import selfHypnosisImage from '@/assets/images/end-of-trial.jpg'
 import mantraImage from '@/assets/images/plan-and-prepare.jpg'
@@ -21,7 +21,9 @@ import {
 
 import { Colors, withOpacity } from '@/constants/theme'
 
+import { getErrorMessage } from '@/utils/error-handler'
 import { scale, verticalScale } from '@/utils/responsive'
+import { showErrorToast } from '@/utils/toast'
 
 const styles = StyleSheet.create({
   preparationMessage: {
@@ -94,10 +96,11 @@ const styles = StyleSheet.create({
 })
 
 function PreDrinkChecklistScreen() {
-  const { push } = useRouter()
+  const { push, replace } = useRouter()
   const { sessionId } = useLocalSearchParams()
 
   const { data: session } = useGetDrinkSession(Number(sessionId))
+  const { mutate: updateDrinkSession } = useUpdateDrinkSession(Number(sessionId))
 
   const { t } = useTranslation('pre-drink-checklist')
 
@@ -115,6 +118,7 @@ function PreDrinkChecklistScreen() {
       status: session?.mantra ? 'completed' : 'pending',
     },
   ] as Step[]
+  const isReadyToStartDrinkSession = steps.every(step => step.status === 'completed')
 
   const navigateToHydration = () => {
     push({
@@ -134,10 +138,19 @@ function PreDrinkChecklistScreen() {
       params: { sessionId },
     })
   }
-  const navigateToDrinkTrackerSteps = () => {
-    push({
-      pathname: '/drink-tracker/plan-session',
-      params: { sessionId },
+  const startDrinkSession = () => {
+    updateDrinkSession({
+      status: 'active',
+    }, {
+      onSuccess: () => {
+        replace({
+          pathname: '/drink-tracker/drink-with-awareness',
+          params: { sessionId },
+        })
+      },
+      onError: (error) => {
+        showErrorToast('Oops! Something went wrong', getErrorMessage(error))
+      },
     })
   }
 
@@ -237,9 +250,10 @@ function PreDrinkChecklistScreen() {
         </ThemedText>
 
         <Button
+          disabled={!isReadyToStartDrinkSession}
           variant="secondary"
           title={t('start')}
-          onPress={navigateToDrinkTrackerSteps}
+          onPress={startDrinkSession}
         />
       </View>
     </ScreenContainer>

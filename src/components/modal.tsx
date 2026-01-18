@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react'
-import { Pressable, StyleSheet } from 'react-native'
+import { useEffect, useRef, useState } from 'react'
+import { Pressable, Modal as RNModal, StyleSheet } from 'react-native'
 import Animated, {
   Easing,
   runOnJS,
-  useAnimatedProps,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
@@ -16,19 +15,15 @@ interface ModalProps {
   visible: boolean
   onClose: () => void
   children: React.ReactNode
+  fullWidth?: boolean
 }
 
 const styles = StyleSheet.create({
   overlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    flex: 1,
     backgroundColor: withOpacity(Colors.light.black, 0.5),
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 1000,
   },
   modal: {
     backgroundColor: Colors.light.tertiaryBackground,
@@ -37,19 +32,47 @@ const styles = StyleSheet.create({
     paddingVertical: verticalScale(59),
     width: '95%',
   },
+  fullWidth: {
+    minWidth: '95%',
+  },
 })
 
 function Modal({
   visible,
   onClose,
   children,
+  fullWidth = false,
 }: ModalProps) {
   const opacity = useSharedValue(0)
   const scaleValue = useSharedValue(0.8)
   const [shouldRender, setShouldRender] = useState(visible)
+  const [isClosing, setIsClosing] = useState(false)
+  const prevVisibleRef = useRef(visible)
+
+  const overlayStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+  }))
+
+  const modalStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+    transform: [{ scale: scaleValue.value }],
+  }))
+
+  const handleClose = () => {
+    setIsClosing(true)
+  }
+
+  // Reset isClosing when modal becomes visible (transition from false to true)
+  useEffect(() => {
+    if (visible && !prevVisibleRef.current) {
+      setIsClosing(false)
+    }
+    prevVisibleRef.current = visible
+  }, [visible])
 
   useEffect(() => {
-    if (visible) {
+    if (visible && !isClosing) {
+      // Opening animation
       opacity.value = withTiming(1, {
         duration: 200,
         easing: Easing.out(Easing.ease),
@@ -65,7 +88,8 @@ function Modal({
         },
       )
     }
-    else {
+    else if (!visible || isClosing) {
+      // Closing animation
       opacity.value = withTiming(0, {
         duration: 200,
         easing: Easing.in(Easing.ease),
@@ -79,49 +103,35 @@ function Modal({
         (finished) => {
           if (finished) {
             runOnJS(setShouldRender)(false)
+            runOnJS(setIsClosing)(false)
+            runOnJS(onClose)()
           }
         },
       )
     }
-  }, [visible, opacity, scaleValue])
+  }, [visible, isClosing, opacity, scaleValue, onClose])
 
-  const overlayStyle = useAnimatedStyle(() => ({
-    opacity: opacity.value,
-    pointerEvents: opacity.value > 0 ? ('auto' as const) : ('none' as const),
-  }))
-
-  const modalStyle = useAnimatedStyle(() => ({
-    opacity: opacity.value,
-    transform: [{ scale: scaleValue.value }],
-  }))
-
-  const handleClose = () => {
-    onClose()
-  }
-
-  const animatedOverlayProps = useAnimatedProps(() => ({
-    pointerEvents: opacity.value > 0 ? ('auto' as const) : ('none' as const),
-  }))
-
-  // Don't render if not visible and animation is complete
-  if (!visible && !shouldRender) {
+  // Don't render if not visible, not closing, and animation is complete
+  if (!visible && !isClosing && !shouldRender) {
     return null
   }
 
   return (
-    <>
-      <Animated.View
-        style={[styles.overlay, overlayStyle]}
-        animatedProps={animatedOverlayProps}
-      >
+    <RNModal
+      visible={visible || isClosing}
+      transparent
+      animationType="none"
+      onRequestClose={handleClose}
+    >
+      <Animated.View style={[styles.overlay, overlayStyle]}>
         <Pressable style={StyleSheet.absoluteFill} onPress={handleClose} />
         <Pressable onPress={e => e.stopPropagation()}>
-          <Animated.View style={[styles.modal, modalStyle]}>
+          <Animated.View style={[styles.modal, modalStyle, fullWidth ? styles.fullWidth : {}]}>
             {children}
           </Animated.View>
         </Pressable>
       </Animated.View>
-    </>
+    </RNModal>
   )
 }
 

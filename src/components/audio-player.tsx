@@ -1,8 +1,6 @@
-import { MaterialIcons } from '@expo/vector-icons'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native'
-import { Gesture, GestureDetector } from 'react-native-gesture-handler'
-import Animated, { Easing, runOnJS, useAnimatedProps, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import Animated, { Easing, useAnimatedProps, useSharedValue, withTiming } from 'react-native-reanimated'
 import Svg, { Circle, Defs, LinearGradient, Stop } from 'react-native-svg'
 
 import PauseIcon from '@/assets/icons/pause'
@@ -126,18 +124,20 @@ const styles = StyleSheet.create({
 })
 
 function AudioPlayer({ audioUri, instructionText = 'Close your eyes, breathe \n deeply, and let go ...' }: AudioPlayerProps) {
-  const [sliderWidth, setSliderWidth] = useState(233)
-  const thumbPosition = useSharedValue(0)
-  const startX = useSharedValue(0)
+  // TODO: remove this if we don't need it
+  // const [sliderWidth, setSliderWidth] = useState(233)
+  // const thumbPosition = useSharedValue(0)
+  // const startX = useSharedValue(0)
+
   const hasRestartedRef = useRef(false)
 
   const {
+    // volume,
+    // setVolume,
     isPlaying,
     currentTime,
     duration,
-    volume,
     togglePlayPause,
-    setVolume,
     isLoading,
     play,
     seekTo,
@@ -153,11 +153,11 @@ function AudioPlayer({ audioUri, instructionText = 'Close your eyes, breathe \n 
     })
   }, [progress, animatedProgress])
 
-  useEffect(() => {
-    thumbPosition.value = withTiming(volume * sliderWidth, {
-      duration: 0,
-    })
-  }, [volume, sliderWidth, thumbPosition])
+  // useEffect(() => {
+  //   thumbPosition.value = withTiming(volume * sliderWidth, {
+  //     duration: 0,
+  //   })
+  // }, [volume, sliderWidth, thumbPosition])
 
   // Automatic restart when the audio ends
   useEffect(() => {
@@ -193,42 +193,43 @@ function AudioPlayer({ audioUri, instructionText = 'Close your eyes, breathe \n 
     }
   })
 
-  const updateVolume = (newVolume: number) => {
-    setVolume(newVolume)
-  }
+  // TODO: remove this if we don't need it
+  // const updateVolume = (newVolume: number) => {
+  //   setVolume(newVolume)
+  // }
 
-  const panGesture = Gesture.Pan()
-    .onStart(() => {
-      startX.value = thumbPosition.value
-    })
-    .onUpdate((event) => {
-      const newPosition = Math.max(0, Math.min(sliderWidth, startX.value + event.translationX))
-      thumbPosition.value = newPosition
-      const newVolume = Math.max(0, Math.min(1, newPosition / sliderWidth))
-      runOnJS(updateVolume)(newVolume)
-    })
-    .onEnd(() => {
-      const finalVolume = Math.max(0, Math.min(1, thumbPosition.value / sliderWidth))
-      runOnJS(updateVolume)(finalVolume)
-    })
+  // const panGesture = Gesture.Pan()
+  //   .onStart(() => {
+  //     startX.value = thumbPosition.value
+  //   })
+  //   .onUpdate((event) => {
+  //     const newPosition = Math.max(0, Math.min(sliderWidth, startX.value + event.translationX))
+  //     thumbPosition.value = newPosition
+  //     const newVolume = Math.max(0, Math.min(1, newPosition / sliderWidth))
+  //     runOnJS(updateVolume)(newVolume)
+  //   })
+  //   .onEnd(() => {
+  //     const finalVolume = Math.max(0, Math.min(1, thumbPosition.value / sliderWidth))
+  //     runOnJS(updateVolume)(finalVolume)
+  //   })
 
-  const handleVolumePress = (event: any) => {
-    const { locationX } = event.nativeEvent
-    const newVolume = Math.max(0, Math.min(1, locationX / sliderWidth))
-    thumbPosition.value = withTiming(newVolume * sliderWidth, {
-      duration: 200,
-      easing: Easing.out(Easing.ease),
-    })
-    setVolume(newVolume)
-  }
+  // const handleVolumePress = (event: any) => {
+  //   const { locationX } = event.nativeEvent
+  //   const newVolume = Math.max(0, Math.min(1, locationX / sliderWidth))
+  //   thumbPosition.value = withTiming(newVolume * sliderWidth, {
+  //     duration: 200,
+  //     easing: Easing.out(Easing.ease),
+  //   })
+  //   setVolume(newVolume)
+  // }
 
-  const animatedThumbStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: thumbPosition.value }],
-  }))
+  // const animatedThumbStyle = useAnimatedStyle(() => ({
+  //   transform: [{ translateX: thumbPosition.value }],
+  // }))
 
-  const animatedTrackStyle = useAnimatedStyle(() => ({
-    width: thumbPosition.value,
-  }))
+  // const animatedTrackStyle = useAnimatedStyle(() => ({
+  //   width: thumbPosition.value,
+  // }))
 
   return (
     <View style={styles.container}>
@@ -299,7 +300,8 @@ function AudioPlayer({ audioUri, instructionText = 'Close your eyes, breathe \n 
         </ThemedText>
       )}
 
-      <View style={styles.volumeContainer}>
+      {/* TODO: remove this if we don't need it */}
+      {/* <View style={styles.volumeContainer}>
         <MaterialIcons
           name="volume-up"
           size={scale(30)}
@@ -329,7 +331,7 @@ function AudioPlayer({ audioUri, instructionText = 'Close your eyes, breathe \n 
             onPress={handleVolumePress}
           />
         </View>
-      </View>
+      </View> */}
     </View>
   )
 }

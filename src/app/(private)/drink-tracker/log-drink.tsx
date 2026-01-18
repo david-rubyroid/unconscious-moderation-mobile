@@ -1,36 +1,58 @@
 import type { DrinkType } from '@/api/queries/drink-session/dto'
 
-import { useState } from 'react'
+import { useFocusEffect, useRouter } from 'expo-router'
+import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { ActivityIndicator, Image, Pressable, StyleSheet, View } from 'react-native'
+import Toast from 'react-native-toast-message'
 
-import { useGetSessionDrinks, useLogDrink } from '@/api/queries/drink-log'
+import { useLogDrink } from '@/api/queries/drink-log'
+import { useAddDrinkPhoto, useGetUploadUrl } from '@/api/queries/drink-log/photo'
+
 import { useGetCurrentDrinkSession } from '@/api/queries/drink-session'
 
 import { queryClient } from '@/api/query-client'
 
-import BeerIcon from '@/assets/icons/beer'
-import CocktailsIcon from '@/assets/icons/cocktails'
-import HardSeltzerIcon from '@/assets/icons/hard-seltzer-ready-to-drink'
-import SpiritsIcon from '@/assets/icons/spirits'
 import StartIcon from '@/assets/icons/start'
-import WineIcon from '@/assets/icons/wine'
+import TakePhotoIcon from '@/assets/icons/take-photo'
 
-import { Button, DrinkSelector, Header, TextInput, ThemedGradient, ThemedText } from '@/components'
+import {
+  Button,
+  DrinkSelector,
+  Header,
+  ScreenContainer,
+  TextInput,
+  ThemedText,
+} from '@/components'
 
 import { Colors, withOpacity } from '@/constants/theme'
-
 import { scale, verticalScale } from '@/utils/responsive'
+import { uploadToS3 } from '@/utils/s3-upload'
+import { secureStore, SecureStoreKey } from '@/utils/secureStore'
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: scale(15),
-  },
   myDrinksText: {
     color: Colors.light.primary4,
-    marginBottom: verticalScale(16),
+    marginBottom: verticalScale(11),
+  },
+  takePhotoText: {
+    color: Colors.light.primary4,
+    marginVertical: verticalScale(11),
+  },
+  takePhotoIconContainer: {
+    width: 80,
+    height: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: withOpacity(Colors.light.black, 0.05),
+    borderRadius: scale(6),
+    marginBottom: verticalScale(11),
+  },
+  photoPreview: {
+    width: 80,
+    height: 80,
+    borderRadius: scale(6),
+    marginBottom: verticalScale(11),
   },
   myDrinksScrollView: {
     flexGrow: 0,
@@ -75,7 +97,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: scale(15),
     gap: scale(8),
-    marginBottom: verticalScale(16),
+    marginBottom: verticalScale(26),
   },
   tipItem: {
     flex: 1,
@@ -104,51 +126,94 @@ const styles = StyleSheet.create({
   },
 })
 
-function getDrinkIcon(drinkType: DrinkType) {
-  switch (drinkType) {
-    case 'wine':
-      return <WineIcon />
-    case 'beer':
-      return <BeerIcon />
-    case 'spirits':
-      return <SpiritsIcon />
-    case 'cocktails':
-      return <CocktailsIcon />
-    case 'hard-seltzer-ready-to-drink':
-      return <HardSeltzerIcon />
-    default:
-      return <WineIcon />
-  }
-}
-
 function LogDrinkScreen() {
+  const { push, back } = useRouter()
+
   const [selectedDrink, setSelectedDrink] = useState<DrinkType>('wine')
   const [drinkCost, setDrinkCost] = useState<string>('')
+  const [selectedPhotoUri, setSelectedPhotoUri] = useState<string | null>(null)
 
   const { t } = useTranslation('log-drink')
-  const { top, bottom } = useSafeAreaInsets()
-
   const { data: currentSession, isLoading: isLoadingSession } = useGetCurrentDrinkSession()
-  const { data: sessionDrinks, isLoading: isLoadingDrinks } = useGetSessionDrinks(
-    currentSession?.id,
-    {
-      enabled: !!currentSession?.id,
-    },
-  )
+  const { mutateAsync: getUploadUrl, isPending: isGettingUploadUrl } = useGetUploadUrl(currentSession?.id)
+  const { mutateAsync: addDrinkPhoto, isPending: isAddingDrinkPhoto } = useAddDrinkPhoto(currentSession?.id)
+
+  // Helper function to invalidate all related queries
+  const invalidateQueries = (drinkLogId: number) => {
+    queryClient.invalidateQueries({
+      queryKey: [
+        'drink-tracker',
+        'sessions',
+        currentSession?.id,
+        'drinks',
+        drinkLogId,
+        'photos',
+      ],
+    })
+    queryClient.invalidateQueries({
+      queryKey: ['drink-tracker', 'sessions', currentSession?.id, 'drinks'],
+    })
+    queryClient.invalidateQueries({
+      queryKey: ['drink-tracker', 'sessions', currentSession?.id],
+    })
+    queryClient.invalidateQueries({ queryKey: ['drink-tracker', 'sessions'] })
+    queryClient.invalidateQueries({ queryKey: ['drink-tracker', 'current-session'] })
+  }
+  // Async function to handle photo upload
+  const handlePhotoUpload = async (drinkLogId: number, photoUri: string) => {
+    // Get presigned URL
+    const uploadUrlResponse = await getUploadUrl({
+      drinkLogId,
+      filename: `drink-${drinkLogId}-${Date.now()}.jpg`,
+    })
+
+    // Upload to S3
+    await uploadToS3(uploadUrlResponse.uploadUrl, photoUri)
+
+    // Save photo metadata
+    await addDrinkPhoto({
+      drinkLogId,
+      s3Key: uploadUrlResponse.s3Key,
+    })
+
+    // Clear photo from state after successful upload
+    setSelectedPhotoUri(null)
+  }
   const { mutate: logDrink, isPending: isLoggingDrink } = useLogDrink(
     currentSession?.id,
     {
-      onSuccess: () => {
+      onSuccess: async (drinkLog) => {
         setDrinkCost('')
-        // Invalidate drinks list for this session
-        queryClient.invalidateQueries({ queryKey: ['drink-tracker', 'sessions', currentSession?.id, 'drinks'] })
-        // Invalidate session data (actualSpent is updated)
-        queryClient.invalidateQueries({ queryKey: ['drink-tracker', 'sessions', currentSession?.id] })
-        queryClient.invalidateQueries({ queryKey: ['drink-tracker', 'sessions'] })
-        queryClient.invalidateQueries({ queryKey: ['drink-tracker', 'current-session'] })
+
+        try {
+          // Upload photo if selected
+          if (selectedPhotoUri && drinkLog.id) {
+            await handlePhotoUpload(drinkLog.id, selectedPhotoUri)
+          }
+          else {
+            // Clear photo if no photo was selected
+            setSelectedPhotoUri(null)
+          }
+
+          // Invalidate queries (common for both cases)
+          invalidateQueries(drinkLog.id)
+
+          // Navigate back after successful completion
+          back()
+        }
+        catch {
+          // Show error message
+          Toast.show({
+            type: 'error',
+            text1: t('photo-upload-error') || 'Failed to upload photo',
+          })
+          // Don't navigate back if photo upload failed
+        }
       },
     },
   )
+
+  const isLoading = isGettingUploadUrl || isAddingDrinkPhoto || isLoggingDrink
 
   const handleLogDrink = () => {
     if (!currentSession?.id) {
@@ -165,11 +230,8 @@ function LogDrinkScreen() {
       cost,
     })
   }
-
-  const isLoading = isLoadingSession || isLoadingDrinks
-
   const renderContent = () => {
-    if (isLoading) {
+    if (isLoadingSession) {
       return (
         <View style={styles.emptyStateContainer}>
           <ActivityIndicator size="large" color={Colors.light.primary4} />
@@ -190,51 +252,38 @@ function LogDrinkScreen() {
     return (
       <>
         <ThemedText style={styles.myDrinksText} type="defaultSemiBold">
-          {t('my-drinks')}
-        </ThemedText>
-
-        {sessionDrinks && sessionDrinks.length > 0
-          ? (
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={styles.myDrinksScrollView}
-                contentContainerStyle={styles.myDrinksContainer}
-              >
-                {sessionDrinks.map(drink => (
-                  <View key={drink.id} style={styles.myDrink}>
-                    <ThemedText style={styles.myDrinkText}>
-                      {t(drink.drinkType)}
-                    </ThemedText>
-
-                    {getDrinkIcon(drink.drinkType)}
-
-                    <ThemedText style={styles.myDrinkText}>
-                      $
-                      {drink.cost}
-                    </ThemedText>
-                  </View>
-                ))}
-              </ScrollView>
-            )
-          : (
-              <View style={styles.emptyStateContainer}>
-                <ThemedText style={styles.emptyStateText}>
-                  {t('no-drinks-logged-yet')}
-                </ThemedText>
-              </View>
-            )}
-
-        <ThemedText style={styles.myDrinksText} type="defaultSemiBold">
           {t('log-drink')}
         </ThemedText>
 
         <DrinkSelector selectedDrink={selectedDrink} onSelectDrink={setSelectedDrink} />
 
-        <View style={styles.divider} />
+        <ThemedText type="defaultSemiBold" style={styles.takePhotoText}>
+          {t('take-photo')}
+        </ThemedText>
+
+        <Pressable
+          style={styles.takePhotoIconContainer}
+          onPress={() => {
+            push({
+              pathname: '/drink-tracker/photo-record',
+              params: {
+                photoUri: selectedPhotoUri || undefined,
+                returnPath: '/drink-tracker/log-drink',
+              },
+            })
+          }}
+        >
+          {selectedPhotoUri
+            ? (
+                <Image source={{ uri: selectedPhotoUri }} style={styles.photoPreview} />
+              )
+            : (
+                <TakePhotoIcon />
+              )}
+        </Pressable>
 
         <TextInput
-          placeholder={t('const-of-drink')}
+          placeholder={t('cost-of-drink')}
           placeholderTextColor={withOpacity(Colors.light.black, 0.5)}
           label={t('cost')}
           value={drinkCost}
@@ -276,28 +325,37 @@ function LogDrinkScreen() {
             variant="secondary"
             title={t('log-drink')}
             onPress={handleLogDrink}
-            disabled={!drinkCost || isLoggingDrink}
+            loading={isLoading}
+            disabled={!drinkCost || isLoading}
           />
         </View>
       </>
     )
   }
 
-  return (
-    <ThemedGradient style={[{ paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }]}>
-      <Header
-        title={t('title')}
-        route={{
-          pathname: '/drink-tracker/drink-with-awareness',
-          params: { sessionId: currentSession?.id?.toString() },
-        }}
-        isReplace
-      />
+  // Load photo from SecureStore when screen comes into focus (after returning from photo-record)
+  useFocusEffect(
+    useCallback(() => {
+      const loadPhotoFromStorage = async () => {
+        const storedPhotoUri = await secureStore.get(SecureStoreKey.SELECTED_DRINK_LOG_PHOTO_URI)
+        if (storedPhotoUri && storedPhotoUri !== selectedPhotoUri) {
+          setSelectedPhotoUri(storedPhotoUri)
 
-      <View style={styles.container}>
-        {renderContent()}
-      </View>
-    </ThemedGradient>
+          // Remove photo from secure store after using it
+          await secureStore.remove(SecureStoreKey.SELECTED_DRINK_LOG_PHOTO_URI)
+        }
+      }
+
+      void loadPhotoFromStorage()
+    }, [selectedPhotoUri]),
+  )
+
+  return (
+    <ScreenContainer horizontalPadding={12}>
+      <Header title={t('title')} />
+
+      {renderContent()}
+    </ScreenContainer>
   )
 }
 

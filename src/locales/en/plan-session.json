@@ -6,6 +6,7 @@
   "whats-your-maximum-number-of-drinks": "What's Your Maximum Number of Drinks?",
   "whats-your-budget-for-the-night": "What's Your Budget for the Night?",
   "continue": "Continue",
+  "update": "Update",
 
   "select-your-date": "Select your date",
   "set-your-planned-end-time": "Set your planned end time",
@@ -22,5 +23,9 @@
   "plannedEndTime-must-be-after-plannedStartTime": "Planned end time must be after planned start time",
   "session-duration-must-not-exceed-3-hours": "Session duration must not exceed 3 hours",
 
-  "maxDrinkCount-must-be-greater-than-0": "Max drink count must be greater than 0"
+  "maxDrinkCount-must-be-greater-than-0": "Max drink count must be greater than 0",
+  "maxDrinkCount-is-required": "Max drink count is required",
+  "plannedStartTime-cannot-be-in-past": "Planned start time cannot be in the past",
+  "budget-is-required": "Budget is required",
+  "budget-must-be-positive": "Budget must be a positive number"
 }

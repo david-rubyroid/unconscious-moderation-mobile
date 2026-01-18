@@ -12,11 +12,13 @@
   "other": "Other",
 
   "cost": "Cost",
-  "const-of-drink": "Enter the cost of the drink",
+  "cost-of-drink": "Enter the cost of the drink",
   "drinking-tips": "Drinking Tips",
 
   "one-drink-one-water-balance-is-everything": "One drink, one water, balance is everything.",
   "sip-slowly-stick-with-your-drink-stay-present": "Sip slowly, stick with your drink, stay present!",
 
-  "log-drink": "Log Drink"
+  "log-drink": "Log Drink",
+  "take-photo": "Take Photo",
+  "photo-upload-error": "Failed to upload photo"
 }

@@ -3,22 +3,15 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ImageBackground, StyleSheet, TextInput, View } from 'react-native'
 
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-
 import { useGetDrinkSession, useUpdateDrinkSession } from '@/api/queries/drink-session'
 
 import quickWritingBackgroundImage from '@/assets/images/quick-writing.jpg'
 
-import { Button, Header, ThemedGradient, ThemedText } from '@/components'
+import { Button, Header, ScreenContainer, ThemedText } from '@/components'
 import { Colors, withOpacity } from '@/constants/theme'
 import { scale, verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    paddingHorizontal: scale(15),
-  },
   imageBackground: {
     width: '100%',
     padding: scale(35),
@@ -39,7 +32,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
-    marginTop: 'auto',
+    alignSelf: 'center',
   },
   textInput: {
     width: '100%',
@@ -50,6 +43,7 @@ const styles = StyleSheet.create({
     color: withOpacity(Colors.light.black, 0.5),
     borderWidth: 0,
     textAlignVertical: 'top',
+    marginBottom: verticalScale(30),
   },
 })
 
@@ -59,7 +53,6 @@ function QuickWritingScreen() {
   const { t } = useTranslation('quick-writing')
 
   const { sessionId } = useLocalSearchParams()
-  const { top, bottom } = useSafeAreaInsets()
 
   const { data: drinkSession } = useGetDrinkSession(Number(sessionId))
   const { mutate: updateDrinkSession } = useUpdateDrinkSession(Number(sessionId))
@@ -81,34 +74,31 @@ function QuickWritingScreen() {
   }, [drinkSession, text])
 
   return (
-    <ThemedGradient style={[{ paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }]}>
+    <ScreenContainer>
       <Header title={t('title')} />
 
-      <View style={styles.container}>
-        <ImageBackground
-          source={quickWritingBackgroundImage}
-          style={styles.imageBackground}
-        >
-          <View style={styles.backgroundImageOverlay} />
+      <ImageBackground
+        source={quickWritingBackgroundImage}
+        style={styles.imageBackground}
+      >
+        <View style={styles.backgroundImageOverlay} />
 
-          <ThemedText type="defaultSemiBold" style={styles.backgroundImageDescription}>
-            {t('description')}
-          </ThemedText>
-        </ImageBackground>
+        <ThemedText type="defaultSemiBold" style={styles.backgroundImageDescription}>
+          {t('description')}
+        </ThemedText>
+      </ImageBackground>
 
-        <TextInput
-          multiline
-          placeholder={t('type-here')}
-          placeholderTextColor={withOpacity(Colors.light.black, 0.5)}
-          style={styles.textInput}
-          value={text}
-          onChangeText={setText}
-        />
+      <TextInput
+        multiline
+        placeholder={t('type-here')}
+        placeholderTextColor={withOpacity(Colors.light.black, 0.5)}
+        style={styles.textInput}
+        value={text}
+        onChangeText={setText}
+      />
 
-        <Button title={t('done')} variant="secondary" style={styles.button} onPress={handleDone} />
-      </View>
-
-    </ThemedGradient>
+      <Button title={t('done')} variant="secondary" style={styles.button} onPress={handleDone} />
+    </ScreenContainer>
   )
 }
 export default QuickWritingScreen

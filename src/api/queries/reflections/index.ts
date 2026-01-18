@@ -73,7 +73,12 @@ export function useUpdateReflection(
       `drink-tracker/reflections/${reflectionId}`,
     ),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['drink-tracker', 'sessions', data.sessionId, 'reflections'] })
+      queryClient.invalidateQueries({ queryKey: [
+        'drink-tracker',
+        'sessions',
+        data.sessionId,
+        'reflection',
+      ] })
     },
     ...options,
   })

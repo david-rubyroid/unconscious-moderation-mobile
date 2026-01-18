@@ -5,6 +5,8 @@ import { ActivityIndicator, Pressable, StyleSheet, Text } from 'react-native'
 
 import { Colors, getResponsiveFontSize, withOpacity } from '@/constants/theme'
 
+import { scale } from '@/utils/responsive'
+
 interface ButtonProps extends Omit<PressableProps, 'onPress'> {
   icon?: React.ReactNode
   title: string
@@ -26,6 +28,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 40,
     width: 233,
+    paddingHorizontal: scale(16),
   },
   primary: {
     backgroundColor: Colors.light.primary,

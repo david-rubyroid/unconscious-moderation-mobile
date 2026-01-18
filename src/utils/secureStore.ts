@@ -8,6 +8,7 @@ export const SecureStoreKey = {
   ACCESS_TOKEN: 'accessToken',
   REFRESH_TOKEN: 'refreshToken',
   IS_FIRST_LAUNCH: 'isFirstLaunch',
+  SELECTED_DRINK_LOG_PHOTO_URI: 'selectedDrinkLogPhotoUri',
 } as const
 
 export type SecureStoreKeyType = typeof SecureStoreKey[keyof typeof SecureStoreKey]
