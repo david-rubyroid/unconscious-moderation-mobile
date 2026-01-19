@@ -6,6 +6,7 @@
   "start-session": "Start Session",
   "reset": "Reset",
   "my-progress": "My progress",
+  "start-now": "Start Now!",
   "journey-streak": "Journey Streak: <0>{{days}}</0> {{days, plural, =1 {day} other {days}}}",
 
   "todays-adventure": "Today's Adventure",
@@ -39,5 +40,29 @@
 
   "extra-credit": "Extra Credit",
   "blinkist": "Blinkist",
-  "master-classes": "MasterClass"
+  "master-classes": "MasterClass",
+
+  "first-time-popups": {
+    "1": {
+      "title": "Welcome to Day 1",
+      "subtitle": "Let's Get You Started",
+      "description1": "Here's how this works: each day\n brings something new, something\n designed just for you and exactly\n where you are right now.",
+      "description2": "Today? We're talking about\n <0>“happiness vs. pleasure”</0>, because\n plot twist, your brain's been mixing\n them up this whole time."
+    },
+    "2": {
+      "title": "Your Daily Adventure",
+      "description1": "<0>Hypnotherapy, journaling, reading,\n and movement</0>, all designed\n specifically for you. Plus, we have\n extra content that's equally important\n to your adventure.",
+      "description2": "And yes, we have rewards for\n everything because who doesn't love\n a good dopamine hit?"
+    },
+    "3": {
+      "title": "Starting Point",
+      "description1": "We recommend kicking things off with\n our <0>alcohol-free tracker</0>. Don't worry,\n it's not some judgy thing. It's just a\n helpful, encouraging way to keep up\n with all the great progress you're\n making, day by day, hour by hour,\n minute by minute.",
+      "description2": "And if you slip up? No worries. We can\n restart everything. It's part of the\n process."
+    },
+    "4": {
+      "title": "Dive Into the Toolkit",
+      "description1": "Inside, you'll find our <0>drink tracker</0> (seriously, we're really proud of it). \n\n It's free and it's there for those\n moments when you want backup. Like\n a friend who gets it, but in app form.\n But wait, this is not all.",
+      "description2": "We have more amazing features like\n <0>box breathing, a great forum</0> (don't\n worry, it's anonymous), and much\n much more!"
+    }
+  }
 }

@@ -45,6 +45,14 @@ function ProtectedLayout() {
         {/* screen is always accessible */}
         <Stack.Screen name="medical-report" />
         <Stack.Screen name="welcome-to-your-journey" />
+        <Stack.Screen
+          name="first-time-popups"
+          options={{
+            presentation: 'transparentModal',
+            animation: 'fade',
+            headerShown: false,
+          }}
+        />
         <Stack.Screen name="purchase" />
 
         <Stack.Screen name="drink-tracker/index" />

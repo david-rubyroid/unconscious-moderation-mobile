@@ -18,6 +18,7 @@ import {
   TodaysAdventure,
 } from '@/components'
 import { Colors, withOpacity } from '@/constants/theme'
+
 import { scale, verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
@@ -125,62 +126,60 @@ function HomeScreen() {
   }, [currentStreak?.durationDays])
 
   return (
-    <>
-      <ScreenContainer scrollable>
-        <ThemedText type="subtitle" style={styles.welcome}>
-          {t('welcome', { name: user?.firstName })}
+    <ScreenContainer scrollable>
+      <ThemedText type="subtitle" style={styles.welcome}>
+        {t('welcome', { name: user?.firstName })}
+      </ThemedText>
+
+      <View style={styles.quoteContainer}>
+        <ThemedText type="defaultSemiBold" style={styles.reminder}>
+          {t('reminder')}
         </ThemedText>
 
-        <View style={styles.quoteContainer}>
-          <ThemedText type="defaultSemiBold" style={styles.reminder}>
-            {t('reminder')}
-          </ThemedText>
+        <ThemedText type="defaultSemiBold" style={styles.breneBrownQuote}>
+          {tQuotes(`day-${dailyActivitiesDay}.quote`)}
+        </ThemedText>
 
-          <ThemedText type="defaultSemiBold" style={styles.breneBrownQuote}>
-            {tQuotes(`day-${dailyActivitiesDay}.quote`)}
-          </ThemedText>
+        <ThemedText type="defaultSemiBold" style={styles.breneBrownQuoteAuthor}>
+          {tQuotes(`day-${dailyActivitiesDay}.author`)}
+        </ThemedText>
+      </View>
 
-          <ThemedText type="defaultSemiBold" style={styles.breneBrownQuoteAuthor}>
-            {tQuotes(`day-${dailyActivitiesDay}.author`)}
-          </ThemedText>
+      <View style={styles.lastDrinkContainer}>
+        <ThemedText type="defaultSemiBold" style={styles.lastDrinkText}>
+          {t('last-drink')}
+        </ThemedText>
+
+        <SobrietyTimer showIcon />
+
+        <View style={styles.buttonsContainer}>
+          <Pressable onPress={navigateToMyProgress} style={styles.myProgressButton}>
+            <ThemedText style={styles.myProgressButtonText}>{t('my-progress')}</ThemedText>
+          </Pressable>
+
+          <Pressable onPress={navigateToStartTracking} style={styles.startTrackingButton}>
+            <ThemedText
+              style={styles.startTrackingButtonText}
+            >
+              {hasActiveStreak ? t('reset') : t('start')}
+            </ThemedText>
+          </Pressable>
         </View>
+      </View>
 
-        <View style={styles.lastDrinkContainer}>
-          <ThemedText type="defaultSemiBold" style={styles.lastDrinkText}>
-            {t('last-drink')}
-          </ThemedText>
+      <DailyActivitiesDays
+        onDayPress={handleSetDailyActivitiesDay}
+        dailyActivitiesDay={dailyActivitiesDay}
+      />
 
-          <SobrietyTimer showIcon />
+      <JourneyStreak />
 
-          <View style={styles.buttonsContainer}>
-            <Pressable onPress={navigateToMyProgress} style={styles.myProgressButton}>
-              <ThemedText style={styles.myProgressButtonText}>{t('my-progress')}</ThemedText>
-            </Pressable>
+      <TodaysAdventure dailyActivitiesDay={dailyActivitiesDay} />
 
-            <Pressable onPress={navigateToStartTracking} style={styles.startTrackingButton}>
-              <ThemedText
-                style={styles.startTrackingButtonText}
-              >
-                {hasActiveStreak ? t('reset') : t('start')}
-              </ThemedText>
-            </Pressable>
-          </View>
-        </View>
+      <ExtraCredit dailyActivitiesDay={dailyActivitiesDay} />
 
-        <DailyActivitiesDays
-          onDayPress={handleSetDailyActivitiesDay}
-          dailyActivitiesDay={dailyActivitiesDay}
-        />
-
-        <JourneyStreak />
-
-        <TodaysAdventure dailyActivitiesDay={dailyActivitiesDay} />
-
-        <ExtraCredit dailyActivitiesDay={dailyActivitiesDay} />
-
-        <ExternalResources />
-      </ScreenContainer>
-    </>
+      <ExternalResources />
+    </ScreenContainer>
   )
 }
 

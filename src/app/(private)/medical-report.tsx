@@ -12,7 +12,7 @@ import Animated from 'react-native-reanimated'
 
 import PlaySmall from '@/assets/icons/play-small'
 
-import { BottomSheetPopup, Button, ThemedGradient, ThemedText } from '@/components'
+import { BottomSheetPopup, Button, ScreenContainer, ThemedText } from '@/components'
 
 import { Colors, withOpacity } from '@/constants/theme'
 
@@ -139,7 +139,7 @@ function MedicalReportScreen() {
   }
 
   return (
-    <ThemedGradient style={styles.container}>
+    <ScreenContainer scrollable={false} withOutSafeAreaPadding>
       {shouldLoadVideo && player && (
         <Animated.View style={[styles.video, animatedVideoStyle]}>
           <VideoView
@@ -197,7 +197,7 @@ function MedicalReportScreen() {
           />
         </View>
       </BottomSheetPopup>
-    </ThemedGradient>
+    </ScreenContainer>
   )
 }
 

@@ -15,6 +15,7 @@ interface ScreenContainerProps {
   contentContainerStyle?: StyleProp<ViewStyle>
   gradientColors?: readonly [string, string, ...string[]]
   backgroundImage?: ImageSourcePropType
+  withOutSafeAreaPadding?: boolean
 }
 
 const styles = StyleSheet.create({
@@ -34,6 +35,7 @@ function ScreenContainer({
   contentContainerStyle,
   gradientColors,
   backgroundImage,
+  withOutSafeAreaPadding = false,
 }: ScreenContainerProps) {
   const { top, bottom } = useSafeAreaInsets()
 
@@ -48,10 +50,12 @@ function ScreenContainer({
     ? [styles.scrollContent, contentContainerStyle]
     : undefined
 
-  const paddingStyle = {
-    paddingTop: top + verticalScale(10),
-    paddingBottom: bottom + verticalScale(10),
-  }
+  const paddingStyle = withOutSafeAreaPadding
+    ? undefined
+    : {
+        paddingTop: top + verticalScale(10),
+        paddingBottom: bottom + verticalScale(10),
+      }
 
   const content = (
     <Container

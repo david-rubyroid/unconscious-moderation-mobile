@@ -13,6 +13,7 @@ import welcomeImage from '@/assets/images/welcome-to-your-journey.jpg'
 import { Button, ThemedText } from '@/components'
 
 import { Colors, withOpacity } from '@/constants/theme'
+
 import { moderateScale, scale, scaleWithMax, verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
@@ -73,6 +74,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(64),
     paddingVertical: verticalScale(80),
     backgroundColor: Colors.light.tertiaryBackground,
+    alignItems: 'center',
   },
   medicalStatementTitle: {
     textAlign: 'center',
@@ -87,14 +89,17 @@ const styles = StyleSheet.create({
 })
 
 function WelcomeToYourJourneyScreen() {
-  const { replace } = useRouter()
+  const { replace, push } = useRouter()
   const { t } = useTranslation('welcome-to-your-journey')
   const { top } = useSafeAreaInsets()
 
   const { data: user } = useGetCurrentUser()
 
-  const handleContinue = () => {
-    replace('/')
+  const handleContinue = async () => {
+    replace('/(private)/(tabs)')
+    setTimeout(() => {
+      push('/(private)/first-time-popups')
+    }, 100)
   }
 
   return (
