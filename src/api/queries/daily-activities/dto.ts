@@ -11,6 +11,10 @@ export interface DayResponse {
   isUnlocked: boolean
   allActivitiesCompleted: boolean
   activities: ActivityCompletion[]
+  completion?: {
+    completedAt: string
+    modalShown: boolean
+  } | null
 }
 
 export interface DailyActivitiesResponse {

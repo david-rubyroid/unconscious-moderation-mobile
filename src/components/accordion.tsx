@@ -48,21 +48,6 @@ function Accordion({
   const rotateAnim = useRef(new Animated.Value(defaultOpen ? 1 : 0)).current
   const contentAnim = useRef(new Animated.Value(defaultOpen ? 1 : 0)).current
 
-  useEffect(() => {
-    Animated.parallel([
-      Animated.timing(rotateAnim, {
-        toValue: isOpen ? 1 : 0,
-        duration: 200,
-        useNativeDriver: true,
-      }),
-      Animated.timing(contentAnim, {
-        toValue: isOpen ? 1 : 0,
-        duration: 200,
-        useNativeDriver: false, // height не поддерживается в native driver
-      }),
-    ]).start()
-  }, [isOpen, rotateAnim, contentAnim])
-
   const handleToggle = () => {
     setIsOpen(prev => !prev)
   }
@@ -79,8 +64,23 @@ function Accordion({
 
   const contentMaxHeight = contentAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 10000],
+    outputRange: [0, 20000],
   })
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(rotateAnim, {
+        toValue: isOpen ? 1 : 0,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+      Animated.timing(contentAnim, {
+        toValue: isOpen ? 1 : 0,
+        duration: 200,
+        useNativeDriver: false,
+      }),
+    ]).start()
+  }, [isOpen, rotateAnim, contentAnim])
 
   return (
     <View style={[styles.container, style]}>

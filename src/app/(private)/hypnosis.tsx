@@ -1,24 +1,13 @@
 import { useLocalSearchParams } from 'expo-router'
-import { useEffect } from 'react'
+import { useRef } from 'react'
 
 import { useTranslation } from 'react-i18next'
 
-import { StyleSheet, View } from 'react-native'
-
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-
 import { useCompleteActivity } from '@/api/queries/daily-activities'
 
-import { AudioPlayer, Header, ThemedGradient } from '@/components'
-import { HYPNOSIS_LINKS } from '@/constants/hypnosis-links'
-import { scale, verticalScale } from '@/utils/responsive'
+import { AudioPlayer, Header, ScreenContainer } from '@/components'
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: scale(15),
-  },
-})
+import { HYPNOSIS_LINKS } from '@/constants/hypnosis-links'
 
 function HypnosisScreen() {
   const { t } = useTranslation('hypnosis-adventure')
@@ -26,23 +15,30 @@ function HypnosisScreen() {
   const { mutateAsync: completeActivity } = useCompleteActivity()
 
   const { day } = useLocalSearchParams()
-  const { top, bottom } = useSafeAreaInsets()
+  const hasCompletedRef = useRef(false)
 
-  useEffect(() => {
-    completeActivity({
-      day: Number(day),
-      activityType: 'hypnosis',
-    })
-  }, [day, completeActivity])
+  const handlePlayStart = () => {
+    if (!hasCompletedRef.current) {
+      hasCompletedRef.current = true
+      completeActivity({
+        day: Number(day),
+        activityType: 'hypnosis',
+      }).catch(() => {
+        // Reset on error to allow retry
+        hasCompletedRef.current = false
+      })
+    }
+  }
 
   return (
-    <ThemedGradient style={[{ paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }]}>
+    <ScreenContainer>
       <Header title={t(`day-${day}`)} />
 
-      <View style={styles.container}>
-        <AudioPlayer audioUri={HYPNOSIS_LINKS.hypnosisForAdventure[`day${day}` as keyof typeof HYPNOSIS_LINKS.hypnosisForAdventure]} />
-      </View>
-    </ThemedGradient>
+      <AudioPlayer
+        audioUri={HYPNOSIS_LINKS.hypnosisForAdventure[`day${day}` as keyof typeof HYPNOSIS_LINKS.hypnosisForAdventure]}
+        onPlayStart={handlePlayStart}
+      />
+    </ScreenContainer>
   )
 }
 

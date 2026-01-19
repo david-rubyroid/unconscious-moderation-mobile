@@ -19,6 +19,7 @@ const AnimatedCircle = Animated.createAnimatedComponent(Circle)
 interface AudioPlayerProps {
   audioUri: string
   instructionText?: string
+  onPlayStart?: () => void
 }
 
 const CIRCLE_SIZE = 300
@@ -123,13 +124,18 @@ const styles = StyleSheet.create({
   },
 })
 
-function AudioPlayer({ audioUri, instructionText = 'Close your eyes, breathe \n deeply, and let go ...' }: AudioPlayerProps) {
+function AudioPlayer({
+  audioUri,
+  instructionText = 'Close your eyes, breathe \n deeply, and let go ...',
+  onPlayStart,
+}: AudioPlayerProps) {
   // TODO: remove this if we don't need it
   // const [sliderWidth, setSliderWidth] = useState(233)
   // const thumbPosition = useSharedValue(0)
   // const startX = useSharedValue(0)
 
   const hasRestartedRef = useRef(false)
+  const hasCalledOnPlayStartRef = useRef(false)
 
   const {
     // volume,
@@ -145,6 +151,18 @@ function AudioPlayer({ audioUri, instructionText = 'Close your eyes, breathe \n 
 
   const progress = duration > 0 ? currentTime / duration : 0
   const animatedProgress = useSharedValue(progress)
+
+  // Call onPlayStart when playback starts
+  useEffect(() => {
+    if (onPlayStart && isPlaying && currentTime > 0.1 && !hasCalledOnPlayStartRef.current) {
+      hasCalledOnPlayStartRef.current = true
+      onPlayStart()
+    }
+    // Reset when audio is stopped or reset
+    if (!isPlaying || currentTime < 0.1) {
+      hasCalledOnPlayStartRef.current = false
+    }
+  }, [isPlaying, currentTime, onPlayStart])
 
   useEffect(() => {
     animatedProgress.value = withTiming(progress, {

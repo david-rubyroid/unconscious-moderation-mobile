@@ -8,7 +8,8 @@
   "my-progress": "My progress",
   "journey-streak": "Journey Streak: <0>{{days}}</0> {{days, plural, =1 {day} other {days}}}",
 
-  "todays-adventure": "Todays Adventure",
+  "todays-adventure": "Today's Adventure",
+  "your-day": "Your Day",
   "hypnosis": "Hypnosis",
   "journaling": "Journaling",
   "reading": "Reading",

@@ -84,3 +84,22 @@ export function useGetJournalingAnswers(
     ...options,
   })
 }
+
+export function useMarkDayCompletionModalShown(
+  options?: MutationOptions<void, Error, { day: number }>,
+) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: createMutationFn<void, { day: number }>(
+      'post',
+      ({ day }) => `daily-activities/${day}/completion-modal/mark-shown`,
+      { skipBody: true },
+    ),
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['daily-activities'] })
+      queryClient.invalidateQueries({ queryKey: ['daily-activities', 'day', variables.day] })
+    },
+    ...options,
+  })
+}

@@ -33,6 +33,10 @@ const styles = StyleSheet.create({
   title: {
     color: Colors.light.primary4,
   },
+  dayWrapper: {
+    paddingTop: scale(4),
+    paddingRight: scale(4),
+  },
   dayContainer: {
     position: 'relative',
     alignItems: 'center',
@@ -67,7 +71,12 @@ function DailyActivitiesDays({ onDayPress, dailyActivitiesDay }: DailyActivities
 
   return (
     <View style={styles.wrapper}>
-      <ThemedText type="defaultSemiBold" style={styles.title}>{t(`day-${dailyActivitiesDay}.title`)}</ThemedText>
+      <ThemedText
+        type="defaultSemiBold"
+        style={styles.title}
+      >
+        {t(`day-${dailyActivitiesDay}.title`)}
+      </ThemedText>
 
       <ScrollView
         horizontal
@@ -76,22 +85,34 @@ function DailyActivitiesDays({ onDayPress, dailyActivitiesDay }: DailyActivities
         style={styles.scrollContainer}
       >
         {days.map(day => (
-          <Pressable
+          <View
             key={day.dayNumber}
-            style={[styles.dayContainer, dailyActivitiesDay === day.dayNumber && styles.completedDayContainer]}
-            onPress={() => onDayPress(day.dayNumber)}
+            style={styles.dayWrapper}
           >
-            {day.allActivitiesCompleted && (
-              <DailyActivityCheckIcon style={styles.dailyActivityCheckIcon} />
-            )}
-
-            <ThemedText
-              type="defaultSemiBold"
-              style={[styles.dayText, dailyActivitiesDay === day.dayNumber && styles.completedDayText]}
+            <Pressable
+              style={[
+                styles.dayContainer,
+                dailyActivitiesDay === day.dayNumber
+                && styles.completedDayContainer,
+              ]}
+              onPress={() => onDayPress(day.dayNumber)}
             >
-              {day.dayNumber}
-            </ThemedText>
-          </Pressable>
+              {day.allActivitiesCompleted && (
+                <DailyActivityCheckIcon style={styles.dailyActivityCheckIcon} />
+              )}
+
+              <ThemedText
+                type="defaultSemiBold"
+                style={[
+                  styles.dayText,
+                  dailyActivitiesDay === day.dayNumber
+                  && styles.completedDayText,
+                ]}
+              >
+                {day.dayNumber}
+              </ThemedText>
+            </Pressable>
+          </View>
         ))}
       </ScrollView>
     </View>

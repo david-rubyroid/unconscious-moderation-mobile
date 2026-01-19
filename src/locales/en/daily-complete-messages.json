@@ -1,0 +1,156 @@
+{
+  "modal": {
+    "another-day": {
+      "title": "Another Day, Another Win!",
+      "message": "You showed up for yourself, and that's what makes all the difference. Ready for more? <0>Try an Extra Credit or explore the Toolkit.</0>"
+    },
+    "day-1": {
+      "title": "You Showed Up!",
+      "message": "Day one is always the hardest, and you crushed it. Ready for more? <0>Extra Credit is waiting, or jump into the Toolkit.</0>"
+    },
+    "day-5": {
+      "title": "Five Days Strong!",
+      "message": "Your brain is already recognizing new patterns. Ready for more? <0>Add an Extra Credit or dive into the Toolkit.</0>"
+    },
+    "day-10": {
+      "title": "Double Digits. Look At You Go!",
+      "message": "You're proving to yourself what you're capable of. Ready for more? <0>Try an Extra Credit or tap into the Toolkit.</0>"
+    },
+    "day-15": {
+      "title": "Halfway Through the First Phase!",
+      "message": "You're unstoppable. This consistency is everything. Ready for more? <0>Pick an Extra Credit or explore the Toolkit.</0>"
+    },
+    "day-20": {
+      "title": "Twenty Days of Pure Commitment!",
+      "message": "You're creating lasting change. Ready for more? <0>Go for Extra Credit or open the Toolkit.</0>"
+    },
+    "day-25": {
+      "title": "Twenty-five Days. You're so close!",
+      "message": "Your new patterns are getting solid now. Ready for more? <0>Extra Credit or Toolkit, you choose.</0>"
+    },
+    "day-30": {
+      "title": "Thirty Days Complete!",
+      "message": "You finished the first phase. This is incredible. Ready for more? <0>Keep building with Extra Credit or the Toolkit.</0>"
+    }
+  },
+  "day-1": {
+    "title": "Day 1 You showed up.",
+    "message": "<0>That's the hardest part, and you did it.</0> You've said yes to clarity, freedom, and something deeper. From this moment on, everything begins to shift."
+  },
+  "day-2": {
+    "title": "Congratulations!",
+    "message": "<0>You've completed Day 2.</0> You showed up for yourself today. That's everything. Small steps. Big shift."
+  },
+  "day-3": {
+    "title": "Day 3 is complete.",
+    "message": "You're starting to notice more: your thoughts, your habits, your triggers. Awareness is the first sign of transformation. Keep leaning in. You're waking up."
+  },
+  "day-4": {
+    "title": "Another day of growth.",
+    "message": "<0>Day 4 is behind you.</0> You're not just showing up, you're evolving. Trust the process. You're doing the work."
+  },
+  "day-5": {
+    "title": "Day 5—well done.",
+    "message": "You're carving out space between the impulse and the action. That space is power. That space is choice. Keep trusting yourself."
+  },
+  "day-6": {
+    "title": "That's a wrap on Day 6.",
+    "message": "<0>You honored your journey today.</0> Transformation isn't loud, it's consistent. Keep showing up."
+  },
+  "day-7": {
+    "title": "One week, one powerful shift.",
+    "message": "<0>You've completed Day 7.</0> You've explored, reflected, and planted seeds of real change. Can you feel it? The way you think about drinking is already different. Keep going, your journey is just beginning."
+  },
+  "day-8": {
+    "title": "Day 8, complete.",
+    "message": "<0>You've invested in your inner shift.</0> It may feel subtle, but something real is unfolding. Keep leaning in, you're doing beautifully."
+  },
+  "day-9": {
+    "title": "Well done.",
+    "message": "<0>Day 9 is now part of your story.</0> You're moving with intention, one breath at a time. Let that settle you're changing from within."
+  },
+  "day-10": {
+    "title": "Ten days in.",
+    "message": "<0>You've been consistent,</0> curious, and honest with yourself. The shift may feel subtle, but it's happening your awareness is growing, and your relationship with drinking is already starting to change. Keep going. You're on your way."
+  },
+  "day-11": {
+    "title": "You kept the promise to yourself today.",
+    "message": "<0>Day 11 complete.</0> Even on the quiet days, your commitment speaks loudest. This is how freedom takes root."
+  },
+  "day-12": {
+    "title": "Twelve days in.",
+    "message": "Your conscious mind is catching up with the work your subconscious is already doing. You're rewiring more than behavior, you're shifting beliefs. Stay with it. You're doing beautifully."
+  },
+  "day-13": {
+    "title": "You did it!",
+    "message": "<0>Day 13 is complete.</0> You showed up, you stayed present, and that matters. These small moments are changing everything."
+  },
+  "day-14": {
+    "title": "You made space for change today.",
+    "message": "<0>Day 14 complete.</0> Each moment of awareness is a step toward freedom. We're proud of you."
+  },
+  "day-15": {
+    "title": "Fifteen days in, and look at you.",
+    "message": "You've stayed present. You've done the work. The way you think, feel, and relate to drinking is already changing. Keep going. You're becoming more you with every step."
+  },
+  "day-16": {
+    "title": "Day 16 is done.",
+    "message": "You've built a rhythm and that rhythm is beginning to rewire you. The small shifts are adding up. Keep trusting the change that's happening beneath the surface"
+  },
+  "day-17": {
+    "title": "Day 17.",
+    "message": "<0>Some days feel light, some heavy.</0> But showing up that's the shift. This process isn't linear. And that's okay. You're building resilience, one moment at a time."
+  },
+  "day-18": {
+    "title": "You're 18 days in.",
+    "message": "You've challenged old patterns and made space for new ones. Your relationship with drinking is becoming more conscious, more free. Keep moving forward. You're not who you were."
+  },
+  "day-19": {
+    "title": "Day 19 complete.",
+    "message": "You're showing up with intention, even when it's not easy. Every time you pause, reflect, and choose, you're rewriting the script. Let that truth sink in."
+  },
+  "day-20": {
+    "title": "Twenty days.",
+    "message": "You've come far, more than you might realize. The shift isn't just mental: it's emotional, physical, and deeply personal. Stay with it. You're creating something lasting."
+  },
+  "day-21": {
+    "title": "Three weeks in.",
+    "message": "You're not just changing your relationship with drinking you're creating new patterns in how you relate to yourself. This is deep work. And it's working."
+  },
+  "day-22": {
+    "title": "Another day done.",
+    "message": "You're past the halfway mark, and your new way of being is becoming more natural. Notice how far you've come and how much more is opening up ahead."
+  },
+  "day-23": {
+    "title": "Day 23.",
+    "message": "You're strengthening the space between impulse and action. That space? It's where your freedom lives. And you're standing in it more and more each day."
+  },
+  "day-24": {
+    "title": "You've completed Day 24.",
+    "message": "At this point, you're not just thinking differently you're feeling differently. Notice how much more connected you are to yourself. This is real. This is yours."
+  },
+  "day-25": {
+    "title": "Day 25.",
+    "message": "What once felt like effort is starting to feel like alignment. You're creating habits that reflect who you truly are, not who you were trying to be. Let it settle. Let it grow."
+  },
+  "day-26": {
+    "title": "Day 26 is complete.",
+    "message": "You're not chasing a goal, you're embodying a shift. That's powerful. That's sustainable. Keep going."
+  },
+  "day-27": {
+    "title": "You're here Day 27.",
+    "message": "Each day, you've turned inward. Each day, you've chosen presence. This kind of consistency changes lives. Especially your own."
+  },
+  "day-28": {
+    "title": "Day 28 is done.",
+    "message": "You've peeled back layers, faced patterns, and created space for the real you. Let yourself feel proud. You've already changed."
+  },
+  "day-29": {
+    "title": "Day 29 complete.",
+    "message": "Tomorrow is a milestone, but today is a victory. You've done the work, step by step, moment by moment. Let this transformation settle into your bones. You're ready."
+  },
+  "day-30": {
+    "title": "Thirty days. That's huge.",
+    "message": "You've completed Day 30. You've chosen awareness over habit, presence over autopilot. This is no longer just a trial, it's becoming a way of being. Take a breath. You've built something real."
+  }
+}
