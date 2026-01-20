@@ -11,6 +11,7 @@ import {
   DailyActivitiesDays,
   ExternalResources,
   ExtraCredit,
+  FeedBackModal,
   JourneyStreak,
   ScreenContainer,
   SobrietyTimer,
@@ -19,6 +20,7 @@ import {
 } from '@/components'
 import { Colors, withOpacity } from '@/constants/theme'
 
+import { shouldShowFeedbackModal } from '@/utils/feedback-modal'
 import { scale, verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
@@ -102,6 +104,7 @@ function HomeScreen() {
   const { data: currentStreak } = useGetCurrentStreak()
 
   const [dailyActivitiesDay, setDailyActivitiesDay] = useState<number>(1)
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false)
 
   const hasActiveStreak = currentStreak?.streak?.is_active
 
@@ -119,14 +122,33 @@ function HomeScreen() {
   const handleSetDailyActivitiesDay = (day: number) => {
     setDailyActivitiesDay(day)
   }
+  const handleCloseFeedbackModal = () => {
+    setShowFeedbackModal(false)
+  }
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
     setDailyActivitiesDay(currentStreak?.durationDays ? currentStreak.durationDays : 1)
   }, [currentStreak?.durationDays])
 
+  useEffect(() => {
+    const checkShouldShowModal = async () => {
+      const durationDays = currentStreak?.durationDays
+      const shouldShow = await shouldShowFeedbackModal(durationDays)
+
+      setShowFeedbackModal(shouldShow)
+    }
+
+    checkShouldShowModal()
+  }, [currentStreak?.durationDays])
+
   return (
     <ScreenContainer scrollable>
+      <FeedBackModal
+        visible={showFeedbackModal}
+        onClose={handleCloseFeedbackModal}
+      />
+
       <ThemedText type="subtitle" style={styles.welcome}>
         {t('welcome', { name: user?.firstName })}
       </ThemedText>

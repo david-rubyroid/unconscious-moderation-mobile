@@ -64,5 +64,14 @@
       "description1": "Inside, you'll find our <0>drink tracker</0> (seriously, we're really proud of it). \n\n It's free and it's there for those\n moments when you want backup. Like\n a friend who gets it, but in app form.\n But wait, this is not all.",
       "description2": "We have more amazing features like\n <0>box breathing, a great forum</0> (don't\n worry, it's anonymous), and much\n much more!"
     }
+  },
+
+  "feedback-modal": {
+    "title1": "How's your experience \n so far?",
+    "title2": "Leave your comments",
+    "really-enjoying-it": "Really enjoying it",
+    "needs-some-work": "Needs some work",
+    "type-here": "Type here",
+    "save": "Save"
   }
 }

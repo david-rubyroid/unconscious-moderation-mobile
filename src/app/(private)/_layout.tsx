@@ -49,7 +49,7 @@ function ProtectedLayout() {
           name="first-time-popups"
           options={{
             presentation: 'transparentModal',
-            animation: 'fade',
+            animation: 'slide_from_bottom',
             headerShown: false,
           }}
         />

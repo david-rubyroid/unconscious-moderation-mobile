@@ -1,0 +1,98 @@
+import * as StoreReview from 'expo-store-review'
+import { useTranslation } from 'react-i18next'
+
+import { Linking, StyleSheet, View } from 'react-native'
+
+import { Colors } from '@/constants/theme'
+
+import {
+  markFeedbackModalRated,
+  markFeedbackModalShown,
+} from '@/utils/feedback-modal'
+import { verticalScale } from '@/utils/responsive'
+
+import { Button, Modal, ThemedText } from '.'
+
+interface FeedBackModalProps {
+  visible: boolean
+  onClose: () => void
+}
+
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: verticalScale(24),
+  },
+  title: {
+    textAlign: 'center',
+    color: Colors.light.primary4,
+  },
+  buttonsContainer: {
+    gap: verticalScale(24),
+  },
+})
+
+function FeedBackModal({ visible, onClose }: FeedBackModalProps) {
+  const { t } = useTranslation('home')
+
+  const handleReallyEnjoyingIt = async () => {
+    try {
+      const isAvailable = await StoreReview.isAvailableAsync()
+      if (isAvailable) {
+        await StoreReview.requestReview()
+      }
+      await markFeedbackModalRated()
+    }
+    catch (error) {
+      console.error('Error requesting store review:', error)
+    }
+    finally {
+      onClose()
+    }
+  }
+
+  const handleNeedsSomeWork = async () => {
+    try {
+      await Linking.openURL('mailto:support@um.app?subject=App Feedback')
+      await markFeedbackModalShown()
+    }
+    catch (error) {
+      console.warn('Cannot open email client:', error)
+      await markFeedbackModalShown()
+    }
+    finally {
+      onClose()
+    }
+  }
+
+  return (
+    <Modal
+      visible={visible}
+      onClose={onClose}
+      onUserDismiss={async () => {
+        await markFeedbackModalShown()
+      }}
+    >
+      <View style={styles.container}>
+        <ThemedText type="subtitle" style={styles.title}>
+          {t('feedback-modal.title1')}
+        </ThemedText>
+
+        <View style={styles.buttonsContainer}>
+          <Button
+            title={t('feedback-modal.really-enjoying-it')}
+            onPress={handleReallyEnjoyingIt}
+          />
+
+          <Button
+            title={t('feedback-modal.needs-some-work')}
+            onPress={handleNeedsSomeWork}
+          />
+        </View>
+      </View>
+    </Modal>
+  )
+}
+
+export default FeedBackModal

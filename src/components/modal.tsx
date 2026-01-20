@@ -16,6 +16,7 @@ interface ModalProps {
   onClose: () => void
   children: React.ReactNode
   fullWidth?: boolean
+  onUserDismiss?: () => void
 }
 
 const styles = StyleSheet.create({
@@ -42,6 +43,7 @@ function Modal({
   onClose,
   children,
   fullWidth = false,
+  onUserDismiss,
 }: ModalProps) {
   const opacity = useSharedValue(0)
   const scaleValue = useSharedValue(0.8)
@@ -59,6 +61,11 @@ function Modal({
   }))
 
   const handleClose = () => {
+    // Call onUserDismiss only when user explicitly closes the modal
+    // (not when visible changes programmatically)
+    if (onUserDismiss) {
+      onUserDismiss()
+    }
     setIsClosing(true)
   }
 
