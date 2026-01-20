@@ -1,11 +1,12 @@
+import type { AudioPlayer } from 'expo-audio'
 import { useLocalSearchParams } from 'expo-router'
-import { useRef } from 'react'
 
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useCompleteActivity } from '@/api/queries/daily-activities'
 
-import { AudioPlayer, Header, ScreenContainer } from '@/components'
+import { AudioPlayer as AudioPlayerComponent, Header, ScreenContainer } from '@/components'
 
 import { HYPNOSIS_LINKS } from '@/constants/hypnosis-links'
 
@@ -16,6 +17,7 @@ function HypnosisScreen() {
 
   const { day } = useLocalSearchParams()
   const hasCompletedRef = useRef(false)
+  const [player, setPlayer] = useState<AudioPlayer | null>(null)
 
   const handlePlayStart = () => {
     if (!hasCompletedRef.current) {
@@ -30,13 +32,34 @@ function HypnosisScreen() {
     }
   }
 
+  const handlePlayerReady = (audioPlayer: AudioPlayer | null) => {
+    setPlayer(audioPlayer)
+  }
+
+  // Enable lock screen controls
+  useEffect(() => {
+    if (player) {
+      player.setActiveForLockScreen(true, {
+        title: t(`day-${day}`),
+        artist: 'Unconscious Moderation',
+      })
+    }
+
+    return () => {
+      if (player) {
+        player.clearLockScreenControls()
+      }
+    }
+  }, [player, day, t])
+
   return (
     <ScreenContainer>
       <Header title={t(`day-${day}`)} />
 
-      <AudioPlayer
+      <AudioPlayerComponent
         audioUri={HYPNOSIS_LINKS.hypnosisForAdventure[`day${day}` as keyof typeof HYPNOSIS_LINKS.hypnosisForAdventure]}
         onPlayStart={handlePlayStart}
+        onPlayerReady={handlePlayerReady}
       />
     </ScreenContainer>
   )

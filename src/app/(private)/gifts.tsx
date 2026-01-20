@@ -125,6 +125,9 @@ function GiftsScreen() {
     setOthers((prev) => {
       return [...prev, newOther]
     })
+    setSelectedGifts((prev) => {
+      return [...prev, newOther]
+    })
     setNewOther('')
     setModalVisible(false)
   }

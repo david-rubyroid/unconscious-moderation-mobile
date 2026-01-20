@@ -73,16 +73,13 @@ const styles = StyleSheet.create({
 function BoxBreathingGuide({
   instructionLabel,
   audioCurrentTime,
-  audioDuration,
   phaseDuration,
 }: BoxBreathingGuideProps) {
-  // Audio progress (0 to 1) - like in audio-player
-  const progress = audioDuration > 0 ? audioCurrentTime / audioDuration : 0
-  const animatedProgress = useSharedValue(progress)
+  const cycleDuration = phaseDuration * 4 // 16 seconds for 4 phases
   const animatedAudioTime = useSharedValue(audioCurrentTime)
   const prevAudioTimeRef = useRef(audioCurrentTime)
 
-  // Update progress with smooth animation (like audio-player)
+  // Update audio time with smooth animation
   // But skip animation on reset (when time jumps back to 0)
   useEffect(() => {
     const prevTime = prevAudioTimeRef.current
@@ -90,15 +87,10 @@ function BoxBreathingGuide({
 
     if (isReset) {
       // Reset without animation
-      animatedProgress.value = 0
       animatedAudioTime.value = 0
     }
     else {
       // Normal smooth animation
-      animatedProgress.value = withTiming(progress, {
-        duration: 1000,
-        easing: Easing.linear,
-      })
       animatedAudioTime.value = withTiming(audioCurrentTime, {
         duration: 1000,
         easing: Easing.linear,
@@ -106,7 +98,15 @@ function BoxBreathingGuide({
     }
 
     prevAudioTimeRef.current = audioCurrentTime
-  }, [progress, audioCurrentTime, animatedProgress, animatedAudioTime])
+  }, [audioCurrentTime, animatedAudioTime])
+
+  // Calculate progress directly in worklet from animatedAudioTime
+  // This ensures smooth transitions between cycles without jumps
+  const animatedProgress = useDerivedValue(() => {
+    'worklet'
+    const cyclePosition = animatedAudioTime.value % cycleDuration
+    return cycleDuration > 0 ? cyclePosition / cycleDuration : 0
+  }, [cycleDuration])
 
   // Calculate scale smoothly directly from audio time in worklet
   const animatedScale = useDerivedValue(() => {

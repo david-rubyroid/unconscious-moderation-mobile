@@ -1,3 +1,4 @@
+import type { AudioPlayer as ExpoAudioPlayer } from 'expo-audio'
 import { useEffect, useRef } from 'react'
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native'
 import Animated, { Easing, useAnimatedProps, useSharedValue, withTiming } from 'react-native-reanimated'
@@ -20,6 +21,7 @@ interface AudioPlayerProps {
   audioUri: string
   instructionText?: string
   onPlayStart?: () => void
+  onPlayerReady?: (_player: ExpoAudioPlayer | null) => void
 }
 
 const CIRCLE_SIZE = 300
@@ -128,6 +130,7 @@ function AudioPlayer({
   audioUri,
   instructionText = 'Close your eyes, breathe \n deeply, and let go ...',
   onPlayStart,
+  onPlayerReady,
 }: AudioPlayerProps) {
   // TODO: remove this if we don't need it
   // const [sliderWidth, setSliderWidth] = useState(233)
@@ -147,7 +150,15 @@ function AudioPlayer({
     isLoading,
     play,
     seekTo,
+    player,
   } = useAudioPlayer(audioUri)
+
+  // Expose player instance to parent component
+  useEffect(() => {
+    if (player && onPlayerReady) {
+      onPlayerReady(player)
+    }
+  }, [player, onPlayerReady])
 
   const progress = duration > 0 ? currentTime / duration : 0
   const animatedProgress = useSharedValue(progress)

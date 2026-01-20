@@ -53,8 +53,8 @@ export const authFormStyles = StyleSheet.create({
     backgroundColor: Colors.light.white,
   },
   termsContainer: {
+    marginTop: 32,
     textAlign: 'center',
-    marginTop: 'auto',
   },
   forgotPassword: {
     color: Colors.light.primary4,

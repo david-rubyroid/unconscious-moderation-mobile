@@ -13,7 +13,15 @@ export const freeDrinkTrackerStyles = StyleSheet.create({
   title: {
     textAlign: 'center',
     color: Colors.light.primary4,
+  },
+  titleContainer: {
+    position: 'relative',
     marginBottom: verticalScale(32),
+  },
+  alertIcon: {
+    position: 'absolute',
+    top: -5,
+    right: -20,
   },
   description: {
     textAlign: 'center',
@@ -70,5 +78,21 @@ export const freeDrinkTrackerStyles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  popupAlertIcon: {
+    alignSelf: 'center',
+    marginBottom: verticalScale(28),
+  },
+  popupDescription: {
+    textAlign: 'center',
+    color: Colors.light.primary4,
+    fontWeight: 400,
+    marginBottom: verticalScale(28),
+  },
+  popupDescriptionBold: {
+    color: Colors.light.primary4,
+  },
+  popupButton: {
+    alignSelf: 'center',
   },
 })

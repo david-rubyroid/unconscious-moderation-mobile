@@ -1,12 +1,12 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useEffect, useState } from 'react'
 
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 
 import { StyleSheet, TextInput, View } from 'react-native'
 
 import { useCompleteActivity, useGetJournalingAnswers, useSaveJournalingAnswer } from '@/api/queries/daily-activities'
-import { Button, Header, ScreenContainer, ThemedText } from '@/components'
+import { Button, Header, ScreenContainer, StepIndicator, ThemedText } from '@/components'
 import { Colors, withOpacity } from '@/constants/theme'
 import { scale } from '@/utils/responsive'
 
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
     color: Colors.light.primary,
-    marginBottom: 17,
+    marginVertical: scale(17),
   },
   promptsContainer: {
     padding: 12,
@@ -55,7 +55,11 @@ function JournalingDayScreen() {
   const { mutateAsync: completeActivity } = useCompleteActivity()
   const { data: journalingAnswers } = useGetJournalingAnswers(Number(day))
 
-  const prompts = t(`day-${day}.prompts`, { returnObjects: true }) as Record<string, { title: string, description: string }>
+  const prompts = t(
+    `day-${day}.prompts`,
+    { returnObjects: true },
+  ) as Record<string, { title: string, description: string }>
+
   const allPrompts = Object.keys(prompts)
   const totalSteps = allPrompts.length
 
@@ -94,13 +98,21 @@ function JournalingDayScreen() {
     <ScreenContainer>
       <Header title={t('journaling')} />
 
+      <StepIndicator currentStep={activeStep} totalSteps={totalSteps} />
+
       <ThemedText type="preSubtitle" style={styles.title}>
         {t(`day-${day}.title`)}
       </ThemedText>
 
       <View style={styles.promptsContainer}>
         <ThemedText type="default" style={styles.promptDescription}>
-          {prompts[activeStep].description}
+          <Trans
+            i18nKey={`journaling:day-${day}.prompts.${activeStep}.description`}
+            components={[
+              <ThemedText key="0" type="default" style={{ color: Colors.light.primary }} />,
+              <ThemedText key="1" type="default" style={{ color: Colors.light.primary }} />,
+            ]}
+          />
         </ThemedText>
 
         <TextInput

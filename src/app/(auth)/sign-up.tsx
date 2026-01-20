@@ -7,8 +7,7 @@ import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { Trans, useTranslation } from 'react-i18next'
-import { ScrollView, View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { View } from 'react-native'
 
 import { useRegistration } from '@/api/queries/auth'
 
@@ -16,9 +15,9 @@ import {
   Button,
   ControlledTextInput,
   Divider,
+  ScreenContainer,
   SocialAuth,
   TermsText,
-  ThemedGradient,
   ThemedText,
 } from '@/components'
 
@@ -29,13 +28,11 @@ import { useAuthSuccess } from '@/hooks/use-auth-success'
 import { authFormStyles } from '@/styles/auth-forms'
 
 import { getErrorMessage } from '@/utils/error-handler'
-import { verticalScale } from '@/utils/responsive'
 
 import { createRegistrationSchema } from '@/validations/auth-schemas'
 
 function RegisterScreen() {
   const { t } = useTranslation('register')
-  const { top, bottom } = useSafeAreaInsets()
 
   const { handleAuthSuccess } = useAuthSuccess()
   const { mutateAsync: register, isPending } = useRegistration()
@@ -72,88 +69,86 @@ function RegisterScreen() {
   }
 
   return (
-    <ThemedGradient style={[authFormStyles.container, { paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }]}>
-      <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
-        <View style={authFormStyles.titleContainer}>
-          <ThemedText type="subtitle" style={authFormStyles.subtitle}>{t('title')}</ThemedText>
-          <ThemedText type="subtitle" style={authFormStyles.subtitle}>{t('sign-up')}</ThemedText>
+    <ScreenContainer>
+      <View style={authFormStyles.titleContainer}>
+        <ThemedText type="subtitle" style={authFormStyles.subtitle}>{t('title')}</ThemedText>
+        <ThemedText type="subtitle" style={authFormStyles.subtitle}>{t('sign-up')}</ThemedText>
 
-          <ThemedText>
-            <Trans
-              i18nKey="register:already-have-account"
-              components={[
-                <ThemedText key="0" style={authFormStyles.alreadyHaveAccount} />,
-                <Link key="1" href="/(auth)/sign-in" replace style={authFormStyles.logIn} />,
-              ]}
-            />
-          </ThemedText>
-        </View>
+        <ThemedText>
+          <Trans
+            i18nKey="register:already-have-account"
+            components={[
+              <ThemedText key="0" style={authFormStyles.alreadyHaveAccount} />,
+              <Link key="1" href="/(auth)/sign-in" replace style={authFormStyles.logIn} />,
+            ]}
+          />
+        </ThemedText>
+      </View>
 
-        <SocialAuth />
+      <SocialAuth />
 
-        <Divider
-          text={t('or')}
-          viewStyle={authFormStyles.divider}
-          textStyle={authFormStyles.dividerText}
-          lineStyle={authFormStyles.dividerLine}
+      <Divider
+        text={t('or')}
+        viewStyle={authFormStyles.divider}
+        textStyle={authFormStyles.dividerText}
+        lineStyle={authFormStyles.dividerLine}
+      />
+
+      <View style={authFormStyles.form}>
+        <ControlledTextInput
+          style={authFormStyles.input}
+          control={control}
+          name="firstName"
+          placeholder={t('firstName')}
+          placeholderTextColor={withOpacity(Colors.light.black, 0.25)}
         />
 
-        <View style={authFormStyles.form}>
-          <ControlledTextInput
-            style={authFormStyles.input}
-            control={control}
-            name="firstName"
-            placeholder={t('firstName')}
-            placeholderTextColor={withOpacity(Colors.light.black, 0.25)}
-          />
+        <ControlledTextInput
+          style={authFormStyles.input}
+          control={control}
+          name="lastName"
+          placeholder={t('lastName')}
+          placeholderTextColor={withOpacity(Colors.light.black, 0.25)}
+        />
 
-          <ControlledTextInput
-            style={authFormStyles.input}
-            control={control}
-            name="lastName"
-            placeholder={t('lastName')}
-            placeholderTextColor={withOpacity(Colors.light.black, 0.25)}
-          />
+        <ControlledTextInput
+          style={authFormStyles.input}
+          control={control}
+          name="email"
+          placeholder={t('email')}
+          placeholderTextColor={withOpacity(Colors.light.black, 0.25)}
+        />
 
-          <ControlledTextInput
-            style={authFormStyles.input}
-            control={control}
-            name="email"
-            placeholder={t('email')}
-            placeholderTextColor={withOpacity(Colors.light.black, 0.25)}
-          />
+        <ControlledTextInput
+          style={authFormStyles.input}
+          control={control}
+          name="password"
+          placeholder={t('password')}
+          placeholderTextColor={withOpacity(Colors.light.black, 0.25)}
+          isPassword
+        />
 
-          <ControlledTextInput
-            style={authFormStyles.input}
-            control={control}
-            name="password"
-            placeholder={t('password')}
-            placeholderTextColor={withOpacity(Colors.light.black, 0.25)}
-            isPassword
-          />
+        <ControlledTextInput
+          style={authFormStyles.input}
+          control={control}
+          name="confirmPassword"
+          placeholder={t('confirmPassword')}
+          placeholderTextColor={withOpacity(Colors.light.black, 0.25)}
+          isPassword
+        />
 
-          <ControlledTextInput
-            style={authFormStyles.input}
-            control={control}
-            name="confirmPassword"
-            placeholder={t('confirmPassword')}
-            placeholderTextColor={withOpacity(Colors.light.black, 0.25)}
-            isPassword
-          />
-
-          <Button
-            fullWidth
-            disabled={!isValid || isPending}
-            loading={isPending}
-            title={t('continue')}
-            variant="secondary"
-            onPress={handleSubmit(onSubmit)}
-          />
-        </View>
-      </ScrollView>
+        <Button
+          fullWidth
+          disabled={!isValid || isPending}
+          loading={isPending}
+          title={t('continue')}
+          variant="secondary"
+          onPress={handleSubmit(onSubmit)}
+        />
+      </View>
 
       <TermsText style={authFormStyles.termsContainer} />
-    </ThemedGradient>
+    </ScreenContainer>
   )
 }
 

@@ -1,13 +1,17 @@
 import { useRouter } from 'expo-router'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
-import { ActivityIndicator, View } from 'react-native'
+import { Trans, useTranslation } from 'react-i18next'
+import { ActivityIndicator, Pressable, View } from 'react-native'
 
 import { useGetCurrentStreak, useStartSobrietyStreak } from '@/api/queries/sobriety-tracker'
+
+import AlertIcon from '@/assets/icons/alert'
 
 import CocktailsIcon from '@/assets/icons/cocktail'
 
 import {
+  BottomSheetPopup,
   Button,
   ControlledDateInput,
   ScreenContainer,
@@ -17,7 +21,6 @@ import {
 import { Colors } from '@/constants/theme'
 
 import { freeDrinkTrackerStyles } from '@/styles/free-drink-tracker'
-
 import { getErrorMessage } from '@/utils/error-handler'
 import { verticalScale } from '@/utils/responsive'
 import { showErrorToast, showSuccessToast } from '@/utils/toast'
@@ -44,8 +47,10 @@ const youReInStyle = {
 }
 
 function StartTrackingScreen() {
-  const { t } = useTranslation('free-drink-tracker')
   const router = useRouter()
+  const { t } = useTranslation('free-drink-tracker')
+
+  const [showDescription, setShowDescription] = useState(false)
 
   const { control, handleSubmit } = useForm<FormData>({
     defaultValues: {
@@ -67,7 +72,12 @@ function StartTrackingScreen() {
     combined.setSeconds(time.getSeconds())
     return combined
   }
-
+  const handleShowDescription = () => {
+    setShowDescription(true)
+  }
+  const handleHideDescription = () => {
+    setShowDescription(false)
+  }
   const onSubmit = async (data: FormData) => {
     try {
       // Combine date and time into one timestamp
@@ -102,7 +112,18 @@ function StartTrackingScreen() {
         <CocktailsIcon width={50} height={67} color={Colors.light.primary} />
       </View>
 
-      <ThemedText type="subtitle" style={freeDrinkTrackerStyles.title}>{t('alcohol-free-tracker')}</ThemedText>
+      <View style={freeDrinkTrackerStyles.titleContainer}>
+        <Pressable onPress={handleShowDescription}>
+          <AlertIcon width={13} height={13} style={freeDrinkTrackerStyles.alertIcon} />
+        </Pressable>
+
+        <ThemedText
+          type="subtitle"
+          style={freeDrinkTrackerStyles.title}
+        >
+          {t('alcohol-free-tracker')}
+        </ThemedText>
+      </View>
 
       <ThemedText type="defaultSemiBold" style={youReInStyle}>
         {t('you-re-in')}
@@ -161,6 +182,29 @@ function StartTrackingScreen() {
       <ThemedText style={freeDrinkTrackerStyles.footerText}>
         {t('lets-just-move-a-few-wires-around')}
       </ThemedText>
+
+      <BottomSheetPopup
+        visible={showDescription}
+        onClose={handleHideDescription}
+        gradientColors={[Colors.light.tertiaryBackground, Colors.light.tertiaryBackground]}
+      >
+        <AlertIcon width={49} height={49} style={freeDrinkTrackerStyles.popupAlertIcon} />
+
+        <ThemedText type="defaultSemiBold" style={freeDrinkTrackerStyles.popupDescription}>
+          <Trans
+            i18nKey="free-drink-tracker:start-tracking-description"
+            components={[
+              <ThemedText key="0" type="defaultSemiBold" style={freeDrinkTrackerStyles.popupDescriptionBold} />,
+              <ThemedText key="1" type="defaultSemiBold" style={freeDrinkTrackerStyles.popupDescriptionBold} />,
+              <ThemedText key="2" type="defaultSemiBold" style={freeDrinkTrackerStyles.popupDescriptionBold} />,
+              <ThemedText key="3" type="defaultSemiBold" style={freeDrinkTrackerStyles.popupDescriptionBold} />,
+              <ThemedText key="4" type="defaultSemiBold" style={freeDrinkTrackerStyles.popupDescriptionBold} />,
+            ]}
+          />
+        </ThemedText>
+
+        <Button title={t('got-it')} onPress={handleHideDescription} style={freeDrinkTrackerStyles.popupButton} />
+      </BottomSheetPopup>
     </ScreenContainer>
   )
 }

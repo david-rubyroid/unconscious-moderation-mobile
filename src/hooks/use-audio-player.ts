@@ -1,4 +1,5 @@
-import { useAudioPlayerStatus, useAudioPlayer as useExpoAudioPlayer } from 'expo-audio'
+import type { AudioPlayer } from 'expo-audio'
+import { setAudioModeAsync, useAudioPlayerStatus, useAudioPlayer as useExpoAudioPlayer } from 'expo-audio'
 import { useEffect, useState } from 'react'
 
 interface UseAudioPlayerReturn {
@@ -12,12 +13,31 @@ interface UseAudioPlayerReturn {
   togglePlayPause: () => void
   setVolume: (_value: number) => void
   seekTo: (_positionMillis: number) => void
+  player: AudioPlayer | null
 }
 
 export function useAudioPlayer(audioUri: string): UseAudioPlayerReturn {
   const [volume, setVolumeState] = useState(1)
   const player = useExpoAudioPlayer(audioUri)
   const status = useAudioPlayerStatus(player)
+
+  // Configure audio mode for background playback
+  useEffect(() => {
+    const configureAudioMode = async () => {
+      try {
+        await setAudioModeAsync({
+          playsInSilentMode: true,
+          shouldPlayInBackground: true,
+          interruptionMode: 'doNotMix',
+        })
+      }
+      catch (error) {
+        console.error('Failed to configure audio mode:', error)
+      }
+    }
+
+    configureAudioMode()
+  }, [])
 
   useEffect(() => {
     if (player && volume !== undefined) {
@@ -68,5 +88,6 @@ export function useAudioPlayer(audioUri: string): UseAudioPlayerReturn {
     togglePlayPause,
     setVolume,
     seekTo,
+    player,
   }
 }

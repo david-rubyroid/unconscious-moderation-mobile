@@ -125,6 +125,9 @@ function FearsScreen() {
     setOthers((prev) => {
       return [...prev, newOther]
     })
+    setSelectedFears((prev) => {
+      return [...prev, newOther]
+    })
     setNewOther('')
     setModalVisible(false)
   }

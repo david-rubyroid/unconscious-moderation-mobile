@@ -3,8 +3,11 @@ import { router, useLocalSearchParams } from 'expo-router'
 import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import { z } from 'zod'
 
 import { useForgotPassword, useVerifyCode } from '@/api/queries/auth'
@@ -12,8 +15,8 @@ import { useForgotPassword, useVerifyCode } from '@/api/queries/auth'
 import {
   Button,
   ControlledTextInput,
+  ScreenContainer,
   TermsText,
-  ThemedGradient,
   ThemedText,
 } from '@/components'
 
@@ -22,13 +25,8 @@ import { Colors, withOpacity } from '@/constants/theme'
 import useCountdown from '@/hooks/use-countdown'
 
 import { getErrorMessage } from '@/utils/error-handler'
-import { verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 18,
-    backgroundColor: Colors.light.mainBackground,
-  },
   titleContainer: {
     gap: 8,
     marginBottom: 30,
@@ -51,7 +49,7 @@ const styles = StyleSheet.create({
   },
   termsContainer: {
     textAlign: 'center',
-    marginTop: 'auto',
+    marginTop: 32,
   },
   resendContainer: {
     alignItems: 'center',
@@ -74,7 +72,6 @@ const styles = StyleSheet.create({
 function VerifyPasswordScreen() {
   const { email } = useLocalSearchParams<{ email: string }>()
   const { t } = useTranslation('forgot-password')
-  const { top, bottom } = useSafeAreaInsets()
 
   const {
     count: timer,
@@ -151,58 +148,56 @@ function VerifyPasswordScreen() {
   }
 
   return (
-    <ThemedGradient style={[styles.container, { paddingTop: top + 10, paddingBottom: bottom + verticalScale(10) }]}>
-      <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
-        <View style={styles.titleContainer}>
-          <ThemedText type="subtitle" style={styles.subtitle}>{t('title')}</ThemedText>
-          <ThemedText type="subtitle" style={styles.subtitle}>{t('verify-code')}</ThemedText>
+    <ScreenContainer>
+      <View style={styles.titleContainer}>
+        <ThemedText type="subtitle" style={styles.subtitle}>{t('title')}</ThemedText>
+        <ThemedText type="subtitle" style={styles.subtitle}>{t('verify-code')}</ThemedText>
 
-          <ThemedText style={styles.description}>{t('verify-description')}</ThemedText>
-        </View>
+        <ThemedText style={styles.description}>{t('verify-description')}</ThemedText>
+      </View>
 
-        <View style={styles.form}>
-          <ControlledTextInput
-            style={styles.input}
-            control={control}
-            name="code"
-            placeholder={t('code')}
-            placeholderTextColor={withOpacity(Colors.light.black, 0.25)}
-            keyboardType="number-pad"
-          />
+      <View style={styles.form}>
+        <ControlledTextInput
+          style={styles.input}
+          control={control}
+          name="code"
+          placeholder={t('code')}
+          placeholderTextColor={withOpacity(Colors.light.black, 0.25)}
+          keyboardType="number-pad"
+        />
 
-          <Button
-            fullWidth
-            loading={isPending}
-            disabled={!isValid || isPending}
-            title={t('continue')}
-            variant="secondary"
-            onPress={handleSubmit(onSubmit)}
-          />
+        <Button
+          fullWidth
+          loading={isPending}
+          disabled={!isValid || isPending}
+          title={t('continue')}
+          variant="secondary"
+          onPress={handleSubmit(onSubmit)}
+        />
 
-          <View style={styles.resendContainer}>
-            {canResend
-              ? (
-                  <TouchableOpacity
-                    style={styles.resendButton}
-                    onPress={handleResendCode}
-                    disabled={isResending}
-                  >
-                    <ThemedText style={styles.resendText}>
-                      {isResending ? t('resending') : t('resend-code')}
-                    </ThemedText>
-                  </TouchableOpacity>
-                )
-              : (
-                  <ThemedText style={styles.resendTimer}>
-                    {t('resend-timer', { seconds: timer })}
+        <View style={styles.resendContainer}>
+          {canResend
+            ? (
+                <TouchableOpacity
+                  style={styles.resendButton}
+                  onPress={handleResendCode}
+                  disabled={isResending}
+                >
+                  <ThemedText style={styles.resendText}>
+                    {isResending ? t('resending') : t('resend-code')}
                   </ThemedText>
-                )}
-          </View>
+                </TouchableOpacity>
+              )
+            : (
+                <ThemedText style={styles.resendTimer}>
+                  {t('resend-timer', { seconds: timer })}
+                </ThemedText>
+              )}
         </View>
-      </ScrollView>
+      </View>
 
       <TermsText style={styles.termsContainer} />
-    </ThemedGradient>
+    </ScreenContainer>
   )
 }
 

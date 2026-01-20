@@ -9,11 +9,11 @@
     "prompts": {
       "1": {
         "title": "Check in with yourself",
-        "description": "Close your eyes and take three deep breaths. How are you feeling right now? Notice what's happening in your body, any tension, relaxation, or sensations. What's going on in your mind? What thoughts are floating around, and what emotions are present? Just observe without judgment and write about this moment exactly as it is."
+        "description": "Close your eyes and take three deep breaths. <0>How are you feeling right now?</0> Notice what's happening in your body, any tension, relaxation, or sensations. <1>What's going on in your mind? What thoughts are floating around, and what emotions are present?</1>Just observe without judgment and write about this moment exactly as it is."
       },
       "2": {
         "title": "Happiness vs Pleasure",
-        "description": "Think about the difference between happiness and pleasure. Can you remember a moment of genuine happiness, maybe a deep conversation or feeling completely present? Now recall a moment of pure pleasure, that first sip of wine or perfect bite of chocolate. What did each feel like in your body, and what do you notice about how long each feeling lasted?"
+        "description": "Think about the difference between happiness and pleasure. <0>Can you remember a moment of genuine happiness, maybe a deep conversation or feeling completely present?</0>\n\nNow recall a moment of pure pleasure, that first sip of wine or perfect bite of chocolate. <1>What did each feel like in your body, and what do you notice about how long each feeling lasted?</1>"
       }
     }
   },
@@ -22,7 +22,7 @@
     "prompts": {
       "1": {
         "title": "RAIN technique",
-        "description": "Close your eyes and take three deep breaths. Try the RAIN technique with whatever emotions showed up for you today: Recognize what you're feeling right now without trying to change it, Allow these emotions to be present instead of pushing them away, Investigate where you feel them in your body (tight chest? tense shoulders? fluttery stomach?) and offer yourself Natural kindness, remember you are not defined by my emotions, these feelings are temporary and will pass. Write about this process, what did you discover about how emotions actually move through you when you don't resist them?"
+        "description": "Close your eyes and take three deep breaths. Try the RAIN technique with whatever emotions showed up for you today: Recognize what you're feeling right now without trying to change it, Allow these emotions to be present instead of pushing them away, Investigate where you feel them in your body (tight chest? tense shoulders? fluttery stomach?) and offer yourself Natural kindness, remember you are not defined by my emotions, these feelings are temporary and will pass.\n\n<0>Write about this process, what did you discover about how emotions actually move through you when you don't resist them?</0>"
       }
     }
   },
@@ -31,11 +31,15 @@
     "prompts": {
       "1": {
         "title": "Who are you without alcohol?",
-        "description": "Close your eyes and take three deep breaths. Think about moments when you've believed alcohol made you more fun, confident, or easygoing. What specifically were you doing, saying, or feeling that led you to think this? If you remove the alcohol from that moment, what parts of you (your humor, kindness, creativity, or energy) were still there naturally?"
+        "description": "Close your eyes and take three deep breaths. Think about moments when you've believed alcohol made you more fun, confident, or easygoing. <0>What specifically were you doing, saying, or feeling that led you to think this?</0> If you remove the alcohol from that moment, <1>what parts of you (your humor, kindness, creativity, or energy) were still there naturally?</1>"
       },
       "2": {
         "title": "Redefining fun",
-        "description": "Have there been times you drank and didn't feel more fun or social? What happened then? Now think about what \"fun\" might look like if it came from genuine connection and presence rather than from alcohol. What would that feel like in your body and mind? After reflecting on all of this, do you feel like you're truly a \"functional drinker,\" or is that just a story you've been telling yourself?"
+        "description": "<0>Have there been times you drank and didn't feel more fun or social? What happened then?</0> Now think about what \"fun\" might look like if it came from genuine connection and presence rather than from alcohol. <1>What would that feel like in your body and mind?</1>"
+      },
+      "3": {
+        "title": "Reflection",
+        "description": "After reflecting on all of this, <0>do you feel like you're truly a \"functional drinker,\" or is that just a story you've been telling yourself?</0>"
       }
     }
   },
@@ -44,7 +48,11 @@
     "prompts": {
       "1": {
         "title": "Thank yourself",
-        "description": "Close your eyes and take three deep breaths. Write a thank-you note to yourself for having the courage to make this change. What specifically are you grateful for about your own resilience, wisdom, or strength? Include gratitude for the struggles too. How have difficulties in your life, including your relationship with alcohol, actually helped you grow and shape the person you're becoming?"
+        "description": "Close your eyes and take three deep breaths. Write a thank-you note to yourself for having the courage to make this change. <0>What specifically are you grateful for about your own resilience, wisdom, or strength?</0> Include gratitude for the struggles too."
+      },
+      "2": {
+        "title": "Reflection",
+        "description": "How have difficulties in your life, including your relationship with alcohol, actually helped you grow and shape the person you're becoming?"
       }
     }
   },
@@ -53,7 +61,7 @@
     "prompts": {
       "1": {
         "title": "Letter to future you",
-        "description": "Close your eyes and take three deep breaths. Compare how you feel waking up now versus how you used to feel after drinking. What's different about your energy, your clarity, your mood? Write a letter to your future self describing what you want to remember about how it feels to wake up naturally, without the fog of alcohol. What do you want to tell that future version of yourself about this moment of clarity?"
+        "description": "Close your eyes and take three deep breaths. Compare how you feel waking up now versus how you used to feel after drinking. <0>What's different about your energy, your clarity, your mood?</0> Write a letter to your future self describing what you want to remember about how it feels to wake up naturally, without the fog of alcohol.\n\n<1>What do you want to tell that future version of yourself about this moment of clarity?</1>"
       }
     }
   },
@@ -62,11 +70,11 @@
     "prompts": {
       "1": {
         "title": "Understanding guilt and shame",
-        "description": "Close your eyes and take three deep breaths. Think of a recent moment you felt bad about something you did. Was it guilt about what you did, or shame about who you are? Write about the difference between these feelings and how you can reframe that moment to focus on the action, not your worth."
+        "description": "Close your eyes and take three deep breaths. Think of a recent moment you felt bad about something you did. <0>Was it guilt about what you did, or shame about who you are?</0> Write about the difference between these feelings and how you can reframe that moment to focus on the action, not your worth."
       },
       "2": {
         "title": "Talk to yourself like a friend",
-        "description": "Now imagine a close friend came to you and shared exactly what you just wrote about themselves. What would you say to them? How would you help them see the difference between their actions and their worth as a person? Write down what you would tell them. Now read those words you just wrote back to yourself."
+        "description": "Now imagine a close friend came to you and shared exactly <0>what you just wrote about themselves. What would you say to them?</0>\n\n<1>How would you help them see the difference between their actions and their worth as a person?</1> Write down what you would tell them. Now read those words you just wrote back to yourself."
       }
     }
   },
@@ -75,7 +83,7 @@
     "prompts": {
       "1": {
         "title": "Body check-in",
-        "description": "Close your eyes and take three deep breaths. How are you feeling right now? What emotions or sensations are present in your body at this moment?"
+        "description": "Close your eyes and take three deep breaths. <0>How are you feeling right now? What emotions or sensations are present in your body at this moment?</0>"
       },
       "2": {
         "title": "Grounding through senses",
@@ -83,7 +91,7 @@
       },
       "3": {
         "title": "Reflection",
-        "description": "Now write what you noticed when you shifted your attention to your senses? How did this practice change your mental or emotional state? Which sense felt most grounding? How are you feeling compared to when you started?"
+        "description": "Now write <0>what you noticed when you shifted your attention to your senses? How did this practice change your mental or emotional state? Which sense felt most grounding? How are you feeling compared to when you started?</0>"
       }
     }
   },
@@ -92,7 +100,7 @@
     "prompts": {
       "1": {
         "title": "Practicing patience",
-        "description": "Close your eyes and take three deep breaths. Reflect on a time when patience led to a better outcome than rushing would have. Write about how patience feels in your body. Is it uncomfortable at first? What happens when you breathe into the discomfort of not acting immediately? What do you feel would have happened differently if you had waited and been more thoughtful instead of acting so quickly in challenging situations?"
+        "description": "Close your eyes and take three deep breaths. Reflect on a time when patience led to a better outcome than rushing would have. Write about how patience feels in your body.<0>Is it uncomfortable at first? What happens when you breathe into the discomfort of not acting immediately?</0>\n\n<1>What do you feel would have happened differently if you had waited and been more thoughtful instead of acting so quickly in challenging situations?</1>"
       }
     }
   },
@@ -101,7 +109,7 @@
     "prompts": {
       "1": {
         "title": "Cravings with curiosity",
-        "description": "Close your eyes and take three deep breaths. Write honestly about your relationship with sugar and cravings since stopping alcohol. What patterns have you noticed? Instead of judging these cravings, write about them with curiosity. What might your body be trying to tell you? How can you respond to these needs with compassion rather than criticism?"
+        "description": "Close your eyes and take three deep breaths. Write honestly about your relationship with sugar and cravings since stopping alcohol. <0>What patterns have you noticed?</0> Instead of judging these cravings, write about them with curiosity.\n\n<1>What might your body be trying to tell you?</1> How can you respond to these needs with compassion rather than criticism?"
       }
     }
   },

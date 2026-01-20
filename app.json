@@ -14,7 +14,8 @@
       "buildNumber": "16",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
-        "CFBundleDisplayName": "Unconscious Moderation"
+        "CFBundleDisplayName": "Unconscious Moderation",
+        "UIBackgroundModes": ["audio"]
       },
       "icon": {
         "light": "./assets/app-icons/ios-light.png",
