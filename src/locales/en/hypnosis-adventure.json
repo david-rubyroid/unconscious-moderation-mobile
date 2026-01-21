@@ -1,32 +1,124 @@
 {
-  "day-1": "Safe Space",
-  "day-2": "Las Vagus",
-  "day-3": "Olivia and the White Fox",
-  "day-4": "The Secret Formula",
-  "day-5": "Health Now Express",
-  "day-6": "Friendly Fox",
-  "day-7": "A little help for your friends",
-  "day-8": "A Walk in the Park",
-  "day-9": "The Drill Sergeant",
-  "day-10": "The Old City",
-  "day-11": "The Drill Sergeant",
-  "day-12": "A Walk in the Park",
-  "day-13": "A little help for your friends",
-  "day-14": "Friendly Fox",
-  "day-15": "Health Now Express",
-  "day-16": "The Secret Formula",
-  "day-17": "Olivia and the White Fox",
-  "day-18": "Las Vagus",
-  "day-19": "Safe Space",
-  "day-20": "Health Now Express",
-  "day-21": "A little help for your friends",
-  "day-22": "Dealing with anger v1.0",
-  "day-23": "Bread and cheese and rock and roll v1.0",
-  "day-24": "Building the bridge v1.0",
-  "day-25": "Fear v1.0",
-  "day-26": "Inner Compass v1.0",
-  "day-27": "Inner Guidance v1.0",
-  "day-28": "Saying no country style v1.0",
-  "day-29": "Shame and Guilt and Inner Voice v1.0",
-  "day-30": "Dealing with anger v1.0"
+  "day-1": {
+    "title": "Safe Space",
+    "description": "This hypnosis creates safety so your mind and body can explore honestly without pressure."
+  },
+  "day-2": {
+    "title": "Las Vagus",
+    "description": "Today's session activates your vagus nerve to naturally produce the calm you've been seeking."
+  },
+  "day-3": {
+    "title": "Olivia and the White Fox",
+    "description": "This playful story invites your unconscious mind to discover new possibilities through imagination."
+  },
+  "day-4": {
+    "title": "Bread and Cheese and Rock and Roll",
+    "description": "Celebrate life's simple pleasures and reconnect with satisfaction that comes from presence, not excess."
+  },
+  "day-5": {
+    "title": "HealthNow Express",
+    "description": "Discover how your body naturally creates joy, connection, and calm without chemical assistance."
+  },
+  "day-6": {
+    "title": "Shame and Guilt and Inner Voice",
+    "description": "See shame and guilt with compassion as passing clouds that don't define the sky."
+  },
+  "day-7": {
+    "title": "A Walk in the Park",
+    "description": "Sometimes transformation just needs a gentle pause and permission to rest."
+  },
+  "day-8": {
+    "title": "The Drill Sergeant",
+    "description": "This session honors your strength and helps focused discipline build lasting new patterns."
+  },
+  "day-9": {
+    "title": "Friendly Fox",
+    "description": "Return to the wisdom of your body's natural healing and the science of moderation."
+  },
+  "day-10": {
+    "title": "Las Vagus",
+    "description": "As withdrawal symptoms peak, let your vagus nerve restore balance and trust in your body's healing."
+  },
+  "day-11": {
+    "title": "Saying No Country Style",
+    "description": "Learn that saying no is actually saying yes to what truly matters to you."
+  },
+  "day-12": {
+    "title": "Olivia and the White Fox",
+    "description": "Revisit this story as you master urge surfing and notice emotions before thoughts take over."
+  },
+  "day-13": {
+    "title": "HealthNow Express",
+    "description": "Rediscover natural highs as you practice kindness and strengthen your connection to authentic joy."
+  },
+  "day-14": {
+    "title": "Building the Bridge",
+    "description": "Build connections within yourself and with others, one intentional step at a time."
+  },
+  "day-15": {
+    "title": "A Walk in the Park",
+    "description": "Practice patience with your transformation as this session helps you rest in your own timing."
+  },
+  "day-16": {
+    "title": "A Little Help For Your Friends",
+    "description": "Explore how authentic kindness creates connections that no drink ever could."
+  },
+  "day-17": {
+    "title": "The Drill Sergeant",
+    "description": "Call on your inner discipline to build habits that honor your commitment and values."
+  },
+  "day-18": {
+    "title": "Safe Space",
+    "description": "Integrate 18 days of growth as hypnotherapy and journaling work together to rewire old patterns."
+  },
+  "day-19": {
+    "title": "The Old City",
+    "description": "Journey to discover the wisdom waiting in the walled garden of your heart."
+  },
+  "day-20": {
+    "title": "Fear",
+    "description": "Acknowledge fear without letting it drive your choices as you learn you're already safe."
+  },
+  "day-21": {
+    "title": "Inner Compass",
+    "description": "Find the compass inside you that always points toward your deepest truth."
+  },
+  "day-22": {
+    "title": "Inner Guidance",
+    "description": "Get quiet enough to hear the inner voice that's been waiting to guide you."
+  },
+  "day-23": {
+    "title": "Shame and Guilt and Inner Voice",
+    "description": "Release denial's hold by seeing yourself with compassion and listening to your inner wisdom."
+  },
+  "day-24": {
+    "title": "Dealing with Anger",
+    "description": "Understand anger as information rather than enemy and respond with wisdom, not reaction."
+  },
+  "day-25": {
+    "title": "Las Vagus",
+    "description": "Support your blood pressure and nervous system as your body continues healing from the inside out."
+  },
+  "day-26": {
+    "title": "Building the Bridge",
+    "description": "Strengthen bridges of authentic connection as you explore relationships without alcohol's filter."
+  },
+  "day-27": {
+    "title": "Bread and Cheese and Rock and Roll",
+    "description": "Celebrate hangover-free mornings by reconnecting with simple pleasures that sustain real joy."
+  },
+  "day-28": {
+    "title": "A Walk in the Park",
+    "description": "Ground yourself in this moment as you process both internal and external stress with clarity."
+  },
+  "day-29": {
+    "title": "Inner Compass",
+    "description": "Let your inner compass guide you back to your core values as you prepare for tomorrow's choice."
+  },
+  "day-30": {
+    "title": "The Secret Formula",
+    "description": "This session reveals how early patterns shaped your choices and honors the wisdom you've gained."
+  },
+
+  "got-it": "Got it"
 }

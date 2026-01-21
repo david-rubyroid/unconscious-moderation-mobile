@@ -70,9 +70,15 @@ function Modal({
   }
 
   // Reset isClosing when modal becomes visible (transition from false to true)
+  // Set isClosing when modal becomes invisible (transition from true to false)
   useEffect(() => {
     if (visible && !prevVisibleRef.current) {
       setIsClosing(false)
+    }
+
+    if (!visible && prevVisibleRef.current) {
+      // When visible changes from true to false, start closing animation
+      setIsClosing(true)
     }
     prevVisibleRef.current = visible
   }, [visible])

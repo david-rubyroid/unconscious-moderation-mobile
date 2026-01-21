@@ -22,6 +22,7 @@ interface AudioPlayerProps {
   instructionText?: string
   onPlayStart?: () => void
   onPlayerReady?: (_player: ExpoAudioPlayer | null) => void
+  textColor?: string
 }
 
 const CIRCLE_SIZE = 300
@@ -82,47 +83,9 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.mono,
   },
   instructionText: {
-    fontSize: scale(20),
     fontWeight: '500',
     color: Colors.light.primary,
     textAlign: 'center',
-    paddingHorizontal: scale(20),
-    marginBottom: verticalScale(48),
-  },
-  volumeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: 233,
-    alignSelf: 'center',
-  },
-  volumeIcon: {
-    marginRight: scale(12),
-  },
-  volumeSlider: {
-    flex: 1,
-    height: verticalScale(4),
-    backgroundColor: Colors.light.white,
-    borderRadius: 2,
-    position: 'relative',
-  },
-  volumeSliderTrack: {
-    height: '100%',
-    backgroundColor: Colors.light.primary,
-    borderRadius: 2,
-  },
-  volumeSliderThumb: {
-    position: 'absolute',
-    width: scale(16),
-    height: scale(16),
-    borderRadius: scale(8),
-    backgroundColor: Colors.light.primary,
-    top: verticalScale(-6),
-    left: 0,
-    shadowColor: Colors.light.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 3,
   },
 })
 
@@ -131,18 +94,12 @@ function AudioPlayer({
   instructionText = 'Close your eyes, breathe \n deeply, and let go ...',
   onPlayStart,
   onPlayerReady,
+  textColor = Colors.light.primary,
 }: AudioPlayerProps) {
-  // TODO: remove this if we don't need it
-  // const [sliderWidth, setSliderWidth] = useState(233)
-  // const thumbPosition = useSharedValue(0)
-  // const startX = useSharedValue(0)
-
   const hasRestartedRef = useRef(false)
   const hasCalledOnPlayStartRef = useRef(false)
 
   const {
-    // volume,
-    // setVolume,
     isPlaying,
     currentTime,
     duration,
@@ -153,15 +110,21 @@ function AudioPlayer({
     player,
   } = useAudioPlayer(audioUri)
 
+  const progress = duration > 0 ? currentTime / duration : 0
+  const animatedProgress = useSharedValue(progress)
+  const animatedCircleProps = useAnimatedProps(() => {
+    const strokeDashoffset = CIRCLE_CIRCUMFERENCE * (1 - animatedProgress.value)
+    return {
+      strokeDashoffset,
+    }
+  })
+
   // Expose player instance to parent component
   useEffect(() => {
     if (player && onPlayerReady) {
       onPlayerReady(player)
     }
   }, [player, onPlayerReady])
-
-  const progress = duration > 0 ? currentTime / duration : 0
-  const animatedProgress = useSharedValue(progress)
 
   // Call onPlayStart when playback starts
   useEffect(() => {
@@ -181,12 +144,6 @@ function AudioPlayer({
       easing: Easing.linear,
     })
   }, [progress, animatedProgress])
-
-  // useEffect(() => {
-  //   thumbPosition.value = withTiming(volume * sliderWidth, {
-  //     duration: 0,
-  //   })
-  // }, [volume, sliderWidth, thumbPosition])
 
   // Automatic restart when the audio ends
   useEffect(() => {
@@ -214,51 +171,6 @@ function AudioPlayer({
       hasRestartedRef.current = false
     }
   }, [progress, duration, seekTo, play])
-
-  const animatedCircleProps = useAnimatedProps(() => {
-    const strokeDashoffset = CIRCLE_CIRCUMFERENCE * (1 - animatedProgress.value)
-    return {
-      strokeDashoffset,
-    }
-  })
-
-  // TODO: remove this if we don't need it
-  // const updateVolume = (newVolume: number) => {
-  //   setVolume(newVolume)
-  // }
-
-  // const panGesture = Gesture.Pan()
-  //   .onStart(() => {
-  //     startX.value = thumbPosition.value
-  //   })
-  //   .onUpdate((event) => {
-  //     const newPosition = Math.max(0, Math.min(sliderWidth, startX.value + event.translationX))
-  //     thumbPosition.value = newPosition
-  //     const newVolume = Math.max(0, Math.min(1, newPosition / sliderWidth))
-  //     runOnJS(updateVolume)(newVolume)
-  //   })
-  //   .onEnd(() => {
-  //     const finalVolume = Math.max(0, Math.min(1, thumbPosition.value / sliderWidth))
-  //     runOnJS(updateVolume)(finalVolume)
-  //   })
-
-  // const handleVolumePress = (event: any) => {
-  //   const { locationX } = event.nativeEvent
-  //   const newVolume = Math.max(0, Math.min(1, locationX / sliderWidth))
-  //   thumbPosition.value = withTiming(newVolume * sliderWidth, {
-  //     duration: 200,
-  //     easing: Easing.out(Easing.ease),
-  //   })
-  //   setVolume(newVolume)
-  // }
-
-  // const animatedThumbStyle = useAnimatedStyle(() => ({
-  //   transform: [{ translateX: thumbPosition.value }],
-  // }))
-
-  // const animatedTrackStyle = useAnimatedStyle(() => ({
-  //   width: thumbPosition.value,
-  // }))
 
   return (
     <View style={styles.container}>
@@ -315,52 +227,19 @@ function AudioPlayer({
       </View>
 
       <View style={styles.timerContainer}>
-        <ThemedText style={styles.currentTime}>
+        <ThemedText style={[styles.currentTime, { color: textColor }]}>
           {formatTime(currentTime)}
         </ThemedText>
-        <ThemedText style={styles.totalTime}>
+        <ThemedText style={[styles.totalTime, { color: textColor }]}>
           {formatTime(duration)}
         </ThemedText>
       </View>
 
       {instructionText && (
-        <ThemedText style={styles.instructionText}>
+        <ThemedText type="preSubtitle" style={[styles.instructionText, { color: textColor }]}>
           {instructionText}
         </ThemedText>
       )}
-
-      {/* TODO: remove this if we don't need it */}
-      {/* <View style={styles.volumeContainer}>
-        <MaterialIcons
-          name="volume-up"
-          size={scale(30)}
-          color={Colors.light.primary}
-          style={styles.volumeIcon}
-        />
-
-        <View
-          style={styles.volumeSlider}
-          onLayout={(event) => {
-            const { width } = event.nativeEvent.layout
-            setSliderWidth(width)
-            thumbPosition.value = volume * width
-          }}
-        >
-          <Animated.View style={[styles.volumeSliderTrack, animatedTrackStyle]} />
-          <GestureDetector gesture={panGesture}>
-            <Animated.View
-              style={[
-                styles.volumeSliderThumb,
-                animatedThumbStyle,
-              ]}
-            />
-          </GestureDetector>
-          <Pressable
-            style={StyleSheet.absoluteFill}
-            onPress={handleVolumePress}
-          />
-        </View>
-      </View> */}
     </View>
   )
 }
