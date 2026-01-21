@@ -1,6 +1,6 @@
 import { openBrowserAsync, WebBrowserPresentationStyle } from 'expo-web-browser'
 import { useTranslation } from 'react-i18next'
-import { Pressable, StyleSheet, View } from 'react-native'
+import { Linking, Pressable, StyleSheet, View } from 'react-native'
 
 import AmazonIcon from '@/assets/icons/amazon'
 
@@ -8,10 +8,11 @@ import ArrowIcon from '@/assets/icons/arrow'
 
 import DotsIcon from '@/assets/icons/dots'
 
+import SupportIcon from '@/assets/icons/support'
+
 import YouTubeIcon from '@/assets/icons/youtube'
 
 import { EXTERNAL_RESOURCES_LINKS } from '@/constants/external-resources'
-
 import { Colors, withOpacity } from '@/constants/theme'
 import { scale, verticalScale } from '@/utils/responsive'
 import ThemedText from './themed-text'
@@ -64,6 +65,9 @@ function ExternalResources() {
       presentationStyle: WebBrowserPresentationStyle.AUTOMATIC,
     })
   }
+  const handleOpenSupport = () => {
+    Linking.openURL('mailto:support@um.app')
+  }
 
   return (
     <View style={styles.container}>
@@ -86,6 +90,16 @@ function ExternalResources() {
           </View>
 
           <ThemedText type="defaultSemiBold" style={styles.text}>{t('amazon')}</ThemedText>
+
+          <ArrowIcon color={Colors.light.primary4} style={styles.arrowIcon} />
+        </Pressable>
+
+        <Pressable style={styles.item} onPress={handleOpenSupport}>
+          <View style={styles.iconContainer}>
+            <SupportIcon />
+          </View>
+
+          <ThemedText type="defaultSemiBold" style={styles.text}>{t('support')}</ThemedText>
 
           <ArrowIcon color={Colors.light.primary4} style={styles.arrowIcon} />
         </Pressable>
