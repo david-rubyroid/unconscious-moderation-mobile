@@ -8,11 +8,17 @@ import { scale, verticalScale } from '@/utils/responsive'
  */
 export const freeDrinkTrackerStyles = StyleSheet.create({
   container: {
+    position: 'relative',
     alignItems: 'center',
+  },
+  backButton: {
+    position: 'absolute',
+    right: 0,
   },
   title: {
     textAlign: 'center',
     color: Colors.light.primary4,
+    marginVertical: verticalScale(26),
   },
   titleContainer: {
     position: 'relative',
@@ -26,7 +32,6 @@ export const freeDrinkTrackerStyles = StyleSheet.create({
   description: {
     textAlign: 'center',
     color: Colors.light.primary4,
-    marginBottom: verticalScale(32),
   },
   descriptionContainer: {
     paddingVertical: verticalScale(20),

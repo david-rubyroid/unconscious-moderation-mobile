@@ -1,18 +1,33 @@
+import { MaterialIcons } from '@expo/vector-icons'
+
+import { router } from 'expo-router'
 import { VideoView } from 'expo-video'
-
-import { ActivityIndicator, StyleSheet, View } from 'react-native'
-
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { Colors, withOpacity } from '@/constants/theme'
 import { VIDEOS_LINKS } from '@/constants/video-links'
 
 import { useVideoActivity } from '@/hooks/use-video-activity'
 
+import { scale } from '@/utils/responsive'
+
 const styles = StyleSheet.create({
   container: {
+    position: 'relative',
     flex: 1,
     backgroundColor: Colors.light.black,
+  },
+  backButton: {
+    position: 'absolute',
+    right: scale(16),
+    zIndex: 20,
+    backgroundColor: withOpacity(Colors.light.black, 0.6),
+    borderRadius: scale(20),
+    width: scale(40),
+    height: scale(40),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   loadingOverlay: {
     position: 'absolute',
@@ -29,6 +44,7 @@ const styles = StyleSheet.create({
 
 function UrgeSurfingMeditationScreen() {
   const videoUrl = VIDEOS_LINKS.urgeSurfingMeditationVideo
+  const insets = useSafeAreaInsets()
 
   const { player, loadingState, canStartPlayback } = useVideoActivity({ videoUrl })
 
@@ -42,14 +58,25 @@ function UrgeSurfingMeditationScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+      <Pressable
+        style={[styles.backButton, { top: insets.top }]}
+        onPress={router.back}
+      >
+        <MaterialIcons
+          name="close"
+          size={scale(24)}
+          color={Colors.light.white}
+        />
+      </Pressable>
+
       {player && (
         <VideoView
           nativeControls
           player={player}
           style={StyleSheet.absoluteFill}
           contentFit="contain"
-          allowsFullscreen
           allowsPictureInPicture={false}
+
         />
       )}
 

@@ -34,7 +34,12 @@ const styles = StyleSheet.create({
   },
 })
 
-function Header({ title, route, isReplace, whiteTitle = false }: HeaderProps) {
+function Header({
+  title,
+  route,
+  isReplace,
+  whiteTitle = false,
+}: HeaderProps) {
   const { push, replace, back } = useRouter()
 
   const handleBack = () => {

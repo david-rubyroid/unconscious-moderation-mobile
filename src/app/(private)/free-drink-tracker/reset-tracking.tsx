@@ -1,12 +1,14 @@
+import { MaterialIcons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { ActivityIndicator, View } from 'react-native'
+import { ActivityIndicator, Pressable, View } from 'react-native'
 
 import {
   useGetCurrentStreak,
   useResetSobrietyStreak,
 } from '@/api/queries/sobriety-tracker'
+
 import {
   Button,
   ControlledDateInput,
@@ -18,8 +20,8 @@ import {
 import { Colors, withOpacity } from '@/constants/theme'
 
 import { freeDrinkTrackerStyles } from '@/styles/free-drink-tracker'
-
 import { getErrorMessage } from '@/utils/error-handler'
+import { scale } from '@/utils/responsive'
 import { showErrorToast, showSuccessToast } from '@/utils/toast'
 
 interface FormData {
@@ -82,8 +84,27 @@ function ResetTrackingScreen() {
   }
 
   return (
-    <ScreenContainer contentContainerStyle={freeDrinkTrackerStyles.container}>
-      <ThemedText type="subtitle" style={freeDrinkTrackerStyles.title}>{t('every-new-beginning-holds-power')}</ThemedText>
+    <ScreenContainer
+      horizontalPadding={30}
+      contentContainerStyle={freeDrinkTrackerStyles.container}
+    >
+      <Pressable
+        style={freeDrinkTrackerStyles.backButton}
+        onPress={router.back}
+      >
+        <MaterialIcons
+          name="close"
+          size={scale(24)}
+          color={Colors.light.primary4}
+        />
+      </Pressable>
+
+      <ThemedText
+        type="subtitle"
+        style={freeDrinkTrackerStyles.title}
+      >
+        {t('every-new-beginning-holds-power')}
+      </ThemedText>
 
       <View style={freeDrinkTrackerStyles.descriptionContainer}>
         <ThemedText style={freeDrinkTrackerStyles.description}>

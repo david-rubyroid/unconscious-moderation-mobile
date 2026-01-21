@@ -1,7 +1,9 @@
+import { MaterialIcons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Trans, useTranslation } from 'react-i18next'
+
 import { ActivityIndicator, Pressable, View } from 'react-native'
 
 import { useGetCurrentStreak, useStartSobrietyStreak } from '@/api/queries/sobriety-tracker'
@@ -19,10 +21,9 @@ import {
 } from '@/components'
 
 import { Colors } from '@/constants/theme'
-
 import { freeDrinkTrackerStyles } from '@/styles/free-drink-tracker'
 import { getErrorMessage } from '@/utils/error-handler'
-import { verticalScale } from '@/utils/responsive'
+import { scale, verticalScale } from '@/utils/responsive'
 import { showErrorToast, showSuccessToast } from '@/utils/toast'
 
 interface FormData {
@@ -107,7 +108,18 @@ function StartTrackingScreen() {
   }
 
   return (
-    <ScreenContainer contentContainerStyle={freeDrinkTrackerStyles.container}>
+    <ScreenContainer horizontalPadding={30} contentContainerStyle={freeDrinkTrackerStyles.container}>
+      <Pressable
+        style={freeDrinkTrackerStyles.backButton}
+        onPress={router.back}
+      >
+        <MaterialIcons
+          name="close"
+          size={scale(24)}
+          color={Colors.light.primary4}
+        />
+      </Pressable>
+
       <View style={iconContainerStyle}>
         <CocktailsIcon width={50} height={67} color={Colors.light.primary} />
       </View>
