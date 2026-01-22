@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
 function HypnosisScreen() {
   const { t } = useTranslation('hypnosis-adventure')
 
-  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isModalVisible, setIsModalVisible] = useState(true)
 
   const { mutateAsync: completeActivity } = useCompleteActivity()
 
@@ -72,7 +72,7 @@ function HypnosisScreen() {
   useEffect(() => {
     if (player) {
       player.setActiveForLockScreen(true, {
-        title: t(`day-${day}`),
+        title: t(`day-${day}.title`),
         artist: 'Unconscious Moderation',
       })
     }
@@ -83,12 +83,6 @@ function HypnosisScreen() {
       }
     }
   }, [player, day, t])
-
-  useEffect(() => {
-    setTimeout(() => {
-      setIsModalVisible(true)
-    }, 300)
-  }, [])
 
   return (
     <ScreenContainer backgroundImage={hypnosisBackgroundImage}>

@@ -12,6 +12,7 @@ import {
   ExternalResources,
   ExtraCredit,
   FeedBackModal,
+  HomeScreenSkeleton,
   JourneyStreak,
   ScreenContainer,
   SobrietyTimer,
@@ -100,13 +101,14 @@ function HomeScreen() {
   const { t } = useTranslation('home')
   const { t: tQuotes } = useTranslation('quotes')
 
-  const { data: user } = useGetCurrentUser()
-  const { data: currentStreak } = useGetCurrentStreak()
+  const { data: user, isLoading: isLoadingUser } = useGetCurrentUser()
+  const { data: currentStreak, isLoading: isLoadingStreak } = useGetCurrentStreak()
 
   const [dailyActivitiesDay, setDailyActivitiesDay] = useState<number>(1)
   const [showFeedbackModal, setShowFeedbackModal] = useState(false)
 
   const hasActiveStreak = currentStreak?.streak?.is_active
+  const isLoading = isLoadingUser || isLoadingStreak
 
   const navigateToStartTracking = () => {
     if (hasActiveStreak) {
@@ -141,6 +143,14 @@ function HomeScreen() {
 
     checkShouldShowModal()
   }, [currentStreak?.durationDays])
+
+  if (isLoading) {
+    return (
+      <ScreenContainer scrollable>
+        <HomeScreenSkeleton />
+      </ScreenContainer>
+    )
+  }
 
   return (
     <ScreenContainer scrollable>

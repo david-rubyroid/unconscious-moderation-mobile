@@ -10,6 +10,8 @@ import { Colors, withOpacity } from '@/constants/theme'
 
 import { scale, verticalScale } from '@/utils/responsive'
 
+import { DailyActivitiesDaysSkeleton } from './skeleton'
+
 import ThemedText from './themed-text'
 
 interface DailyActivitiesDaysProps {
@@ -65,9 +67,13 @@ const styles = StyleSheet.create({
 
 function DailyActivitiesDays({ onDayPress, dailyActivitiesDay }: DailyActivitiesDaysProps) {
   const { t } = useTranslation('quotes')
-  const { data: daysWithActivities } = useGetDaysWithActivities()
+  const { data: daysWithActivities, isLoading: isLoadingDaysWithActivities } = useGetDaysWithActivities()
 
   const days = daysWithActivities?.days.filter(day => day.isUnlocked) ?? []
+
+  if (isLoadingDaysWithActivities) {
+    return <DailyActivitiesDaysSkeleton />
+  }
 
   return (
     <View style={styles.wrapper}>
