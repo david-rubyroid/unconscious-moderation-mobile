@@ -38,7 +38,7 @@ export function useStartSobrietyStreak(
   })
 }
 
-export function useGetCurrentStreak(options?: QueryOptions<CurrentStreakResponse>) {
+export function useGetCurrentSobrietyStreak(options?: QueryOptions<CurrentStreakResponse>) {
   return useQuery({
     queryKey: ['sobriety-tracker', 'current'],
     queryFn: createQueryFn<CurrentStreakResponse>('sobriety-tracker/current'),

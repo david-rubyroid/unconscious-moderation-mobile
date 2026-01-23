@@ -19,6 +19,7 @@ export interface DayResponse {
 
 export interface DailyActivitiesResponse {
   unlockedDaysCount: number
+  journeyStreak: number
   days: DayResponse[]
 }
 

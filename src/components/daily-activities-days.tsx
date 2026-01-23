@@ -67,7 +67,10 @@ const styles = StyleSheet.create({
 
 function DailyActivitiesDays({ onDayPress, dailyActivitiesDay }: DailyActivitiesDaysProps) {
   const { t } = useTranslation('quotes')
-  const { data: daysWithActivities, isLoading: isLoadingDaysWithActivities } = useGetDaysWithActivities()
+  const {
+    data: daysWithActivities,
+    isLoading: isLoadingDaysWithActivities,
+  } = useGetDaysWithActivities()
 
   const days = daysWithActivities?.days.filter(day => day.isUnlocked) ?? []
 

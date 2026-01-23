@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router'
 import { useTranslation } from 'react-i18next'
 import { Pressable, StyleSheet, View } from 'react-native'
 
-import { useGetCurrentStreak, useGetSobrietyStats } from '@/api/queries/sobriety-tracker'
+import { useGetCurrentSobrietyStreak, useGetSobrietyStats } from '@/api/queries/sobriety-tracker'
 
 import CocktailsIcon from '@/assets/icons/cocktail'
 
@@ -126,7 +126,7 @@ function MyProgressScreen() {
   const { t } = useTranslation('my-progress')
   const { push } = useRouter()
   // Get current streak and stats data
-  const { data: currentStreak } = useGetCurrentStreak()
+  const { data: currentStreak } = useGetCurrentSobrietyStreak()
   const { data: stats } = useGetSobrietyStats()
 
   // Calculate display values
@@ -188,10 +188,12 @@ function MyProgressScreen() {
             <ThemedText type="defaultSemiBold" style={styles.statTitle}>
               {t('last-pause-began-on')}
             </ThemedText>
+
             <ThemedText type="defaultSemiBold" style={styles.statValue}>
               {lastPauseDate || t('not-started-yet')}
             </ThemedText>
           </View>
+
           <ThemedText style={styles.statSubtitle}>
             {t('every-new-beginning-holds-power')}
           </ThemedText>
@@ -202,10 +204,12 @@ function MyProgressScreen() {
             <ThemedText type="defaultSemiBold" style={styles.statTitle}>
               {t('longest-streak')}
             </ThemedText>
+
             <ThemedText type="defaultSemiBold" style={styles.statValue}>
               {longestStreakValue || t('no-data')}
             </ThemedText>
           </View>
+
           <ThemedText style={styles.statSubtitle}>
             {t('ready-to-go-even-further')}
           </ThemedText>

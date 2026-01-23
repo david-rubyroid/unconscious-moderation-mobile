@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { Image, StyleSheet, View } from 'react-native'
 import Svg, { Path } from 'react-native-svg'
 
-import { useGetCurrentStreak, useGetTrophies } from '@/api/queries/sobriety-tracker'
+import { useGetCurrentSobrietyStreak, useGetTrophies } from '@/api/queries/sobriety-tracker'
 
 import LockedTrophyIcon from '@/assets/icons/locked-trophy'
 import threeDays from '@/assets/images/trophies/3-days.png'
@@ -142,7 +142,7 @@ function TrophiesScreen() {
 
   // Get data from API
   const { data: trophies } = useGetTrophies()
-  const { data: currentStreak } = useGetCurrentStreak()
+  const { data: currentStreak } = useGetCurrentSobrietyStreak()
 
   // Calculate trophy statuses and positions
   const trophiesWithStatus = useMemo<TrophyWithStatus[]>(() => {

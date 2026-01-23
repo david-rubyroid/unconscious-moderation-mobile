@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { ActivityIndicator, Pressable, View } from 'react-native'
 
 import {
-  useGetCurrentStreak,
+  useGetCurrentSobrietyStreak,
   useResetSobrietyStreak,
 } from '@/api/queries/sobriety-tracker'
 
@@ -43,7 +43,7 @@ function ResetTrackingScreen() {
     },
   })
 
-  const { data: currentStreak } = useGetCurrentStreak()
+  const { data: currentStreak } = useGetCurrentSobrietyStreak()
   const { mutateAsync: resetStreak, isPending: isResettingStreak } = useResetSobrietyStreak()
 
   const combineDateTime = (date: Date, time: Date): Date => {

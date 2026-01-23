@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ScrollView, StyleSheet, View } from 'react-native'
 
-import { useGetCurrentStreak } from '@/api/queries/sobriety-tracker'
+import { useGetCurrentSobrietyStreak } from '@/api/queries/sobriety-tracker'
 import CocktailsIcon from '@/assets/icons/cocktail'
 
 import { Colors } from '@/constants/theme'
@@ -62,7 +62,7 @@ function SobrietyTimer({
   const { t } = useTranslation('free-drink-tracker')
 
   // Get current streak from API
-  const { data: currentStreak, error } = useGetCurrentStreak()
+  const { data: currentStreak, error } = useGetCurrentSobrietyStreak()
 
   // State for current time (updates every second)
   const [currentTime, setCurrentTime] = useState(() => new Date())

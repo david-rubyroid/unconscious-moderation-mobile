@@ -19,6 +19,7 @@ interface HeaderProps {
 
 const styles = StyleSheet.create({
   container: {
+    position: 'relative',
     paddingVertical: verticalScale(12),
     marginBottom: verticalScale(26),
     flexDirection: 'row',
@@ -31,6 +32,11 @@ const styles = StyleSheet.create({
   },
   whiteTitle: {
     color: Colors.light.white,
+  },
+  backButton: {
+    position: 'absolute',
+    left: 0,
+    zIndex: 10,
   },
 })
 
@@ -55,6 +61,7 @@ function Header({
     <View style={styles.container}>
       <Pressable
         onPress={handleBack}
+        style={styles.backButton}
       >
         <MaterialIcons
           name="arrow-back-ios"

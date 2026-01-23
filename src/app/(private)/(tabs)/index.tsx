@@ -5,7 +5,8 @@ import { useTranslation } from 'react-i18next'
 import { Pressable, StyleSheet, View } from 'react-native'
 
 import { useGetCurrentUser } from '@/api/queries/auth'
-import { useGetCurrentStreak } from '@/api/queries/sobriety-tracker'
+import { useGetDaysWithActivities } from '@/api/queries/daily-activities'
+import { useGetCurrentSobrietyStreak } from '@/api/queries/sobriety-tracker'
 
 import {
   DailyActivitiesDays,
@@ -102,13 +103,14 @@ function HomeScreen() {
   const { t: tQuotes } = useTranslation('quotes')
 
   const { data: user, isLoading: isLoadingUser } = useGetCurrentUser()
-  const { data: currentStreak, isLoading: isLoadingStreak } = useGetCurrentStreak()
+  const { data: currentStreak, isLoading: isLoadingStreak } = useGetCurrentSobrietyStreak()
+  const { data: daysWithActivities, isLoading: isLoadingDays } = useGetDaysWithActivities()
 
   const [dailyActivitiesDay, setDailyActivitiesDay] = useState<number>(1)
   const [showFeedbackModal, setShowFeedbackModal] = useState(false)
 
   const hasActiveStreak = currentStreak?.streak?.is_active
-  const isLoading = isLoadingUser || isLoadingStreak
+  const isLoading = isLoadingUser || isLoadingStreak || isLoadingDays
 
   const navigateToStartTracking = () => {
     if (hasActiveStreak) {
@@ -129,20 +131,21 @@ function HomeScreen() {
   }
 
   useEffect(() => {
+    // Устанавливаем активный день как последний разблокированный
     // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
-    setDailyActivitiesDay(currentStreak?.durationDays ? currentStreak.durationDays : 1)
-  }, [currentStreak?.durationDays])
+    setDailyActivitiesDay(daysWithActivities?.unlockedDaysCount || 1)
+  }, [daysWithActivities?.unlockedDaysCount])
 
   useEffect(() => {
     const checkShouldShowModal = async () => {
-      const durationDays = currentStreak?.durationDays
-      const shouldShow = await shouldShowFeedbackModal(durationDays)
+      const unlockedDays = daysWithActivities?.unlockedDaysCount
+      const shouldShow = await shouldShowFeedbackModal(unlockedDays)
 
       setShowFeedbackModal(shouldShow)
     }
 
     checkShouldShowModal()
-  }, [currentStreak?.durationDays])
+  }, [daysWithActivities?.unlockedDaysCount])
 
   if (isLoading) {
     return (

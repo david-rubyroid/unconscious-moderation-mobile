@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 
 import { StyleSheet, View } from 'react-native'
 
-import { useGetCurrentStreak } from '@/api/queries/sobriety-tracker'
+import { useGetDaysWithActivities } from '@/api/queries/daily-activities'
 
 import FireIcon from '@/assets/icons/fire'
 
@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
 function JourneyStreak() {
   const { t } = useTranslation('free-drink-tracker')
 
-  const { data: currentStreak } = useGetCurrentStreak()
-  const days = currentStreak?.durationDays ?? 0
+  const { data: daysWithActivities } = useGetDaysWithActivities()
+  const days = daysWithActivities?.journeyStreak ?? 0
 
   return (
     <View style={styles.container}>

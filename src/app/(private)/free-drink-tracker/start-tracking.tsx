@@ -6,7 +6,7 @@ import { Trans, useTranslation } from 'react-i18next'
 
 import { ActivityIndicator, Pressable, View } from 'react-native'
 
-import { useGetCurrentStreak, useStartSobrietyStreak } from '@/api/queries/sobriety-tracker'
+import { useGetCurrentSobrietyStreak, useStartSobrietyStreak } from '@/api/queries/sobriety-tracker'
 
 import AlertIcon from '@/assets/icons/alert'
 
@@ -61,7 +61,7 @@ function StartTrackingScreen() {
   })
 
   // Check for existing active streak
-  const { data: currentStreak, isLoading: isLoadingStreak } = useGetCurrentStreak()
+  const { data: currentStreak, isLoading: isLoadingStreak } = useGetCurrentSobrietyStreak()
   const { mutateAsync: startStreak, isPending: isStartingStreak } = useStartSobrietyStreak()
 
   const hasActiveStreak = currentStreak?.streak?.is_active
