@@ -6,11 +6,11 @@ import { StyleSheet, View } from 'react-native'
 import CocktailIcon from '@/assets/icons/cocktail'
 import DropIcon from '@/assets/icons/drop'
 
-import { ThemedText } from '@/components'
-
 import { Colors, getResponsiveLineHeight } from '@/constants/theme'
 
 import { scale, verticalScale } from '@/utils/responsive'
+
+import ThemedText from '../../themed-text'
 
 interface CompletedSessionContentProps {
   dayName: string

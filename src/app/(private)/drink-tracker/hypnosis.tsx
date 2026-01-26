@@ -58,7 +58,10 @@ function PreDrinkHypnosisScreen() {
       <Header title={title as string || t('title')} />
 
       <View style={styles.container}>
-        <AudioPlayer audioUri={HYPNOSIS_LINKS.preDrinkHypnosis} />
+        <AudioPlayer
+          audioUri={HYPNOSIS_LINKS.preDrinkHypnosis}
+          lockScreenTitle={title as string || t('title')}
+        />
 
         <View style={styles.buttonContainer}>
           <Button

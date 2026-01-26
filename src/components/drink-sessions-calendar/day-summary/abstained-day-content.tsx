@@ -3,11 +3,11 @@ import { StyleSheet } from 'react-native'
 
 import HeartOutlineIcon from '@/assets/icons/heart-outline'
 
-import { ThemedText } from '@/components'
-
 import { Colors } from '@/constants/theme'
 
 import { verticalScale } from '@/utils/responsive'
+
+import ThemedText from '../../themed-text'
 
 interface AbstainedDayContentProps {
   dayName: string

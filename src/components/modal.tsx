@@ -1,4 +1,12 @@
-import { Pressable, Modal as RNModal, StyleSheet, View } from 'react-native'
+import {
+  ImageBackground,
+  Pressable,
+  Modal as RNModal,
+  StyleSheet,
+  View,
+} from 'react-native'
+
+import modalBgImage from '@/assets/images/modal-bg.png'
 
 import { Colors, withOpacity } from '@/constants/theme'
 import { moderateScale, scale, verticalScale } from '@/utils/responsive'
@@ -9,6 +17,7 @@ interface ModalProps {
   children: React.ReactNode
   fullWidth?: boolean
   onUserDismiss?: () => void
+  variant?: 'default' | 'gradient'
 }
 
 const styles = StyleSheet.create({
@@ -19,14 +28,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modal: {
-    backgroundColor: Colors.light.tertiaryBackground,
     borderRadius: moderateScale(20),
+    width: '95%',
+    overflow: 'hidden',
+  },
+  modalWithPadding: {
     paddingHorizontal: scale(32),
     paddingVertical: verticalScale(59),
-    width: '95%',
+  },
+  defaultBackground: {
+    backgroundColor: Colors.light.tertiaryBackground,
   },
   fullWidth: {
     minWidth: '95%',
+  },
+  gradientContainer: {
+    paddingHorizontal: scale(32),
+    paddingVertical: verticalScale(59),
   },
 })
 
@@ -36,6 +54,7 @@ function Modal({
   children,
   fullWidth = false,
   onUserDismiss,
+  variant = 'default',
 }: ModalProps) {
   const handleClose = () => {
     if (onUserDismiss) {
@@ -43,6 +62,8 @@ function Modal({
     }
     onClose()
   }
+
+  const isGradient = variant === 'gradient'
 
   return (
     <RNModal
@@ -54,8 +75,27 @@ function Modal({
       <View style={styles.overlay}>
         <Pressable style={StyleSheet.absoluteFill} onPress={handleClose} />
         <Pressable onPress={e => e.stopPropagation()}>
-          <View style={[styles.modal, fullWidth ? styles.fullWidth : {}]}>
-            {children}
+          <View
+            style={[
+              styles.modal,
+              !isGradient && styles.defaultBackground,
+              !isGradient && styles.modalWithPadding,
+              fullWidth && styles.fullWidth,
+            ]}
+          >
+            {isGradient
+              ? (
+                  <ImageBackground
+                    source={modalBgImage}
+                    style={styles.gradientContainer}
+                    resizeMode="cover"
+                  >
+                    {children}
+                  </ImageBackground>
+                )
+              : (
+                  children
+                )}
           </View>
         </Pressable>
       </View>

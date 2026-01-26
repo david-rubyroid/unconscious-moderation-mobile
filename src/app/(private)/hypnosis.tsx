@@ -1,7 +1,5 @@
-import type { AudioPlayer as ExpoAudioPlayer } from 'expo-audio'
-
 import { useLocalSearchParams } from 'expo-router'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { useTranslation } from 'react-i18next'
 
@@ -10,6 +8,7 @@ import { StyleSheet, View } from 'react-native'
 import { useCompleteActivity } from '@/api/queries/daily-activities'
 
 import hypnosisBackgroundImage from '@/assets/images/box-breathing-bg.jpg'
+
 import {
   AudioPlayer,
   Button,
@@ -18,8 +17,11 @@ import {
   ScreenContainer,
   ThemedText,
 } from '@/components'
+
 import { HYPNOSIS_LINKS } from '@/constants/hypnosis-links'
+
 import { Colors } from '@/constants/theme'
+
 import { verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
@@ -47,7 +49,6 @@ function HypnosisScreen() {
 
   const { day } = useLocalSearchParams()
   const hasCompletedRef = useRef(false)
-  const [player, setPlayer] = useState<ExpoAudioPlayer | null>(null)
 
   const handlePlayStart = () => {
     if (!hasCompletedRef.current) {
@@ -61,34 +62,24 @@ function HypnosisScreen() {
       })
     }
   }
-  const handlePlayerReady = (audioPlayer: ExpoAudioPlayer | null) => {
-    setPlayer(audioPlayer)
-  }
   const handleCloseModal = () => {
     setIsModalVisible(false)
   }
 
-  // Enable lock screen controls
-  useEffect(() => {
-    if (player) {
-      player.setActiveForLockScreen(true, {
-        title: t(`day-${day}.title`),
-        artist: 'Unconscious Moderation',
-      })
-    }
-
-    return () => {
-      if (player) {
-        player.clearLockScreenControls()
-      }
-    }
-  }, [player, day, t])
-
   return (
     <ScreenContainer backgroundImage={hypnosisBackgroundImage}>
-      <Modal visible={isModalVisible} onClose={handleCloseModal}>
+      <Modal
+        visible={isModalVisible}
+        onClose={handleCloseModal}
+        variant="gradient"
+      >
         <View style={styles.modalContent}>
-          <ThemedText type="title" style={styles.modalTitle}>{t(`day-${day}.title`)}</ThemedText>
+          <ThemedText
+            type="title"
+            style={styles.modalTitle}
+          >
+            {t(`day-${day}.title`)}
+          </ThemedText>
 
           <ThemedText
             type="defaultSemiBold"
@@ -113,7 +104,7 @@ function HypnosisScreen() {
           `day${day}` as keyof typeof HYPNOSIS_LINKS.hypnosisForAdventure
         ]}
         onPlayStart={handlePlayStart}
-        onPlayerReady={handlePlayerReady}
+        lockScreenTitle={t(`day-${day}.title`)}
       />
     </ScreenContainer>
   )

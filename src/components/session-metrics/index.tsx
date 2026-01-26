@@ -6,9 +6,10 @@ import MoneyIcon from '@/assets/icons/money'
 import TimeSinceIcon from '@/assets/icons/time-since'
 import WineIcon from '@/assets/icons/wine'
 
-import { ThemedText } from '@/components'
 import { Colors, withOpacity } from '@/constants/theme'
 import { scale, verticalScale } from '@/utils/responsive'
+
+import ThemedText from '../themed-text'
 
 interface SessionMetricsProps {
   actualDrinksCount: number

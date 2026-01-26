@@ -11,7 +11,9 @@ import {
 } from '@/utils/feedback-modal'
 import { verticalScale } from '@/utils/responsive'
 
-import { Button, Modal, ThemedText } from '.'
+import Button from './button'
+import Modal from './modal'
+import ThemedText from './themed-text'
 
 interface FeedBackModalProps {
   visible: boolean

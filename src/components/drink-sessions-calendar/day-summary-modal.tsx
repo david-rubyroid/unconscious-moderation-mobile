@@ -2,9 +2,9 @@ import type { CalendarDayData } from '@/components/calendar/types'
 
 import { StyleSheet, View } from 'react-native'
 
-import { Modal } from '@/components'
-
 import { useDaySummaryLogic } from '@/hooks/drink-sessions-calendar/use-day-summary-logic'
+
+import Modal from '../modal'
 
 import { AbstainedDayContent } from './day-summary/abstained-day-content'
 import { CompletedSessionContent } from './day-summary/completed-session-content'

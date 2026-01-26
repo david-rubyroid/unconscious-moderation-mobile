@@ -3,9 +3,10 @@ import type { CalendarDayData } from '@/components/calendar/types'
 import { Trans, useTranslation } from 'react-i18next'
 import { StyleSheet, View } from 'react-native'
 
-import { Button, ThemedText } from '@/components'
 import { Colors, withOpacity } from '@/constants/theme'
 import { scale, verticalScale } from '@/utils/responsive'
+import Button from '../../button'
+import ThemedText from '../../themed-text'
 
 interface PlannedSessionContentProps {
   dayData: CalendarDayData

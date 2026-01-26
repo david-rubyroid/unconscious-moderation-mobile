@@ -59,8 +59,8 @@ export async function getVideoFileSize(videoUrl: string): Promise<number | null>
     const contentLength = response.headers.get('Content-Length')
     return contentLength ? Number.parseInt(contentLength, 10) : null
   }
-  catch (error) {
-    logWarn('Failed to get video file size', undefined, { videoUrl })
+  catch {
+    logWarn('Failed to get video file size', { videoUrl })
     return null
   }
 }
