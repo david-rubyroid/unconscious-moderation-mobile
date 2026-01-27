@@ -122,15 +122,11 @@ function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
   }, [])
   const handleStartJournaling = useCallback(() => {
     handleCloseJournalingBottomSheet()
-    if (dailyActivitiesDay === 1) {
-      push('/journaling/intro')
-    }
-    else {
-      push({
-        pathname: '/journaling/day',
-        params: { day: dailyActivitiesDay },
-      })
-    }
+
+    push({
+      pathname: '/journaling/day',
+      params: { day: dailyActivitiesDay },
+    })
   }, [dailyActivitiesDay, push, handleCloseJournalingBottomSheet])
   const handleOpenHypnosisBottomSheet = useCallback(() => {
     if (!isPremium) {
@@ -243,21 +239,29 @@ function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
         ]}
         buttonTitle={t('start-session')}
         onStart={handleStartHypnosis}
+        gap={12}
       />
 
       <ActivityBottomSheet
         visible={showJournalingBottomSheet}
         onClose={handleCloseJournalingBottomSheet}
         imageSource={hypnotherapyImage}
-        title={t('journaling-with-dr-nada-obrien')}
+        title={t('journaling-title')}
+        buttonWithIcon={false}
         content={[
-          { type: 'subtitle', text: t('meet-your-inner-voice') },
-          { type: 'description', text: t('meet-your-inner-voice-description') },
-          { type: 'sectionTitle', text: t('three-things-to-remember') },
-          { type: 'description', text: t('first-thought-best-thought') },
-          { type: 'description', text: t('no-wrong-answers') },
-          { type: 'description', text: t('patterns-emerge-slowly') },
-          { type: 'description', text: t('this-space-is-yours-alone') },
+          { type: 'subtitle', text: t('your-unconscious-mind-has-been-running-the-show') },
+          { type: 'description', text: t('these-prompts-help-you-hear-what-its-been-trying-to-say') },
+          { type: 'subtitle', text: t('three-things-to-remember') },
+          {
+            type: 'bulletList',
+            items: [
+              'first-thought-best-thought',
+              'no-wrong-answers',
+              'patterns-emerge-slowly',
+            ],
+            i18nNamespace: 'home',
+          },
+          { type: 'descriptionBold', text: t('this-space-is-yours-alone') },
         ]}
         buttonTitle={t('start')}
         onStart={handleStartJournaling}

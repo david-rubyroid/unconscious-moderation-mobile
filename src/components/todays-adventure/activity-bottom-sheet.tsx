@@ -8,6 +8,7 @@ import { Colors, withOpacity } from '@/constants/theme'
 import { moderateScale, scale, verticalScale } from '@/utils/responsive'
 
 import BottomSheetPopup from '../bottom-sheet-popup'
+import BulletList from '../bullet-list'
 import Button from '../button'
 import ThemedText from '../themed-text'
 
@@ -45,19 +46,17 @@ const styles = StyleSheet.create({
     borderTopEndRadius: moderateScale(40),
     borderTopStartRadius: moderateScale(40),
     backgroundColor: Colors.light.tertiaryBackground,
+    gap: verticalScale(24),
   },
   bottomSheetContentTitle: {
     color: Colors.light.primary4,
     textAlign: 'center',
-    marginBottom: verticalScale(20),
   },
   bottomSheetContentDescriptionBold: {
     textAlign: 'center',
-    marginBottom: verticalScale(20),
   },
   bottomSheetContentDescription: {
     fontWeight: 400,
-    marginBottom: verticalScale(20),
     textAlign: 'center',
   },
   bottomSheetButton: {
@@ -71,6 +70,7 @@ type ContentItem
     | { type: 'description', text: string }
     | { type: 'descriptionBold', text: string }
     | { type: 'sectionTitle', text: string }
+    | { type: 'bulletList', items: string[], i18nNamespace?: string }
 
 interface ActivityBottomSheetProps {
   visible: boolean
@@ -80,6 +80,8 @@ interface ActivityBottomSheetProps {
   content: ContentItem[]
   buttonTitle: string
   onStart: () => void
+  gap?: number
+  buttonWithIcon?: boolean
 }
 
 function ActivityBottomSheet({
@@ -90,6 +92,8 @@ function ActivityBottomSheet({
   content,
   buttonTitle,
   onStart,
+  gap = 24,
+  buttonWithIcon = true,
 }: ActivityBottomSheetProps) {
   return (
     <BottomSheetPopup
@@ -104,18 +108,23 @@ function ActivityBottomSheet({
       >
         <View style={styles.bottomSheetHeaderOverlay} />
 
-        <ThemedText type="title" style={styles.bottomSheetHeaderText}>
+        <ThemedText
+          type="title"
+          style={styles.bottomSheetHeaderText}
+        >
           {title}
         </ThemedText>
       </ImageBackground>
 
-      <View style={styles.bottomSheetContent}>
+      <View style={[styles.bottomSheetContent, { gap: verticalScale(gap) }]}>
         {content.map((item, index) => {
-          const key = `${item.type}-${index}-${item.text.slice(0, 20)}`
-
           if (item.type === 'subtitle') {
             return (
-              <ThemedText key={key} type="preSubtitle" style={styles.bottomSheetContentTitle}>
+              <ThemedText
+                key={`${item.type}-${index}`}
+                type="preSubtitle"
+                style={styles.bottomSheetContentTitle}
+              >
                 {item.text}
               </ThemedText>
             )
@@ -123,7 +132,11 @@ function ActivityBottomSheet({
 
           if (item.type === 'sectionTitle') {
             return (
-              <ThemedText key={key} type="defaultSemiBold" style={styles.bottomSheetContentTitle}>
+              <ThemedText
+                key={`${item.type}-${index}`}
+                type="defaultSemiBold"
+                style={styles.bottomSheetContentTitle}
+              >
                 {item.text}
               </ThemedText>
             )
@@ -131,21 +144,39 @@ function ActivityBottomSheet({
 
           if (item.type === 'descriptionBold') {
             return (
-              <ThemedText key={key} type="defaultSemiBold" style={styles.bottomSheetContentDescriptionBold}>
+              <ThemedText
+                key={`${item.type}-${index}`}
+                type="defaultSemiBold"
+                style={styles.bottomSheetContentDescriptionBold}
+              >
                 {item.text}
               </ThemedText>
             )
           }
 
+          if (item.type === 'bulletList') {
+            return (
+              <BulletList
+                key={`${item.type}-${index}`}
+                items={item.items}
+                i18nNamespace={item.i18nNamespace}
+              />
+            )
+          }
+
           return (
-            <ThemedText key={key} type="defaultSemiBold" style={styles.bottomSheetContentDescription}>
+            <ThemedText
+              key={`${item.type}-${index}-${item.text.slice(0, 20)}`}
+              type="defaultSemiBold"
+              style={styles.bottomSheetContentDescription}
+            >
               {item.text}
             </ThemedText>
           )
         })}
 
         <Button
-          icon={<PlaySmall />}
+          icon={buttonWithIcon ? <PlaySmall /> : undefined}
           title={buttonTitle}
           onPress={onStart}
           style={styles.bottomSheetButton}
