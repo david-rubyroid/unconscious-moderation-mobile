@@ -126,16 +126,11 @@ const styles = StyleSheet.create({
     minHeight: verticalScale(200),
   },
   offerCodeContainer: {
-
     alignItems: 'center',
-  },
-  offerCodeButton: {
-    paddingVertical: verticalScale(12),
   },
   offerCodeText: {
     textAlign: 'center',
     color: Colors.light.primary,
-    fontSize: moderateScale(14),
     textDecorationLine: 'underline',
   },
 })
@@ -336,18 +331,13 @@ function PurchaseScreen() {
         {Platform.OS === 'ios' && (
           <View style={styles.offerCodeContainer}>
             <Pressable
-              style={styles.offerCodeButton}
               onPress={presentOfferCodeRedemption}
               disabled={isLoading || isLoadingOfferings}
             >
-              <ThemedText type="default" style={styles.offerCodeText}>
+              <ThemedText type="defaultSemiBold" style={styles.offerCodeText}>
                 {t('redeem-offer-code')}
               </ThemedText>
             </Pressable>
-
-            <ThemedText type="default" style={styles.offerCodeText}>
-              {t('redeem-before-purchase')}
-            </ThemedText>
           </View>
         )}
       </View>
