@@ -86,12 +86,11 @@ function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
     },
   ]
 
+  // Handlers
   const handleCloseDayCompletionModal = useCallback(() => {
     setShowDayCompletionModal(false)
     markModalShown({ day: dailyActivitiesDay })
   }, [dailyActivitiesDay, markModalShown])
-
-  // Handlers
   const handleOpenMovementBottomSheet = useCallback(() => {
     if (!isPremium) {
       push('/(private)/purchase')
@@ -100,11 +99,9 @@ function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
 
     setShowMovementBottomSheet(true)
   }, [isPremium, push])
-
   const handleCloseMovementBottomSheet = useCallback(() => {
     setShowMovementBottomSheet(false)
   }, [])
-
   const handleStartMovement = useCallback(() => {
     handleCloseMovementBottomSheet()
     push({
@@ -112,7 +109,6 @@ function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
       params: { day: dailyActivitiesDay },
     })
   }, [dailyActivitiesDay, push, handleCloseMovementBottomSheet])
-
   const handleOpenJournalingBottomSheet = useCallback(() => {
     if (!isPremium) {
       push('/(private)/purchase')
@@ -121,11 +117,9 @@ function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
 
     setShowJournalingBottomSheet(true)
   }, [isPremium, push])
-
   const handleCloseJournalingBottomSheet = useCallback(() => {
     setShowJournalingBottomSheet(false)
   }, [])
-
   const handleStartJournaling = useCallback(() => {
     handleCloseJournalingBottomSheet()
     if (dailyActivitiesDay === 1) {
@@ -138,7 +132,6 @@ function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
       })
     }
   }, [dailyActivitiesDay, push, handleCloseJournalingBottomSheet])
-
   const handleOpenHypnosisBottomSheet = useCallback(() => {
     if (!isPremium) {
       push('/(private)/purchase')
@@ -147,11 +140,9 @@ function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
 
     setShowHypnosisBottomSheet(true)
   }, [isPremium, push])
-
   const handleCloseHypnosisBottomSheet = useCallback(() => {
     setShowHypnosisBottomSheet(false)
   }, [])
-
   const handleStartHypnosis = useCallback(() => {
     handleCloseHypnosisBottomSheet()
     push({
@@ -159,7 +150,6 @@ function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
       params: { day: dailyActivitiesDay },
     })
   }, [dailyActivitiesDay, push, handleCloseHypnosisBottomSheet])
-
   const handleStartReading = useCallback(() => {
     if (!isPremium) {
       push('/(private)/purchase')

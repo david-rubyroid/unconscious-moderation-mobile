@@ -1,5 +1,9 @@
 import type { AudioPlayer } from 'expo-audio'
-import { setAudioModeAsync, useAudioPlayerStatus, useAudioPlayer as useExpoAudioPlayer } from 'expo-audio'
+import {
+  setAudioModeAsync,
+  useAudioPlayerStatus,
+  useAudioPlayer as useExpoAudioPlayer,
+} from 'expo-audio'
 import { useEffect, useState } from 'react'
 
 interface UseAudioPlayerReturn {

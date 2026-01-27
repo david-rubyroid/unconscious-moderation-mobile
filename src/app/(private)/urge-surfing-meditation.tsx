@@ -5,42 +5,14 @@ import { VideoView } from 'expo-video'
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import { Colors, withOpacity } from '@/constants/theme'
+import { Colors } from '@/constants/theme'
 import { VIDEOS_LINKS } from '@/constants/video-links'
 
 import { useVideoActivity } from '@/hooks/use-video-activity'
 
-import { scale } from '@/utils/responsive'
+import { videoPlayerScreenStyles } from '@/styles/video-player-screen'
 
-const styles = StyleSheet.create({
-  container: {
-    position: 'relative',
-    flex: 1,
-    backgroundColor: Colors.light.black,
-  },
-  backButton: {
-    position: 'absolute',
-    right: scale(16),
-    zIndex: 20,
-    backgroundColor: withOpacity(Colors.light.black, 0.6),
-    borderRadius: scale(20),
-    width: scale(40),
-    height: scale(40),
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: withOpacity(Colors.light.black, 0.5),
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 10,
-  },
-})
+import { scale } from '@/utils/responsive'
 
 function UrgeSurfingMeditationScreen() {
   const videoUrl = VIDEOS_LINKS.urgeSurfingMeditationVideo
@@ -50,38 +22,41 @@ function UrgeSurfingMeditationScreen() {
 
   if (!videoUrl) {
     return (
-      <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
-        <View style={styles.container} />
+      <SafeAreaView style={videoPlayerScreenStyles.container} edges={['top', 'bottom']}>
+        <View style={videoPlayerScreenStyles.container} />
       </SafeAreaView>
     )
   }
 
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
-      <Pressable
-        style={[styles.backButton, { top: insets.top }]}
-        onPress={router.back}
-      >
-        <MaterialIcons
-          name="close"
-          size={scale(24)}
-          color={Colors.light.white}
-        />
-      </Pressable>
+    <SafeAreaView style={videoPlayerScreenStyles.container} edges={['top', 'bottom']}>
+      <View style={[videoPlayerScreenStyles.headerBar, { paddingTop: insets.top }]}>
+        <Pressable
+          style={videoPlayerScreenStyles.closeButton}
+          onPress={router.back}
+        >
+          <MaterialIcons
+            name="close"
+            size={scale(24)}
+            color={Colors.light.white}
+          />
+        </Pressable>
+      </View>
 
-      {player && (
-        <VideoView
-          nativeControls
-          player={player}
-          style={StyleSheet.absoluteFill}
-          contentFit="contain"
-          allowsPictureInPicture={false}
-
-        />
-      )}
+      <View style={videoPlayerScreenStyles.videoContainer}>
+        {player && (
+          <VideoView
+            nativeControls
+            player={player}
+            style={StyleSheet.absoluteFill}
+            contentFit="contain"
+            allowsPictureInPicture={false}
+          />
+        )}
+      </View>
 
       {loadingState.isLoading && !canStartPlayback && (
-        <View style={styles.loadingOverlay}>
+        <View style={videoPlayerScreenStyles.loadingOverlay}>
           <ActivityIndicator size="large" color={Colors.light.white} />
         </View>
       )}

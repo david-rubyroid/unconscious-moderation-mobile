@@ -15,9 +15,7 @@
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "CFBundleDisplayName": "Unconscious Moderation",
-        "UIBackgroundModes": [
-          "audio"
-        ]
+        "UIBackgroundModes": ["audio"]
       },
       "icon": {
         "light": "./assets/app-icons/ios-light.png",
@@ -36,12 +34,18 @@
       "predictiveBackGestureEnabled": false
     },
     "plugins": [
-      "expo-video",
       "expo-audio",
       "expo-asset",
       "expo-router",
       "expo-secure-store",
       "expo-apple-authentication",
+      [
+        "expo-video",
+        {
+          "supportsBackgroundPlayback": true,
+          "supportsPictureInPicture": true
+        }
+      ],
       [
         "expo-splash-screen",
         {

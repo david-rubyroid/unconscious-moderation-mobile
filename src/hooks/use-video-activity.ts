@@ -44,7 +44,9 @@ export function useVideoActivity({
 
   const player = useVideoPlayer(
     videoUrl || null,
-    player => player.pause(),
+    (player) => {
+      player.play()
+    },
   )
 
   const loadingState = useVideoLoading(player)
