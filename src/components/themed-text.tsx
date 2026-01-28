@@ -7,7 +7,13 @@ import { useThemeColor } from '@/hooks/use-theme-color'
 export type ThemedTextProps = TextProps & {
   lightColor?: string
   darkColor?: string
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'small' | 'preSubtitle'
+  type?: 'default'
+    | 'title'
+    | 'defaultSemiBold'
+    | 'subtitle'
+    | 'link'
+    | 'small'
+    | 'preSubtitle'
 }
 
 const baseStyles = StyleSheet.create({

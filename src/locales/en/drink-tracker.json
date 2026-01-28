@@ -11,21 +11,6 @@
   },
   "won-days": "Won Days: [{{days}}]",
   "drink-days": "Drink Days: [{{days}}]",
-  "key-moments": {
-    "title": "This tool supports you in <0>3 key moments</0>:",
-    "plan-prepare": {
-      "title": "Plan & Prepare (Before):",
-      "description": "Define your limits and intentions."
-    },
-    "drink-awareness": {
-      "title": "Drink with Awareness (During):",
-      "description": "Practice mindfulness and\nmoderation."
-    },
-    "reflect-reinforce": {
-      "title": "Reflect & Reinforce (After):",
-      "description": "Learn from the experience and\nbuild momentum."
-    }
-  },
   "tip": "<0>Tip:</0> Bring headphones with you!",
 
   "info-no-session-found": "No session found",
@@ -33,6 +18,26 @@
 
   "continue-with-active-session": "Continue with active session",
   "completed-session": "Completed Session",
+
+  "onboarding-modal": {
+    "title": "This tool supports you in \n <0>3 key moments</0>:",
+
+    "1": {
+      "title": "(Before)",
+      "description": "Plan & Prepare",
+      "description2": "Define your limits and intentions."
+    },
+    "2": {
+      "title": "(During)",
+      "description": "Drink with Awareness",
+      "description2": "Practice mindfulness and\nmoderation."
+    },
+    "3": {
+      "title": "(After)",
+      "description": "Reflect & Reinforce",
+      "description2": "Learn from the experience and\nbuild momentum."
+    }
+  },
 
   "day-summary": {
     "exceeded-limit": "You drank more than intended. \n <0>Golden opportunity here</0>, what \n can you learn from this?",

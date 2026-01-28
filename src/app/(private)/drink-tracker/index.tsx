@@ -14,8 +14,9 @@ import {
 } from '@/components'
 
 import { Colors } from '@/constants/theme'
-
 import { verticalScale } from '@/utils/responsive'
+
+import FirstTimePopUp from './first-time-pop-up'
 
 const styles = StyleSheet.create({
   container: {
@@ -155,6 +156,8 @@ function DrinkTrackerScreen() {
           />
         </View>
       </View>
+
+      <FirstTimePopUp />
     </ScreenContainer>
   )
 }
