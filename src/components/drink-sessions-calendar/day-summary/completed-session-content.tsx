@@ -4,12 +4,12 @@ import { Trans, useTranslation } from 'react-i18next'
 import { StyleSheet, View } from 'react-native'
 
 import CocktailIcon from '@/assets/icons/cocktail'
+
 import DropIcon from '@/assets/icons/drop'
 
 import { Colors, getResponsiveLineHeight } from '@/constants/theme'
 
 import { scale, verticalScale } from '@/utils/responsive'
-
 import Button from '../../button'
 import ThemedText from '../../themed-text'
 
@@ -71,6 +71,10 @@ export function CompletedSessionContent({
 }: CompletedSessionContentProps) {
   const { t } = useTranslation('drink-tracker')
 
+  const navigateToJournal = () => {
+    // TODO: Implement journal view
+  }
+
   const dayNameStyle = isExceeded
     ? styles.dayNameExceeded
     : styles.dayNameFollowed
@@ -129,7 +133,7 @@ export function CompletedSessionContent({
       <Button
         variant="secondary"
         title={t('day-summary.drink-tracker-journal')}
-        onPress={() => {}}
+        onPress={navigateToJournal}
       />
     </View>
   )
