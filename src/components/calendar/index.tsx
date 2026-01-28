@@ -279,6 +279,9 @@ function Calendar({
             const dayData = findDayData(day, daysData)
             // Use isBeforeAccountCreation for minDate to handle UTC dates correctly
             const isBeforeMinDate = minDate ? isBeforeAccountCreation(day, minDate) : false
+            // Only disable days before account creation or future days beyond maxDate
+            // Past days (after account creation, before today) should NOT be disabled
+            // so they can display icons normally (heart for abstained, cocktail for drinks, etc.)
             const isDisabled = isBeforeMinDate || (maxDate && day > maxDate)
 
             return (
@@ -289,7 +292,6 @@ function Calendar({
                 style={[
                   styles.dayCell,
                   cellStyle,
-                  isDisabled && styles.dayCellDisabled,
                   ...cornerStyles,
                 ]}
               >

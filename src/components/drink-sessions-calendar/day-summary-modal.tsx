@@ -36,7 +36,12 @@ function DaySummaryModal({ visible, day, dayData, onClose }: DaySummaryModalProp
   }
 
   return (
-    <Modal fullWidth visible={visible} onClose={onClose}>
+    <Modal
+      variant="gradient"
+      fullWidth
+      visible={visible}
+      onClose={onClose}
+    >
       <View style={styles.card}>
         {logic.isAbstained && (
           <AbstainedDayContent dayName={logic.dayName} />

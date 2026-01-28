@@ -1,6 +1,6 @@
 import type { CalendarDayData } from '@/components/calendar/types'
 
-import { Trans } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import { StyleSheet, View } from 'react-native'
 
 import CocktailIcon from '@/assets/icons/cocktail'
@@ -10,6 +10,7 @@ import { Colors, getResponsiveLineHeight } from '@/constants/theme'
 
 import { scale, verticalScale } from '@/utils/responsive'
 
+import Button from '../../button'
 import ThemedText from '../../themed-text'
 
 interface CompletedSessionContentProps {
@@ -19,8 +20,11 @@ interface CompletedSessionContentProps {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    gap: verticalScale(20),
+  },
   dayName: {
-    marginBottom: verticalScale(16),
     color: Colors.light.primary4,
   },
   dayNameExceeded: {
@@ -60,7 +64,13 @@ const styles = StyleSheet.create({
   },
 })
 
-export function CompletedSessionContent({ dayName, dayData, isExceeded }: CompletedSessionContentProps) {
+export function CompletedSessionContent({
+  dayName,
+  dayData,
+  isExceeded,
+}: CompletedSessionContentProps) {
+  const { t } = useTranslation('drink-tracker')
+
   const dayNameStyle = isExceeded
     ? styles.dayNameExceeded
     : styles.dayNameFollowed
@@ -68,7 +78,7 @@ export function CompletedSessionContent({ dayName, dayData, isExceeded }: Comple
   const isFollowed = !isExceeded
 
   return (
-    <>
+    <View style={styles.container}>
       <ThemedText type="subtitle" style={[styles.dayName, dayNameStyle]}>
         {dayName}
       </ThemedText>
@@ -115,6 +125,12 @@ export function CompletedSessionContent({ dayName, dayData, isExceeded }: Comple
           />
         )}
       </ThemedText>
-    </>
+
+      <Button
+        variant="secondary"
+        title={t('day-summary.drink-tracker-journal')}
+        onPress={() => {}}
+      />
+    </View>
   )
 }

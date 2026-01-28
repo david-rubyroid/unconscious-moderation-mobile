@@ -45,9 +45,10 @@
     "abstained": "You won the day! No drinks \n today, and that's everything. \n <0>One day at a time.</0>",
 
     "planned-session-reminder": "A reminder of what you <0>committed to</0>:",
-    "drink-type": "Drink Type: [*{{type}}]",
-    "max-drinks": "Max Drinks: [*{{maxDrinks}}]",
-    "budget": "Budget: [*${{budget}}]",
+    "drink-type": "Drink Type: {{type}}",
+    "max-drinks": "Max Drinks: {{maxDrinks}}",
+    "budget": "Budget: ${{budget}} {{currency}}",
+    "drink-tracker-journal": "Drink Tracker Journal",
 
     "edit-session": "Edit",
     "delete-session": "Delete",

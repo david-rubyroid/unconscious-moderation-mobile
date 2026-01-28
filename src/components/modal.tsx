@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
   modalWithPadding: {
     paddingHorizontal: scale(32),
-    paddingVertical: verticalScale(59),
+    paddingVertical: verticalScale(36),
   },
   defaultBackground: {
     backgroundColor: Colors.light.tertiaryBackground,
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   },
   gradientContainer: {
     paddingHorizontal: scale(32),
-    paddingVertical: verticalScale(59),
+    paddingVertical: verticalScale(36),
   },
 })
 
