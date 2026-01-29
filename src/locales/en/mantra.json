@@ -17,5 +17,6 @@
   "save": "Save",
   "create-a-new-one": "Create a new one",
 
-  "error-creating-mantra": "Mantra has to be at least 1 character long"
+  "error-creating-mantra": "Oops!",
+  "error-creating-mantra-description": "Mantra has to be at least 1 character long"
 }

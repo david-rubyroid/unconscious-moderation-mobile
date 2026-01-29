@@ -1,5 +1,5 @@
 interface CreateMantraRequest {
-  mantras: string[]
+  mantra: string
 }
 
 interface MantraResponse {
@@ -10,4 +10,7 @@ interface MantraResponse {
   updatedAt: string
 }
 
-export type { CreateMantraRequest, MantraResponse }
+interface DeleteMantraRequest {
+  id: number
+}
+export type { CreateMantraRequest, DeleteMantraRequest, MantraResponse }

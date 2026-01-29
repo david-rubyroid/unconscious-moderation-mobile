@@ -1,5 +1,5 @@
 export const HYPNOSIS_LINKS = {
-  preDrinkHypnosis: 'https://unconscious-moderation.s3.us-east-1.amazonaws.com/hypnosis/Self-hypnosis+of+the+drink+tracker+-+3.mp3',
+  preDrinkHypnosis: 'https://unconscious-moderation.s3.us-east-1.amazonaws.com/hypnosis/pre-drinking-session.mp3',
   hypnosisForAdventure: {
     day1: 'https://unconscious-moderation.s3.us-east-1.amazonaws.com/hypnosis/hypnosis-for-adventure/month-one/day-01.mp3',
     day2: 'https://unconscious-moderation.s3.us-east-1.amazonaws.com/hypnosis/hypnosis-for-adventure/month-one/day-02.mp3',
