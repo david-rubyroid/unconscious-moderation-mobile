@@ -1,5 +1,5 @@
 import { Trans } from 'react-i18next'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
 import HeartOutlineIcon from '@/assets/icons/heart-outline'
 
@@ -14,8 +14,12 @@ interface AbstainedDayContentProps {
 }
 
 const styles = StyleSheet.create({
-  heartIcon: {
-    marginBottom: verticalScale(16),
+  container: {
+    alignItems: 'center',
+    gap: verticalScale(20),
+  },
+  dayName: {
+    color: Colors.light.primary4,
   },
   messageText: {
     textAlign: 'center',
@@ -26,10 +30,19 @@ const styles = StyleSheet.create({
   },
 })
 
-export function AbstainedDayContent({ dayName: _dayName }: AbstainedDayContentProps) {
+export function AbstainedDayContent({
+  dayName,
+}: AbstainedDayContentProps) {
   return (
-    <>
-      <HeartOutlineIcon style={styles.heartIcon} color={Colors.light.primary4} />
+    <View style={styles.container}>
+      <ThemedText
+        type="subtitle"
+        style={styles.dayName}
+      >
+        {dayName}
+      </ThemedText>
+
+      <HeartOutlineIcon color={Colors.light.primary4} />
 
       <ThemedText style={styles.messageText}>
         <Trans
@@ -39,6 +52,6 @@ export function AbstainedDayContent({ dayName: _dayName }: AbstainedDayContentPr
           ]}
         />
       </ThemedText>
-    </>
+    </View>
   )
 }

@@ -22,7 +22,11 @@ function getDayOfWeekName(date: Date): string {
   return date.toLocaleDateString('en-US', { weekday: 'long' })
 }
 
-export function useDaySummaryLogic({ day, dayData, onClose }: UseDaySummaryLogicProps) {
+export function useDaySummaryLogic({
+  day,
+  dayData,
+  onClose,
+}: UseDaySummaryLogicProps) {
   const { push } = useRouter()
   const { t } = useTranslation('drink-tracker')
   const { mutateAsync: deleteSession } = useDeleteDrinkSession()
