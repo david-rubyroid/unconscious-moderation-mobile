@@ -23,7 +23,12 @@ const styles = StyleSheet.create({
   },
 })
 
-function DaySummaryModal({ visible, day, dayData, onClose }: DaySummaryModalProps) {
+function DaySummaryModal({
+  visible,
+  day,
+  dayData,
+  onClose,
+}: DaySummaryModalProps) {
   const logic = useDaySummaryLogic({ day, dayData, onClose })
 
   if (!day) {

@@ -1,9 +1,11 @@
-export type DrinkType = 'wine' | 'beer' | 'spirits' | 'cocktails' | 'hard-seltzer-ready-to-drink'
-
+export type DrinkType = 'wine' | 'beer' | 'spirits' | 'cocktails' | 'hard-seltzer-ready-to-drink' | 'other'
+export type Currency = 'USD' | 'MXN' | 'COP' | 'EUR'
 interface CreateDrinkSessionRequest {
   plannedStartTime: string // ISO date string
   maxDrinkCount: number
   drinkType: DrinkType
+  drinkTypeOther?: string
+  currency: Currency
   budget?: number
 }
 
@@ -13,6 +15,8 @@ interface CreateDrinkSessionResponse {
   plannedStartTime: string
   maxDrinkCount: number
   drinkType: DrinkType
+  drinkTypeOther?: string
+  currency: Currency
   budget?: number
   actualStartTime?: string
   actualEndTime?: string
@@ -33,6 +37,8 @@ interface DrinkSessionResponse {
   plannedStartTime: string
   maxDrinkCount: number
   drinkType: DrinkType
+  drinkTypeOther?: string
+  currency: Currency
   budget?: number
   actualStartTime?: string
   actualEndTime?: string
@@ -50,6 +56,8 @@ interface UpdateDrinkSessionRequest {
   quickWriting?: string
   plannedStartTime?: string
   maxDrinkCount?: number
+  drinkTypeOther?: string
+  currency?: Currency
   budget?: number
   actualStartTime?: string
   endTime?: string
@@ -67,12 +75,14 @@ interface UpdateDrinkSessionResponse {
   userId: number
   plannedStartTime: string
   maxDrinkCount: number
+  drinkTypeOther?: string
   budget?: number
   actualStartTime?: string
   actualEndTime?: string
   actualDrinkCount?: number
   actualSpending?: number
   drinkType: DrinkType
+  currency: Currency
   status?: 'planned' | 'active' | 'completed' | 'cancelled'
   createdAt: string
   updatedAt: string

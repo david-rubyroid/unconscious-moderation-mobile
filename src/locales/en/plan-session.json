@@ -7,11 +7,14 @@
   "whats-your-budget-for-the-night": "What's Your Budget for the Night?",
   "continue": "Continue",
   "update": "Update",
+  "save": "Save",
+  "choose-one": "Choose one",
 
   "select-your-date": "Select your date",
   "set-your-planned-end-time": "Set your planned end time",
   "set-your-drink-limit": "Set your drink limit",
   "set-your-max-spending": "Set your max spending",
+  "other": "Other",
 
   "planned-stop-time-description": "A planned stop time <0>gives you \n control</0>. Your mind prepares to wrap \n up naturally, <1>making it easier</1> to stick \n to your intention.",
   "drink-limit-description": "Setting a <0>drink limit</0> beforehand helps \n your brain recognize when to stop. \n People typically <1>drink less</1> when they \n decide on a number first.",

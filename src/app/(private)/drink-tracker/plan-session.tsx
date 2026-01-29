@@ -1,4 +1,4 @@
-import type { DrinkType } from '@/api/queries/drink-session/dto'
+import type { Currency, DrinkType } from '@/api/queries/drink-session/dto'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useLocalSearchParams, useRouter } from 'expo-router'
@@ -20,14 +20,17 @@ import AlertIcon from '@/assets/icons/alert'
 import {
   Button,
   ControlledDateInput,
+  ControlledSelectInput,
   ControlledTextInput,
   DrinkSelector,
   Header,
   Modal,
   ScreenContainer,
+  TextInput,
   ThemedText,
 } from '@/components'
 
+import { CURRENCY } from '@/constants/currency'
 import { Colors, withOpacity } from '@/constants/theme'
 
 import { dateToUTCNoon, normalizeDateToDay } from '@/utils/calendar-date'
@@ -36,22 +39,49 @@ import { scale, verticalScale } from '@/utils/responsive'
 import { showErrorToast } from '@/utils/toast'
 
 const styles = StyleSheet.create({
+  drinkSelectorContainer: {
+    gap: verticalScale(8),
+  },
   inputs: {
     gap: verticalScale(12),
   },
   inputContainer: {
     position: 'relative',
   },
-  drinkSelectorContainer: {},
+  budgetInput: {
+    gap: scale(8),
+  },
+  budgetInputLabelContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: scale(8),
+  },
+  budgetInputContentContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: scale(8),
+  },
+  budgetInputCurrencyWrapper: {
+    width: 80,
+  },
+  budgetInputFieldWrapper: {
+    flex: 1,
+  },
+  budgetInputLabel: {
+    color: Colors.light.primary4,
+  },
   drinkSelectorTextContainer: {
     flexDirection: 'row',
     gap: scale(8),
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: verticalScale(17),
   },
   drinkSelectorText: {
     color: Colors.light.primary4,
+  },
+  chooseOneText: {
+    color: withOpacity(Colors.light.black, 0.5),
   },
   alertIconContainer: {
     position: 'absolute',
@@ -77,9 +107,11 @@ const styles = StyleSheet.create({
     gap: verticalScale(24),
   },
   modalText: {
+    color: Colors.light.primary4,
     textAlign: 'center',
   },
   modalTextBold: {
+    color: Colors.light.primary4,
     fontWeight: 700,
   },
   modalButtonContainer: {
@@ -88,10 +120,11 @@ const styles = StyleSheet.create({
 })
 
 function PlanAndPrepareScreen() {
-  const { replace, back } = useRouter()
+  const { back } = useRouter()
   const { sessionId } = useLocalSearchParams()
 
   const [selectedDrink, setSelectedDrink] = useState<DrinkType>('wine')
+  const [selectedDrinkOther, setSelectedDrinkOther] = useState<string>('')
   const [modalTextKey, setModalTextKey] = useState<string>('')
   const [modalVisible, setModalVisible] = useState(false)
 
@@ -103,6 +136,10 @@ function PlanAndPrepareScreen() {
   )
   const { data: drinkSession } = useGetDrinkSession(Number(sessionId))
 
+  const currencyOptions = Object.values(CURRENCY).map(currency => ({
+    label: currency,
+    value: currency,
+  }))
   const createDrinkSessionSchema = z
     .object({
       plannedStartTime: z
@@ -131,6 +168,7 @@ function PlanAndPrepareScreen() {
             message: t('maxDrinkCount-must-be-greater-than-0'),
           },
         ),
+      currency: z.string().min(1, t('currency-is-required')),
       budget: z
         .string()
         .min(1, t('budget-is-required'))
@@ -154,8 +192,33 @@ function PlanAndPrepareScreen() {
     resolver: zodResolver(createDrinkSessionSchema),
     mode: 'onChange',
     reValidateMode: 'onChange',
+    defaultValues: {
+      currency: CURRENCY.USD,
+    },
   })
 
+  const handleSelectDrinkOther = (text: string) => {
+    setSelectedDrinkOther(text)
+
+    if (text.trim() !== '') {
+      setSelectedDrink('other')
+    }
+
+    if (text.trim() === '') {
+      setSelectedDrink(selectedDrink === 'other' ? 'wine' : selectedDrink)
+    }
+  }
+  const handleSelectDrink = (drink: DrinkType) => {
+    if (drink !== 'other' && selectedDrinkOther.trim()) {
+      setSelectedDrinkOther('')
+    }
+
+    setSelectedDrink(drink)
+
+    if (drink === 'other') {
+      setSelectedDrinkOther('')
+    }
+  }
   const openModal = (textKey: string) => {
     setModalTextKey(textKey)
     setModalVisible(true)
@@ -164,9 +227,10 @@ function PlanAndPrepareScreen() {
     setModalVisible(false)
   }
   const onSubmit = (data: z.infer<typeof createDrinkSessionSchema>) => {
-    const { maxDrinkCount, budget, plannedStartTime } = data
+    const { maxDrinkCount, budget, plannedStartTime, currency } = data
     const numberOfDrinks = Number(maxDrinkCount)
     const budgetAmount = Number(budget)
+    const selectedCurrency = currency as Currency
 
     if (sessionId) {
       updateDrinkSession({
@@ -174,36 +238,38 @@ function PlanAndPrepareScreen() {
         maxDrinkCount: numberOfDrinks,
         budget: budgetAmount,
         drinkType: selectedDrink,
+        currency: selectedCurrency,
+        drinkTypeOther: selectedDrinkOther,
       }, {
         onSuccess: () => {
           back()
         },
         onError: (error) => {
-          showErrorToast('Oops! Something went wrong', getErrorMessage(error))
+          showErrorToast(
+            'Oops! Something went wrong',
+            getErrorMessage(error),
+          )
         },
       })
 
       return
     }
-
     createDrinkSession({
       plannedStartTime: dateToUTCNoon(plannedStartTime),
       maxDrinkCount: numberOfDrinks,
       budget: budgetAmount,
       drinkType: selectedDrink,
+      currency: selectedCurrency,
+      drinkTypeOther: selectedDrinkOther,
     }, {
-      onSuccess: (data) => {
-        const { id } = data
-
-        replace({
-          pathname: '/drink-tracker/pre-drink-checklist',
-          params: {
-            sessionId: id,
-          },
-        })
+      onSuccess: () => {
+        back()
       },
       onError: (error) => {
-        showErrorToast('Oops! Something went wrong', getErrorMessage(error))
+        showErrorToast(
+          'Oops! Something went wrong',
+          getErrorMessage(error),
+        )
       },
     })
   }
@@ -215,6 +281,10 @@ function PlanAndPrepareScreen() {
         : new Date())
       setValue('maxDrinkCount', drinkSession.maxDrinkCount?.toString() || '1')
       setValue('budget', drinkSession.budget?.toString() || '0')
+      setValue('currency', drinkSession.currency || CURRENCY.USD)
+
+      setSelectedDrink(drinkSession.drinkType || 'wine')
+      setSelectedDrinkOther(drinkSession.drinkTypeOther || '')
     }
   }, [drinkSession, setValue])
 
@@ -236,7 +306,10 @@ function PlanAndPrepareScreen() {
 
           <View style={styles.drinkSelectorContainer}>
             <View style={styles.drinkSelectorTextContainer}>
-              <ThemedText style={styles.drinkSelectorText} type="defaultSemiBold">
+              <ThemedText
+                style={styles.drinkSelectorText}
+                type="defaultSemiBold"
+              >
                 {t('what-type-of-drink-will-you-stick-with')}
               </ThemedText>
 
@@ -250,7 +323,24 @@ function PlanAndPrepareScreen() {
               </TouchableOpacity>
             </View>
 
-            <DrinkSelector selectedDrink={selectedDrink} onSelectDrink={setSelectedDrink} />
+            <DrinkSelector
+              selectedDrink={selectedDrink}
+              onSelectDrink={handleSelectDrink}
+            />
+
+            <ThemedText
+              style={styles.chooseOneText}
+            >
+              {t('choose-one')}
+            </ThemedText>
+
+            <TextInput
+              value={selectedDrinkOther}
+              placeholderTextColor={styles.input.color}
+              placeholder={t('other')}
+              style={styles.input}
+              onChangeText={handleSelectDrinkOther}
+            />
           </View>
 
           <View style={styles.inputContainer}>
@@ -275,36 +365,60 @@ function PlanAndPrepareScreen() {
             />
           </View>
 
-          <View style={styles.inputContainer}>
-            <TouchableOpacity
-              style={styles.alertIconContainer}
-              onPress={() => {
-                openModal('max-spending-description')
-              }}
-              activeOpacity={0.7}
-            >
-              <AlertIcon />
-            </TouchableOpacity>
+          <View style={styles.budgetInput}>
+            <View style={styles.budgetInputLabelContainer}>
+              <ThemedText
+                type="defaultSemiBold"
+                style={styles.budgetInputLabel}
+              >
+                {t('whats-your-budget-for-the-night')}
+              </ThemedText>
 
-            <ControlledTextInput
-              control={control}
-              name="budget"
-              keyboardType="numeric"
-              placeholderTextColor={styles.input.color}
-              placeholder={t('set-your-max-spending')}
-              style={styles.input}
-              label={t('whats-your-budget-for-the-night')}
-            />
+              <TouchableOpacity
+                onPress={() => {
+                  openModal('max-spending-description')
+                }}
+                activeOpacity={0.7}
+              >
+                <AlertIcon />
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.budgetInputContentContainer}>
+              <View style={styles.budgetInputCurrencyWrapper}>
+                <ControlledSelectInput
+                  control={control}
+                  name="currency"
+                  options={currencyOptions}
+                  style={styles.input}
+                />
+              </View>
+
+              <View style={styles.budgetInputFieldWrapper}>
+                <ControlledTextInput
+                  control={control}
+                  name="budget"
+                  keyboardType="numeric"
+                  placeholderTextColor={styles.input.color}
+                  placeholder={t('set-your-max-spending')}
+                  style={styles.input}
+                />
+              </View>
+            </View>
           </View>
         </View>
 
         <View style={styles.buttonContainer}>
           <Button
-            title={sessionId ? t('update') : t('continue')}
+            title={sessionId ? t('update') : t('save')}
             variant="secondary"
             onPress={handleSubmit(onSubmit)}
             loading={isCreatingDrinkSession || isUpdatingDrinkSession}
-            disabled={isCreatingDrinkSession || isUpdatingDrinkSession || !isValid}
+            disabled={
+              isCreatingDrinkSession
+              || isUpdatingDrinkSession
+              || !isValid
+            }
           />
         </View>
       </ScreenContainer>

@@ -55,7 +55,11 @@ const styles = StyleSheet.create({
   },
 })
 
-export function PlannedSessionContent({ dayData, onEdit, onDelete }: PlannedSessionContentProps) {
+export function PlannedSessionContent({
+  dayData,
+  onEdit,
+  onDelete,
+}: PlannedSessionContentProps) {
   const { t } = useTranslation('drink-tracker')
 
   return (
@@ -75,20 +79,36 @@ export function PlannedSessionContent({ dayData, onEdit, onDelete }: PlannedSess
 
       <View style={styles.plannedSessionDetailsContainer}>
         <View style={styles.plannedSessionDetailsItem}>
-          <ThemedText type="defaultSemiBold" style={styles.plannedSessionDetailsItemText}>
-            {t('day-summary.drink-type', { type: dayData?.drinkType || '' })}
+          <ThemedText
+            type="defaultSemiBold"
+            style={styles.plannedSessionDetailsItemText}
+          >
+            {t('day-summary.drink-type', {
+              type: dayData?.drinkType === 'other'
+                ? dayData?.drinkTypeOther || ''
+                : dayData?.drinkType || '',
+            })}
           </ThemedText>
         </View>
 
         <View style={styles.plannedSessionDetailsItem}>
-          <ThemedText type="defaultSemiBold" style={styles.plannedSessionDetailsItemText}>
+          <ThemedText
+            type="defaultSemiBold"
+            style={styles.plannedSessionDetailsItemText}
+          >
             {t('day-summary.max-drinks', { maxDrinks: dayData?.maxDrinkCount || 0 })}
           </ThemedText>
         </View>
 
         <View style={styles.plannedSessionDetailsItem}>
-          <ThemedText type="defaultSemiBold" style={styles.plannedSessionDetailsItemText}>
-            {t('day-summary.budget', { budget: dayData?.budget || 0 })}
+          <ThemedText
+            type="defaultSemiBold"
+            style={styles.plannedSessionDetailsItemText}
+          >
+            {t('day-summary.budget', {
+              budget: dayData?.budget || 0,
+              currency: dayData?.currency || '',
+            })}
           </ThemedText>
         </View>
       </View>
