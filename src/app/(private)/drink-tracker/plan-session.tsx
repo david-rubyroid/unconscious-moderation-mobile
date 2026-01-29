@@ -2,7 +2,7 @@ import type { Currency, DrinkType } from '@/api/queries/drink-session/dto'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { Trans, useTranslation } from 'react-i18next'
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   alertIconContainer: {
     position: 'absolute',
     top: -6,
-    right: 0,
+    right: -8,
     zIndex: 1,
     padding: scale(8),
     minWidth: scale(40),
@@ -140,53 +140,57 @@ function PlanAndPrepareScreen() {
     label: currency,
     value: currency,
   }))
-  const createDrinkSessionSchema = z
-    .object({
-      plannedStartTime: z
-        .date({
-          error: t('select-your-date'),
-        })
-        .refine(
-          (date) => {
-            const selectedDay = normalizeDateToDay(date)
-            const today = normalizeDateToDay(new Date())
-            return selectedDay >= today
-          },
-          {
-            message: t('plannedStartTime-cannot-be-in-past'),
-          },
-        ),
-      maxDrinkCount: z
-        .string()
-        .min(1, t('maxDrinkCount-is-required'))
-        .refine(
-          (val) => {
-            const num = Number(val)
-            return !Number.isNaN(num) && num > 0 && Number.isInteger(num)
-          },
-          {
-            message: t('maxDrinkCount-must-be-greater-than-0'),
-          },
-        ),
-      currency: z.string().min(1, t('currency-is-required')),
-      budget: z
-        .string()
-        .min(1, t('budget-is-required'))
-        .refine(
-          (val) => {
-            const num = Number(val)
-            return !Number.isNaN(num) && num > 0
-          },
-          {
-            message: t('budget-must-be-positive'),
-          },
-        ),
-    })
+  const createDrinkSessionSchema = useMemo(
+    () =>
+      z.object({
+        plannedStartTime: z
+          .date({
+            error: t('select-your-date'),
+          })
+          .refine(
+            (date) => {
+              const selectedDay = normalizeDateToDay(date)
+              const today = normalizeDateToDay(new Date())
+              return selectedDay >= today
+            },
+            {
+              message: t('plannedStartTime-cannot-be-in-past'),
+            },
+          ),
+        maxDrinkCount: z
+          .string()
+          .min(1, t('maxDrinkCount-is-required'))
+          .refine(
+            (val) => {
+              const num = Number(val)
+              return !Number.isNaN(num) && num > 0 && Number.isInteger(num)
+            },
+            {
+              message: t('maxDrinkCount-must-be-greater-than-0'),
+            },
+          ),
+        currency: z.string().min(1, t('currency-is-required')),
+        budget: z
+          .string()
+          .min(1, t('budget-is-required'))
+          .refine(
+            (val) => {
+              const num = Number(val)
+              return !Number.isNaN(num) && num > 0
+            },
+            {
+              message: t('budget-must-be-positive'),
+            },
+          ),
+      }),
+    [t],
+  )
 
   const {
     control,
     handleSubmit,
     setValue,
+    trigger,
     formState: { isValid },
   } = useForm<z.infer<typeof createDrinkSessionSchema>>({
     resolver: zodResolver(createDrinkSessionSchema),
@@ -198,6 +202,8 @@ function PlanAndPrepareScreen() {
   })
 
   const handleSelectDrinkOther = (text: string) => {
+    trigger()
+
     setSelectedDrinkOther(text)
 
     if (text.trim() !== '') {
@@ -209,6 +215,8 @@ function PlanAndPrepareScreen() {
     }
   }
   const handleSelectDrink = (drink: DrinkType) => {
+    trigger()
+
     if (drink !== 'other' && selectedDrinkOther.trim()) {
       setSelectedDrinkOther('')
     }
