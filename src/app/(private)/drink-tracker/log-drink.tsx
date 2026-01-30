@@ -3,7 +3,7 @@ import type { DrinkType } from '@/api/queries/drink-session/dto'
 import { useFocusEffect, useRouter } from 'expo-router'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ActivityIndicator, Image, Pressable, StyleSheet, View } from 'react-native'
+import { Image, Pressable, StyleSheet, View } from 'react-native'
 import Toast from 'react-native-toast-message'
 
 import { useLogDrink } from '@/api/queries/drink-log'
@@ -134,7 +134,7 @@ function LogDrinkScreen() {
   const [selectedPhotoUri, setSelectedPhotoUri] = useState<string | null>(null)
 
   const { t } = useTranslation('log-drink')
-  const { data: currentSession, isLoading: isLoadingSession } = useGetCurrentDrinkSession()
+  const { data: currentSession } = useGetCurrentDrinkSession()
   const { mutateAsync: getUploadUrl, isPending: isGettingUploadUrl } = useGetUploadUrl(currentSession?.id)
   const { mutateAsync: addDrinkPhoto, isPending: isAddingDrinkPhoto } = useAddDrinkPhoto(currentSession?.id)
 
@@ -186,8 +186,6 @@ function LogDrinkScreen() {
     currentSession?.id,
     {
       onSuccess: async (drinkLog) => {
-        setDrinkCost('')
-
         try {
           // Upload photo if selected
           if (selectedPhotoUri && drinkLog.id) {
@@ -233,108 +231,6 @@ function LogDrinkScreen() {
       cost,
     })
   }
-  const renderContent = () => {
-    if (isLoadingSession) {
-      return (
-        <View style={styles.emptyStateContainer}>
-          <ActivityIndicator size="large" color={Colors.light.primary4} />
-        </View>
-      )
-    }
-
-    if (!currentSession) {
-      return (
-        <View style={styles.emptyStateContainer}>
-          <ThemedText style={styles.emptyStateText}>
-            {t('no-active-session')}
-          </ThemedText>
-        </View>
-      )
-    }
-
-    return (
-      <>
-        <ThemedText style={styles.myDrinksText} type="defaultSemiBold">
-          {t('log-drink')}
-        </ThemedText>
-
-        <DrinkSelector selectedDrink={selectedDrink} onSelectDrink={setSelectedDrink} />
-
-        <ThemedText type="defaultSemiBold" style={styles.takePhotoText}>
-          {t('take-photo')}
-        </ThemedText>
-
-        <Pressable
-          style={styles.takePhotoIconContainer}
-          onPress={() => {
-            push({
-              pathname: '/drink-tracker/photo-record',
-              params: {
-                photoUri: selectedPhotoUri || undefined,
-                returnPath: '/drink-tracker/log-drink',
-              },
-            })
-          }}
-        >
-          {selectedPhotoUri
-            ? (
-                <Image source={{ uri: selectedPhotoUri }} style={styles.photoPreview} />
-              )
-            : (
-                <TakePhotoIcon />
-              )}
-        </Pressable>
-
-        <TextInput
-          placeholder={t('cost-of-drink')}
-          placeholderTextColor={withOpacity(Colors.light.black, 0.5)}
-          label={t('cost')}
-          value={drinkCost}
-          onChangeText={setDrinkCost}
-          keyboardType="numeric"
-          style={styles.drinkCostInput}
-        />
-
-        <View style={styles.drinkingTipsTextContainer}>
-          <StartIcon />
-
-          <ThemedText type="defaultSemiBold" style={styles.drinkingTipsText}>
-            {t('drinking-tips')}
-          </ThemedText>
-        </View>
-
-        <View style={styles.tipsContainer}>
-          <View style={styles.tipItem}>
-            <ThemedText
-              type="defaultSemiBold"
-              style={styles.tipItemText}
-            >
-              {t('one-drink-one-water-balance-is-everything')}
-            </ThemedText>
-          </View>
-
-          <View style={styles.tipItem}>
-            <ThemedText
-              type="defaultSemiBold"
-              style={styles.tipItemText}
-            >
-              {t('sip-slowly-stick-with-your-drink-stay-present')}
-            </ThemedText>
-          </View>
-        </View>
-
-        <View style={styles.buttonContainer}>
-          <Button
-            variant="secondary"
-            title={t('log-drink')}
-            onPress={handleLogDrink}
-            loading={isLoading}
-            disabled={!drinkCost || isLoading}
-          />
-        </View>
-      </>
-    )
-  }
 
   // Load photo from SecureStore when screen comes
   // into focus (after returning from photo-record)
@@ -361,7 +257,84 @@ function LogDrinkScreen() {
     <ScreenContainer horizontalPadding={12}>
       <Header title={t('title')} />
 
-      {renderContent()}
+      <ThemedText style={styles.myDrinksText} type="defaultSemiBold">
+        {t('log-drink')}
+      </ThemedText>
+
+      <DrinkSelector selectedDrink={selectedDrink} onSelectDrink={setSelectedDrink} />
+
+      <ThemedText type="defaultSemiBold" style={styles.takePhotoText}>
+        {t('take-photo')}
+      </ThemedText>
+
+      <Pressable
+        style={styles.takePhotoIconContainer}
+        onPress={() => {
+          push({
+            pathname: '/drink-tracker/photo-record',
+            params: {
+              photoUri: selectedPhotoUri || undefined,
+              returnPath: '/drink-tracker/log-drink',
+            },
+          })
+        }}
+      >
+        {selectedPhotoUri
+          ? (
+              <Image source={{ uri: selectedPhotoUri }} style={styles.photoPreview} />
+            )
+          : (
+              <TakePhotoIcon />
+            )}
+      </Pressable>
+
+      <TextInput
+        placeholder={t('cost-of-drink')}
+        placeholderTextColor={withOpacity(Colors.light.black, 0.5)}
+        label={t('cost')}
+        value={drinkCost}
+        onChangeText={setDrinkCost}
+        keyboardType="numeric"
+        style={styles.drinkCostInput}
+      />
+
+      <View style={styles.drinkingTipsTextContainer}>
+        <StartIcon />
+
+        <ThemedText type="defaultSemiBold" style={styles.drinkingTipsText}>
+          {t('drinking-tips')}
+        </ThemedText>
+      </View>
+
+      <View style={styles.tipsContainer}>
+        <View style={styles.tipItem}>
+          <ThemedText
+            type="defaultSemiBold"
+            style={styles.tipItemText}
+          >
+            {t('one-drink-one-water-balance-is-everything')}
+          </ThemedText>
+        </View>
+
+        <View style={styles.tipItem}>
+          <ThemedText
+            type="defaultSemiBold"
+            style={styles.tipItemText}
+          >
+            {t('sip-slowly-stick-with-your-drink-stay-present')}
+          </ThemedText>
+        </View>
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <Button
+          variant="secondary"
+          title={t('log-drink')}
+          onPress={handleLogDrink}
+          loading={isLoading}
+          disabled={!drinkCost || isLoading}
+        />
+      </View>
     </ScreenContainer>
   )
 }

@@ -4,7 +4,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router'
 import { HYPNOSIS_LINKS } from '@/constants/hypnosis-links'
 import { saveHypnosisCheckIn } from '@/utils/hypnosis-checkin-storage'
 
-import { HypnosisPlayerScreen } from './components/hypnosis-player-screen'
+import { HypnosisPlayerScreen } from './components/hypnosis-player'
 
 function HypnosisCheckInScreen() {
   const { back } = useRouter()

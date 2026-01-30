@@ -28,7 +28,7 @@ interface HypnosisPlayerScreenProps {
   onDone: () => void
 }
 
-export function HypnosisPlayerScreen({
+export function HypnosisPlayer({
   title,
   audioUri,
   onDone,

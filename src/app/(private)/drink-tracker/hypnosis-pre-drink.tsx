@@ -4,7 +4,7 @@ import { useUpdateDrinkSession } from '@/api/queries/drink-session'
 
 import { HYPNOSIS_LINKS } from '@/constants/hypnosis-links'
 
-import { HypnosisPlayerScreen } from './components/hypnosis-player-screen'
+import { HypnosisPlayerScreen } from './components/hypnosis-player'
 
 function HypnosisPreDrinkScreen() {
   const { back } = useRouter()

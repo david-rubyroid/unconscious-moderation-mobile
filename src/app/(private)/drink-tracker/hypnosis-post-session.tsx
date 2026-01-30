@@ -4,7 +4,7 @@ import { useUpdateReflection } from '@/api/queries/reflections'
 
 import { HYPNOSIS_LINKS } from '@/constants/hypnosis-links'
 
-import { HypnosisPlayerScreen } from './components/hypnosis-player-screen'
+import { HypnosisPlayerScreen } from './components/hypnosis-player'
 
 function HypnosisPostSessionScreen() {
   const { back } = useRouter()
