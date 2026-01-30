@@ -4,7 +4,7 @@ import { useUpdateDrinkSession } from '@/api/queries/drink-session'
 
 import { HYPNOSIS_LINKS } from '@/constants/hypnosis-links'
 
-import { HypnosisPlayerScreen } from './components/hypnosis-player'
+import { HypnosisPlayer } from './components/hypnosis-player'
 
 function HypnosisPreDrinkScreen() {
   const { back } = useRouter()
@@ -25,7 +25,7 @@ function HypnosisPreDrinkScreen() {
   }
 
   return (
-    <HypnosisPlayerScreen
+    <HypnosisPlayer
       title=""
       audioUri={HYPNOSIS_LINKS.preDrinkHypnosis}
       onDone={handleDone}

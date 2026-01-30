@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   },
 })
 
-interface HypnosisPlayerScreenProps {
+interface HypnosisPlayerProps {
   title: string
   audioUri: string
   onDone: () => void
@@ -32,7 +32,7 @@ export function HypnosisPlayer({
   title,
   audioUri,
   onDone,
-}: HypnosisPlayerScreenProps) {
+}: HypnosisPlayerProps) {
   const { t } = useTranslation('hypnosis')
 
   return (

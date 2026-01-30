@@ -4,7 +4,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router'
 import { HYPNOSIS_LINKS } from '@/constants/hypnosis-links'
 import { saveHypnosisCheckIn } from '@/utils/hypnosis-checkin-storage'
 
-import { HypnosisPlayerScreen } from './components/hypnosis-player'
+import { HypnosisPlayer } from './components/hypnosis-player'
 
 function HypnosisCheckInScreen() {
   const { back } = useRouter()
@@ -41,7 +41,7 @@ function HypnosisCheckInScreen() {
   }
 
   return (
-    <HypnosisPlayerScreen
+    <HypnosisPlayer
       title={title ?? ''}
       audioUri={hypnosisLink ?? HYPNOSIS_LINKS.awarenessCheckIn}
       onDone={handleDone}
