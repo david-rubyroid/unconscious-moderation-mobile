@@ -6,49 +6,54 @@ import TimeSinceIcon from '@/assets/icons/time-since'
 
 import { ThemedText } from '@/components'
 
-import { styles } from '../_drink-with-awareness.styles'
+import { styles } from '../drink-with-awareness.styles'
 
 interface SessionInfoCardsProps {
   actualSpending: number
   budget: number
   timeSinceFirstDrink: string
+  currencySymbol: string
 }
 
 export function SessionInfoCards({
   actualSpending,
   budget,
   timeSinceFirstDrink,
+  currencySymbol,
 }: SessionInfoCardsProps) {
   const { t } = useTranslation('drink-with-awareness')
 
+  const s = styles.sessionInfo
+
   return (
-    <View style={styles.infoContainer}>
-      <View style={styles.infoItem}>
+    <View style={s.container}>
+      <View style={s.item}>
         <MoneyIcon />
 
-        <View style={styles.infoItemContent}>
-          <ThemedText type="small" style={styles.infoItemTitle}>
+        <View style={s.itemContent}>
+          <ThemedText style={s.itemTitle}>
             {t('budget')}
           </ThemedText>
 
-          <ThemedText type="defaultSemiBold" style={styles.infoItemDescription}>
-            $
+          <ThemedText type="defaultSemiBold" style={s.itemDescription}>
+            {currencySymbol}
             {actualSpending}
-            /$
+            /
+            {currencySymbol}
             {budget}
           </ThemedText>
         </View>
       </View>
 
-      <View style={styles.infoItem}>
+      <View style={s.item}>
         <TimeSinceIcon />
 
-        <View style={styles.infoItemContent}>
-          <ThemedText type="small" style={styles.infoItemTitle}>
+        <View style={s.itemContent}>
+          <ThemedText style={s.itemTitle}>
             {t('time-since-first-drink')}
           </ThemedText>
 
-          <ThemedText type="defaultSemiBold" style={styles.infoItemDescription}>
+          <ThemedText type="defaultSemiBold" style={s.itemDescription}>
             {timeSinceFirstDrink}
           </ThemedText>
         </View>

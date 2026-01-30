@@ -154,10 +154,14 @@ function PhotoRecordScreen() {
       return
     }
 
-    // Save photo URI to secure store to be used in log-drink screen
-    await secureStore.set(SecureStoreKey.SELECTED_DRINK_LOG_PHOTO_URI, photoUri)
+    // Only save if photo was changed (not the same as initial S3 URL)
+    if (photoUri !== initialPhotoUri) {
+      await secureStore.set(SecureStoreKey.SELECTED_DRINK_LOG_PHOTO_URI, photoUri)
+    }
+
     back()
   }
+
   const renderContent = () => {
     if (!photoUri) {
       return (

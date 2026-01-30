@@ -128,7 +128,7 @@ function PreDrinkChecklistScreen() {
   }
   const navigateToSelfHypnosis = () => {
     push({
-      pathname: '/drink-tracker/hypnosis',
+      pathname: '/drink-tracker/hypnosis-pre-drink',
       params: { sessionId },
     })
   }

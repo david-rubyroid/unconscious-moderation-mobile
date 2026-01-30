@@ -13,6 +13,10 @@
 
   "budget": "Budget",
   "time-since-first-drink": "Time Since First Drink",
+  "hypnosis-check-in": "{{hours}}-Hour Hypnosis Check-In",
+  "hypnosis-check-in-hours": "{{hours}}-Hour \n Check-In",
+  "hypnosis-check-in-awareness": "Awareness \n Check-In",
+  "hypnosis-check-in-grounding": "Grounding \n Check-In",
 
   "self-hypnosis": "Self-hypnosis",
   "finish-drinking": "Finish Drinking",
@@ -27,15 +31,19 @@
   "warning-exceeding-app-recommendation": "Warning: Exceeding App Recommendation",
   "warning-exceeding-app-recommendation-description": "You're going over <0>the app's recommended limit of 3 long drinks.</0> Remember, this limit exists to support your transformation and help you stay in control. Consider pausing here, your future self will thank you.",
 
-  "warning-exceeding-your-planned-limit": "Warning: Exceeding Your Planned Limit",
-  "warning-exceeding-your-planned-limit-description": "<0>You've gone past the drink limit you set for yourself.</0> Take a moment to check in, what's driving this choice? You have the power to stop here and honor the commitment you made to yourself.",
+  "warning-exceeding-your-planned-limit": "Exceeding Your \n Planned Limit",
+  "warning-exceeding-your-planned-limit-description": "You've gone past your \n planned limit. <0>What's driving \n this choice?</0> You can still \n choose to stop here.",
 
-  "time-for-your-hypnosis": "Time For Your Hypnosis!",
-  "time-for-your-hypnosis-description": "Take 60 seconds to reset and reconnect with your intention. This quick practice helps you stay conscious and in control throughout the night.",
+  "time-for-your-hypnosis": "Your Hypnosis \n is Ready!",
+  "time-for-your-hypnosis-description": "Take a quick moment to \n reconnect with your intention.",
 
-  "great-job-tracking-your-drinks-tonight": "Great Job Tracking Your Drinks Tonight!",
-  "great-job-tracking-your-drinks-tonight-description": "You can do the Reflect and Reinforce exercise when you get home or tomorrow, whatever works best for you. Right now, the most important thing is to hydrate before going to sleep. You can decide when to complete the rest.",
+  "great-job-tracking-your-drinks-tonight": "Great Job Tracking \n Your Drinks Tonight!",
+  "great-job-tracking-your-drinks-tonight-description": "Right now, the most important \n thing is to <0>hydrate before going \n to sleep.</0> \n You can do the Reflect and \n Reinforce exercise when you get \n home or tomorrow, whatever \n <1>works best for you.</1>",
 
+  "warning-icon-title": "Warning",
   "continue": "Continue",
-  "okay": "Okay"
+  "ok": "Ok",
+
+  "water-log-success-title": "You're Doing Great!",
+  "water-log-success-description": "Every glass of water you drink is supporting your body's natural ability to process alcohol and helping you feel better tomorrow. Keep going, you're taking care of yourself."
 }

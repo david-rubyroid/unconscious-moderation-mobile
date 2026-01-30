@@ -103,11 +103,13 @@ const styles = StyleSheet.create({
 })
 
 function MantraScreen() {
-  const { sessionId } = useLocalSearchParams()
   const { back } = useRouter()
+  const { sessionId } = useLocalSearchParams()
+
   const { mutate: updateDrinkSession } = useUpdateDrinkSession(Number(sessionId))
-  const [modalVisible, setModalVisible] = useState(false)
+
   const [newMantra, setNewMantra] = useState('')
+  const [modalVisible, setModalVisible] = useState(false)
   const [selectedMantra, setSelectedMantra] = useState('')
 
   const { t } = useTranslation('mantra')
@@ -273,6 +275,7 @@ function MantraScreen() {
 
           <Button
             title={t('save')}
+            disabled={!newMantra}
             onPress={handleSaveMantra}
           />
         </View>

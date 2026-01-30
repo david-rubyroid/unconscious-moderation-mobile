@@ -20,5 +20,8 @@
 
   "log-drink": "Log Drink",
   "take-photo": "Take Photo",
-  "photo-upload-error": "Failed to upload photo"
+  "photo-upload-error": "Failed to upload photo",
+
+  "edit-drink-title": "Edit Drink",
+  "save": "Save"
 }

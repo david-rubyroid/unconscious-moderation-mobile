@@ -5,7 +5,7 @@ import CocktailIcon from '@/assets/icons/cocktail'
 
 import { Button, ThemedText } from '@/components'
 
-import { styles } from '../_drink-with-awareness.styles'
+import { styles } from '../drink-with-awareness.styles'
 
 interface DrinkCounterProps {
   actualDrinksCount: number
@@ -20,20 +20,22 @@ export function DrinkCounter({
 }: DrinkCounterProps) {
   const { t } = useTranslation('drink-with-awareness')
 
+  const s = styles.counter
+
   return (
-    <View style={styles.counter}>
-      <ThemedText style={styles.counterText}>
+    <View style={s.root}>
+      <ThemedText style={s.text}>
         {t('drinks')}
       </ThemedText>
 
-      <View style={styles.counterValueContainer}>
-        <View style={styles.counterIcon}>
+      <View style={s.valueContainer}>
+        <View style={s.icon}>
           <CocktailIcon />
         </View>
 
         <ThemedText style={[
-          styles.counterValue,
-          actualDrinksCount > maxDrinksCount && styles.extraCounterValue,
+          s.value,
+          actualDrinksCount > maxDrinksCount && s.extraValue,
         ]}
         >
           {actualDrinksCount}
@@ -45,7 +47,7 @@ export function DrinkCounter({
       <Button
         variant="secondary"
         title={t('log-drink')}
-        style={styles.counterButton}
+        style={s.button}
         onPress={onLogDrink}
       />
     </View>

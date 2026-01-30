@@ -13,7 +13,9 @@ export function useGetSessionWater(
 ) {
   return useQuery({
     queryKey: ['drink-tracker', 'sessions', sessionId, 'water'],
-    queryFn: createQueryFn<WaterLogResponse[]>(`drink-tracker/sessions/${sessionId}/water`),
+    queryFn: createQueryFn<WaterLogResponse[]>(
+      `drink-tracker/sessions/${sessionId}/water`,
+    ),
     enabled: !!sessionId,
     staleTime: QUERY_SHORT_CACHE.STALE_TIME,
     retry: QUERY_SHORT_CACHE.RETRY,

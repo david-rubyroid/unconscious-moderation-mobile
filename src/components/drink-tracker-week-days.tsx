@@ -1,11 +1,13 @@
-import { MaterialIcons } from '@expo/vector-icons'
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native'
 
 import { useGetCurrentWeekDrinkSessions } from '@/api/queries/drink-session'
 
+import CocktailIcon from '@/assets/icons/cocktail'
+import HeartIcon from '@/assets/icons/heart-outline'
+
 import { Colors, withOpacity } from '@/constants/theme'
 
-import { moderateScale, scale, verticalScale } from '@/utils/responsive'
+import { moderateScale, scale } from '@/utils/responsive'
 
 import ThemedText from './themed-text'
 
@@ -26,22 +28,13 @@ function getMondayOfWeek(date: Date): Date {
   return new Date(d.setDate(diff))
 }
 
-function getDaysOfWeek(monday: Date, today: Date): Date[] {
+function getDaysOfWeek(monday: Date): Date[] {
   const days: Date[] = []
-  const todayKey = formatDateKey(today)
-
   for (let i = 0; i < 7; i++) {
     const day = new Date(monday)
     day.setDate(monday.getDate() + i)
-
-    const dayKey = formatDateKey(day)
-
-    // Показываем только дни до сегодня включительно
-    if (dayKey <= todayKey) {
-      days.push(day)
-    }
+    days.push(day)
   }
-
   return days
 }
 
@@ -63,17 +56,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(15),
   },
   dayButton: {
+    width: 50,
+    height: 33,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
     gap: scale(3),
-    paddingHorizontal: scale(5),
-    paddingVertical: verticalScale(8),
     borderRadius: moderateScale(9),
     backgroundColor: withOpacity(Colors.light.tertiaryBackground, 0.7),
   },
   dayButtonToday: {
-    backgroundColor: Colors.light.primary,
+    backgroundColor: withOpacity(Colors.light.primary, 0.7),
   },
   dayText: {
     color: Colors.light.primary4,
@@ -89,7 +82,7 @@ const styles = StyleSheet.create({
 function DrinkTrackerWeekDays() {
   const today = new Date()
   const monday = getMondayOfWeek(today)
-  const weekDays = getDaysOfWeek(monday, today)
+  const weekDays = getDaysOfWeek(monday)
   const { data: sessions = [] } = useGetCurrentWeekDrinkSessions()
 
   // Create a map of date keys to sessions for quick lookup
@@ -100,13 +93,44 @@ function DrinkTrackerWeekDays() {
     sessionsByDate.set(sessionDateKey, true)
   })
 
+  const getDayIcon = (
+    isCurrentDay: boolean,
+    hasSession: boolean,
+  ): React.ReactNode => {
+    if (isCurrentDay) {
+      return (
+        <HeartIcon
+          width={scale(13)}
+          height={scale(11)}
+          color={Colors.light.white}
+        />
+      )
+    }
+    if (hasSession) {
+      return (
+        <CocktailIcon
+          width={scale(10)}
+          height={scale(13)}
+          color={Colors.light.error2}
+        />
+      )
+    }
+    return (
+      <HeartIcon
+        width={scale(13)}
+        height={scale(11)}
+        color={Colors.light.primary4}
+      />
+    )
+  }
+
   return (
     <View>
       <ScrollView
         horizontal
+        style={styles.scrollContainer}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.container}
-        style={styles.scrollContainer}
       >
         {weekDays.map((day) => {
           const dateKey = formatDateKey(day)
@@ -125,7 +149,6 @@ function DrinkTrackerWeekDays() {
               onPress={() => {}}
             >
               <ThemedText
-                type="defaultSemiBold"
                 style={[
                   styles.dayText,
                   isCurrentDay && styles.dayTextToday,
@@ -134,17 +157,8 @@ function DrinkTrackerWeekDays() {
               >
                 {dayName}
               </ThemedText>
-              {isCurrentDay
-                ? (
-                    <MaterialIcons name="favorite-border" size={scale(19)} color={Colors.light.white} />
-                  )
-                : hasSession
-                  ? (
-                      <MaterialIcons name="local-bar" size={scale(19)} color={Colors.light.error2} />
-                    )
-                  : (
-                      <MaterialIcons name="favorite-border" size={scale(19)} color={Colors.light.primary4} />
-                    )}
+
+              {getDayIcon(isCurrentDay, hasSession)}
             </Pressable>
           )
         })}

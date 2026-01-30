@@ -8,7 +8,11 @@ interface DrinkSessionStats {
   sessionWater: WaterLogResponse[] | undefined
 }
 
-export function getDrinkSessionStats({ sessionDrinks, drinkSession, sessionWater }: DrinkSessionStats) {
+export function getDrinkSessionStats({
+  sessionDrinks,
+  drinkSession,
+  sessionWater,
+}: DrinkSessionStats) {
   const actualDrinksCount = sessionDrinks?.length || 0
   const maxDrinksCount = drinkSession?.maxDrinkCount || 0
   const actualSpending = Number(drinkSession?.actualSpent) || 0
@@ -34,6 +38,17 @@ export function getDrinkSessionStats({ sessionDrinks, drinkSession, sessionWater
     return `${diffHours} hour${diffHours !== 1 ? 's' : ''}`
   }
 
+  const hoursSinceFirstDrink
+    = !sessionDrinks || sessionDrinks.length === 0
+      ? 0
+      : Math.max(
+          1,
+          Math.floor(
+            (new Date().getTime() - new Date(sessionDrinks[0].createdAt).getTime())
+            / (1000 * 60 * 60),
+          ),
+        )
+
   return {
     actualDrinksCount,
     maxDrinksCount,
@@ -41,5 +56,6 @@ export function getDrinkSessionStats({ sessionDrinks, drinkSession, sessionWater
     budget,
     totalWaterCups,
     timeSinceFirstDrink: getTimeSinceFirstDrink(),
+    hoursSinceFirstDrink,
   }
 }

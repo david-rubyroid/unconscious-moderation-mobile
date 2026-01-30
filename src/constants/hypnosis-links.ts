@@ -1,6 +1,11 @@
 export const HYPNOSIS_LINKS = {
-  preDrinkHypnosis: 'https://unconscious-moderation.s3.us-east-1.amazonaws.com/hypnosis/pre-drinking-session.mp3',
-  hypnosisForAdventure: {
+  'selfHypnosis': 'https://unconscious-moderation.s3.us-east-1.amazonaws.com/hypnosis/self-hypnosis-of-the-drink-tracker.mp3',
+  'preDrinkHypnosis': 'https://unconscious-moderation.s3.us-east-1.amazonaws.com/hypnosis/pre-drinking-session.mp3',
+  '1HourCheckIn': 'https://unconscious-moderation.s3.us-east-1.amazonaws.com/hypnosis/drink-with-awareness/1-%D1%80ourly-check-in.mp3',
+  'awarenessCheckIn': 'https://unconscious-moderation.s3.us-east-1.amazonaws.com/hypnosis/drink-with-awareness/awareness-check-in.mp3',
+  'groundingCheckIn': 'https://unconscious-moderation.s3.us-east-1.amazonaws.com/hypnosis/drink-with-awareness/general-check-in.mp3',
+  'postDrinkingHypnosis': 'https://unconscious-moderation.s3.us-east-1.amazonaws.com/hypnosis/post-drinking.mp3',
+  'hypnosisForAdventure': {
     day1: 'https://unconscious-moderation.s3.us-east-1.amazonaws.com/hypnosis/hypnosis-for-adventure/month-one/day-01.mp3',
     day2: 'https://unconscious-moderation.s3.us-east-1.amazonaws.com/hypnosis/hypnosis-for-adventure/month-one/day-02.mp3',
     day3: 'https://unconscious-moderation.s3.us-east-1.amazonaws.com/hypnosis/hypnosis-for-adventure/month-one/day-03.mp3',

@@ -3,23 +3,22 @@ import { StyleSheet } from 'react-native'
 import { Colors, withOpacity } from '@/constants/theme'
 import { scale, verticalScale } from '@/utils/responsive'
 
-export const styles = StyleSheet.create({
-  loggedDrinksContainer: {
+const loggedDrinks = StyleSheet.create({
+  container: {
     gap: scale(10),
-    marginBottom: verticalScale(27),
   },
-  loggedDrinksTitle: {
+  title: {
     color: Colors.light.primary4,
     fontWeight: 600,
   },
-  loggedDrinksList: {
+  list: {
     flexGrow: 0,
   },
-  loggedDrinksListContent: {
+  listContent: {
     flexDirection: 'row',
     gap: scale(12),
   },
-  loggedDrinkItem: {
+  item: {
     alignItems: 'center',
     justifyContent: 'center',
     width: 80,
@@ -27,7 +26,7 @@ export const styles = StyleSheet.create({
     backgroundColor: withOpacity(Colors.light.black, 0.05),
     borderRadius: scale(6),
   },
-  drinkPhotoFull: {
+  photoFull: {
     width: '100%',
     height: '100%',
     alignItems: 'center',
@@ -35,44 +34,33 @@ export const styles = StyleSheet.create({
     borderRadius: scale(6),
     overflow: 'hidden',
   },
-  drinkPhotoImageStyle: {
+  photoImageStyle: {
     borderRadius: scale(6),
   },
-  drinkPhotoContent: {
+  photoContent: {
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
     height: '100%',
   },
-  loggedDrinkItemText: {
+  itemText: {
     fontSize: scale(12),
     color: Colors.light.primary4,
   },
-  loggedDrinkItemTextWhite: {
+  itemTextWhite: {
     fontSize: scale(12),
     color: Colors.light.white,
   },
-  emptyStateItem: {
+  emptyItem: {
     width: 80,
     height: 100,
     backgroundColor: withOpacity(Colors.light.black, 0.05),
     borderRadius: scale(6),
   },
-  weekDaysContainer: {
-    width: '100%',
-    marginBottom: verticalScale(27),
-  },
-  remember: {
-    textAlign: 'center',
-    color: Colors.light.primary4,
-    marginBottom: verticalScale(27),
-  },
-  countersContainer: {
-    flexDirection: 'row',
-    gap: scale(13),
-    marginBottom: verticalScale(27),
-  },
-  counter: {
+})
+
+const counter = StyleSheet.create({
+  root: {
     flex: 1,
     alignItems: 'flex-start',
     paddingVertical: verticalScale(16),
@@ -81,26 +69,26 @@ export const styles = StyleSheet.create({
     gap: scale(9),
     borderRadius: scale(6),
   },
-  counterText: {
+  text: {
     fontWeight: 400,
     color: withOpacity(Colors.light.black, 0.5),
   },
-  counterValueContainer: {
+  valueContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: scale(10),
   },
-  counterValue: {
+  value: {
     fontSize: scale(32),
     fontWeight: '700',
     lineHeight: scale(38),
     color: Colors.light.primary4,
   },
-  extraCounterValue: {
+  extraValue: {
     color: Colors.light.error2,
   },
-  counterIcon: {
+  icon: {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: withOpacity(Colors.light.black, 0.05),
@@ -108,22 +96,37 @@ export const styles = StyleSheet.create({
     paddingVertical: scale(10),
     borderRadius: '50%',
   },
-  counterButton: {
+  button: {
     height: 27,
     borderRadius: 36,
     width: '100%',
   },
-  proTipContainer: {
+  waterButtonsContainer: {
+    flexDirection: 'row',
+    gap: scale(10),
+  },
+  waterButton: {
+    flex: 1,
+    height: 27,
+    borderRadius: 36,
+  },
+  counterButtonsContainer: {
+    flexDirection: 'row',
+    gap: scale(15),
+  },
+})
+
+const proTip = StyleSheet.create({
+  container: {
     alignSelf: 'center',
-    width: 327,
+    width: 303,
     alignItems: 'center',
     borderRadius: scale(12),
     overflow: 'hidden',
     paddingVertical: verticalScale(11),
-    paddingHorizontal: scale(30),
-    marginBottom: verticalScale(27),
+    paddingHorizontal: scale(15),
   },
-  proTipOverlay: {
+  overlay: {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -131,25 +134,27 @@ export const styles = StyleSheet.create({
     bottom: 0,
     backgroundColor: withOpacity(Colors.light.primary, 0.8),
   },
-  proTipTitle: {
+  title: {
     textAlign: 'center',
     color: Colors.light.white,
   },
-  proTipDescription: {
+  description: {
     textAlign: 'center',
     color: Colors.light.white,
     fontWeight: '400',
   },
-  proTipDescriptionBold: {
+  descriptionBold: {
     fontWeight: '700',
     color: Colors.light.white,
   },
-  infoContainer: {
+})
+
+const sessionInfo = StyleSheet.create({
+  container: {
     flexDirection: 'row',
     gap: scale(10),
-    marginBottom: verticalScale(27),
   },
-  infoItem: {
+  item: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
@@ -160,23 +165,56 @@ export const styles = StyleSheet.create({
     gap: scale(8),
     borderRadius: scale(6),
   },
-  infoItemTitle: {
-    fontSize: scale(11),
+  itemTitle: {
     color: withOpacity(Colors.light.black, 0.5),
   },
-  infoItemDescription: {
+  itemDescription: {
     color: Colors.light.black,
     fontWeight: '400',
   },
-  infoItemContent: {
+  itemContent: {
     flex: 1,
+  },
+})
+
+const screen = StyleSheet.create({
+  screenContentContainer: {
+    gap: verticalScale(20),
+  },
+  hypnosisCheckInContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: scale(10),
+    paddingVertical: verticalScale(10),
+    backgroundColor: withOpacity(Colors.light.white, 0.5),
+    borderRadius: scale(8),
+  },
+  hypnosisCheckInIconContainer: {
+    width: 20,
+    height: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: '50%',
+    backgroundColor: withOpacity(Colors.light.primary4, 0.1),
+  },
+  hypnosisCheckInText: {
+    fontWeight: 400,
+    color: Colors.light.primary4,
+  },
+  remember: {
+    textAlign: 'center',
+    color: Colors.light.primary4,
+  },
+  countersContainer: {
+    flexDirection: 'row',
+    gap: scale(13),
   },
   buttonsContainer: {
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: scale(21),
-    marginBottom: verticalScale(27),
   },
   button: {
     width: '45%',
@@ -195,6 +233,14 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     color: Colors.light.primary4,
   },
+  modalWarningIconContainer: {
+    alignItems: 'center',
+    gap: scale(5),
+  },
+  modalWarningTitle: {
+    textAlign: 'center',
+    color: Colors.light.error2,
+  },
   modalText: {
     fontWeight: 400,
     textAlign: 'center',
@@ -204,7 +250,46 @@ export const styles = StyleSheet.create({
     color: Colors.light.primary4,
   },
   modalButton: {
-    marginTop: verticalScale(20),
     alignSelf: 'center',
   },
+  waterLogSuccessContent: {
+    alignItems: 'center',
+    gap: verticalScale(20),
+  },
+  waterLogSuccessIconCircle: {
+    width: scale(90),
+    height: scale(90),
+    borderRadius: '50%',
+    backgroundColor: withOpacity(Colors.light.black, 0.05),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  waterLogSuccessTitle: {
+    textAlign: 'center',
+    color: Colors.light.primary4,
+  },
+  waterLogSuccessDescription: {
+    fontWeight: 400,
+    textAlign: 'center',
+    color: Colors.light.primary4,
+  },
+  medalContainer: {
+    position: 'relative',
+  },
+  confettiContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    transform: [{ scale: 8 }],
+  },
 })
+
+export const styles = {
+  loggedDrinks,
+  counter,
+  proTip,
+  sessionInfo,
+  screen,
+}

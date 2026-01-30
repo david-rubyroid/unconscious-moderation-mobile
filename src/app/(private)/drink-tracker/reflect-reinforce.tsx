@@ -217,12 +217,11 @@ function ReflectReinforceScreen() {
   }
   const navigateToPostSessionHypnosis = () => {
     push({
-      pathname: '/drink-tracker/hypnosis',
+      pathname: '/drink-tracker/hypnosis-post-session',
       params: {
         sessionId,
         reflectionId: sessionReflection?.id,
         title: t('post-session-hypnosis'),
-        postSessionHypnosis: 1, // 1 = true, 0 = false
       },
     })
   }

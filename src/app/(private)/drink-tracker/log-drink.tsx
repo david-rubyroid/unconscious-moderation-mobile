@@ -129,8 +129,8 @@ const styles = StyleSheet.create({
 function LogDrinkScreen() {
   const { push, back } = useRouter()
 
-  const [selectedDrink, setSelectedDrink] = useState<DrinkType>('wine')
   const [drinkCost, setDrinkCost] = useState<string>('')
+  const [selectedDrink, setSelectedDrink] = useState<DrinkType>('wine')
   const [selectedPhotoUri, setSelectedPhotoUri] = useState<string | null>(null)
 
   const { t } = useTranslation('log-drink')
@@ -168,7 +168,10 @@ function LogDrinkScreen() {
     })
 
     // Upload to S3
-    await uploadToS3(uploadUrlResponse.uploadUrl, photoUri)
+    const uploadResult = await uploadToS3(uploadUrlResponse.uploadUrl, photoUri)
+    if (!uploadResult.success) {
+      throw new Error('Failed to upload photo to S3')
+    }
 
     // Save photo metadata
     await addDrinkPhoto({
@@ -333,11 +336,15 @@ function LogDrinkScreen() {
     )
   }
 
-  // Load photo from SecureStore when screen comes into focus (after returning from photo-record)
+  // Load photo from SecureStore when screen comes
+  // into focus (after returning from photo-record)
   useFocusEffect(
     useCallback(() => {
       const loadPhotoFromStorage = async () => {
-        const storedPhotoUri = await secureStore.get(SecureStoreKey.SELECTED_DRINK_LOG_PHOTO_URI)
+        const storedPhotoUri = await secureStore.get(
+          SecureStoreKey.SELECTED_DRINK_LOG_PHOTO_URI,
+        )
+
         if (storedPhotoUri && storedPhotoUri !== selectedPhotoUri) {
           setSelectedPhotoUri(storedPhotoUri)
 

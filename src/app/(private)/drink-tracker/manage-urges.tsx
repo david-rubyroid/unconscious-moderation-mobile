@@ -6,6 +6,7 @@ import manageUrgesBackgroundImage from '@/assets/images/manage-urges.jpg'
 
 import { Button, Header, ScreenContainer, ThemedText } from '@/components'
 
+import { HYPNOSIS_LINKS } from '@/constants/hypnosis-links'
 import { Colors, withOpacity } from '@/constants/theme'
 import { scale, verticalScale } from '@/utils/responsive'
 
@@ -95,8 +96,11 @@ function ManageUrgesScreen() {
   }
   const navigateToSelfHypnosis = () => {
     push({
-      pathname: '/drink-tracker/hypnosis',
-      params: { sessionId },
+      pathname: '/drink-tracker/hypnosis-self',
+      params: {
+        sessionId,
+        hypnosisLink: HYPNOSIS_LINKS.selfHypnosis,
+      },
     })
   }
 

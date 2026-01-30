@@ -3,6 +3,13 @@ import type { DrinkType } from '@/api/queries/drink-session/dto'
 export interface LogDrinkRequest {
   drinkType: DrinkType
   cost: number
+  photoS3Key?: string
+}
+
+export interface UpdateDrinkLogRequest {
+  drinkType?: DrinkType
+  cost?: number
+  photoS3Key?: string
 }
 
 export interface DrinkLogPhoto {
