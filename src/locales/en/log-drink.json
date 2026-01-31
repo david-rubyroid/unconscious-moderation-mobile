@@ -23,5 +23,13 @@
   "photo-upload-error": "Failed to upload photo",
 
   "edit-drink-title": "Edit Drink",
-  "save": "Save"
+  "save": "Save",
+
+  "cancel": "Cancel",
+  "delete-drink": "Delete",
+  "delete-drink-title": "Delete drink",
+  "delete-drink-message": "Are you sure you want to delete this drink? This action cannot be undone.",
+  "delete-drink-success": "Drink deleted",
+  "delete-drink-success-message": "The drink has been successfully deleted.",
+  "delete-drink-error": "Failed to delete drink"
 }

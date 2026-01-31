@@ -83,3 +83,33 @@ export function useUpdateDrinkLog(
     },
   })
 }
+
+export function useDeleteDrinkLog(
+  sessionId?: number,
+  drinkId?: number,
+  options?: MutationOptions<void, Error, void>,
+) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    ...options,
+    mutationFn: createMutationFn<void, void>(
+      'delete',
+      `drink-tracker/sessions/${sessionId}/drinks/${drinkId}`,
+      { skipBody: true },
+    ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['drink-tracker', 'sessions', sessionId, 'drinks'],
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['drink-tracker', 'sessions', sessionId, 'drinks', drinkId],
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['drink-tracker', 'sessions', sessionId],
+      })
+      queryClient.invalidateQueries({ queryKey: ['drink-tracker', 'sessions'] })
+      queryClient.invalidateQueries({ queryKey: ['drink-tracker', 'current-session'] })
+    },
+  })
+}

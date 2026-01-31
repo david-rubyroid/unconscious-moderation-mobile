@@ -4,10 +4,17 @@ import type { DrinkType } from '@/api/queries/drink-session/dto'
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ActivityIndicator, Image, Pressable, StyleSheet, View } from 'react-native'
+import {
+  ActivityIndicator,
+  Alert,
+  Image,
+  Pressable,
+  StyleSheet,
+  View,
+} from 'react-native'
 import Toast from 'react-native-toast-message'
 
-import { useGetDrinkLog, useUpdateDrinkLog } from '@/api/queries/drink-log'
+import { useDeleteDrinkLog, useGetDrinkLog, useUpdateDrinkLog } from '@/api/queries/drink-log'
 import { useGetUploadUrl } from '@/api/queries/drink-log/photo'
 
 import StartIcon from '@/assets/icons/start'
@@ -23,9 +30,12 @@ import {
 } from '@/components'
 
 import { Colors, withOpacity } from '@/constants/theme'
+
+import { getErrorMessage } from '@/utils/error-handler'
 import { scale, verticalScale } from '@/utils/responsive'
 import { uploadToS3 } from '@/utils/s3-upload'
 import { secureStore, SecureStoreKey } from '@/utils/secureStore'
+import { showErrorToast, showSuccessToast } from '@/utils/toast'
 
 const styles = StyleSheet.create({
   myDrinksText: {
@@ -83,6 +93,13 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 'auto',
     alignItems: 'center',
+    gap: verticalScale(16),
+  },
+  deleteButton: {
+    backgroundColor: Colors.light.error2,
+  },
+  deleteButtonText: {
+    color: withOpacity(Colors.light.black, 0.5),
   },
   emptyStateContainer: {
     flex: 1,
@@ -121,6 +138,41 @@ function EditDrinkForm({
     sessionId ?? 0,
     drinkId ?? 0,
   )
+
+  const { mutateAsync: deleteDrinkLog, isPending: isDeleting } = useDeleteDrinkLog(
+    sessionId,
+    drinkId,
+  )
+
+  const handleDelete = () => {
+    if (sessionId == null || drinkId == null) {
+      return
+    }
+    Alert.alert(
+      t('delete-drink-title'),
+      t('delete-drink-message'),
+      [
+        { text: t('cancel'), style: 'cancel' },
+        {
+          text: t('delete-drink'),
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await deleteDrinkLog()
+              showSuccessToast(
+                t('delete-drink-success'),
+                t('delete-drink-success-message'),
+              )
+              back()
+            }
+            catch (error) {
+              showErrorToast(t('delete-drink-error'), getErrorMessage(error))
+            }
+          },
+        },
+      ],
+    )
+  }
 
   const handleSave = async () => {
     if (sessionId == null || drinkId == null) {
@@ -261,6 +313,15 @@ function EditDrinkForm({
           onPress={handleSave}
           loading={isUpdating || isGettingUploadUrl}
           disabled={!drinkCost || isUpdating || isGettingUploadUrl}
+        />
+
+        <Button
+          style={styles.deleteButton}
+          onPress={handleDelete}
+          disabled={isDeleting}
+          loading={isDeleting}
+          title={t('delete-drink')}
+          variant="secondary"
         />
       </View>
     </>
