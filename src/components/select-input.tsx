@@ -1,6 +1,6 @@
 import type { StyleProp } from 'react-native'
 
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
 
 import Check from '@/assets/icons/check'
@@ -87,6 +87,42 @@ const styles = StyleSheet.create({
   },
 })
 
+const ITEM_HEIGHT = verticalScale(56) + 1
+
+interface SelectOptionItemProps {
+  item: SelectOption
+  isSelected: boolean
+  isLast: boolean
+  onSelect: (_option: SelectOption) => void
+}
+
+const SelectOptionItem = memo(
+  ({ item, isSelected, isLast, onSelect }: SelectOptionItemProps) => (
+    <TouchableOpacity
+      activeOpacity={0.7}
+      style={[styles.optionItem, isLast && styles.lastOption]}
+      onPress={() => onSelect(item)}
+    >
+      <View style={styles.optionContent}>
+        <ThemedText
+          style={[styles.optionText, isSelected && styles.optionTextSelected]}
+        >
+          {item.label}
+        </ThemedText>
+      </View>
+      {isSelected && (
+        <View style={styles.checkIcon}>
+          <Check />
+        </View>
+      )}
+    </TouchableOpacity>
+  ),
+  (prevProps, nextProps) =>
+    prevProps.item.value === nextProps.item.value
+    && prevProps.isSelected === nextProps.isSelected
+    && prevProps.isLast === nextProps.isLast,
+)
+
 function SelectInput({
   options,
   value,
@@ -138,36 +174,22 @@ function SelectInput({
         <FlatList
           data={options}
           keyExtractor={item => item.value}
+          extraData={value}
+          getItemLayout={(_data, index) => ({
+            length: ITEM_HEIGHT,
+            offset: ITEM_HEIGHT * index,
+            index,
+          })}
+          initialNumToRender={10}
           contentContainerStyle={styles.optionsList}
-          renderItem={({ item, index }) => {
-            const isSelected = item.value === value
-            return (
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={[
-                  styles.optionItem,
-                  index === options.length - 1 && styles.lastOption,
-                ]}
-                onPress={() => handleSelect(item)}
-              >
-                <View style={styles.optionContent}>
-                  <ThemedText
-                    style={[
-                      styles.optionText,
-                      isSelected && styles.optionTextSelected,
-                    ]}
-                  >
-                    {item.label}
-                  </ThemedText>
-                </View>
-                {isSelected && (
-                  <View style={styles.checkIcon}>
-                    <Check />
-                  </View>
-                )}
-              </TouchableOpacity>
-            )
-          }}
+          renderItem={({ item, index }) => (
+            <SelectOptionItem
+              item={item}
+              isSelected={item.value === value}
+              isLast={index === options.length - 1}
+              onSelect={handleSelect}
+            />
+          )}
         />
       </BottomSheetPopup>
 

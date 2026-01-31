@@ -1,4 +1,5 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
+import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FlatList, ImageBackground, StyleSheet, View } from 'react-native'
 
@@ -58,6 +59,24 @@ const styles = StyleSheet.create({
   },
 })
 
+type ContentEntry = [string, { title?: string, description: string }]
+
+interface ReadingContentItemProps {
+  item: ContentEntry
+}
+
+const ReadingContentItem = memo(({ item }: ReadingContentItemProps) => (
+  <View style={styles.contentItem}>
+    {item[1].title && (
+      <ThemedText style={styles.contentItemTitle} type="preSubtitle">
+        {item[1].title}
+      </ThemedText>
+    )}
+
+    <ThemedText type="default">{item[1].description}</ThemedText>
+  </View>
+))
+
 function ReadingScreen() {
   const { back } = useRouter()
   const { t } = useTranslation('reading')
@@ -81,6 +100,7 @@ function ReadingScreen() {
     <FlatList
       data={contentItems}
       keyExtractor={item => item[0]}
+      initialNumToRender={10}
       contentContainerStyle={styles.flatListContentContainer}
       contentInsetAdjustmentBehavior="automatic"
       ListHeaderComponent={(
@@ -104,12 +124,7 @@ function ReadingScreen() {
           style={styles.button}
         />
       )}
-      renderItem={({ item }) => (
-        <View style={styles.contentItem}>
-          {item[1].title && <ThemedText style={styles.contentItemTitle} type="preSubtitle">{item[1].title}</ThemedText>}
-          <ThemedText type="default">{item[1].description}</ThemedText>
-        </View>
-      )}
+      renderItem={({ item }) => <ReadingContentItem item={item} />}
     />
   )
 }
