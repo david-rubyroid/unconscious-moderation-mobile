@@ -28,7 +28,7 @@ interface HypnosisPlayerProps {
   onDone: () => void
 }
 
-export function HypnosisPlayer({
+function HypnosisPlayer({
   title,
   audioUri,
   onDone,
@@ -53,3 +53,5 @@ export function HypnosisPlayer({
     </ScreenContainer>
   )
 }
+
+export default HypnosisPlayer

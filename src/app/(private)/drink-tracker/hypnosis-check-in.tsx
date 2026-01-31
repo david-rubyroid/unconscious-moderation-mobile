@@ -1,10 +1,11 @@
 import type { HypnosisCheckInType } from '@/utils/hypnosis-checkin-storage'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 
-import { HYPNOSIS_LINKS } from '@/constants/hypnosis-links'
-import { saveHypnosisCheckIn } from '@/utils/hypnosis-checkin-storage'
+import { HypnosisPlayer } from '@/components'
 
-import { HypnosisPlayer } from './components/hypnosis-player'
+import { HYPNOSIS_LINKS } from '@/constants/hypnosis-links'
+
+import { saveHypnosisCheckIn } from '@/utils/hypnosis-checkin-storage'
 
 function HypnosisCheckInScreen() {
   const { back } = useRouter()

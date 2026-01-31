@@ -2,9 +2,9 @@ import { useLocalSearchParams, useRouter } from 'expo-router'
 
 import { useUpdateDrinkSession } from '@/api/queries/drink-session'
 
-import { HYPNOSIS_LINKS } from '@/constants/hypnosis-links'
+import { HypnosisPlayer } from '@/components'
 
-import { HypnosisPlayer } from './components/hypnosis-player'
+import { HYPNOSIS_LINKS } from '@/constants/hypnosis-links'
 
 function HypnosisSelfScreen() {
   const { back } = useRouter()
