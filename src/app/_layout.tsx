@@ -25,6 +25,7 @@ import { initializeMixpanel, isMixpanelInitialized, trackScreenView } from '@/se
 import { initializeRevenueCat } from '@/services/revenuecat'
 
 import { logDebug, logError } from '@/utils/logger'
+import { preloadImages } from '@/utils/preload-assets'
 
 import '@/i18n/config'
 
@@ -64,6 +65,12 @@ function AppContent() {
     isFirstLaunch,
   } = useAuth()
   const pathname = usePathname()
+
+  useEffect(() => {
+    preloadImages().catch((err) => {
+      logError('Failed to preload images', err)
+    })
+  }, [])
 
   useEffect(() => {
     if (isInitialized) {
