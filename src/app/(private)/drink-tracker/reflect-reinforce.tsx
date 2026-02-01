@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
 })
 
 function ReflectReinforceScreen() {
-  const { push, back } = useRouter()
+  const { push } = useRouter()
   const { t } = useTranslation('reflect-reinforce')
 
   const [reflectReinforce, setReflectReinforce] = useState('')
@@ -230,6 +230,12 @@ function ReflectReinforceScreen() {
         reflectionId: sessionReflection?.id,
         title: t('after-drinking-reflection'),
       },
+    })
+  }
+  const navigateToDrinkTrackerJournal = () => {
+    push({
+      pathname: '/drink-tracker/drink-tracker-journal',
+      params: { sessionId },
     })
   }
 
@@ -358,7 +364,11 @@ function ReflectReinforceScreen() {
         </Pressable>
       </View>
 
-      <Button title={t('done')} variant="secondary" onPress={back} />
+      <Button
+        title={t('done')}
+        variant="secondary"
+        onPress={navigateToDrinkTrackerJournal}
+      />
 
       <Modal
         visible={isModalVisible}

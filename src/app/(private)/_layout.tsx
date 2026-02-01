@@ -68,6 +68,7 @@ function ProtectedLayout() {
         <Stack.Screen name="drink-tracker/edit-drink" />
         <Stack.Screen name="drink-tracker/manage-urges" />
         <Stack.Screen name="drink-tracker/photo-record" />
+        <Stack.Screen name="drink-tracker/drink-tracker-journal" />
 
         <Stack.Screen name="free-drink-tracker/start-tracking" />
         <Stack.Screen name="free-drink-tracker/reset-tracking" />

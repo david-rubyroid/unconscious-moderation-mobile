@@ -17,6 +17,7 @@ interface CompletedSessionContentProps {
   dayName: string
   dayData: CalendarDayData
   isExceeded: boolean
+  navigateToJournal: () => void
 }
 
 const styles = StyleSheet.create({
@@ -68,12 +69,9 @@ export function CompletedSessionContent({
   dayName,
   dayData,
   isExceeded,
+  navigateToJournal,
 }: CompletedSessionContentProps) {
   const { t } = useTranslation('drink-tracker')
-
-  const navigateToJournal = () => {
-    // TODO: Implement journal view
-  }
 
   const dayNameStyle = isExceeded
     ? styles.dayNameExceeded

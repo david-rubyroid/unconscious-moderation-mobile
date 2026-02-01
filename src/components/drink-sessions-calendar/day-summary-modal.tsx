@@ -1,11 +1,12 @@
 import type { CalendarDayData } from '@/components/calendar/types'
 
+import { useRouter } from 'expo-router'
+
 import { StyleSheet, View } from 'react-native'
 
 import { useDaySummaryLogic } from '@/hooks/drink-sessions-calendar/use-day-summary-logic'
 
 import Modal from '../modal'
-
 import { AbstainedDayContent } from './day-summary/abstained-day-content'
 import { CompletedSessionContent } from './day-summary/completed-session-content'
 import { PlannedSessionContent } from './day-summary/planned-session-content'
@@ -29,7 +30,16 @@ function DaySummaryModal({
   dayData,
   onClose,
 }: DaySummaryModalProps) {
+  const { push } = useRouter()
   const logic = useDaySummaryLogic({ day, dayData, onClose })
+
+  const navigateToJournal = () => {
+    onClose()
+    push({
+      pathname: '/drink-tracker/drink-tracker-journal',
+      params: { sessionId: dayData?.id },
+    })
+  }
 
   if (!day) {
     return null
@@ -65,6 +75,7 @@ function DaySummaryModal({
             dayName={logic.dayName}
             dayData={dayData}
             isExceeded={logic.isExceeded}
+            navigateToJournal={navigateToJournal}
           />
         )}
       </View>
