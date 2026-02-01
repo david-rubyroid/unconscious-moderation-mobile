@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     backgroundColor: withOpacity(Colors.light.primary4, 0.8),
   },
   backgroundImageDescription: {
+    fontWeight: '500',
     color: Colors.light.white,
     textAlign: 'center',
   },

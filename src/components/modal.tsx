@@ -1,8 +1,12 @@
 import {
   ImageBackground,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
   Pressable,
   Modal as RNModal,
   StyleSheet,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native'
 
@@ -72,33 +76,38 @@ function Modal({
       animationType="fade"
       onRequestClose={handleClose}
     >
-      <View style={styles.overlay}>
+      <KeyboardAvoidingView
+        style={styles.overlay}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
         <Pressable style={StyleSheet.absoluteFill} onPress={handleClose} />
-        <Pressable onPress={e => e.stopPropagation()}>
-          <View
-            style={[
-              styles.modal,
-              !isGradient && styles.defaultBackground,
-              !isGradient && styles.modalWithPadding,
-              fullWidth && styles.fullWidth,
-            ]}
-          >
-            {isGradient
-              ? (
-                  <ImageBackground
-                    source={modalBgImage}
-                    style={styles.gradientContainer}
-                    resizeMode="cover"
-                  >
-                    {children}
-                  </ImageBackground>
-                )
-              : (
-                  children
-                )}
-          </View>
-        </Pressable>
-      </View>
+        <View
+          style={[
+            styles.modal,
+            !isGradient && styles.defaultBackground,
+            !isGradient && styles.modalWithPadding,
+            fullWidth && styles.fullWidth,
+          ]}
+        >
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View>
+              {isGradient
+                ? (
+                    <ImageBackground
+                      source={modalBgImage}
+                      style={styles.gradientContainer}
+                      resizeMode="cover"
+                    >
+                      {children}
+                    </ImageBackground>
+                  )
+                : (
+                    children
+                  )}
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+      </KeyboardAvoidingView>
     </RNModal>
   )
 }

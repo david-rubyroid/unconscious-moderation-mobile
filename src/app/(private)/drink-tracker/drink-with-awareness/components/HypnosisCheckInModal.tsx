@@ -11,14 +11,12 @@ interface HypnosisCheckInModalProps {
   visible: boolean
   onClose: () => void
   onConfirm: () => void
-  title?: string | null
 }
 
 export function HypnosisCheckInModal({
   visible,
   onClose,
   onConfirm,
-  title,
 }: HypnosisCheckInModalProps) {
   const { t } = useTranslation('drink-with-awareness')
 
@@ -30,7 +28,7 @@ export function HypnosisCheckInModal({
     >
       <View style={s.modalContent}>
         <ThemedText type="subtitle" style={s.modalTitle}>
-          {title ?? t('time-for-your-hypnosis')}
+          {t('time-for-your-hypnosis')}
         </ThemedText>
 
         <ThemedText type="default" style={s.modalText}>

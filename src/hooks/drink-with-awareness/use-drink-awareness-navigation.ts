@@ -23,8 +23,8 @@ interface UseDrinkAwarenessNavigationReturn {
     _checkInType?: HypnosisCheckInType | null,
     _hoursSinceFirstDrink?: number | null,
   ) => void
-  navigateToManageUrges: () => void
-  handleFinishDrinking: () => void
+  navigateToManageUrges: (_sessionId?: string | null) => void
+  handleFinishDrinking: (_sessionId?: string | null) => void
 }
 
 export function useDrinkAwarenessNavigation({

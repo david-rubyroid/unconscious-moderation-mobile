@@ -5,7 +5,7 @@ export type HypnosisCheckInType = '1Hour' | 'awareness' | 'grounding'
 export function getHypnosisCheckInForHour(hoursSinceFirstDrink: number): {
   type: HypnosisCheckInType
   link: string
-} | null {
+} {
   if (hoursSinceFirstDrink === 1) {
     return { type: '1Hour', link: HYPNOSIS_LINKS['1HourCheckIn'] }
   }

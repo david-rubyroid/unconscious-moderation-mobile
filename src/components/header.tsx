@@ -15,6 +15,7 @@ interface HeaderProps {
   route?: Href
   isReplace?: boolean
   whiteTitle?: boolean
+  marginBottom?: number
 }
 
 const styles = StyleSheet.create({
@@ -45,6 +46,7 @@ function Header({
   route,
   isReplace,
   whiteTitle = false,
+  marginBottom = 26,
 }: HeaderProps) {
   const { push, replace, back } = useRouter()
 
@@ -58,7 +60,7 @@ function Header({
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { marginBottom }]}>
       <Pressable
         onPress={handleBack}
         style={styles.backButton}

@@ -2,16 +2,23 @@
   "title": "Manage Urges",
 
   "remember": "Remember: \n \"{{mantra}}\" ",
-  "box-breathing": "Box Breathing",
-  "box-breathing-description": "3-minute breathing exercise to calm your nervous system and reduce the urge.",
 
+  "take-a-break": "<0>Grab some water</0>\nand give yourself a\nbreak. See how you\nfeel after.",
+  "why-20-min": "Why 20 min?",
+  "did-you-know": "Did you Know?",
+  "did-you-know-description": "Most cravings fade in about 20 minutes. A little space and hydration help your brain shift from automatic to intentional.",
+
+  "manage-urges-description": "You don't manage urges with \n willpower. You manage them with \n <0>awareness, pause, and choice.</0>",
+
+  "box-breathing": "Box Breathing",
+  "box-breathing-description": "A 3-minute breathing exercise to calm your nervous system and reduce the urge.",
   "self-hypnosis": "Self-Hypnosis",
   "self-hypnosis-description": "3-5 minute audio session to reinforce your intentions and engage your unconscious mind.",
-
   "quick-writing": "Quick Writing",
   "quick-writing-description": "A freestyle space to write everything you're feeling and let your thoughts flow onto the page.",
 
   "manage-urge-video": " Manage Urge Video",
 
+  "got-it": "Got it!",
   "done": "Done"
 }

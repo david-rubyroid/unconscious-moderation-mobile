@@ -194,15 +194,13 @@ function PlanAndPrepareScreen() {
     formState: { isValid },
   } = useForm<z.infer<typeof createDrinkSessionSchema>>({
     resolver: zodResolver(createDrinkSessionSchema),
-    mode: 'onChange',
-    reValidateMode: 'onChange',
     defaultValues: {
       currency: CURRENCY.USD,
     },
   })
 
   const handleSelectDrinkOther = (text: string) => {
-    trigger()
+    trigger('plannedStartTime')
 
     setSelectedDrinkOther(text)
 

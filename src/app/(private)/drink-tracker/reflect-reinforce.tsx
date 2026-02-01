@@ -12,15 +12,15 @@ import {
 import { useGetSessionDrinks } from '@/api/queries/drink-log'
 import { useGetDrinkSession } from '@/api/queries/drink-session'
 import { useGetSessionReflection, useUpdateReflection } from '@/api/queries/reflections'
-
 import { FEELINGS } from '@/api/queries/reflections/dto'
 
 import { useGetSessionWater } from '@/api/queries/water-log'
 
 import AlertIcon from '@/assets/icons/alert'
 
-import CheckCircleIcon from '@/assets/icons/check-circle'
+import CheckIcon from '@/assets/icons/check'
 import reflectReinforceImage from '@/assets/images/reflect-reinforce.jpg'
+
 import {
   Button,
   Header,
@@ -28,13 +28,22 @@ import {
   ScreenContainer,
   SelectInput,
   SessionMetrics,
-  TextInput,
   ThemedText,
 } from '@/components'
+
 import { Colors, withOpacity } from '@/constants/theme'
+
 import { scale, verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
+  postSessionHypnosisIconContainer: {
+    width: scale(20),
+    height: scale(20),
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: withOpacity(Colors.light.primary4, 0.1),
+    borderRadius: '50%',
+  },
   scrollView: {
     flex: 1,
   },
@@ -85,17 +94,19 @@ const styles = StyleSheet.create({
     backgroundColor: withOpacity(Colors.light.white, 0.5),
   },
   postSessionHypnosisText: {
+    fontWeight: '400',
     color: Colors.light.primary4,
+  },
+  modalContainer: {
+    gap: verticalScale(16),
   },
   modalTitle: {
     textAlign: 'center',
     color: Colors.light.primary4,
     fontWeight: '700',
-    marginBottom: verticalScale(16),
   },
   modalDescription: {
     color: Colors.light.primary4,
-    marginBottom: verticalScale(16),
     textAlign: 'center',
     fontWeight: '400',
   },
@@ -103,21 +114,17 @@ const styles = StyleSheet.create({
     color: Colors.light.primary4,
   },
   modalTextInput: {
-    minHeight: verticalScale(120),
-    backgroundColor: Colors.light.white,
-    borderWidth: 1,
-    borderColor: withOpacity(Colors.light.black, 0.1),
+    minHeight: verticalScale(250),
+    backgroundColor: withOpacity(Colors.light.white, 0.5),
     borderRadius: scale(8),
     paddingHorizontal: scale(12),
-    paddingVertical: verticalScale(12),
+    paddingVertical: verticalScale(10),
     color: Colors.light.black,
     textAlignVertical: 'top',
-    marginBottom: verticalScale(20),
   },
   rememberText: {
     textAlign: 'center',
     color: Colors.light.primary4,
-    marginBottom: verticalScale(24),
     fontWeight: '400',
   },
   modalRememberLabel: {
@@ -126,8 +133,8 @@ const styles = StyleSheet.create({
   modalRememberText: {
     textAlign: 'center',
   },
-  modalButtonContainer: {
-    alignItems: 'center',
+  button: {
+    alignSelf: 'center',
   },
   hydrationModalContainer: {
     alignItems: 'center',
@@ -171,7 +178,7 @@ function ReflectReinforceScreen() {
   // Format session end time
   const formatEndTime = () => {
     if (!drinkSession?.actualEndTime) {
-      return 'N/A*'
+      return 'N/A'
     }
 
     const endTime = new Date(drinkSession.actualEndTime)
@@ -180,7 +187,7 @@ function ReflectReinforceScreen() {
     const period = hours >= 12 ? 'PM' : 'AM'
     const displayHours = hours % 12 || 12
     const displayMinutes = minutes.toString().padStart(2, '0')
-    return `${displayHours}:${displayMinutes} ${period}*`
+    return `${displayHours}:${displayMinutes} ${period}`
   }
 
   const handleOpenModal = () => {
@@ -221,7 +228,7 @@ function ReflectReinforceScreen() {
       params: {
         sessionId,
         reflectionId: sessionReflection?.id,
-        title: t('post-session-hypnosis'),
+        title: t('after-drinking-reflection'),
       },
     })
   }
@@ -243,7 +250,7 @@ function ReflectReinforceScreen() {
 
   return (
     <ScreenContainer contentContainerStyle={styles.contentContainer}>
-      <Header title={t('title')} />
+      <Header marginBottom={verticalScale(20)} title={t('title')} />
 
       <ImageBackground
         source={reflectReinforceImage}
@@ -284,33 +291,61 @@ function ReflectReinforceScreen() {
 
       />
 
-      <Pressable onPress={handleOpenModal}>
-        <TextInput
-          pointerEvents="none"
-          style={styles.reflectReinforceInput}
-          placeholder={t('take-a-moment-to-reflect-on-your-experience')}
-          placeholderTextColor={withOpacity(Colors.light.black, 0.5)}
-          label={t('what-did-you-learn-from-last-night')}
-          value={sessionReflection?.learnings || reflectReinforce}
-          onChangeText={setReflectReinforce}
-          editable={false}
-        />
-      </Pressable>
-
       <View style={styles.postSessionHypnosisContainer}>
-        <Pressable style={styles.postSessionHypnosisButton} onPress={navigateToPostSessionHypnosis}>
-          {isPostSessionHypnosis && <CheckCircleIcon />}
+        <Pressable
+          style={styles.postSessionHypnosisButton}
+          onPress={handleOpenModal}
+        >
+          <View style={styles.postSessionHypnosisIconContainer}>
+            {sessionReflection?.learnings && (
+              <CheckIcon
+                height={7}
+                width={7}
+                color={Colors.light.black}
+              />
+            )}
+          </View>
 
           <ThemedText
             type="defaultSemiBold"
             style={styles.postSessionHypnosisText}
           >
-            {t('post-session-hypnosis')}
+            {t('what-did-you-learn-from-last-night')}
+          </ThemedText>
+        </Pressable>
+
+        <Pressable
+          style={styles.postSessionHypnosisButton}
+          onPress={navigateToPostSessionHypnosis}
+        >
+          <View style={styles.postSessionHypnosisIconContainer}>
+            {isPostSessionHypnosis && (
+              <CheckIcon
+                height={7}
+                width={7}
+                color={Colors.light.black}
+              />
+            )}
+          </View>
+
+          <ThemedText
+            type="defaultSemiBold"
+            style={styles.postSessionHypnosisText}
+          >
+            {t('after-drinking-reflection')}
           </ThemedText>
         </Pressable>
 
         <Pressable style={styles.postSessionHypnosisButton} onPress={handleOpenHydrationModal}>
-          {isHydrated && <CheckCircleIcon />}
+          <View style={styles.postSessionHypnosisIconContainer}>
+            {isHydrated && (
+              <CheckIcon
+                height={7}
+                width={6}
+                color={Colors.light.black}
+              />
+            )}
+          </View>
 
           <ThemedText
             type="defaultSemiBold"
@@ -325,39 +360,43 @@ function ReflectReinforceScreen() {
 
       <Button title={t('done')} variant="secondary" onPress={back} />
 
-      <Modal visible={isModalVisible} onClose={() => setIsModalVisible(false)}>
-        <ThemedText type="defaultSemiBold" style={styles.modalTitle}>
-          {t('what-did-you-learn-from-last-night')}
-        </ThemedText>
+      <Modal
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <ThemedText type="defaultSemiBold" style={styles.modalTitle}>
+            {t('what-did-you-learn-from-last-night')}
+          </ThemedText>
 
-        <ThemedText type="default" style={styles.modalDescription}>
-          {t('what-went-well-what-and-what-felt-right-or-not')}
-        </ThemedText>
+          <ThemedText type="default" style={styles.modalDescription}>
+            {t('what-went-well-what-and-what-felt-right-or-not')}
+          </ThemedText>
 
-        <View>
-          <RNTextInput
-            style={styles.modalTextInput}
-            numberOfLines={4}
-            placeholder="Type here.."
-            placeholderTextColor={withOpacity(Colors.light.black, 0.5)}
-            value={modalText}
-            onChangeText={setModalText}
-            multiline
-          />
-        </View>
+          <View>
+            <RNTextInput
+              style={styles.modalTextInput}
+              numberOfLines={10}
+              placeholder="Type here.."
+              placeholderTextColor={withOpacity(Colors.light.black, 0.5)}
+              value={modalText}
+              onChangeText={setModalText}
+              multiline
+            />
+          </View>
 
-        <ThemedText type="defaultSemiBold" style={styles.rememberText}>
-          <Trans
-            i18nKey="reflect-reinforce:remember-when-you-mess-up"
-            components={[
-              <ThemedText key="0" type="defaultSemiBold" style={styles.modalRememberLabel} />,
-            ]}
-          />
-        </ThemedText>
+          <ThemedText type="defaultSemiBold" style={styles.rememberText}>
+            <Trans
+              i18nKey="reflect-reinforce:remember-when-you-mess-up"
+              components={[
+                <ThemedText key="0" type="defaultSemiBold" style={styles.modalRememberLabel} />,
+              ]}
+            />
+          </ThemedText>
 
-        <View style={styles.modalButtonContainer}>
           <Button
-            title="Save"
+            style={styles.button}
+            title={t('save')}
             variant="primary"
             onPress={handleSaveModal}
             disabled={isUpdating || !sessionReflection?.id}
@@ -365,8 +404,13 @@ function ReflectReinforceScreen() {
         </View>
       </Modal>
 
-      <Modal visible={isHydrationModalVisible} onClose={() => setIsHydrationModalVisible(false)}>
+      <Modal
+        visible={isHydrationModalVisible}
+        onClose={() => setIsHydrationModalVisible(false)}
+      >
         <View style={styles.hydrationModalContainer}>
+          <AlertIcon width={50} height={50} />
+
           <ThemedText type="defaultSemiBold" style={styles.modalDescription}>
             <Trans
               i18nKey="reflect-reinforce:stay-hydrated-description"

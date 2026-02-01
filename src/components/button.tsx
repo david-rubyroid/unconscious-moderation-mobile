@@ -1,4 +1,9 @@
-import type { PressableProps, PressableStateCallbackType } from 'react-native'
+import type {
+  PressableProps,
+  PressableStateCallbackType,
+  StyleProp,
+  TextStyle,
+} from 'react-native'
 
 import { openBrowserAsync, WebBrowserPresentationStyle } from 'expo-web-browser'
 import { ActivityIndicator, Pressable, StyleSheet, Text } from 'react-native'
@@ -17,6 +22,7 @@ interface ButtonProps extends Omit<PressableProps, 'onPress'> {
   as?: 'button' | 'external-link'
   href?: string
   onPress?: PressableProps['onPress']
+  textStyle?: StyleProp<TextStyle>
 }
 
 const styles = StyleSheet.create({
@@ -82,6 +88,7 @@ function Button({
   disabled = false,
   fullWidth = false,
   style,
+  textStyle,
   as = 'button',
   href,
   onPress,
@@ -99,6 +106,7 @@ function Button({
               styles.text,
               styles[`${variant}Text` as keyof typeof styles],
               disabled && styles.disabledText,
+              textStyle,
             ]}
             >
               {title}

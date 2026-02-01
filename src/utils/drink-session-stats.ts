@@ -40,7 +40,7 @@ export function getDrinkSessionStats({
 
   const hoursSinceFirstDrink
     = !sessionDrinks || sessionDrinks.length === 0
-      ? 0
+      ? 1
       : Math.max(
           1,
           Math.floor(

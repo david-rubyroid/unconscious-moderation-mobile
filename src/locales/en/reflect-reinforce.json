@@ -9,15 +9,16 @@
   "how-are-you-feeling": "How are you feeling?",
   "what-did-you-learn-from-last-night": "What did you learn from last night?",
   "take-a-moment-to-reflect-on-your-experience": "Take a moment to reflect on your experience.",
-  "post-session-hypnosis": "Post-Session Hypnosis",
   "stay-hydrated": "Stay Hydrated",
   "done": "Done",
   "select-your-feeling": "Select your feeling",
+  "after-drinking-reflection": "After-Drinking Reflection",
 
   "what-did-you-learn-from-last-night-description": "What did you learn from last night?",
-  "what-went-well-what-and-what-felt-right-or-not": "What went well, what didn't, and what felt right or not?. Take a moment to reflect on what last night showed you the choices you made, how you felt, and what you discovered.",
+  "what-went-well-what-and-what-felt-right-or-not": "What went well, what didn't, and what felt right or not?.\n\n Take a moment to reflect on what last \n night showed you the choices you \n made, how you felt, and what you \n discovered.",
   "remember-when-you-mess-up": "<0>Remember:</0> When you mess up, those moments are golden opportunities to learn, adjust, and grow.",
 
   "stay-hydrated-description": "Research shows that <0>alcohol dehydrates</0> your body by causing you to lose more water than you consume. Drinking water after alcohol <1>helps restore hydration</1> and reduce hangover symptoms.",
-  "got-it": "Got it!"
+  "got-it": "Got it!",
+  "save": "Save"
 }

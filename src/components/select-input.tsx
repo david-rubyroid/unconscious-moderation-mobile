@@ -89,6 +89,11 @@ const styles = StyleSheet.create({
 
 const ITEM_HEIGHT = verticalScale(56) + 1
 
+const DEFAULT_GRADIENT_COLORS: readonly [string, string] = [
+  Colors.light.tertiaryBackground,
+  Colors.light.tertiaryBackground,
+]
+
 interface SelectOptionItemProps {
   item: SelectOption
   isSelected: boolean
@@ -131,7 +136,7 @@ function SelectInput({
   style,
   placeholder,
   placeholderTextColor,
-  gradientColors,
+  gradientColors = DEFAULT_GRADIENT_COLORS,
   error,
 }: SelectInputProps) {
   const [showPicker, setShowPicker] = useState(false)

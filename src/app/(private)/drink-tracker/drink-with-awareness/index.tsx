@@ -171,14 +171,12 @@ function DrinkWithAwarenessScreen() {
           currencySymbol={currencySymbol}
         />
 
-        {actualDrinksCount >= 1 && hypnosisCheckIn && (
-          <HypnosisCheckInBanner
-            sessionId={Number(sessionId)}
-            hoursSinceFirstDrink={hoursSinceFirstDrink}
-            hypnosisCheckIn={hypnosisCheckIn}
-            onPress={modals.openHypnosisModal}
-          />
-        )}
+        <HypnosisCheckInBanner
+          sessionId={Number(sessionId)}
+          hoursSinceFirstDrink={hoursSinceFirstDrink}
+          hypnosisCheckIn={hypnosisCheckIn}
+          onPress={modals.openHypnosisModal}
+        />
 
         <View style={s.buttonsContainer}>
           <Button
@@ -211,7 +209,6 @@ function DrinkWithAwarenessScreen() {
         visible={modals.isHypnosisModalVisible}
         onClose={modals.closeHypnosisModal}
         onConfirm={handleHypnosisConfirm}
-        title={modals.hypnosisCheckInTitle}
       />
 
       <FinishDrinkingModal

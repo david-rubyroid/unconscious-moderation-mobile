@@ -80,7 +80,7 @@ function SessionMetrics({
             {t('drinks')}
           </ThemedText>
           <ThemedText type="defaultSemiBold" style={styles.metricValue}>
-            {`${actualDrinksCount}/${maxDrinksCount}*`}
+            {`${actualDrinksCount}/${maxDrinksCount}`}
           </ThemedText>
         </View>
       </View>
@@ -95,7 +95,7 @@ function SessionMetrics({
             {t('water')}
           </ThemedText>
           <ThemedText type="defaultSemiBold" style={styles.metricValue}>
-            {`${totalWaterCups}*`}
+            {`${totalWaterCups}`}
           </ThemedText>
         </View>
       </View>
@@ -110,7 +110,7 @@ function SessionMetrics({
             {t('const')}
           </ThemedText>
           <ThemedText type="defaultSemiBold" style={styles.metricValue}>
-            {`$${actualSpent.toFixed(2)}*`}
+            {`$${actualSpent.toFixed(2)}`}
           </ThemedText>
         </View>
       </View>
@@ -125,6 +125,7 @@ function SessionMetrics({
             <ThemedText type="default" style={styles.metricLabel}>
               {t('session-end-time')}
             </ThemedText>
+
             <ThemedText type="defaultSemiBold" style={styles.metricValue}>
               {sessionEndTime}
             </ThemedText>
