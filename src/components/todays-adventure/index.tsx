@@ -8,7 +8,7 @@ import { StyleSheet, View } from 'react-native'
 import { useGetDayDetails, useMarkDayCompletionModalShown } from '@/api/queries/daily-activities'
 import { useGetSubscription } from '@/api/queries/subscriptions'
 
-import hypnotherapyImage from '@/assets/images/today-adventure/hypnotherapy.png'
+import hypnotherapyImage from '@/assets/images/today-adventure/hypnotherapy.jpg'
 import journalingImage from '@/assets/images/today-adventure/journaling.jpg'
 import movementImage from '@/assets/images/today-adventure/movement.jpg'
 import readingImage from '@/assets/images/today-adventure/reading.jpg'

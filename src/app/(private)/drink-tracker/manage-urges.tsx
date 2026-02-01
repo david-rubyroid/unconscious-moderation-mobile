@@ -7,11 +7,11 @@ import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native'
 import { useGetDrinkSession } from '@/api/queries/drink-session'
 
 import AlertIcon from '@/assets/icons/alert'
-import boxBreathingImage from '@/assets/images/manage-urge/box-breathing.png'
+import boxBreathingImage from '@/assets/images/manage-urge/box-breathing.jpg'
 import quickWritingImage from '@/assets/images/manage-urge/quick-writing.jpg'
 import selfHypnosisImage from '@/assets/images/manage-urge/self-hypnosis.jpg'
 
-import manageUrgeVideoImage from '@/assets/images/manage-urge/urge.png'
+import manageUrgeVideoImage from '@/assets/images/manage-urge/urge.jpg'
 
 import {
   Button,
