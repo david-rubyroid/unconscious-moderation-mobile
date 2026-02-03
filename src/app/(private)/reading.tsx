@@ -1,7 +1,7 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FlatList, ImageBackground, StyleSheet, View } from 'react-native'
+import { FlatList, ImageBackground, Pressable, StyleSheet, View } from 'react-native'
 
 import { useCompleteActivity } from '@/api/queries/daily-activities'
 
@@ -34,12 +34,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingHorizontal: scale(37),
   },
+  header: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: scale(37),
+  },
   minutesRead: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: scale(8),
-    marginBottom: verticalScale(18),
   },
   minutesReadText: {
     color: Colors.light.primary4,
@@ -57,15 +62,26 @@ const styles = StyleSheet.create({
   button: {
     alignSelf: 'center',
   },
+  textSizeButtons: {
+    flexDirection: 'row',
+    gap: scale(15),
+  },
+  textSizeButtonText: {
+    color: Colors.light.primary4,
+  },
 })
 
 type ContentEntry = [string, { title?: string, description: string }]
 
 interface ReadingContentItemProps {
   item: ContentEntry
+  textType: 'default' | 'preSubtitle'
 }
 
-const ReadingContentItem = memo(({ item }: ReadingContentItemProps) => (
+const ReadingContentItem = memo(({
+  item,
+  textType,
+}: ReadingContentItemProps) => (
   <View style={styles.contentItem}>
     {item[1].title && (
       <ThemedText style={styles.contentItemTitle} type="preSubtitle">
@@ -73,7 +89,7 @@ const ReadingContentItem = memo(({ item }: ReadingContentItemProps) => (
       </ThemedText>
     )}
 
-    <ThemedText type="default">{item[1].description}</ThemedText>
+    <ThemedText type={textType}>{item[1].description}</ThemedText>
   </View>
 ))
 
@@ -82,11 +98,16 @@ function ReadingScreen() {
   const { t } = useTranslation('reading')
   const { day } = useLocalSearchParams()
 
+  const [textType, setTextType] = useState<'default' | 'preSubtitle'>('default')
+
   const { mutateAsync: completeActivity } = useCompleteActivity()
 
   const contentItems = Object.entries(t(`day-${day}.content`, { returnObjects: true }))
   const readingImage = getReadingImage(day)
 
+  const handleSetTextType = (type: 'default' | 'preSubtitle') => {
+    setTextType(type)
+  }
   const handleCompleteActivity = async () => {
     await completeActivity({
       day: Number(day),
@@ -111,9 +132,31 @@ function ReadingScreen() {
             <ThemedText style={styles.title} type="subtitle">{t(`day-${day}.title`)}</ThemedText>
           </ImageBackground>
 
-          <View style={styles.minutesRead}>
-            <ClockIcon color={Colors.light.primary4} />
-            <ThemedText style={styles.minutesReadText} type="defaultSemiBold">{t('minutes-read', { minutes: 4 })}</ThemedText>
+          <View style={styles.header}>
+            <View style={styles.minutesRead}>
+              <ClockIcon color={Colors.light.primary4} />
+              <ThemedText style={styles.minutesReadText} type="defaultSemiBold">{t('minutes-read', { minutes: 4 })}</ThemedText>
+            </View>
+
+            <View style={styles.textSizeButtons}>
+              <Pressable onPress={() => handleSetTextType('preSubtitle')}>
+                <ThemedText
+                  type="preSubtitle"
+                  style={styles.textSizeButtonText}
+                >
+                  A
+                </ThemedText>
+              </Pressable>
+
+              <Pressable onPress={() => handleSetTextType('default')}>
+                <ThemedText
+                  type="preSubtitle"
+                  style={styles.textSizeButtonText}
+                >
+                  a
+                </ThemedText>
+              </Pressable>
+            </View>
           </View>
         </>
       )}
@@ -124,7 +167,12 @@ function ReadingScreen() {
           style={styles.button}
         />
       )}
-      renderItem={({ item }) => <ReadingContentItem item={item} />}
+      renderItem={({ item }) => (
+        <ReadingContentItem
+          item={item}
+          textType={textType}
+        />
+      )}
     />
   )
 }

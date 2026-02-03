@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from 'expo-router'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useTranslation } from 'react-i18next'
 import { ImageBackground, StyleSheet, View } from 'react-native'
 
@@ -7,7 +7,12 @@ import { useGetSessionReflection } from '@/api/queries/reflections'
 
 import reflectReinforceImage from '@/assets/images/reflect-reinforce.jpg'
 
-import { Header, ScreenContainer, ThemedText } from '@/components'
+import {
+  Button,
+  Header,
+  ScreenContainer,
+  ThemedText,
+} from '@/components'
 
 import { Colors, withOpacity } from '@/constants/theme'
 
@@ -64,9 +69,13 @@ const styles = StyleSheet.create({
   cardDate: {
     color: withOpacity(Colors.light.black, 0.5),
   },
+  button: {
+    alignSelf: 'center',
+  },
 })
 
 function DrinkTrackerJournalScreen() {
+  const { back } = useRouter()
   const { t } = useTranslation('drink-tracker-journal')
 
   const { sessionId } = useLocalSearchParams()
@@ -130,6 +139,13 @@ function DrinkTrackerJournalScreen() {
             </ThemedText>
           </View>
         )}
+
+        <Button
+          style={styles.button}
+          title={t('done')}
+          variant="secondary"
+          onPress={back}
+        />
       </View>
     </ScreenContainer>
   )
