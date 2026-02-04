@@ -5,7 +5,7 @@ import type { SubscriptionResponse } from '@/api/queries/subscriptions/dto'
  * Active statuses: trial, active, grace_period
  */
 export function isSubscriptionActive(subscription: SubscriptionResponse | null | undefined): boolean {
-  if (__DEV__) {
+  if (process.env.EXPO_PUBLIC_BUILD_ENV !== 'production') {
     return true
   }
 
