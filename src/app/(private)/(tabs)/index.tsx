@@ -131,7 +131,6 @@ function HomeScreen() {
   }
 
   useEffect(() => {
-    // Устанавливаем активный день как последний разблокированный
     // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
     setDailyActivitiesDay(daysWithActivities?.unlockedDaysCount || 1)
   }, [daysWithActivities?.unlockedDaysCount])
