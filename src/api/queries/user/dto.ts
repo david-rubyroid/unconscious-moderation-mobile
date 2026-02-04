@@ -30,7 +30,13 @@ interface UserGiftResponse {
   updatedAt: string
 }
 
+interface PushSubscriptionRequest {
+  pushToken: string
+  platform: 'ios' | 'android'
+}
+
 export type {
+  PushSubscriptionRequest,
   UserFearResponse,
   UserFearsRequest,
   UserGiftResponse,

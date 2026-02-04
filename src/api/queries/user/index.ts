@@ -1,4 +1,5 @@
 import type {
+  PushSubscriptionRequest,
   UserFearResponse,
   UserFearsRequest,
   UserGiftResponse,
@@ -69,6 +70,15 @@ export function useGetUserGifts(options?: QueryOptions<UserGiftResponse[]>) {
     queryFn: createQueryFn<UserGiftResponse[]>('users/me/gifts'),
     staleTime: QUERY_SHORT_CACHE.STALE_TIME,
     retry: QUERY_SHORT_CACHE.RETRY,
+    ...options,
+  })
+}
+
+export function usePushSubscriptionRegister(options?:
+MutationOptions<void, PushSubscriptionRequest>) {
+  return useMutation({
+    mutationFn:
+    createMutationFn<void, PushSubscriptionRequest>('post', 'users/me/push-subscription'),
     ...options,
   })
 }

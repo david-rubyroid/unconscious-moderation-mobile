@@ -21,7 +21,12 @@ import { AuthProvider } from '@/context/auth/provider'
 
 import { useAuth } from '@/context/auth/use'
 
-import { initializeMixpanel, isMixpanelInitialized, trackScreenView } from '@/services/mixpanel'
+import {
+  initializeMixpanel,
+  isMixpanelInitialized,
+  trackScreenView,
+} from '@/services/mixpanel'
+import { initializeOneSignal } from '@/services/onesignal'
 import { initializeRevenueCat } from '@/services/revenuecat'
 
 import { logDebug, logError } from '@/utils/logger'
@@ -37,6 +42,9 @@ SplashScreen.preventAutoHideAsync()
 initializeRevenueCat().catch((error) => {
   logError('Failed to initialize RevenueCat on app startup', error)
 })
+
+// Initialize OneSignal on app startup
+initializeOneSignal()
 
 // Initialize Mixpanel on app startup
 initializeMixpanel()

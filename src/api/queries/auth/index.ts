@@ -29,6 +29,8 @@ import { createMutationFn, createQueryFn } from '@/api/helpers'
 
 import { useAuth } from '@/context/auth/use'
 
+import { logoutOneSignal } from '@/services/onesignal'
+
 import { removeAuthTokens } from '@/utils/auth'
 
 export function useGetCurrentUser(options?: QueryOptions<User>) {
@@ -86,6 +88,7 @@ export function useLogout(options?: MutationOptions) {
   return useMutation({
     mutationFn: createMutationFn<void, void>('post', 'auth/logout'),
     onSuccess: async () => {
+      logoutOneSignal()
       await removeAuthTokens()
       setHasToken(false)
 
@@ -123,6 +126,7 @@ export function useDeleteAccount(options?: MutationOptions) {
   return useMutation({
     mutationFn: createMutationFn<void, void>('delete', 'users/me'),
     onSuccess: async () => {
+      logoutOneSignal()
       await removeAuthTokens()
       setHasToken(false)
       queryClient.clear()
