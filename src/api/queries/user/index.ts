@@ -82,3 +82,21 @@ MutationOptions<void, PushSubscriptionRequest>) {
     ...options,
   })
 }
+
+/**
+ * Request immediate day-1 reminder push.
+ * For users who registered after 7 AM — backend sends push on demand.
+ * Backend returns 400 if user is not on day 1.
+ */
+export function useRequestDayOneReminder(
+  options?: MutationOptions<{ sent: boolean }, Error, void>,
+) {
+  return useMutation({
+    mutationFn: createMutationFn<{ sent: boolean }, void>(
+      'post',
+      'users/me/request-day-one-reminder',
+      { skipBody: true },
+    ),
+    ...options,
+  })
+}

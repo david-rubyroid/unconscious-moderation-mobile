@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { useGetCurrentUser } from '@/api/queries/auth'
+import { useRequestDayOneReminder } from '@/api/queries/user'
 
 import { identifyUser, resetMixpanel } from '@/services/mixpanel'
 import {
@@ -11,11 +12,14 @@ import {
 } from '@/services/onesignal'
 import { logoutRevenueCat, setRevenueCatUserId } from '@/services/revenuecat'
 
+import { AsyncStorageKey, getItem, removeItem, setItem } from '@/utils/async-storage'
 import { checkAuthToken, checkFirstLaunch, removeAuthTokens } from '@/utils/auth'
 
 import { logError } from '@/utils/logger'
 
 import { AuthContext } from './context'
+
+const HOUR_7_AM = 7
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [hasToken, setHasToken] = useState<boolean | null>(null)
@@ -23,6 +27,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const { data: user, isLoading, isError } = useGetCurrentUser({
     enabled: hasToken === true,
+  })
+
+  const { mutate: requestDayOneReminder } = useRequestDayOneReminder({
+    onSuccess: () => setItem(AsyncStorageKey.DAY_ONE_REMINDER_REQUESTED, 'true'),
+    onError: (error) => {
+      const status = (error as { response?: { status?: number } })?.response?.status
+      if (status === 400) {
+        setItem(AsyncStorageKey.DAY_ONE_REMINDER_REQUESTED, 'true')
+      }
+    },
   })
 
   const isAuthenticated = Boolean(user)
@@ -59,7 +73,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (isError && hasToken) {
-      removeAuthTokens().then(() => {
+      Promise.all([
+        removeAuthTokens(),
+        removeItem(AsyncStorageKey.DAY_ONE_REMINDER_REQUESTED),
+      ]).then(() => {
         setHasToken(false)
         logoutOneSignal()
         logoutRevenueCat().catch((error) => {
@@ -84,12 +101,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const t = setTimeout(() => {
         if (isOneSignalInitialized()) {
           requestOneSignalPermission(false)
+            .then(async (granted) => {
+              if (!granted)
+                return
+              const now = new Date()
+              if (now.getHours() < HOUR_7_AM)
+                return
+              const requested = await getItem(AsyncStorageKey.DAY_ONE_REMINDER_REQUESTED)
+              if (requested)
+                return
+              requestDayOneReminder()
+            })
             .catch(err => logError('OneSignal permission request failed', err))
         }
       }, 2000)
       return () => clearTimeout(t)
     }
-  }, [user?.id, user?.email])
+  }, [user?.id, user?.email, requestDayOneReminder])
 
   return (
     <AuthContext value={value}>

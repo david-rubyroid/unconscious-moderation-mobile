@@ -31,6 +31,7 @@ import { useAuth } from '@/context/auth/use'
 
 import { logoutOneSignal } from '@/services/onesignal'
 
+import { AsyncStorageKey, removeItem } from '@/utils/async-storage'
 import { removeAuthTokens } from '@/utils/auth'
 
 export function useGetCurrentUser(options?: QueryOptions<User>) {
@@ -90,6 +91,7 @@ export function useLogout(options?: MutationOptions) {
     onSuccess: async () => {
       logoutOneSignal()
       await removeAuthTokens()
+      await removeItem(AsyncStorageKey.DAY_ONE_REMINDER_REQUESTED)
       setHasToken(false)
 
       queryClient.clear()
@@ -128,6 +130,7 @@ export function useDeleteAccount(options?: MutationOptions) {
     onSuccess: async () => {
       logoutOneSignal()
       await removeAuthTokens()
+      await removeItem(AsyncStorageKey.DAY_ONE_REMINDER_REQUESTED)
       setHasToken(false)
       queryClient.clear()
     },
