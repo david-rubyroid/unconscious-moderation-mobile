@@ -95,6 +95,11 @@ export async function logoutRevenueCat(): Promise<void> {
     await Purchases.logOut()
   }
   catch (error) {
+    const message = error instanceof Error ? error.message : String(error)
+    if (message.includes('anonymous')) {
+      // User was already anonymous — nothing to logout, not an error
+      return
+    }
     logError('Failed to logout RevenueCat user', error)
     // Don't throw - logout should not fail the app
   }
