@@ -114,6 +114,7 @@ const styles = StyleSheet.create({
     lineHeight: moderateScale(20),
   },
   startYourJourneyTextBold: {
+    textAlign: 'center',
     fontSize: moderateScale(28),
     color: Colors.light.white,
     fontWeight: '700',
@@ -209,7 +210,7 @@ function PurchaseScreen() {
         : (
             <View style={styles.content}>
               <View style={styles.item}>
-                <Check />
+                <Check color={Colors.light.primary4} />
 
                 <View style={styles.itemTextContainer}>
                   <ThemedText>
@@ -225,7 +226,7 @@ function PurchaseScreen() {
               </View>
 
               <View style={styles.item}>
-                <Check />
+                <Check color={Colors.light.primary4} />
 
                 <View style={styles.itemTextContainer}>
                   <ThemedText>
@@ -241,7 +242,7 @@ function PurchaseScreen() {
               </View>
 
               <View style={styles.item}>
-                <Check />
+                <Check color={Colors.light.primary4} />
 
                 <View style={styles.itemTextContainer}>
                   <ThemedText>
@@ -257,7 +258,7 @@ function PurchaseScreen() {
               </View>
 
               <View style={styles.item}>
-                <Check />
+                <Check color={Colors.light.primary4} />
 
                 <View style={styles.itemTextContainer}>
                   <ThemedText>
@@ -273,7 +274,7 @@ function PurchaseScreen() {
               </View>
 
               <View style={styles.item}>
-                <Check />
+                <Check color={Colors.light.primary4} />
 
                 <View style={styles.itemTextContainer}>
                   <ThemedText>
