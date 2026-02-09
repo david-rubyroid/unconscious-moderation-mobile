@@ -1,5 +1,3 @@
-import type { Href } from 'expo-router'
-
 import { MaterialIcons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import { Pressable, StyleSheet, View } from 'react-native'
@@ -12,10 +10,10 @@ import ThemedText from './themed-text'
 
 interface HeaderProps {
   title: string
-  route?: Href
-  isReplace?: boolean
+  onBackPress?: () => void
   whiteTitle?: boolean
   marginBottom?: number
+  backButton?: boolean
 }
 
 const styles = StyleSheet.create({
@@ -43,16 +41,16 @@ const styles = StyleSheet.create({
 
 function Header({
   title,
-  route,
-  isReplace,
+  onBackPress,
   whiteTitle = false,
   marginBottom = 26,
+  backButton = true,
 }: HeaderProps) {
-  const { push, replace, back } = useRouter()
+  const { back } = useRouter()
 
   const handleBack = () => {
-    if (route) {
-      isReplace ? replace(route) : push(route)
+    if (onBackPress) {
+      onBackPress()
     }
     else {
       back()
@@ -61,16 +59,18 @@ function Header({
 
   return (
     <View style={[styles.container, { marginBottom }]}>
-      <Pressable
-        onPress={handleBack}
-        style={styles.backButton}
-      >
-        <MaterialIcons
-          name="arrow-back-ios"
-          size={scale(24)}
-          color={whiteTitle ? Colors.light.white : Colors.light.primary4}
-        />
-      </Pressable>
+      {backButton && (
+        <Pressable
+          onPress={handleBack}
+          style={styles.backButton}
+        >
+          <MaterialIcons
+            name="arrow-back-ios"
+            size={scale(24)}
+            color={whiteTitle ? Colors.light.white : Colors.light.primary4}
+          />
+        </Pressable>
+      )}
 
       <ThemedText type="subtitle" style={[styles.title, whiteTitle && styles.whiteTitle]}>
         {title}

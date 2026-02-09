@@ -50,3 +50,19 @@ export interface DailyJournalingActivityAnswer {
   updated_at: string
   deleted_at: string | null
 }
+
+export interface SubmitActivityFeedbackRequest {
+  day: number
+  activityType: ActivityType
+  isHelpful: boolean | null
+}
+
+export interface ActivityFeedbackResponse {
+  id: number
+  user_id: number
+  day_number: number
+  activity_type: ActivityType
+  is_helpful: boolean | null
+  created_at: string
+  updated_at: string
+}

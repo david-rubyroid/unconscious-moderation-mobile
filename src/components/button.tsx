@@ -14,7 +14,7 @@ import { scale } from '@/utils/responsive'
 
 interface ButtonProps extends Omit<PressableProps, 'onPress'> {
   icon?: React.ReactNode
-  title: string
+  title?: string
   variant?: 'primary' | 'secondary' | 'primary2' | 'white'
   loading?: boolean
   disabled?: boolean
@@ -94,6 +94,7 @@ function Button({
   onPress,
   ...props
 }: ButtonProps) {
+  const showTitle = !loading && title != null && title !== ''
   const buttonContent = (
     <>
       {icon && icon}
@@ -101,17 +102,19 @@ function Button({
         ? (
             <ActivityIndicator color="white" />
           )
-        : (
-            <Text style={[
-              styles.text,
-              styles[`${variant}Text` as keyof typeof styles],
-              disabled && styles.disabledText,
-              textStyle,
-            ]}
-            >
-              {title}
-            </Text>
-          )}
+        : showTitle
+          ? (
+              <Text style={[
+                styles.text,
+                styles[`${variant}Text` as keyof typeof styles],
+                disabled && styles.disabledText,
+                textStyle,
+              ]}
+              >
+                {title}
+              </Text>
+            )
+          : null}
     </>
   )
   const buttonStyle = ({ pressed }: PressableStateCallbackType) => {

@@ -75,10 +75,25 @@ function ProtectedLayout() {
 
         <Stack.Screen name="my-progress" />
 
-        <Stack.Screen name="journaling/day" />
+        <Stack.Screen
+          name="journaling/day"
+          options={{ gestureEnabled: false }}
+        />
         <Stack.Screen name="journaling/intro" />
 
         <Stack.Screen name="box-breathing" />
+        <Stack.Screen
+          name="hypnosis"
+          options={{ gestureEnabled: false }}
+        />
+        <Stack.Screen
+          name="reading"
+          options={{ gestureEnabled: false }}
+        />
+        <Stack.Screen
+          name="movement"
+          options={{ gestureEnabled: false }}
+        />
 
         <Stack.Screen name="blinkist" />
         <Stack.Screen name="master-class" />

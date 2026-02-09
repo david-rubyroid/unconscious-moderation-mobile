@@ -1,4 +1,13 @@
-import type { ActivityType, DailyActivitiesResponse, DailyActivityProgress, DailyJournalingActivityAnswer, DayResponse, SaveJournalingAnswerRequest } from './dto'
+import type {
+  ActivityFeedbackResponse,
+  ActivityType,
+  DailyActivitiesResponse,
+  DailyActivityProgress,
+  DailyJournalingActivityAnswer,
+  DayResponse,
+  SaveJournalingAnswerRequest,
+  SubmitActivityFeedbackRequest,
+} from './dto'
 
 import type { MutationOptions, QueryOptions } from '@/api/helpers'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -99,6 +108,39 @@ export function useMarkDayCompletionModalShown(
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['daily-activities'] })
       queryClient.invalidateQueries({ queryKey: ['daily-activities', 'day', variables.day] })
+    },
+    ...options,
+  })
+}
+
+export function useGetActivityFeedback(
+  day: number | undefined,
+  options?: QueryOptions<ActivityFeedbackResponse[]>,
+) {
+  return useQuery({
+    queryKey: ['daily-activities', 'day', day, 'feedback'],
+    queryFn: createQueryFn<ActivityFeedbackResponse[]>(`daily-activities/${day}/feedback`),
+    enabled: day !== undefined && day >= 1 && day <= 30,
+    staleTime: QUERY_SHORT_CACHE.STALE_TIME,
+    retry: QUERY_SHORT_CACHE.RETRY,
+    ...options,
+  })
+}
+
+export function useSubmitActivityFeedback(
+  options?: MutationOptions<ActivityFeedbackResponse, Error, SubmitActivityFeedbackRequest>,
+) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: createMutationFn<ActivityFeedbackResponse, SubmitActivityFeedbackRequest>(
+      'post',
+      ({ day }) => `daily-activities/${day}/feedback`,
+    ),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['daily-activities'] })
+      queryClient.invalidateQueries({ queryKey: ['daily-activities', 'day', data.day_number] })
+      queryClient.invalidateQueries({ queryKey: ['daily-activities', 'day', data.day_number, 'feedback'] })
     },
     ...options,
   })
