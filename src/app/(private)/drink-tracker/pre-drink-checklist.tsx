@@ -6,9 +6,9 @@ import { ImageBackground, Pressable, ScrollView, StyleSheet, View } from 'react-
 
 import { useGetDrinkSession, useUpdateDrinkSession } from '@/api/queries/drink-session'
 
-import selfHypnosisImage from '@/assets/images/end-of-trial.jpg'
-import mantraImage from '@/assets/images/plan-and-prepare.jpg'
-import hydrationImage from '@/assets/images/reflect-and-reinforce.jpg'
+import selfHypnosisImage from '@/assets/images/end-of-trial.webp'
+import mantraImage from '@/assets/images/plan-and-prepare.webp'
+import hydrationImage from '@/assets/images/reflect-and-reinforce.webp'
 
 import {
   Button,

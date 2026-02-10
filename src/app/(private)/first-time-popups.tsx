@@ -2,10 +2,10 @@ import { Dimensions, StyleSheet, View } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated'
 import Carousel, { Pagination } from 'react-native-reanimated-carousel'
 
-import firstTimePopup1 from '@/assets/images/first-time-popup/first-time-popup-1.png'
-import firstTimePopup2 from '@/assets/images/first-time-popup/first-time-popup-2.png'
-import firstTimePopup3 from '@/assets/images/first-time-popup/first-time-popup-3.png'
-import firstTimePopup4 from '@/assets/images/first-time-popup/first-time-popup-4.png'
+import firstTimePopup1 from '@/assets/images/first-time-popup/first-time-popup-1.webp'
+import firstTimePopup2 from '@/assets/images/first-time-popup/first-time-popup-2.webp'
+import firstTimePopup3 from '@/assets/images/first-time-popup/first-time-popup-3.webp'
+import firstTimePopup4 from '@/assets/images/first-time-popup/first-time-popup-4.webp'
 
 import { FirstTimePopup } from '@/components'
 

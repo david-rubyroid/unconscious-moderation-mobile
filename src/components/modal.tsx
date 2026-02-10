@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native'
 
-import modalBgImage from '@/assets/images/modal-bg.jpg'
+import modalBgImage from '@/assets/images/modal-bg.webp'
 
 import { Colors, withOpacity } from '@/constants/theme'
 import { moderateScale, scale, verticalScale } from '@/utils/responsive'

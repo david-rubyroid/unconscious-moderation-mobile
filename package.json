@@ -6,6 +6,7 @@
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
+    "optimize-images": "node ./scripts/optimize-images.js",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo run:android",
     "ios": "expo run:ios",

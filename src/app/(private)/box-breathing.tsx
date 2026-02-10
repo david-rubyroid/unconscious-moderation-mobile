@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import { StyleSheet, View } from 'react-native'
 
-import boxBreathingImage from '@/assets/images/box-breathing-bg.jpg'
+import boxBreathingImage from '@/assets/images/box-breathing-bg.webp'
 
 import { BoxBreathingGuide, Button, Header, ScreenContainer, ThemedText } from '@/components'
 

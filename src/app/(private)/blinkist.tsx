@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 
 import { Image, StyleSheet, View } from 'react-native'
 
-import blinkistLogo from '@/assets/images/blinkist/blinkist-logo.png'
+import blinkistLogo from '@/assets/images/blinkist/blinkist-logo.webp'
 
 import { Button, ScreenContainer, ThemedText } from '@/components'
 

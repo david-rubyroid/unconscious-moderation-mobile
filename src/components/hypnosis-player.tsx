@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 
 import { StyleSheet } from 'react-native'
 
-import preDrinkHypnosisBackgroundImage from '@/assets/images/box-breathing-bg.jpg'
+import preDrinkHypnosisBackgroundImage from '@/assets/images/box-breathing-bg.webp'
 
 import {
   AudioPlayer,

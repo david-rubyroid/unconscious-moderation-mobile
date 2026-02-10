@@ -7,8 +7,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { useGetCurrentUser } from '@/api/queries/auth'
 
-import teamImage from '@/assets/images/the-team-at-um.png'
-import welcomeImage from '@/assets/images/welcome-to-your-journey.jpg'
+import teamImage from '@/assets/images/the-team-at-um.webp'
+import welcomeImage from '@/assets/images/welcome-to-your-journey.webp'
 
 import { Button, ThemedText } from '@/components'
 

@@ -8,7 +8,7 @@ import { ImageBackground, Pressable, StyleSheet, View } from 'react-native'
 import { useUpdateDrinkSession } from '@/api/queries/drink-session'
 import { useCreateMantra, useDeleteMantra, useGetMantras } from '@/api/queries/mantras'
 
-import mantraBackgroundImage from '@/assets/images/mantra.jpg'
+import mantraBackgroundImage from '@/assets/images/mantra.webp'
 
 import {
   Button,

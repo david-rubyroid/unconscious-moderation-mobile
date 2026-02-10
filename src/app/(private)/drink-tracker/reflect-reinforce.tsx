@@ -19,7 +19,7 @@ import { useGetSessionWater } from '@/api/queries/water-log'
 import AlertIcon from '@/assets/icons/alert'
 
 import CheckIcon from '@/assets/icons/check'
-import reflectReinforceImage from '@/assets/images/reflect-reinforce.jpg'
+import reflectReinforceImage from '@/assets/images/reflect-reinforce.webp'
 
 import {
   Button,

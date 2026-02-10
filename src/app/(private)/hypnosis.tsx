@@ -11,8 +11,8 @@ import {
 
 import DislikeIcon from '@/assets/icons/dislike'
 import LikeIcon from '@/assets/icons/like'
-import hypnosisBackgroundImage from '@/assets/images/box-breathing-bg.jpg'
-import doneImage from '@/assets/images/end-of-activity/hypnosis-done.png'
+import hypnosisBackgroundImage from '@/assets/images/box-breathing-bg.webp'
+import doneImage from '@/assets/images/end-of-activity/hypnosis-done.webp'
 
 import {
   AudioPlayer,

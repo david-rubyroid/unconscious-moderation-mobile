@@ -5,7 +5,7 @@ import { ImageBackground, StyleSheet, TextInput, View } from 'react-native'
 
 import { useGetDrinkSession, useUpdateDrinkSession } from '@/api/queries/drink-session'
 
-import quickWritingBackgroundImage from '@/assets/images/quick-writing.jpg'
+import quickWritingBackgroundImage from '@/assets/images/quick-writing.webp'
 
 import { Button, Header, ScreenContainer, ThemedText } from '@/components'
 import { Colors, withOpacity } from '@/constants/theme'

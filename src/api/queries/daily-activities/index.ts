@@ -51,7 +51,6 @@ export function useCompleteActivity(
     mutationFn: createMutationFn<DailyActivityProgress, { day: number, activityType: ActivityType }>(
       'post',
       ({ day, activityType }) => `daily-activities/${day}/${activityType}/complete`,
-      { skipBody: true },
     ),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['daily-activities'] })

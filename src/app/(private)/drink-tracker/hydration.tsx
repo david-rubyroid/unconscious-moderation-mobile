@@ -7,7 +7,7 @@ import { useUpdateDrinkSession } from '@/api/queries/drink-session'
 
 import AlertIcon from '@/assets/icons/alert'
 import DropIcon from '@/assets/icons/drop'
-import preDrinkHydrationImage from '@/assets/images/pre-drink-hydration.jpg'
+import preDrinkHydrationImage from '@/assets/images/pre-drink-hydration.webp'
 
 import { Button, Header, Modal, ScreenContainer, ThemedText } from '@/components'
 

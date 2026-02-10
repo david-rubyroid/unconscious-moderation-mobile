@@ -1,7 +1,7 @@
 import { Trans } from 'react-i18next'
 import { ImageBackground, View } from 'react-native'
 
-import proTipImage from '@/assets/images/pro-tip.jpg'
+import proTipImage from '@/assets/images/pro-tip.webp'
 
 import { ThemedText } from '@/components'
 

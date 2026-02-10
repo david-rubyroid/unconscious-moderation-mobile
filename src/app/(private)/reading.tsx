@@ -12,7 +12,7 @@ import {
 import ClockIcon from '@/assets/icons/clock'
 import DislikeIcon from '@/assets/icons/dislike'
 import LikeIcon from '@/assets/icons/like'
-import readingDoneImage from '@/assets/images/end-of-activity/reading-done.png'
+import readingDoneImage from '@/assets/images/end-of-activity/reading-done.webp'
 
 import { Button, Modal, ThemedText } from '@/components'
 

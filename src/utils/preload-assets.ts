@@ -4,122 +4,129 @@ import { Asset } from 'expo-asset'
 import { logDebug, logError } from '@/utils/logger'
 
 /**
- * All image assets from assets/images to be preloaded at app startup.
- * Uses explicit require() - Metro does not support dynamic paths.
+ * Critical assets: first paint, home screen, first-time popups, common modals.
+ * Loaded at startup so UI feels instant.
  */
-const IMAGE_ASSETS = [
-  // Modal (critical - used in gradient modals)
-  require('@/assets/images/modal-bg.jpg'),
-  // Root images
-  require('@/assets/images/box-breathing-bg.jpg'),
-  require('@/assets/images/daily-activity-medal.png'),
-  require('@/assets/images/drink-with-awareness.jpg'),
-  require('@/assets/images/end-of-trial.jpg'),
-  require('@/assets/images/mantra.jpg'),
-  require('@/assets/images/master-class.png'),
-  require('@/assets/images/manage-urges.jpg'),
-  require('@/assets/images/plan-and-prepare.jpg'),
-  require('@/assets/images/pre-drink-hydration.jpg'),
-  require('@/assets/images/pro-tip.jpg'),
-  require('@/assets/images/quick-writing.jpg'),
-  require('@/assets/images/reflect-and-reinforce.jpg'),
-  require('@/assets/images/reflect-reinforce.jpg'),
-  require('@/assets/images/the-team-at-um.png'),
-  require('@/assets/images/welcome-to-your-journey.jpg'),
-  // First-time popup
-  require('@/assets/images/first-time-popup/first-time-popup-1.png'),
-  require('@/assets/images/first-time-popup/first-time-popup-2.png'),
-  require('@/assets/images/first-time-popup/first-time-popup-3.png'),
-  require('@/assets/images/first-time-popup/first-time-popup-4.png'),
-  // Manage urge
-  require('@/assets/images/manage-urge/box-breathing.jpg'),
-  require('@/assets/images/manage-urge/quick-writing.jpg'),
-  require('@/assets/images/manage-urge/self-hypnosis.jpg'),
-  require('@/assets/images/manage-urge/urge.jpg'),
-  // Reading
-  require('@/assets/images/reading/day-1.jpg'),
-  require('@/assets/images/reading/day-2.jpg'),
-  require('@/assets/images/reading/day-3.jpg'),
-  require('@/assets/images/reading/day-4.jpg'),
-  require('@/assets/images/reading/day-5.jpg'),
-  require('@/assets/images/reading/day-6.jpg'),
-  require('@/assets/images/reading/day-7.jpg'),
-  require('@/assets/images/reading/day-8.jpg'),
-  require('@/assets/images/reading/day-9.jpg'),
-  require('@/assets/images/reading/day-10.jpg'),
-  require('@/assets/images/reading/day-11.jpg'),
-  require('@/assets/images/reading/day-12.jpg'),
-  require('@/assets/images/reading/day-13.jpg'),
-  require('@/assets/images/reading/day-14.jpg'),
-  require('@/assets/images/reading/day-15.jpg'),
-  require('@/assets/images/reading/day-16.jpg'),
-  // Today adventure
-  require('@/assets/images/today-adventure/hypnotherapy.jpg'),
-  require('@/assets/images/today-adventure/journaling.jpg'),
-  require('@/assets/images/today-adventure/movement.jpg'),
-  require('@/assets/images/today-adventure/reading.jpg'),
-  // Toolkit
-  require('@/assets/images/toolkit/box-breathing.jpg'),
-  require('@/assets/images/toolkit/drink-tracker.jpg'),
-  require('@/assets/images/toolkit/urge-surfing-meditation.jpg'),
-  // Trophies
-  require('@/assets/images/trophies/3-days.png'),
-  require('@/assets/images/trophies/7-days.png'),
-  require('@/assets/images/trophies/14-days.png'),
-  require('@/assets/images/trophies/21-days.png'),
-  require('@/assets/images/trophies/24-hours.png'),
-  require('@/assets/images/trophies/30-days.png'),
-  require('@/assets/images/trophies/60-days.png'),
-  require('@/assets/images/trophies/90-days.png'),
-  // Blinkist
-  require('@/assets/images/blinkist/blinkist-logo.png'),
-  require('@/assets/images/blinkist/blinkist-1.png'),
-  require('@/assets/images/blinkist/blinkist-2.png'),
-  require('@/assets/images/blinkist/blinkist-3.png'),
-  require('@/assets/images/blinkist/blinkist-4.png'),
-  require('@/assets/images/blinkist/blinkist-5.png'),
-  require('@/assets/images/blinkist/blinkist-6.png'),
-  require('@/assets/images/blinkist/blinkist-7.png'),
-  require('@/assets/images/blinkist/blinkist-8.png'),
-  require('@/assets/images/blinkist/blinkist-9.png'),
-  require('@/assets/images/blinkist/blinkist-10.png'),
-  require('@/assets/images/blinkist/blinkist-11.png'),
-  require('@/assets/images/blinkist/blinkist-12.png'),
-  require('@/assets/images/blinkist/blinkist-13.png'),
-  require('@/assets/images/blinkist/blinkist-14.png'),
-  require('@/assets/images/blinkist/blinkist-15.png'),
-  require('@/assets/images/blinkist/blinkist-16.png'),
-  require('@/assets/images/blinkist/blinkist-17.png'),
-  require('@/assets/images/blinkist/blinkist-18.png'),
-  require('@/assets/images/blinkist/blinkist-19.png'),
-  require('@/assets/images/blinkist/blinkist-20.png'),
-  require('@/assets/images/blinkist/blinkist-21.png'),
-  require('@/assets/images/blinkist/blinkist-22.png'),
-  require('@/assets/images/blinkist/blinkist-23.png'),
-  require('@/assets/images/blinkist/blinkist-24.png'),
-  require('@/assets/images/blinkist/blinkist-25.png'),
-  require('@/assets/images/blinkist/blinkist-26.png'),
-  require('@/assets/images/blinkist/blinkist-27.png'),
-  require('@/assets/images/blinkist/blinkist-28.png'),
-  require('@/assets/images/blinkist/blinkist-29.png'),
-  require('@/assets/images/blinkist/blinkist-30.png'),
+const CRITICAL_IMAGE_ASSETS = [
+  require('@/assets/images/modal-bg.webp'),
+  require('@/assets/images/box-breathing-bg.webp'),
+  require('@/assets/images/daily-activity-medal.webp'),
+  require('@/assets/images/first-time-popup/first-time-popup-1.webp'),
+  require('@/assets/images/first-time-popup/first-time-popup-2.webp'),
+  require('@/assets/images/first-time-popup/first-time-popup-3.webp'),
+  require('@/assets/images/first-time-popup/first-time-popup-4.webp'),
+  require('@/assets/images/today-adventure/hypnotherapy.webp'),
+  require('@/assets/images/today-adventure/journaling.webp'),
+  require('@/assets/images/today-adventure/movement.webp'),
+  require('@/assets/images/today-adventure/reading.webp'),
+  require('@/assets/images/toolkit/box-breathing.webp'),
+  require('@/assets/images/toolkit/drink-tracker.webp'),
+  require('@/assets/images/toolkit/urge-surfing-meditation.webp'),
+  require('@/assets/images/the-team-at-um.webp'),
+  require('@/assets/images/welcome-to-your-journey.webp'),
 ]
 
 /**
- * Preloads all image assets into the device cache at app startup.
- * Images will display instantly when used (modals, ImageBackground, etc.),
- * especially important with poor network connectivity.
+ * Deferred assets: screens user may open later (reading, drink-tracker, trophies, Blinkist).
+ * Loaded in background after critical so startup stays fast.
+ */
+const DEFERRED_IMAGE_ASSETS = [
+  require('@/assets/images/drink-with-awareness.webp'),
+  require('@/assets/images/end-of-trial.webp'),
+  require('@/assets/images/mantra.webp'),
+  require('@/assets/images/master-class.webp'),
+  require('@/assets/images/manage-urges.webp'),
+  require('@/assets/images/plan-and-prepare.webp'),
+  require('@/assets/images/pre-drink-hydration.webp'),
+  require('@/assets/images/pro-tip.webp'),
+  require('@/assets/images/quick-writing.webp'),
+  require('@/assets/images/reflect-and-reinforce.webp'),
+  require('@/assets/images/reflect-reinforce.webp'),
+  require('@/assets/images/manage-urge/box-breathing.webp'),
+  require('@/assets/images/manage-urge/quick-writing.webp'),
+  require('@/assets/images/manage-urge/self-hypnosis.webp'),
+  require('@/assets/images/manage-urge/urge.webp'),
+  require('@/assets/images/reading/day-1.webp'),
+  require('@/assets/images/reading/day-2.webp'),
+  require('@/assets/images/reading/day-3.webp'),
+  require('@/assets/images/reading/day-4.webp'),
+  require('@/assets/images/reading/day-5.webp'),
+  require('@/assets/images/reading/day-6.webp'),
+  require('@/assets/images/reading/day-7.webp'),
+  require('@/assets/images/reading/day-8.webp'),
+  require('@/assets/images/reading/day-9.webp'),
+  require('@/assets/images/reading/day-10.webp'),
+  require('@/assets/images/reading/day-11.webp'),
+  require('@/assets/images/reading/day-12.webp'),
+  require('@/assets/images/reading/day-13.webp'),
+  require('@/assets/images/reading/day-14.webp'),
+  require('@/assets/images/reading/day-15.webp'),
+  require('@/assets/images/reading/day-16.webp'),
+  require('@/assets/images/trophies/3-days.webp'),
+  require('@/assets/images/trophies/7-days.webp'),
+  require('@/assets/images/trophies/14-days.webp'),
+  require('@/assets/images/trophies/21-days.webp'),
+  require('@/assets/images/trophies/24-hours.webp'),
+  require('@/assets/images/trophies/30-days.webp'),
+  require('@/assets/images/trophies/60-days.webp'),
+  require('@/assets/images/trophies/90-days.webp'),
+  require('@/assets/images/blinkist/blinkist-logo.webp'),
+  require('@/assets/images/blinkist/blinkist-1.webp'),
+  require('@/assets/images/blinkist/blinkist-2.webp'),
+  require('@/assets/images/blinkist/blinkist-3.webp'),
+  require('@/assets/images/blinkist/blinkist-4.webp'),
+  require('@/assets/images/blinkist/blinkist-5.webp'),
+  require('@/assets/images/blinkist/blinkist-6.webp'),
+  require('@/assets/images/blinkist/blinkist-7.webp'),
+  require('@/assets/images/blinkist/blinkist-8.webp'),
+  require('@/assets/images/blinkist/blinkist-9.webp'),
+  require('@/assets/images/blinkist/blinkist-10.webp'),
+  require('@/assets/images/blinkist/blinkist-11.webp'),
+  require('@/assets/images/blinkist/blinkist-12.webp'),
+  require('@/assets/images/blinkist/blinkist-13.webp'),
+  require('@/assets/images/blinkist/blinkist-14.webp'),
+  require('@/assets/images/blinkist/blinkist-15.webp'),
+  require('@/assets/images/blinkist/blinkist-16.webp'),
+  require('@/assets/images/blinkist/blinkist-17.webp'),
+  require('@/assets/images/blinkist/blinkist-18.webp'),
+  require('@/assets/images/blinkist/blinkist-19.webp'),
+  require('@/assets/images/blinkist/blinkist-20.webp'),
+  require('@/assets/images/blinkist/blinkist-21.webp'),
+  require('@/assets/images/blinkist/blinkist-22.webp'),
+  require('@/assets/images/blinkist/blinkist-23.webp'),
+  require('@/assets/images/blinkist/blinkist-24.webp'),
+  require('@/assets/images/blinkist/blinkist-25.webp'),
+  require('@/assets/images/blinkist/blinkist-26.webp'),
+  require('@/assets/images/blinkist/blinkist-27.webp'),
+  require('@/assets/images/blinkist/blinkist-28.webp'),
+  require('@/assets/images/blinkist/blinkist-29.webp'),
+  require('@/assets/images/blinkist/blinkist-30.webp'),
+]
+
+/**
+ * Preloads critical images at startup, then defers the rest to background.
+ * Critical set (home, modals, onboarding) loads first so UI feels instant;
+ * reading, trophies, Blinkist, drink-tracker assets load after without blocking.
  */
 export async function preloadImages(): Promise<void> {
   const start = Date.now()
-  logDebug('[Preload] Starting image preload', { count: IMAGE_ASSETS.length })
 
   try {
-    await Asset.loadAsync(IMAGE_ASSETS)
-    const duration = `${Date.now() - start}ms`
-    logDebug('[Preload] Images preloaded successfully', { count: IMAGE_ASSETS.length, durationMs: duration })
+    await Asset.loadAsync(CRITICAL_IMAGE_ASSETS)
+    const criticalMs = Date.now() - start
+    logDebug('[Preload] Critical images loaded', { count: CRITICAL_IMAGE_ASSETS.length, durationMs: criticalMs })
+
+    // Deferred: load in background, don't block
+    const deferredCount = DEFERRED_IMAGE_ASSETS.length
+    Asset.loadAsync(DEFERRED_IMAGE_ASSETS)
+      .then(() => {
+        logDebug('[Preload] Deferred images loaded', { count: deferredCount })
+      })
+      .catch((error) => {
+        logError('Failed to preload deferred images', error, { count: deferredCount })
+      })
   }
   catch (error) {
-    logError('Failed to preload images', error, { count: IMAGE_ASSETS.length })
+    logError('Failed to preload critical images', error, { count: CRITICAL_IMAGE_ASSETS.length })
   }
 }

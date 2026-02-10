@@ -1,0 +1,72 @@
+{
+  "title": "Connection Day",
+
+  "first-time-popup": {
+    "description": "These are days to slow down and reconnect. With yourself, with others, with what matters. <0>These moments remind you why you're doing this.</0>"
+  },
+
+  "day-3": {
+    "title": "Day 3\n Say Thank You",
+    "description": "<0>Gratitude lights up the same reward centers in your brain that alcohol used to hit.</0> The difference? This feeling is real and it lasts. One genuine thank you can shift your entire day.",
+    "how-to-do-it": {
+      "title": "How to do it:",
+      "description": [
+        "Reach out to one person (text, call,  or face-to-face)",
+        "Tell them specifically what you appreciate",
+        "Pay attention to how it makes you feel"
+      ]
+    }
+  },
+  "day-10": {
+    "title": "Day 10\n No Social Media",
+    "description": "<0>Constant scrolling keeps your nervous system on edge and drains your dopamine.</0> Taking a full day off lets your brain actually rest and helps you reconnect with real life.",
+    "how-to-do-it": {
+      "title": "How to do it:",
+      "description": [
+        "Go totally offline from all social platforms for the day",
+        "See what you notice about yourself when you're not distracted",
+        "Boredom is actually good for your brain"
+      ]
+    }
+  },
+  "day-15": {
+    "title": "Day 15\n Day of Awe",
+    "description": "Experiencing awe literally <0>shifts your brain out of the patterns that drive</0> cravings. It reminds you there's so much more to feel than what's been keeping you stuck.",
+    "how-to-do-it": {
+      "title": "How to do it:",
+      "description": [
+        "Seek out something that makes you pause (nature, music, art, the sky, water, silence)",
+        "Stay with the feeling for a few minutes",
+        "You don't need to capture it, just experience it"
+      ]
+    }
+  },
+  "day-17": {
+    "title": "Day 17\n Clear the Air in a Relationship",
+    "description": "Unresolved tension creates stress that your body holds onto, and that stress can trigger cravings. <0>Addressing what's unsaid, even imperfectly, lightens the load.</0>",
+    "how-to-do-it": {
+      "title": "How to do it:",
+      "description": [
+        "Bring up something that's been sitting heavy (conversation, text, or even just processing it internally)",
+        "It doesn't need to end perfectly",
+        "Just moving the stuck energy counts"
+      ]
+    }
+  },
+  "day-23": {
+    "title": "Day 23\n Volunteer Day",
+    "description": "Helping others triggers your brain's natural reward system and <0>boosts feel-good chemicals like oxytocin.</0> Purpose hits different than any drink ever could.",
+    "how-to-do-it": {
+      "title": "How to do it:",
+      "description": [
+        "Give your time or skills to something that matters to you",
+        "Doesn't have to be formal, even small acts count",
+        "Notice what it feels like to contribute",
+        "You can even say something nice to  a stranger"
+      ]
+    }
+  },
+
+  "got-it": "Got it",
+  "done-button": "Done"
+}

@@ -4,7 +4,7 @@ import { Trans, useTranslation } from 'react-i18next'
 import { Image, StyleSheet, View } from 'react-native'
 
 import confettiAnimation from '@/assets/animations/confetti.json'
-import MedalIcon from '@/assets/images/daily-activity-medal.png'
+import MedalIcon from '@/assets/images/daily-activity-medal.webp'
 
 import { Colors } from '@/constants/theme'
 

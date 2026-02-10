@@ -5,15 +5,15 @@ import { Image, ScrollView, StyleSheet, View } from 'react-native'
 
 import { useGetTrophies } from '@/api/queries/sobriety-tracker'
 
-import threeDays from '@/assets/images/trophies/3-days.png'
-import sevenDays from '@/assets/images/trophies/7-days.png'
+import threeDays from '@/assets/images/trophies/3-days.webp'
+import sevenDays from '@/assets/images/trophies/7-days.webp'
 
-import fourteenDays from '@/assets/images/trophies/14-days.png'
-import twentyOneDays from '@/assets/images/trophies/21-days.png'
-import twentyFourHours from '@/assets/images/trophies/24-hours.png'
-import thirtyDays from '@/assets/images/trophies/30-days.png'
-import sixtyDays from '@/assets/images/trophies/60-days.png'
-import ninetyDays from '@/assets/images/trophies/90-days.png'
+import fourteenDays from '@/assets/images/trophies/14-days.webp'
+import twentyOneDays from '@/assets/images/trophies/21-days.webp'
+import twentyFourHours from '@/assets/images/trophies/24-hours.webp'
+import thirtyDays from '@/assets/images/trophies/30-days.webp'
+import sixtyDays from '@/assets/images/trophies/60-days.webp'
+import ninetyDays from '@/assets/images/trophies/90-days.webp'
 
 import { Colors, withOpacity } from '@/constants/theme'
 

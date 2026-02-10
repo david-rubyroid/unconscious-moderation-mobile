@@ -11,7 +11,7 @@ import { useGetActivityFeedback, useSubmitActivityFeedback } from '@/api/queries
 
 import DislikeIcon from '@/assets/icons/dislike'
 import LikeIcon from '@/assets/icons/like'
-import movementDoneImage from '@/assets/images/end-of-activity/movment-done.png'
+import movementDoneImage from '@/assets/images/end-of-activity/movment-done.webp'
 
 import { Button, Modal, ThemedText } from '@/components'
 

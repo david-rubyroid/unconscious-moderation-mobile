@@ -6,9 +6,9 @@ import BoxBreathingIcon from '@/assets/icons/box-breathing'
 import DrinkIcon from '@/assets/icons/drink'
 
 import UrgeSurfingMeditationIcon from '@/assets/icons/urge-surfing-meditation'
-import boxBreathingImage from '@/assets/images/toolkit/box-breathing.jpg'
-import drinkTrackerImage from '@/assets/images/toolkit/drink-tracker.jpg'
-import urgeSurfingMeditationImage from '@/assets/images/toolkit/urge-surfing-meditation.jpg'
+import boxBreathingImage from '@/assets/images/toolkit/box-breathing.webp'
+import drinkTrackerImage from '@/assets/images/toolkit/drink-tracker.webp'
+import urgeSurfingMeditationImage from '@/assets/images/toolkit/urge-surfing-meditation.webp'
 
 import { ExternalResources, ScreenContainer, ThemedText } from '@/components'
 

@@ -15,7 +15,7 @@ import {
 
 import DislikeIcon from '@/assets/icons/dislike'
 import LikeIcon from '@/assets/icons/like'
-import journalingDoneImage from '@/assets/images/end-of-activity/journaling-done.png'
+import journalingDoneImage from '@/assets/images/end-of-activity/journaling-done.webp'
 
 import { Button, Header, Modal, ScreenContainer, StepIndicator, ThemedText } from '@/components'
 import { Colors, withOpacity } from '@/constants/theme'

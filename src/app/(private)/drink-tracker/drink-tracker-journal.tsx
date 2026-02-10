@@ -5,7 +5,7 @@ import { ImageBackground, StyleSheet, View } from 'react-native'
 import { useGetDrinkSession } from '@/api/queries/drink-session'
 import { useGetSessionReflection } from '@/api/queries/reflections'
 
-import reflectReinforceImage from '@/assets/images/reflect-reinforce.jpg'
+import reflectReinforceImage from '@/assets/images/reflect-reinforce.webp'
 
 import {
   Button,

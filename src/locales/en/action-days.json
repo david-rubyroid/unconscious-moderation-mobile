@@ -1,0 +1,111 @@
+{
+  "action-day": "Action Day",
+  "first-time-popup": {
+    "title": "Welcome to Action Day",
+    "description": "These are days to take care of the practical stuff. Small steps that support your body and show real progress. <0>Each one counts.</0>"
+  },
+
+  "day-2": {
+    "title": "Day 2 \n Blood Pressure",
+    "description": "<0>Alcohol raises your blood pressure by tightening blood vessels and spiking stress hormones</0>. We're taking a baseline today so you can see the amazing difference later. Trust us, it's worth tracking.",
+    "how-to-do-it": {
+      "title": "How to do it:",
+      "description": [
+        "Head to your nearest drugstore or grab a blood pressure monitor for home."
+      ]
+    }
+  },
+  "day-9": {
+    "title": "Day 9\n Sugar Cleanse Awareness",
+    "description": "Your brain might be hunting for sugar to replace the dopamine hit from alcohol. Totally normal. <0>Catching this pattern helps you stay ahead of cravings.</0>",
+    "how-to-do-it": {
+      "title": "How to do it:",
+      "description": [
+        "Try cutting back on added sugars today or kick off a gentle cleanse",
+        "Pay attention to when those sweet cravings hit",
+        "Just notice, no need to be perfect"
+      ]
+    }
+  },
+  "day-16": {
+    "title": "Day 16\n Coach/Psychologist Appointment",
+    "description": "Working with a professional gives you <0>tools to navigate cravings, identify triggers, and handle whatever life throws at you</0>. It's not about needing to be 'fixed,' it's about having support that actually works.",
+    "how-to-do-it": {
+      "title": "How to do it:",
+      "description": [
+        "Book or attend a session with a licensed therapist, psychologist, or certified coach"
+      ]
+    }
+  },
+  "day-23": {
+    "title": "Day 23\n Set Up Doctor Appointment",
+    "description": "Your physical health matters just as much as everything else. <0>A check-in with your doctor helps you see the full picture</0>. When's the last time you went? No judgment, just care.",
+    "how-to-do-it": {
+      "title": "How to do it:",
+      "description": [
+        "Schedule an appointment with your GP for a wellness check, labs, whatever feels right"
+      ]
+    }
+  },
+  "day-30": {
+    "title": "Day 30\n Blood Pressure Re-Check",
+    "description": "Ready to see what's changed? Your body's been healing behind the scenes. Let's compare today's numbers to Day 2 and <0>celebrate how far you've come.</0>",
+    "how-to-do-it": {
+      "title": "How to do it:",
+      "description": [
+        "Take your blood pressure again (at the drugstore or at home)",
+        "Notice the difference, even small drops matter"
+      ]
+    }
+  },
+
+  "blood-pressure-table": "Blood Pressure Table",
+  "blood-pressure-categories": {
+    "normal": {
+      "reading": "< 120 / < 80",
+      "title": "Normal Blood Pressure",
+      "description": "You're doing great. Your body's in a healthy place."
+    },
+    "elevated": {
+      "reading": "120-129 / < 80",
+      "title": "Elevated Blood Pressure",
+      "description": "A little high, but small changes can help bring it down."
+    },
+    "high-stage-1": {
+      "reading": "130-139 OR 80-89",
+      "title": "High Blood Pressure: Stage 1",
+      "description": "Worth keeping an eye on. Maybe chat with your doctor about it."
+    },
+    "high-stage-2": {
+      "reading": "140+ OR 90+",
+      "title": "High Blood Pressure: Stage 2",
+      "description": "This is on the higher side. It's a good idea to talk with your doctor."
+    },
+    "hypertensive-crisis": {
+      "reading": "180+ AND/OR 120+",
+      "title": "Hypertensive Crisis",
+      "description": "This needs immediate attention. Please get medical help right away."
+    }
+  },
+
+  "you-re-staying-healthy": "You're Staying Healthy",
+  "you-re-staying-healthy-description": "Your blood pressure is still in a great range. You're maintaining what's working. That's a win.",
+
+  "you-improved": "You Improved!",
+  "you-improved-description": "These are days to take care of the practical stuff. Small steps that support your body and show real progress. Each one counts.",
+
+  "holding-steady": "Holding Steady",
+  "holding-steady-description": "No change yet, but your body might be adjusting in ways you can't see. Keep showing up.",
+
+  "let-s-check-in": "Let's Check In",
+  "let-s-check-in-description": "Your numbers went up. Could be stress, sleep, or something else. Worth talking to your doctor about it.",
+
+  "we-ll-check-back-in-later-to-see-your-progress": "We'll check back in later to see your progress.",
+  "done": "Done!",
+
+  "enter-your-blood-pressure": "Enter your blood pressure",
+  "day-2-blood-pressure": "Day 2 blood pressure",
+
+  "done-button": "Done",
+  "got-it": "Got it"
+}
