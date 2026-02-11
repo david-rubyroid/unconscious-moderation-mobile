@@ -1,4 +1,12 @@
-export type ActivityType = 'hypnosis' | 'journaling' | 'reading' | 'movement'
+export type ActivityType
+  = 'hypnosis' | 'journaling' | 'reading' | 'movement' | 'action-day' | 'connection-day'
+
+export interface CompleteActivityRequest {
+  day: number
+  activityType: ActivityType
+  systolicPressure?: number
+  diastolicPressure?: number
+}
 
 export interface ActivityCompletion {
   type: ActivityType
@@ -65,4 +73,10 @@ export interface ActivityFeedbackResponse {
   is_helpful: boolean | null
   created_at: string
   updated_at: string
+}
+
+export interface ActionDayBloodPressure {
+  systolic: number
+  diastolic: number
+  measuredAt: string
 }

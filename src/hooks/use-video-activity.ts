@@ -1,6 +1,8 @@
 import type { VideoPlayer } from 'expo-video'
-import { useVideoPlayer } from 'expo-video'
 
+import type { ActivityType } from '@/api/queries/daily-activities/dto'
+
+import { useVideoPlayer } from 'expo-video'
 import { useEffect, useRef } from 'react'
 
 import { useCompleteActivity } from '@/api/queries/daily-activities'
@@ -15,7 +17,7 @@ interface UseVideoActivityOptions {
    */
   activityCompletion?: {
     day: number
-    activityType: 'hypnosis' | 'journaling' | 'reading' | 'movement'
+    activityType: ActivityType
   }
   /**
    * Minimum buffer seconds before allowing playback (default: 5)

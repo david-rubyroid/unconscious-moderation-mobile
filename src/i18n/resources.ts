@@ -1,5 +1,7 @@
+import enActionDays from '@/locales/en/action-days.json'
 import enBlinkist from '@/locales/en/blinkist.json'
 import enBoxBreathing from '@/locales/en/box-breathing.json'
+import enConnectionDays from '@/locales/en/connection-days.json'
 import enDailyCompleteMessages from '@/locales/en/daily-complete-messages.json'
 import enDrinkTrackerJournal from '@/locales/en/drink-tracker-journal.json'
 import enDrinkTracker from '@/locales/en/drink-tracker.json'
@@ -74,6 +76,8 @@ const localeFiles = {
   'en/photo-record': enPhotoRecord,
   'en/daily-complete-messages': enDailyCompleteMessages,
   'en/drink-tracker-journal': enDrinkTrackerJournal,
+  'en/connection-days': enConnectionDays,
+  'en/action-days': enActionDays,
 }
 
 export function getResources() {

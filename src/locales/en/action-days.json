@@ -1,5 +1,5 @@
 {
-  "action-day": "Action Day",
+  "title": "Action Day",
   "first-time-popup": {
     "title": "Welcome to Action Day",
     "description": "These are days to take care of the practical stuff. Small steps that support your body and show real progress. <0>Each one counts.</0>"
@@ -59,7 +59,17 @@
     }
   },
 
+  "blood-pressure-category": {
+    "unknown": "Unknown",
+    "normal": "Normal Blood Pressure",
+    "elevated": "Elevated Blood Pressure",
+    "high-stage-1": "High Blood Pressure: Stage 1",
+    "high-stage-2": "High Blood Pressure: Stage 2",
+    "hypertensive-crisis": "Hypertensive Crisis"
+  },
+
   "blood-pressure-table": "Blood Pressure Table",
+  "blood-pressure-reading-header": "Reading (mmHg)",
   "blood-pressure-categories": {
     "normal": {
       "reading": "< 120 / < 80",
@@ -104,8 +114,21 @@
   "done": "Done!",
 
   "enter-your-blood-pressure": "Enter your blood pressure",
+  "enter-your-systolic-pressure": "Systolic (70-200)",
+  "enter-your-diastolic-pressure": "Diastolic (40-130)",
   "day-2-blood-pressure": "Day 2 blood pressure",
 
   "done-button": "Done",
-  "got-it": "Got it"
+  "got-it": "Got it",
+
+  "validation": {
+    "systolic-required": "Systolic pressure is required",
+    "systolic-integer": "Systolic must be a whole number",
+    "systolic-min": "Systolic must be at least 70 mmHg",
+    "systolic-max": "Systolic must be no more than 200 mmHg",
+    "diastolic-required": "Diastolic pressure is required",
+    "diastolic-integer": "Diastolic must be a whole number",
+    "diastolic-min": "Diastolic must be at least 40 mmHg",
+    "diastolic-max": "Diastolic must be no more than 130 mmHg"
+  }
 }

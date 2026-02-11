@@ -4,6 +4,8 @@ const KEY_PREFIX = 'async_storage_'
 
 export const AsyncStorageKey = {
   FIRST_TIME_DRINK_TRACKER_POPUPS: 'firstTimeDrinkTrackerPopups',
+  FIRST_TIME_ACTION_DAY_POPUP: 'firstTimeActionDayPopup',
+  FIRST_TIME_CONNECTION_DAY_POPUP: 'firstTimeConnectionDayPopup',
   DAY_ONE_REMINDER_REQUESTED: 'dayOneReminderRequested',
 } as const
 

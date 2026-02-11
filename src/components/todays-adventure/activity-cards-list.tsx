@@ -54,6 +54,7 @@ interface ActivityCard {
   image: ImageSourcePropType
   label: string
   onPress: () => void
+  overlayColor?: string
 }
 
 interface ActivityCardsListProps {
@@ -62,18 +63,33 @@ interface ActivityCardsListProps {
   activities: ActivityCard[]
 }
 
-function ActivityCardsList({ steps, locked, activities }: ActivityCardsListProps) {
+function ActivityCardsList({
+  steps,
+  locked,
+  activities,
+}: ActivityCardsListProps) {
   return (
     <View style={styles.contentWrapper}>
       <View style={styles.progressStepsContainer}>
-        <ProgressSteps locked={locked} steps={steps} connectorHeight={verticalScale(50)} />
+        <ProgressSteps
+          locked={locked}
+          steps={steps}
+          connectorHeight={verticalScale(53)}
+        />
       </View>
 
       <View style={styles.content}>
         {activities.map(activity => (
           <Pressable key={activity.id} onPress={activity.onPress}>
-            <ImageBackground source={activity.image} style={styles.contentImage}>
-              <View style={styles.contentOverlay} />
+            <ImageBackground
+              source={activity.image}
+              style={styles.contentImage}
+            >
+              <View style={[
+                styles.contentOverlay,
+                { backgroundColor: withOpacity(activity.overlayColor ?? Colors.light.primary4, 0.8) },
+              ]}
+              />
 
               <ThemedText type="defaultSemiBold" style={styles.contentText}>
                 {activity.label}

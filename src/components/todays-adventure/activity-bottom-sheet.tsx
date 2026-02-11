@@ -62,6 +62,10 @@ const styles = StyleSheet.create({
   bottomSheetButton: {
     width: 156,
     borderRadius: 15,
+    alignSelf: 'center',
+  },
+  bulletListContainer: {
+    alignItems: 'center',
   },
 })
 

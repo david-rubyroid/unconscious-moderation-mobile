@@ -8,6 +8,8 @@ import { StyleSheet, View } from 'react-native'
 import { useGetDayDetails, useMarkDayCompletionModalShown } from '@/api/queries/daily-activities'
 import { useGetSubscription } from '@/api/queries/subscriptions'
 
+import actionDayImage from '@/assets/images/today-adventure/action-day.webp'
+import connectionDayImage from '@/assets/images/today-adventure/connection-day.webp'
 import hypnotherapyImage from '@/assets/images/today-adventure/hypnotherapy.webp'
 import journalingImage from '@/assets/images/today-adventure/journaling.webp'
 import movementImage from '@/assets/images/today-adventure/movement.webp'
@@ -15,6 +17,7 @@ import readingImage from '@/assets/images/today-adventure/reading.webp'
 
 import { Colors } from '@/constants/theme'
 
+import { getAvailableActivitiesForDay } from '@/utils/daily-activities'
 import { verticalScale } from '@/utils/responsive'
 import { isSubscriptionActive } from '@/utils/subscription'
 
@@ -58,33 +61,64 @@ function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
   const journalingActivity = dayDetails?.activities.find(a => a.type === 'journaling')
   const readingActivity = dayDetails?.activities.find(a => a.type === 'reading')
   const movementActivity = dayDetails?.activities.find(a => a.type === 'movement')
+  const actionDayActivity = dayDetails?.activities.find(a => a.type === 'action-day')
+  const connectionDayActivity = dayDetails?.activities.find(a => a.type === 'connection-day')
 
   const isHypnosisCompleted = hypnosisActivity?.isCompleted ?? false
   const isJournalingCompleted = journalingActivity?.isCompleted ?? false
   const isReadingCompleted = readingActivity?.isCompleted ?? false
   const isMovementCompleted = movementActivity?.isCompleted ?? false
-  const isDayCompleted = isHypnosisCompleted
-    && isReadingCompleted && isJournalingCompleted && isMovementCompleted
+  const isActionDayCompleted = actionDayActivity?.isCompleted ?? false
+  const isConnectionDayCompleted = connectionDayActivity?.isCompleted ?? false
 
-  // Create steps for ProgressSteps
-  const steps: Step[] = [
-    {
-      id: 'hypnosis',
-      status: isHypnosisCompleted ? 'completed' : 'pending',
-    },
-    {
-      id: 'reading',
-      status: isReadingCompleted ? 'completed' : 'pending',
-    },
-    {
-      id: 'journaling',
-      status: isJournalingCompleted ? 'completed' : 'pending',
-    },
-    {
-      id: 'movement',
-      status: isMovementCompleted ? 'completed' : 'pending',
-    },
-  ]
+  const availableActivitiesForDay = useMemo(
+    () => getAvailableActivitiesForDay(dailyActivitiesDay),
+    [dailyActivitiesDay],
+  )
+  const isDayCompleted = availableActivitiesForDay.every((type) => {
+    switch (type) {
+      case 'hypnosis': return isHypnosisCompleted
+      case 'journaling': return isJournalingCompleted
+      case 'reading': return isReadingCompleted
+      case 'movement': return isMovementCompleted
+      case 'action-day': return isActionDayCompleted
+      case 'connection-day': return isConnectionDayCompleted
+      default: return true
+    }
+  })
+
+  // Create steps for ProgressSteps (base + optional action-day and connection-day)
+  const steps: Step[] = useMemo(() => {
+    const base: Step[] = [
+      { id: 'hypnosis', status: isHypnosisCompleted ? 'completed' : 'pending' },
+      { id: 'reading', status: isReadingCompleted ? 'completed' : 'pending' },
+      { id: 'journaling', status: isJournalingCompleted ? 'completed' : 'pending' },
+      { id: 'movement', status: isMovementCompleted ? 'completed' : 'pending' },
+    ]
+    if (availableActivitiesForDay.includes('action-day')) {
+      base.push({
+        id: 'action-day',
+        status: isActionDayCompleted ? 'completed' : 'pending',
+        startIcon: true,
+      })
+    }
+    if (availableActivitiesForDay.includes('connection-day')) {
+      base.push({
+        id: 'connection-day',
+        status: isConnectionDayCompleted ? 'completed' : 'pending',
+        startIcon: true,
+      })
+    }
+    return base
+  }, [
+    isHypnosisCompleted,
+    isReadingCompleted,
+    isJournalingCompleted,
+    isMovementCompleted,
+    isActionDayCompleted,
+    isConnectionDayCompleted,
+    availableActivitiesForDay,
+  ])
 
   // Handlers
   const handleCloseDayCompletionModal = useCallback(() => {
@@ -158,38 +192,88 @@ function TodaysAdventure({ dailyActivitiesDay }: TodaysAdventureProps) {
     })
   }, [isPremium, push, dailyActivitiesDay])
 
-  // Activity cards configuration
-  const activities = useMemo(() => [
-    {
-      id: 'hypnosis',
-      image: hypnotherapyImage,
-      label: t('hypnosis'),
-      onPress: handleOpenHypnosisBottomSheet,
-    },
-    {
-      id: 'reading',
-      image: readingImage,
-      label: t('reading'),
-      onPress: handleStartReading,
-    },
-    {
-      id: 'journaling',
-      image: journalingImage,
-      label: t('journaling'),
-      onPress: handleOpenJournalingBottomSheet,
-    },
-    {
-      id: 'movement',
-      image: movementImage,
-      label: t('movement'),
-      onPress: handleOpenMovementBottomSheet,
-    },
-  ], [
+  const handleStartActionDay = useCallback(() => {
+    if (!isPremium) {
+      push('/(private)/purchase')
+      return
+    }
+    push({
+      pathname: '/action-day',
+      params: { day: String(dailyActivitiesDay) },
+    })
+  }, [isPremium, push, dailyActivitiesDay])
+
+  const handleStartConnectionDay = useCallback(() => {
+    if (!isPremium) {
+      push('/(private)/purchase')
+      return
+    }
+    push({
+      pathname: '/connection-day',
+      params: { day: String(dailyActivitiesDay) },
+    })
+  }, [isPremium, push, dailyActivitiesDay])
+
+  // Activity cards configuration (base + optional action-day and connection-day)
+  const activities = useMemo(() => {
+    const base = [
+      {
+        id: 'hypnosis',
+        image: hypnotherapyImage,
+        label: t('hypnosis'),
+        onPress: handleOpenHypnosisBottomSheet,
+        overlayColor: Colors.light.primary4,
+      },
+      {
+        id: 'reading',
+        image: readingImage,
+        label: t('reading'),
+        onPress: handleStartReading,
+        overlayColor: Colors.light.primary4,
+      },
+      {
+        id: 'journaling',
+        image: journalingImage,
+        label: t('journaling'),
+        onPress: handleOpenJournalingBottomSheet,
+        overlayColor: Colors.light.primary4,
+      },
+      {
+        id: 'movement',
+        image: movementImage,
+        label: t('movement'),
+        onPress: handleOpenMovementBottomSheet,
+        overlayColor: Colors.light.primary4,
+      },
+    ]
+    if (availableActivitiesForDay.includes('action-day')) {
+      base.push({
+        id: 'action-day',
+        image: actionDayImage,
+        label: t('action-day'),
+        onPress: handleStartActionDay,
+        overlayColor: Colors.light.primary,
+      })
+    }
+    if (availableActivitiesForDay.includes('connection-day')) {
+      base.push({
+        id: 'connection-day',
+        image: connectionDayImage,
+        label: t('connection-day'),
+        onPress: handleStartConnectionDay,
+        overlayColor: Colors.light.primary,
+      })
+    }
+    return base
+  }, [
     t,
+    availableActivitiesForDay,
     handleOpenHypnosisBottomSheet,
     handleStartReading,
     handleOpenJournalingBottomSheet,
     handleOpenMovementBottomSheet,
+    handleStartActionDay,
+    handleStartConnectionDay,
   ])
 
   // Check if modal should be shown when day is completed

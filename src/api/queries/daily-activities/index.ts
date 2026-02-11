@@ -1,6 +1,7 @@
 import type {
+  ActionDayBloodPressure,
   ActivityFeedbackResponse,
-  ActivityType,
+  CompleteActivityRequest,
   DailyActivitiesResponse,
   DailyActivityProgress,
   DailyJournalingActivityAnswer,
@@ -28,6 +29,20 @@ export function useGetDaysWithActivities(
   })
 }
 
+export function useGetActionDayHealthMetrics(
+  day: number | undefined,
+  options?: QueryOptions<ActionDayBloodPressure | null>,
+) {
+  return useQuery({
+    queryKey: ['daily-activities', 'health-metrics', 'action-days', day],
+    queryFn: createQueryFn<ActionDayBloodPressure | null>(`daily-activities/health-metrics/action-days/${day}`),
+    enabled: day !== undefined && day >= 1 && day <= 30,
+    staleTime: QUERY_SHORT_CACHE.STALE_TIME,
+    retry: QUERY_SHORT_CACHE.RETRY,
+    ...options,
+  })
+}
+
 export function useGetDayDetails(
   day: number | undefined,
   options?: QueryOptions<DayResponse>,
@@ -43,12 +58,12 @@ export function useGetDayDetails(
 }
 
 export function useCompleteActivity(
-  options?: MutationOptions<DailyActivityProgress, Error, { day: number, activityType: ActivityType }>,
+  options?: MutationOptions<DailyActivityProgress, Error, CompleteActivityRequest>,
 ) {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: createMutationFn<DailyActivityProgress, { day: number, activityType: ActivityType }>(
+    mutationFn: createMutationFn<DailyActivityProgress, CompleteActivityRequest>(
       'post',
       ({ day, activityType }) => `daily-activities/${day}/${activityType}/complete`,
     ),

@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
   container: {
     position: 'relative',
     paddingVertical: verticalScale(12),
-    marginBottom: verticalScale(26),
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -43,7 +42,7 @@ function Header({
   title,
   onBackPress,
   whiteTitle = false,
-  marginBottom = 26,
+  marginBottom = 16,
   backButton = true,
 }: HeaderProps) {
   const { back } = useRouter()
@@ -58,7 +57,7 @@ function Header({
   }
 
   return (
-    <View style={[styles.container, { marginBottom }]}>
+    <View style={[styles.container, marginBottom != null && { marginBottom }]}>
       {backButton && (
         <Pressable
           onPress={handleBack}

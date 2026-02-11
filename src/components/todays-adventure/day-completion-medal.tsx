@@ -106,7 +106,11 @@ function DayCompletionMedal({
           </ThemedText>
         )}
       >
-        <ActivityCardsList steps={steps} locked={locked} activities={activities} />
+        <ActivityCardsList
+          steps={steps}
+          locked={locked}
+          activities={activities}
+        />
       </Accordion>
     </>
   )

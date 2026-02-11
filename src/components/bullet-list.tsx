@@ -1,3 +1,5 @@
+import type { StyleProp, TextStyle } from 'react-native'
+
 import { Trans, useTranslation } from 'react-i18next'
 import { StyleSheet, View } from 'react-native'
 
@@ -7,8 +9,6 @@ import { scale } from '@/utils/responsive'
 import ThemedText from './themed-text'
 
 const styles = StyleSheet.create({
-  container: {
-  },
   item: {
     flexDirection: 'row',
     paddingLeft: scale(8),
@@ -29,19 +29,23 @@ const styles = StyleSheet.create({
 
 interface BulletListProps {
   items: string[]
+  spacing?: number
   i18nNamespace?: string
   textType?: 'default' | 'defaultSemiBold'
+  textStyle?: StyleProp<TextStyle>
 }
 
 function BulletList({
   items,
   i18nNamespace,
   textType = 'defaultSemiBold',
+  spacing = 10,
+  textStyle,
 }: BulletListProps) {
   const { t } = useTranslation(i18nNamespace)
 
   return (
-    <View style={styles.container}>
+    <View style={{ gap: spacing }}>
       {items.map((item) => {
         const i18nKey = i18nNamespace ? `${i18nNamespace}:${item}` : item
         const translation = t(item)
@@ -55,7 +59,7 @@ function BulletList({
               •
             </ThemedText>
 
-            <ThemedText type={textType} style={styles.text}>
+            <ThemedText type={textType} style={[styles.text, textStyle]}>
               {hasFormatting
                 ? (
                     <Trans
