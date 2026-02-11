@@ -1,20 +1,14 @@
-import { useLocalSearchParams, useRouter } from 'expo-router'
+import { useLocalSearchParams } from 'expo-router'
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Image, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
-import {
-  useCompleteActivity,
-  useGetActivityFeedback,
-  useSubmitActivityFeedback,
-} from '@/api/queries/daily-activities'
+import { useCompleteActivity } from '@/api/queries/daily-activities'
 
-import DislikeIcon from '@/assets/icons/dislike'
-import LikeIcon from '@/assets/icons/like'
 import hypnosisBackgroundImage from '@/assets/images/box-breathing-bg.webp'
-import doneImage from '@/assets/images/end-of-activity/hypnosis-done.webp'
 
 import {
+  ActivityFeedbackModal,
   AudioPlayer,
   Button,
   Header,
@@ -25,18 +19,14 @@ import {
 
 import { HYPNOSIS_LINKS } from '@/constants/hypnosis-links'
 import { Colors } from '@/constants/theme'
-import { scale, verticalScale } from '@/utils/responsive'
+import { useActivityFeedback } from '@/hooks/use-activity-feedback'
+import { verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
   modalContent: {
     alignItems: 'center',
     justifyContent: 'center',
     gap: verticalScale(30),
-  },
-  doneModalContent: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: verticalScale(23),
   },
   modalTitle: {
     textAlign: 'center',
@@ -46,45 +36,26 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: Colors.light.primary4,
   },
-  doneImageContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: Colors.light.white,
-    width: scale(127),
-    height: scale(127),
-    borderRadius: '50%',
-  },
-  doneImage: {
-    width: scale(90),
-    height: scale(90),
-  },
-  buttonsContainer: {
-    flexDirection: 'row',
-    gap: scale(16),
-  },
-  button: {
-    width: 96,
-  },
 })
 
 function HypnosisScreen() {
   const { t } = useTranslation('hypnosis-adventure')
-  const router = useRouter()
-
   const [isModalVisible, setIsModalVisible] = useState(true)
-  const [isExitFeedbackModalVisible, setIsExitFeedbackModalVisible] = useState(false)
-
-  const { day } = useLocalSearchParams()
   const hasCompletedRef = useRef(false)
+  const { day } = useLocalSearchParams()
   const dayNumber = Number(day)
 
   const { mutateAsync: completeActivity } = useCompleteActivity()
-  const { mutate: submitFeedback } = useSubmitActivityFeedback()
-  const { data: activityFeedbackList } = useGetActivityFeedback(dayNumber)
-
-  const hasFeedbackForHypnosis = activityFeedbackList?.some(
-    f => f.activity_type === 'hypnosis',
-  ) ?? false
+  const {
+    isFeedbackModalVisible,
+    handleLike,
+    handleDislike,
+    handleSkip,
+    handleBackPress,
+  } = useActivityFeedback({
+    day: dayNumber,
+    activityType: 'hypnosis',
+  })
 
   const handlePlayStart = () => {
     if (!hasCompletedRef.current) {
@@ -97,36 +68,9 @@ function HypnosisScreen() {
       })
     }
   }
+
   const handleCloseModal = () => {
     setIsModalVisible(false)
-  }
-  const closeExitFeedbackAndBack = () => {
-    setIsExitFeedbackModalVisible(false)
-    router.back()
-  }
-  const handleExitFeedbackLike = () => {
-    submitFeedback({
-      day: dayNumber,
-      activityType: 'hypnosis',
-      isHelpful: true,
-    })
-    closeExitFeedbackAndBack()
-  }
-  const handleExitFeedbackDislike = () => {
-    submitFeedback({
-      day: dayNumber,
-      activityType: 'hypnosis',
-      isHelpful: false,
-    })
-    closeExitFeedbackAndBack()
-  }
-  const handleBackPress = () => {
-    if (hasFeedbackForHypnosis) {
-      router.back()
-    }
-    else {
-      setIsExitFeedbackModalVisible(true)
-    }
   }
 
   return (
@@ -146,55 +90,13 @@ function HypnosisScreen() {
         lockScreenTitle={t(`day-${day}.title`)}
       />
 
-      <Modal
-        visible={isExitFeedbackModalVisible}
-        onClose={closeExitFeedbackAndBack}
-        variant="gradient"
-      >
-        <View style={styles.doneModalContent}>
-          <ThemedText
-            type="subtitle"
-            style={styles.modalTitle}
-          >
-            {t('hypnosis-adventure-done-modal-title')}
-          </ThemedText>
-
-          <View style={styles.doneImageContainer}>
-            <Image
-              style={styles.doneImage}
-              source={doneImage}
-            />
-          </View>
-
-          <ThemedText
-            type="defaultSemiBold"
-            style={styles.modalDescription}
-          >
-            {t('hypnosis-adventure-done-modal-description')}
-          </ThemedText>
-
-          <ThemedText
-            type="defaultSemiBold"
-            style={styles.modalDescription}
-          >
-            {t('was-this-helpful')}
-          </ThemedText>
-
-          <View style={styles.buttonsContainer}>
-            <Button
-              style={styles.button}
-              onPress={handleExitFeedbackLike}
-              icon={<LikeIcon />}
-            />
-
-            <Button
-              style={styles.button}
-              onPress={handleExitFeedbackDislike}
-              icon={<DislikeIcon />}
-            />
-          </View>
-        </View>
-      </Modal>
+      <ActivityFeedbackModal
+        visible={isFeedbackModalVisible}
+        activityType="hypnosis"
+        onLike={handleLike}
+        onDislike={handleDislike}
+        onSkip={handleSkip}
+      />
 
       <Modal
         visible={isModalVisible}

@@ -69,31 +69,21 @@ function ProtectedLayout() {
         <Stack.Screen name="drink-tracker/manage-urges" />
         <Stack.Screen name="drink-tracker/photo-record" />
         <Stack.Screen name="drink-tracker/drink-tracker-journal" />
+        <Stack.Screen name="action-day/index" />
+        <Stack.Screen name="connection-day/index" />
 
         <Stack.Screen name="free-drink-tracker/start-tracking" />
         <Stack.Screen name="free-drink-tracker/reset-tracking" />
 
         <Stack.Screen name="my-progress" />
 
-        <Stack.Screen
-          name="journaling/day"
-          options={{ gestureEnabled: false }}
-        />
+        <Stack.Screen name="journaling/day" />
         <Stack.Screen name="journaling/intro" />
 
         <Stack.Screen name="box-breathing" />
-        <Stack.Screen
-          name="hypnosis"
-          options={{ gestureEnabled: false }}
-        />
-        <Stack.Screen
-          name="reading"
-          options={{ gestureEnabled: false }}
-        />
-        <Stack.Screen
-          name="movement"
-          options={{ gestureEnabled: false }}
-        />
+        <Stack.Screen name="hypnosis" />
+        <Stack.Screen name="reading" />
+        <Stack.Screen name="movement" />
 
         <Stack.Screen name="blinkist" />
         <Stack.Screen name="master-class" />

@@ -1,25 +1,28 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useEffect, useState } from 'react'
-
 import { Trans, useTranslation } from 'react-i18next'
-
-import { Image, StyleSheet, TextInput, View } from 'react-native'
+import { StyleSheet, TextInput, View } from 'react-native'
 
 import {
   useCompleteActivity,
-  useGetActivityFeedback,
   useGetJournalingAnswers,
   useSaveJournalingAnswer,
-  useSubmitActivityFeedback,
 } from '@/api/queries/daily-activities'
 
-import DislikeIcon from '@/assets/icons/dislike'
-import LikeIcon from '@/assets/icons/like'
-import journalingDoneImage from '@/assets/images/end-of-activity/journaling-done.webp'
+import {
+  ActivityFeedbackModal,
+  Button,
+  Header,
+  ScreenContainer,
+  StepIndicator,
+  ThemedText,
+} from '@/components'
 
-import { Button, Header, Modal, ScreenContainer, StepIndicator, ThemedText } from '@/components'
 import { Colors, withOpacity } from '@/constants/theme'
-import { scale, verticalScale } from '@/utils/responsive'
+
+import { useActivityFeedback } from '@/hooks/use-activity-feedback'
+
+import { scale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
   title: {
@@ -52,45 +55,12 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
   },
-  doneModalContent: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: verticalScale(23),
-  },
-  modalTitle: {
-    textAlign: 'center',
-    color: Colors.light.primary4,
-  },
-  modalDescription: {
-    textAlign: 'center',
-    color: Colors.light.primary4,
-  },
-  doneImageContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: Colors.light.white,
-    width: scale(127),
-    height: scale(127),
-    borderRadius: 9999,
-  },
-  doneImage: {
-    width: scale(90),
-    height: scale(90),
-  },
-  feedbackButtonsContainer: {
-    flexDirection: 'row',
-    gap: scale(16),
-  },
-  feedbackButton: {
-    width: 96,
-  },
 })
 
 function JournalingDayScreen() {
-  const { back } = useRouter()
+  const router = useRouter()
   const [answer, setAnswer] = useState<string>('')
   const [activeStep, setActiveStep] = useState<number>(1)
-  const [isDoneModalVisible, setIsDoneModalVisible] = useState(false)
 
   const { day } = useLocalSearchParams()
   const { t } = useTranslation('journaling')
@@ -98,13 +68,18 @@ function JournalingDayScreen() {
 
   const { mutateAsync: saveJournalingAnswer } = useSaveJournalingAnswer()
   const { mutateAsync: completeActivity } = useCompleteActivity()
-  const { mutate: submitFeedback } = useSubmitActivityFeedback()
   const { data: journalingAnswers } = useGetJournalingAnswers(dayNumber)
-  const { data: activityFeedbackList } = useGetActivityFeedback(dayNumber)
-
-  const hasFeedbackForJournaling = activityFeedbackList?.some(
-    f => f.activity_type === 'journaling',
-  ) ?? false
+  const {
+    isFeedbackModalVisible,
+    hasFeedback,
+    showFeedbackModal,
+    handleLike,
+    handleDislike,
+    handleSkip,
+  } = useActivityFeedback({
+    day: dayNumber,
+    activityType: 'journaling',
+  })
 
   const prompts = t(
     `day-${day}.prompts`,
@@ -118,6 +93,7 @@ function JournalingDayScreen() {
     setAnswer('')
     setActiveStep(activeStep - 1)
   }
+
   const handleNext = async () => {
     await saveJournalingAnswer({
       day: dayNumber,
@@ -128,37 +104,17 @@ function JournalingDayScreen() {
     setAnswer('')
     setActiveStep(activeStep + 1)
   }
-  const closeDoneModalAndBack = () => {
-    setIsDoneModalVisible(false)
-    back()
-  }
 
   const handleDone = async () => {
-    if (hasFeedbackForJournaling) {
-      back()
+    if (hasFeedback) {
+      router.back()
       return
     }
     await completeActivity({
       day: dayNumber,
       activityType: 'journaling',
     })
-    setIsDoneModalVisible(true)
-  }
-  const handleDoneModalLike = () => {
-    submitFeedback({
-      day: dayNumber,
-      activityType: 'journaling',
-      isHelpful: true,
-    })
-    closeDoneModalAndBack()
-  }
-  const handleDoneModalDislike = () => {
-    submitFeedback({
-      day: dayNumber,
-      activityType: 'journaling',
-      isHelpful: false,
-    })
-    closeDoneModalAndBack()
+    showFeedbackModal()
   }
 
   useEffect(() => {
@@ -228,42 +184,13 @@ function JournalingDayScreen() {
         />
       </View>
 
-      <Modal
-        visible={isDoneModalVisible}
-        onClose={closeDoneModalAndBack}
-        variant="gradient"
-      >
-        <View style={styles.doneModalContent}>
-          <ThemedText type="subtitle" style={styles.modalTitle}>
-            {t('great-work')}
-          </ThemedText>
-
-          <View style={styles.doneImageContainer}>
-            <Image style={styles.doneImage} source={journalingDoneImage} />
-          </View>
-
-          <ThemedText type="defaultSemiBold" style={styles.modalDescription}>
-            {t('you-re-creating-the-awareness-needed-to-make-conscious-choices')}
-          </ThemedText>
-
-          <ThemedText type="defaultSemiBold" style={styles.modalDescription}>
-            {t('was-this-helpful')}
-          </ThemedText>
-
-          <View style={styles.feedbackButtonsContainer}>
-            <Button
-              style={styles.feedbackButton}
-              onPress={handleDoneModalLike}
-              icon={<LikeIcon />}
-            />
-            <Button
-              style={styles.feedbackButton}
-              onPress={handleDoneModalDislike}
-              icon={<DislikeIcon />}
-            />
-          </View>
-        </View>
-      </Modal>
+      <ActivityFeedbackModal
+        visible={isFeedbackModalVisible}
+        activityType="journaling"
+        onLike={handleLike}
+        onDislike={handleDislike}
+        onSkip={handleSkip}
+      />
     </ScreenContainer>
   )
 }

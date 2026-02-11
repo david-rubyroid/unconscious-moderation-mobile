@@ -1,22 +1,17 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { memo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FlatList, Image, ImageBackground, Pressable, StyleSheet, View } from 'react-native'
+import { FlatList, ImageBackground, Pressable, StyleSheet, View } from 'react-native'
 
-import {
-  useCompleteActivity,
-  useGetActivityFeedback,
-  useSubmitActivityFeedback,
-} from '@/api/queries/daily-activities'
+import { useCompleteActivity } from '@/api/queries/daily-activities'
 
 import ClockIcon from '@/assets/icons/clock'
-import DislikeIcon from '@/assets/icons/dislike'
-import LikeIcon from '@/assets/icons/like'
-import readingDoneImage from '@/assets/images/end-of-activity/reading-done.webp'
 
-import { Button, Modal, ThemedText } from '@/components'
+import { ActivityFeedbackModal, Button, ThemedText } from '@/components'
 
 import { Colors, withOpacity } from '@/constants/theme'
+import { useActivityFeedback } from '@/hooks/use-activity-feedback'
+
 import { getReadingImage } from '@/utils/reading-images'
 import { scale, verticalScale } from '@/utils/responsive'
 
@@ -69,38 +64,6 @@ const styles = StyleSheet.create({
   button: {
     alignSelf: 'center',
   },
-  doneModalContent: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: verticalScale(23),
-  },
-  modalTitle: {
-    textAlign: 'center',
-    color: Colors.light.primary4,
-  },
-  modalDescription: {
-    textAlign: 'center',
-    color: Colors.light.primary4,
-  },
-  doneImageContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: Colors.light.white,
-    width: scale(127),
-    height: scale(127),
-    borderRadius: 9999,
-  },
-  doneImage: {
-    width: scale(77),
-    height: scale(110),
-  },
-  buttonsContainer: {
-    flexDirection: 'row',
-    gap: scale(16),
-  },
-  feedbackButton: {
-    width: 96,
-  },
   textSizeButtons: {
     flexDirection: 'row',
     gap: scale(15),
@@ -133,21 +96,25 @@ const ReadingContentItem = memo(({
 ))
 
 function ReadingScreen() {
-  const { back } = useRouter()
+  const router = useRouter()
   const { t } = useTranslation('reading')
   const { day } = useLocalSearchParams()
   const dayNumber = Number(day)
 
   const [textType, setTextType] = useState<'default' | 'preSubtitle'>('default')
-  const [isDoneModalVisible, setIsDoneModalVisible] = useState(false)
 
   const { mutateAsync: completeActivity } = useCompleteActivity()
-  const { mutate: submitFeedback } = useSubmitActivityFeedback()
-  const { data: activityFeedbackList } = useGetActivityFeedback(dayNumber)
-
-  const hasFeedbackForReading = activityFeedbackList?.some(
-    f => f.activity_type === 'reading',
-  ) ?? false
+  const {
+    isFeedbackModalVisible,
+    hasFeedback,
+    showFeedbackModal,
+    handleLike,
+    handleDislike,
+    handleSkip,
+  } = useActivityFeedback({
+    day: dayNumber,
+    activityType: 'reading',
+  })
 
   const contentItems = Object.entries(t(`day-${day}.content`, { returnObjects: true }))
   const readingImage = getReadingImage(day)
@@ -156,39 +123,16 @@ function ReadingScreen() {
     setTextType(type)
   }
 
-  const closeDoneModalAndBack = () => {
-    setIsDoneModalVisible(false)
-    back()
-  }
-
   const handleDonePress = async () => {
-    if (hasFeedbackForReading) {
-      back()
+    if (hasFeedback) {
+      router.back()
       return
     }
     await completeActivity({
       day: dayNumber,
       activityType: 'reading',
     })
-    setIsDoneModalVisible(true)
-  }
-
-  const handleDoneModalLike = () => {
-    submitFeedback({
-      day: dayNumber,
-      activityType: 'reading',
-      isHelpful: true,
-    })
-    closeDoneModalAndBack()
-  }
-
-  const handleDoneModalDislike = () => {
-    submitFeedback({
-      day: dayNumber,
-      activityType: 'reading',
-      isHelpful: false,
-    })
-    closeDoneModalAndBack()
+    showFeedbackModal()
   }
 
   return (
@@ -250,42 +194,13 @@ function ReadingScreen() {
         )}
       />
 
-      <Modal
-        visible={isDoneModalVisible}
-        onClose={closeDoneModalAndBack}
-        variant="gradient"
-      >
-        <View style={styles.doneModalContent}>
-          <ThemedText type="subtitle" style={styles.modalTitle}>
-            {t('nice')}
-          </ThemedText>
-
-          <View style={styles.doneImageContainer}>
-            <Image style={styles.doneImage} source={readingDoneImage} />
-          </View>
-
-          <ThemedText type="defaultSemiBold" style={styles.modalDescription}>
-            {t('every-insight-gives-your-brain-new-tools-for-transformation')}
-          </ThemedText>
-
-          <ThemedText type="defaultSemiBold" style={styles.modalDescription}>
-            {t('was-this-helpful')}
-          </ThemedText>
-
-          <View style={styles.buttonsContainer}>
-            <Button
-              style={styles.feedbackButton}
-              onPress={handleDoneModalLike}
-              icon={<LikeIcon />}
-            />
-            <Button
-              style={styles.feedbackButton}
-              onPress={handleDoneModalDislike}
-              icon={<DislikeIcon />}
-            />
-          </View>
-        </View>
-      </Modal>
+      <ActivityFeedbackModal
+        visible={isFeedbackModalVisible}
+        activityType="reading"
+        onLike={handleLike}
+        onDislike={handleDislike}
+        onSkip={handleSkip}
+      />
     </>
   )
 }
