@@ -96,7 +96,7 @@ function ExtraCredit({ dailyActivitiesDay }: ExtraCreditProps) {
           {t('extra-credit')}
         </ThemedText>
       )}
-      defaultOpen={false}
+      defaultOpen
     >
       <View style={styles.items}>
         <Pressable style={styles.item} onPress={handleOpenBlinkist}>

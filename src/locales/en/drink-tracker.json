@@ -2,6 +2,7 @@
   "title": "Drink Tracker",
   "motivational-message": "We're really proud of you for being\n here and <0>being honest with yourself!</0>",
   "insights-dashboard": "Insights Dashboard",
+  "drink-tracker-journal": "Drink Tracker Journal",
   "actions": {
     "start": "Start",
     "continue": "Continue",
@@ -48,7 +49,6 @@
     "drink-type": "Drink Type: {{drinkType}}",
     "max-drinks": "Max Drinks: {{maxDrinks}}",
     "budget": "Budget: {{budget}} {{currency}}",
-    "drink-tracker-journal": "Drink Tracker Journal",
 
     "drink-type-options": {
       "other": "Other",

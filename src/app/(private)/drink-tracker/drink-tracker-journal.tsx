@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { ImageBackground, StyleSheet, View } from 'react-native'
 
 import { useGetDrinkSession } from '@/api/queries/drink-session'
-import { useGetSessionReflection } from '@/api/queries/reflections'
+import { useGetReflections } from '@/api/queries/reflections'
 
 import reflectReinforceImage from '@/assets/images/reflect-reinforce.webp'
 
@@ -72,6 +72,10 @@ const styles = StyleSheet.create({
   button: {
     alignSelf: 'center',
   },
+  reflectionsList: {
+    gap: verticalScale(18),
+    paddingBottom: verticalScale(24),
+  },
 })
 
 function DrinkTrackerJournalScreen() {
@@ -81,9 +85,15 @@ function DrinkTrackerJournalScreen() {
   const { sessionId } = useLocalSearchParams()
 
   const { data: drinkSession } = useGetDrinkSession(Number(sessionId))
-  const { data: sessionReflection } = useGetSessionReflection(Number(sessionId))
+  const { data: reflections = [] } = useGetReflections()
 
   const sessionDate = formatCardDate(drinkSession?.createdAt)
+
+  const sortedReflections = [...reflections]
+    .filter(r => (r.learnings ?? '').trim() !== '')
+    .sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    )
 
   return (
     <ScreenContainer>
@@ -104,24 +114,6 @@ function DrinkTrackerJournalScreen() {
           {t('my-reflections')}
         </ThemedText>
 
-        {(sessionReflection?.learnings ?? '').trim() !== '' && (
-          <View style={styles.card}>
-            <ThemedText style={styles.cardTitle}>
-              {t('post-drinking-summary')}
-            </ThemedText>
-
-            {sessionDate !== '' && (
-              <ThemedText type="default" style={styles.cardDate}>
-                {sessionDate}
-              </ThemedText>
-            )}
-
-            <ThemedText>
-              {sessionReflection?.learnings}
-            </ThemedText>
-          </View>
-        )}
-
         {(drinkSession?.quickWriting ?? '').trim() !== '' && (
           <View style={styles.card}>
             <ThemedText style={styles.cardTitle}>
@@ -134,11 +126,31 @@ function DrinkTrackerJournalScreen() {
               </ThemedText>
             )}
 
-            <ThemedText>
-              {drinkSession?.quickWriting}
-            </ThemedText>
+            <ThemedText>{drinkSession?.quickWriting}</ThemedText>
           </View>
         )}
+
+        <View style={styles.reflectionsList}>
+          {sortedReflections.map(item => (
+            <View key={item.id} style={styles.card}>
+              <ThemedText style={styles.cardTitle}>
+                {t('post-drinking-summary')}
+              </ThemedText>
+
+              <ThemedText type="default" style={styles.cardDate}>
+                {formatCardDate(item.createdAt)}
+              </ThemedText>
+
+              {item.feeling != null && item.feeling !== '' && (
+                <ThemedText type="default" style={styles.cardDate}>
+                  {item.feeling}
+                </ThemedText>
+              )}
+
+              <ThemedText>{item.learnings}</ThemedText>
+            </View>
+          ))}
+        </View>
 
         <Button
           style={styles.button}

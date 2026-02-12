@@ -233,10 +233,7 @@ function ReflectReinforceScreen() {
     })
   }
   const navigateToDrinkTrackerJournal = () => {
-    push({
-      pathname: '/drink-tracker/drink-tracker-journal',
-      params: { sessionId },
-    })
+    push('/drink-tracker/insights-dashboard')
   }
 
   useEffect(() => {

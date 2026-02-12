@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
-    gap: scale(13),
+    gap: scale(6),
     paddingHorizontal: scale(15),
   },
   dayButton: {

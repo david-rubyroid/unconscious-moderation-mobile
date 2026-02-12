@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from 'expo-router'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { StyleSheet, View } from 'react-native'
 
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 
 function HypnosisScreen() {
   const { t } = useTranslation('hypnosis-adventure')
-  const [isModalVisible, setIsModalVisible] = useState(true)
+  const [isModalVisible, setIsModalVisible] = useState(false)
   const hasCompletedRef = useRef(false)
   const { day } = useLocalSearchParams()
   const dayNumber = Number(day)
@@ -72,6 +72,15 @@ function HypnosisScreen() {
   const handleCloseModal = () => {
     setIsModalVisible(false)
   }
+
+  // TODO: Remove this after testing
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsModalVisible(true)
+    }, 300)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   return (
     <ScreenContainer backgroundImage={hypnosisBackgroundImage}>

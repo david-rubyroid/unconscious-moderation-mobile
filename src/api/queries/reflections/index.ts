@@ -12,6 +12,18 @@ import { QUERY_SHORT_CACHE } from '@/api/constants'
 
 import { createMutationFn, createQueryFn } from '@/api/helpers'
 
+export function useGetReflections(
+  options?: QueryOptions<ReflectionResponse[]>,
+) {
+  return useQuery({
+    queryKey: ['drink-tracker', 'reflections'],
+    queryFn: createQueryFn<ReflectionResponse[]>('drink-tracker/reflections'),
+    staleTime: QUERY_SHORT_CACHE.STALE_TIME,
+    retry: QUERY_SHORT_CACHE.RETRY,
+    ...options,
+  })
+}
+
 export function useGetSessionReflections(
   sessionId: number | undefined,
   options?: QueryOptions<ReflectionResponse[]>,

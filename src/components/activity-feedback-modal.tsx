@@ -2,9 +2,12 @@ import type { ImageSourcePropType } from 'react-native'
 
 import type { ActivityFeedbackType } from '@/hooks/use-activity-feedback'
 
+import LottieView from 'lottie-react-native'
+import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Image, StyleSheet, View } from 'react-native'
 
+import confettiAnimation from '@/assets/animations/confetti.json'
 import DislikeIcon from '@/assets/icons/dislike'
 import LikeIcon from '@/assets/icons/like'
 import hypnosisDoneImage from '@/assets/images/end-of-activity/hypnosis-done.webp'
@@ -71,6 +74,12 @@ export interface ActivityFeedbackModalProps {
 }
 
 const styles = StyleSheet.create({
+  confettiContainer: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    transform: [{ scale: 1.5 }],
+  },
   doneModalContent: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -121,6 +130,20 @@ export function ActivityFeedbackModal({
 }: ActivityFeedbackModalProps) {
   const config = ACTIVITY_CONFIG[activityType]
   const { t } = useTranslation(config.namespace)
+  const animationRef = useRef<LottieView>(null)
+
+  useEffect(() => {
+    if (visible) {
+      const timer = setTimeout(() => {
+        animationRef.current?.play()
+      }, 100)
+
+      return () => clearTimeout(timer)
+    }
+    else {
+      animationRef.current?.reset()
+    }
+  }, [visible])
 
   return (
     <Modal
@@ -129,6 +152,14 @@ export function ActivityFeedbackModal({
       variant="gradient"
     >
       <View style={styles.doneModalContent}>
+        <LottieView
+          ref={animationRef}
+          source={confettiAnimation}
+          style={styles.confettiContainer}
+          loop={false}
+          autoPlay={false}
+        />
+
         <ThemedText
           type="subtitle"
           style={styles.modalTitle}
