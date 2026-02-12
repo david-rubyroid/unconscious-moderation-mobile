@@ -52,8 +52,17 @@ function JourneyStreak() {
       </View>
 
       <View style={styles.textContainer}>
-        <ThemedText style={styles.journeyStreakText} type="defaultSemiBold">{t('journey-streak')}</ThemedText>
-        <ThemedText type="defaultSemiBold">{t('journey-streak-description', { days })}</ThemedText>
+        <ThemedText
+          style={styles.journeyStreakText}
+          type="defaultSemiBold"
+        >
+          {t('journey-streak')}
+        </ThemedText>
+        <ThemedText
+          type="defaultSemiBold"
+        >
+          {t('journey-streak-description', { count: days })}
+        </ThemedText>
       </View>
     </View>
   )

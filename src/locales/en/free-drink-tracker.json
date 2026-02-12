@@ -42,7 +42,8 @@
   "let-s-reset": "Let's Reset",
 
   "journey-streak": "Journey Streak:",
-  "journey-streak-description": "days {{days, plural, =1 {day} other {days}}",
+  "journey-streak-description_one": "{{count}} day",
+  "journey-streak-description_other": "{{count}} days",
 
   "start-tracking-description": "Science shows that <0>30 days</0> is what your body needs for a <1>real reset</1>, giving your brain and gut time to recalibrate and <2>build new patterns</2>.\n\n This tracker is your companion, not your judge. Watching those days add up gives you that dopamine hit your brain craves, reinforcing the <3>transformation you're creating</3>.\n\n If you slip up, you're human. We get it. <4>This is about progress, not perfection</4>. We're here with you the whole way.",
 
