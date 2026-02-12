@@ -94,27 +94,30 @@ function JournalingDayScreen() {
     setActiveStep(activeStep - 1)
   }
 
-  const handleNext = async () => {
+  const handleContinue = async () => {
     await saveJournalingAnswer({
       day: dayNumber,
       stepNumber: activeStep,
       answerText: answer,
     })
 
-    setAnswer('')
-    setActiveStep(activeStep + 1)
-  }
+    if (activeStep === totalSteps) {
+      if (hasFeedback) {
+        router.back()
+        return
+      }
 
-  const handleDone = async () => {
-    if (hasFeedback) {
-      router.back()
-      return
+      await completeActivity({
+        day: dayNumber,
+        activityType: 'journaling',
+      })
+
+      showFeedbackModal()
     }
-    await completeActivity({
-      day: dayNumber,
-      activityType: 'journaling',
-    })
-    showFeedbackModal()
+    else {
+      setAnswer('')
+      setActiveStep(activeStep + 1)
+    }
   }
 
   useEffect(() => {
@@ -178,7 +181,7 @@ function JournalingDayScreen() {
 
         <Button
           title={activeStep === totalSteps ? t('done') : t('next')}
-          onPress={activeStep === totalSteps ? handleDone : handleNext}
+          onPress={handleContinue}
           disabled={!answer}
           style={styles.button}
         />

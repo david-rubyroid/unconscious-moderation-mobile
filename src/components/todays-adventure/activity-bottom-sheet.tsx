@@ -54,10 +54,12 @@ const styles = StyleSheet.create({
   },
   bottomSheetContentDescriptionBold: {
     textAlign: 'center',
+    color: Colors.light.primary4,
   },
   bottomSheetContentDescription: {
     fontWeight: 400,
     textAlign: 'center',
+    color: Colors.light.primary4,
   },
   bottomSheetButton: {
     width: 156,

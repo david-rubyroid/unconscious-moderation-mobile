@@ -1,4 +1,4 @@
-import { Link, useRouter } from 'expo-router'
+import { useRouter } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -156,8 +156,6 @@ function HomeScreen() {
 
   return (
     <ScreenContainer scrollable>
-      <Link href="/medical-report">qasdasdasd</Link>
-
       <ThemedText type="subtitle" style={styles.welcome}>
         {t('welcome', { name: user?.firstName })}
       </ThemedText>
