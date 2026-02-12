@@ -8,6 +8,7 @@ import ChevronIcon from '@/assets/icons/chevron'
 import { Modal, ThemedText } from '@/components'
 
 import { Colors, getResponsiveFontSize, getResponsiveLineHeight } from '@/constants/theme'
+
 import { AsyncStorageKey, getItem, setItem } from '@/utils/async-storage'
 import { verticalScale } from '@/utils/responsive'
 
@@ -76,8 +77,11 @@ function FirstTimePopUp() {
     setIsModalVisible(false)
   }
   const handleNextStep = () => {
-    if (onboardingModalStep === MAX_ONBOARDING_MODAL_STEPS)
+    if (onboardingModalStep === MAX_ONBOARDING_MODAL_STEPS) {
+      handleCloseModal()
       return
+    }
+
     setOnboardingModalStep(prev => prev + 1)
   }
   const handlePreviousStep = () => {
