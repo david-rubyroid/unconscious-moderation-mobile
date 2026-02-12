@@ -181,7 +181,7 @@ function ProfileScreen() {
   const fears = user?.fears
 
   return (
-    <ScreenContainer gradientColors={['#BDE5E2', '#DCF1EE', '#E4F4ED', '#B9E2E6']}>
+    <ScreenContainer gradientColors={Colors.light.profileScreenGradient}>
       <Header title={t('title')} />
 
       <PremiumPlanButton />

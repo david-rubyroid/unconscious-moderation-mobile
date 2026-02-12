@@ -28,6 +28,8 @@ export const Colors = {
     // Gradient colors
     gradientStart: '#E5E5E5',
     gradientEnd: '#62BC8C',
+    /** 4-color gradient for profile-related screens (edit-profile, profile tab, connection-day, action-day) */
+    profileScreenGradient: ['#BDE5E2', '#DCF1EE', '#E4F4ED', '#B9E2E6'] as const,
     // Error colors
     error: '#EA4335',
     error2: '#911E3D',
@@ -58,6 +60,8 @@ export const Colors = {
     // Gradient colors
     gradientStart: '#E5E5E5',
     gradientEnd: '#62BC8C',
+    /** 4-color gradient for profile-related screens (edit-profile, profile tab, connection-day, action-day) */
+    profileScreenGradient: ['#BDE5E2', '#DCF1EE', '#E4F4ED', '#B9E2E6'] as const,
     // Error colors
     error: '#EA4335',
     error2: '#911E3D',

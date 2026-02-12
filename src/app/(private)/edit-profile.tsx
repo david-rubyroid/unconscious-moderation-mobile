@@ -44,7 +44,7 @@ function EditProfileScreen() {
 
   const editProfileFormSchema = createEditProfileSchema(t)
 
-  const gradientColors = ['#BDE5E2', '#DCF1EE', '#E4F4ED', '#B9E2E6'] as const
+  const gradientColors = Colors.light.profileScreenGradient
   const ageOptions = AGE_OPTIONS.map(option => ({
     ...option,
     label: t(option.label),

@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     borderColor: withOpacity(Colors.light.black, 0.10),
   },
   buttonContainer: {
-    marginTop: 'auto',
+    marginTop: 25,
     alignItems: 'center',
   },
   modalContainer: {
@@ -196,7 +196,11 @@ function PlanAndPrepareScreen() {
     resolver: zodResolver(createDrinkSessionSchema),
     defaultValues: {
       currency: CURRENCY.USD,
+      maxDrinkCount: '1',
+      budget: '0',
     },
+    mode: 'onChange',
+    reValidateMode: 'onChange',
   })
 
   const handleSelectDrinkOther = (text: string) => {
@@ -296,7 +300,7 @@ function PlanAndPrepareScreen() {
 
   return (
     <>
-      <ScreenContainer scrollable={false}>
+      <ScreenContainer>
         <Header title={t('title')} />
 
         <View style={styles.inputs}>
@@ -397,6 +401,7 @@ function PlanAndPrepareScreen() {
                   name="currency"
                   options={currencyOptions}
                   style={styles.input}
+                  gradientColors={Colors.light.profileScreenGradient}
                 />
               </View>
 

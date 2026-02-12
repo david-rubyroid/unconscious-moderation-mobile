@@ -18,6 +18,8 @@ import {
   BLOOD_PRESSURE_REQUIRED_DAYS,
 } from '@/constants/daily-activities'
 
+import { Colors } from '@/constants/theme'
+
 import {
   createBloodPressureFormSchema,
 } from './blood-pressure-form.schema'
@@ -95,7 +97,7 @@ export default function ActionDayScreen() {
   return (
     <ScreenContainer
       contentContainerStyle={actionDayStyles.contentContainer}
-      gradientColors={['#BDE5E2', '#DCF1EE', '#E4F4ED', '#B9E2E6']}
+      gradientColors={Colors.light.profileScreenGradient}
     >
       <Header title={t('title')} />
 

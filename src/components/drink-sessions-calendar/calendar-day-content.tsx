@@ -53,7 +53,13 @@ export function CalendarDayContent({
       return null
     }
     // Show heart icon for past days without sessions (abstained days)
-    return <HeartOutlineIcon width={scale(23)} height={scale(19)} color={Colors.light.primary4} />
+    return (
+      <HeartOutlineIcon
+        width={scale(23)}
+        height={scale(19)}
+        color={Colors.light.primary4}
+      />
+    )
   }
 
   if (dayData.status === 'completed') {

@@ -45,10 +45,18 @@
     "abstained": "You won the day! No drinks \n today, and that's everything. \n <0>One day at a time.</0>",
 
     "planned-session-reminder": "A reminder of what you <0>committed to</0>:",
-    "drink-type": "Drink Type: {{type}}",
+    "drink-type": "Drink Type: {{drinkType}}",
     "max-drinks": "Max Drinks: {{maxDrinks}}",
     "budget": "Budget: {{budget}} {{currency}}",
     "drink-tracker-journal": "Drink Tracker Journal",
+
+    "drink-type-options": {
+      "other": "Other",
+      "wine": "Wine",
+      "beer": "Beer",
+      "cocktail": "Cocktail",
+      "hard-seltzer-ready-to-drink": "Hard Seltzer"
+    },
 
     "edit-session": "Edit",
     "delete-session": "Delete",

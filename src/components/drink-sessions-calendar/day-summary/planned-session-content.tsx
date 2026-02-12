@@ -62,6 +62,8 @@ export function PlannedSessionContent({
 }: PlannedSessionContentProps) {
   const { t } = useTranslation('drink-tracker')
 
+  const drinkType = t(`day-summary.drink-type-options.${dayData?.drinkType || ''}`)
+
   return (
     <View style={styles.statsContainer}>
       <ThemedText style={styles.messageText}>
@@ -83,11 +85,7 @@ export function PlannedSessionContent({
             type="defaultSemiBold"
             style={styles.plannedSessionDetailsItemText}
           >
-            {t('day-summary.drink-type', {
-              type: dayData?.drinkType === 'other'
-                ? dayData?.drinkTypeOther || ''
-                : dayData?.drinkType || '',
-            })}
+            {t('day-summary.drink-type', { drinkType })}
           </ThemedText>
         </View>
 
