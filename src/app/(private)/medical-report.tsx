@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router'
 
 import { useVideoPlayer, VideoView } from 'expo-video'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useTranslation } from 'react-i18next'
 
@@ -11,6 +11,7 @@ import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native'
 import Animated from 'react-native-reanimated'
 
 import PlaySmall from '@/assets/icons/play-small'
+import Skip from '@/assets/icons/skip'
 
 import { BottomSheetPopup, Button, ScreenContainer, ThemedText } from '@/components'
 
@@ -59,8 +60,24 @@ const styles = StyleSheet.create({
     borderRadius: 36,
     backgroundColor: Colors.light.tertiaryBackground,
   },
+  skipButton: {
+    flexDirection: 'row',
+    gap: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 112,
+    height: 42,
+    borderRadius: 36,
+    backgroundColor: Colors.light.tertiaryBackground,
+  },
   playButtonText: {
     color: Colors.light.primary,
+  },
+  skipButtonContainer: {
+    position: 'absolute',
+    bottom: 40,
+    right: 20,
+    zIndex: 5,
   },
   loadingOverlay: {
     position: 'absolute',
@@ -130,13 +147,31 @@ function MedicalReportScreen() {
     if (player && canStartPlayback) {
       player.play()
       setIsPlaying(true)
-      setShowPopup(true)
     }
+  }
+
+  const handleSkip = () => {
+    if (player) {
+      player.pause()
+    }
+    setShowPopup(true)
   }
 
   const handleReady = () => {
     replace('/(private)/welcome-to-your-journey')
   }
+
+  useEffect(() => {
+    if (!player) {
+      return
+    }
+
+    const subscription = player.addListener('playToEnd', () => {
+      setShowPopup(true)
+    })
+
+    return () => subscription.remove()
+  }, [player])
 
   return (
     <ScreenContainer scrollable={false} withOutSafeAreaPadding>
@@ -180,9 +215,22 @@ function MedicalReportScreen() {
         </Pressable>
       </View>
 
+      {isPlaying && (
+        <View style={styles.skipButtonContainer} pointerEvents="auto">
+          <Pressable style={styles.skipButton} onPress={handleSkip}>
+            <ThemedText type="defaultSemiBold" style={styles.playButtonText}>
+              {t('skip')}
+            </ThemedText>
+
+            <Skip />
+          </Pressable>
+        </View>
+      )}
+
       <BottomSheetPopup
         dismissible={false}
         visible={showPopup}
+        gradientColors={Colors.light.profileScreenGradient}
       >
         <View style={styles.popupContent}>
           <ThemedText type="subtitle" style={styles.popupText}>

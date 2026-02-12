@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router'
+import { Link, useRouter } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -156,10 +156,7 @@ function HomeScreen() {
 
   return (
     <ScreenContainer scrollable>
-      <FeedBackModal
-        visible={showFeedbackModal}
-        onClose={handleCloseFeedbackModal}
-      />
+      <Link href="/medical-report">qasdasdasd</Link>
 
       <ThemedText type="subtitle" style={styles.welcome}>
         {t('welcome', { name: user?.firstName })}
@@ -213,6 +210,11 @@ function HomeScreen() {
       <ExtraCredit dailyActivitiesDay={dailyActivitiesDay} />
 
       <ExternalResources />
+
+      <FeedBackModal
+        visible={showFeedbackModal}
+        onClose={handleCloseFeedbackModal}
+      />
     </ScreenContainer>
   )
 }
