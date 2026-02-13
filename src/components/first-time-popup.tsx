@@ -55,11 +55,11 @@ const styles = StyleSheet.create({
   },
   image: {
     position: 'absolute',
-    bottom: -300,
+    bottom: -280,
     left: 0,
     right: 0,
     width: '100%',
-    height: verticalScale(400),
+    height: verticalScale(300),
     resizeMode: 'contain',
   },
   buttonContainer: {
