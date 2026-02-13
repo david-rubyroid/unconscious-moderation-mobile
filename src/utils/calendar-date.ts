@@ -48,17 +48,33 @@ export function extractUTCDate(date: Date | string | undefined): Date | undefine
 }
 
 /**
+ * Convert local date components to UTC date at midnight
+ * Takes the local year/month/day and creates a UTC date with those same values
+ * @param date - Date with local date components
+ * @returns Date object with local date components as UTC at midnight
+ */
+export function localDateToUTC(date: Date): Date {
+  const year = date.getFullYear()
+  const month = date.getMonth()
+  const day = date.getDate()
+  return new Date(Date.UTC(year, month, day, 0, 0, 0, 0))
+}
+
+/**
  * Find day data for a specific date in the days data array
  */
 export function findDayData(day: Date, daysData: CalendarDayData[]): CalendarDayData | undefined {
+  // Convert the local calendar day to UTC for consistent comparison
+  // This takes local date components (year, month, day) and creates UTC date with same values
+  const dayUTC = localDateToUTC(day)
+
   return daysData.find((d) => {
     // Use extractUTCDate for dates from API to handle timezone correctly
     const dDate = extractUTCDate(d.date) ?? new Date(d.date)
-    // Compare date components instead of timestamps to avoid timezone issues
-    // dDate is in UTC, day is in local time, so compare UTC components with local components
-    return dDate.getUTCFullYear() === day.getFullYear()
-      && dDate.getUTCMonth() === day.getMonth()
-      && dDate.getUTCDate() === day.getDate()
+    // Compare UTC components with UTC components for consistency
+    return dDate.getUTCFullYear() === dayUTC.getUTCFullYear()
+      && dDate.getUTCMonth() === dayUTC.getUTCMonth()
+      && dDate.getUTCDate() === dayUTC.getUTCDate()
   })
 }
 
@@ -72,20 +88,14 @@ export function isBeforeAccountCreation(date: Date, userCreatedAt?: Date): boole
   if (!userCreatedAt)
     return false
 
-  // Extract UTC date from createdAt to avoid timezone issues
-  // This handles both string dates from API and Date objects
-  // extractUTCDate already returns a date at midnight, no need to normalize again
   const createdAtDate = extractUTCDate(userCreatedAt)
   if (!createdAtDate)
     return false
 
-  // Normalize the comparison date to midnight for accurate comparison
-  const dateOnly = normalizeDateToDay(date)
+  // Convert local calendar date to UTC for consistent comparison
+  const dateToCheck = localDateToUTC(date)
 
-  // Use strict < so that the creation day itself (when dates are equal) is NOT blocked
-  // Only dates strictly before the creation day are blocked
-  // createdAtDate is already normalized to midnight, so compare directly
-  return dateOnly.getTime() < createdAtDate.getTime()
+  return dateToCheck.getTime() < createdAtDate.getTime()
 }
 
 /**
