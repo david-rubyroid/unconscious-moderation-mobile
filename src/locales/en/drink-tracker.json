@@ -49,6 +49,7 @@
     "drink-type": "Drink Type: {{drinkType}}",
     "max-drinks": "Max Drinks: {{maxDrinks}}",
     "budget": "Budget: {{budget}} {{currency}}",
+    "drink-tracker-journal": "Drink Tracker Journal",
 
     "drink-type-options": {
       "other": "Other",

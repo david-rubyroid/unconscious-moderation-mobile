@@ -97,15 +97,6 @@ function DrinkTrackerWeekDays() {
     isCurrentDay: boolean,
     hasSession: boolean,
   ): React.ReactNode => {
-    if (isCurrentDay) {
-      return (
-        <HeartIcon
-          width={scale(13)}
-          height={scale(11)}
-          color={Colors.light.white}
-        />
-      )
-    }
     if (hasSession) {
       return (
         <CocktailIcon
@@ -115,6 +106,7 @@ function DrinkTrackerWeekDays() {
         />
       )
     }
+
     return (
       <HeartIcon
         width={scale(13)}
@@ -151,8 +143,7 @@ function DrinkTrackerWeekDays() {
               <ThemedText
                 style={[
                   styles.dayText,
-                  isCurrentDay && styles.dayTextToday,
-                  !isCurrentDay && hasSession && styles.dayTextWithSession,
+                  hasSession && styles.dayTextWithSession,
                 ]}
               >
                 {dayName}
