@@ -91,7 +91,6 @@ export function useLogout(options?: MutationOptions) {
     onSuccess: async () => {
       logoutOneSignal()
       await removeAuthTokens()
-      await removeItem(AsyncStorageKey.DAY_ONE_REMINDER_REQUESTED)
       setHasToken(false)
 
       queryClient.clear()
@@ -130,7 +129,12 @@ export function useDeleteAccount(options?: MutationOptions) {
     onSuccess: async () => {
       logoutOneSignal()
       await removeAuthTokens()
-      await removeItem(AsyncStorageKey.DAY_ONE_REMINDER_REQUESTED)
+      await Promise.all([
+        removeItem(AsyncStorageKey.DAY_ONE_REMINDER_REQUESTED),
+        removeItem(AsyncStorageKey.FIRST_TIME_DRINK_TRACKER_POPUPS),
+        removeItem(AsyncStorageKey.FIRST_TIME_ACTION_DAY_POPUP),
+        removeItem(AsyncStorageKey.FIRST_TIME_CONNECTION_DAY_POPUP),
+      ])
       setHasToken(false)
       queryClient.clear()
     },
