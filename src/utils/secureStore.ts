@@ -9,9 +9,6 @@ export const SecureStoreKey = {
   REFRESH_TOKEN: 'refreshToken',
   IS_FIRST_LAUNCH: 'isFirstLaunch',
   SELECTED_DRINK_LOG_PHOTO_URI: 'selectedDrinkLogPhotoUri',
-  FEEDBACK_MODAL_LAST_SHOWN_DATE: 'feedbackModalLastShownDate',
-  FEEDBACK_MODAL_HAS_BEEN_SHOWN: 'feedbackModalHasBeenShown',
-  FEEDBACK_MODAL_USER_RATED: 'feedbackModalUserRated',
 } as const
 
 export type SecureStoreKeyType = typeof SecureStoreKey[keyof typeof SecureStoreKey]

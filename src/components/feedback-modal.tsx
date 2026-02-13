@@ -1,4 +1,5 @@
 import * as StoreReview from 'expo-store-review'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { Linking, StyleSheet, View } from 'react-native'
@@ -8,6 +9,7 @@ import { Colors } from '@/constants/theme'
 import {
   markFeedbackModalRated,
   markFeedbackModalShown,
+  shouldShowFeedbackModal,
 } from '@/utils/feedback-modal'
 import { verticalScale } from '@/utils/responsive'
 
@@ -16,8 +18,7 @@ import Modal from './modal'
 import ThemedText from './themed-text'
 
 interface FeedBackModalProps {
-  visible: boolean
-  onClose: () => void
+  unlockedDaysCount: number | null | undefined
 }
 
 const styles = StyleSheet.create({
@@ -35,9 +36,13 @@ const styles = StyleSheet.create({
   },
 })
 
-function FeedBackModal({ visible, onClose }: FeedBackModalProps) {
+function FeedBackModal({ unlockedDaysCount }: FeedBackModalProps) {
   const { t } = useTranslation('home')
+  const [visible, setVisible] = useState(false)
 
+  const handleClose = () => {
+    setVisible(false)
+  }
   const handleReallyEnjoyingIt = async () => {
     try {
       const isAvailable = await StoreReview.isAvailableAsync()
@@ -50,7 +55,7 @@ function FeedBackModal({ visible, onClose }: FeedBackModalProps) {
       console.error('Error requesting store review:', error)
     }
     finally {
-      onClose()
+      handleClose()
     }
   }
 
@@ -64,16 +69,26 @@ function FeedBackModal({ visible, onClose }: FeedBackModalProps) {
       await markFeedbackModalShown()
     }
     finally {
-      onClose()
+      handleClose()
     }
   }
+
+  useEffect(() => {
+    const checkShouldShowModal = async () => {
+      const shouldShow = await shouldShowFeedbackModal(unlockedDaysCount)
+      setVisible(shouldShow)
+    }
+
+    checkShouldShowModal()
+  }, [unlockedDaysCount])
 
   return (
     <Modal
       visible={visible}
-      onClose={onClose}
+      onClose={handleClose}
       onUserDismiss={async () => {
         await markFeedbackModalShown()
+        handleClose()
       }}
     >
       <View style={styles.container}>

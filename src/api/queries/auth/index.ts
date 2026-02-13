@@ -134,6 +134,9 @@ export function useDeleteAccount(options?: MutationOptions) {
         removeItem(AsyncStorageKey.FIRST_TIME_DRINK_TRACKER_POPUPS),
         removeItem(AsyncStorageKey.FIRST_TIME_ACTION_DAY_POPUP),
         removeItem(AsyncStorageKey.FIRST_TIME_CONNECTION_DAY_POPUP),
+        removeItem(AsyncStorageKey.FEEDBACK_MODAL_LAST_SHOWN_DATE),
+        removeItem(AsyncStorageKey.FEEDBACK_MODAL_HAS_BEEN_SHOWN),
+        removeItem(AsyncStorageKey.FEEDBACK_MODAL_USER_RATED),
       ])
       setHasToken(false)
       queryClient.clear()

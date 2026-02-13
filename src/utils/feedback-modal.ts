@@ -1,5 +1,6 @@
+import { AsyncStorageKey, getItem, removeItem, setItem } from './async-storage'
+
 import { logDebug } from './logger'
-import { secureStore, SecureStoreKey } from './secureStore'
 
 // Show modal on day 2 as per client request
 const MINIMUM_DAYS = 2
@@ -20,13 +21,13 @@ export async function shouldShowFeedbackModal(
   }
 
   // Check if user already rated positively (never show again)
-  const hasRated = await secureStore.get(SecureStoreKey.FEEDBACK_MODAL_USER_RATED)
+  const hasRated = await getItem(AsyncStorageKey.FEEDBACK_MODAL_USER_RATED)
   if (hasRated === 'true') {
     return false
   }
 
   // Check if modal was shown before
-  const lastShownDate = await secureStore.get(SecureStoreKey.FEEDBACK_MODAL_LAST_SHOWN_DATE)
+  const lastShownDate = await getItem(AsyncStorageKey.FEEDBACK_MODAL_LAST_SHOWN_DATE)
   if (!lastShownDate) {
     // Never shown before, can show
     return true
@@ -47,8 +48,8 @@ export async function shouldShowFeedbackModal(
  */
 export async function markFeedbackModalShown(): Promise<void> {
   const now = new Date().toISOString()
-  await secureStore.set(SecureStoreKey.FEEDBACK_MODAL_LAST_SHOWN_DATE, now)
-  await secureStore.set(SecureStoreKey.FEEDBACK_MODAL_HAS_BEEN_SHOWN, 'true')
+  await setItem(AsyncStorageKey.FEEDBACK_MODAL_LAST_SHOWN_DATE, now)
+  await setItem(AsyncStorageKey.FEEDBACK_MODAL_HAS_BEEN_SHOWN, 'true')
 }
 
 /**
@@ -56,16 +57,16 @@ export async function markFeedbackModalShown(): Promise<void> {
  * This ensures we never show the modal again for this user
  */
 export async function markFeedbackModalRated(): Promise<void> {
-  await secureStore.set(SecureStoreKey.FEEDBACK_MODAL_USER_RATED, 'true')
+  await setItem(AsyncStorageKey.FEEDBACK_MODAL_USER_RATED, 'true')
 }
 
 export async function resetFeedbackModal(): Promise<void> {
   try {
     logDebug('[Feedback Modal] Starting reset...')
 
-    const beforeLastShownDate = await secureStore.get(SecureStoreKey.FEEDBACK_MODAL_LAST_SHOWN_DATE)
-    const beforeHasBeenShown = await secureStore.get(SecureStoreKey.FEEDBACK_MODAL_HAS_BEEN_SHOWN)
-    const beforeUserRated = await secureStore.get(SecureStoreKey.FEEDBACK_MODAL_USER_RATED)
+    const beforeLastShownDate = await getItem(AsyncStorageKey.FEEDBACK_MODAL_LAST_SHOWN_DATE)
+    const beforeHasBeenShown = await getItem(AsyncStorageKey.FEEDBACK_MODAL_HAS_BEEN_SHOWN)
+    const beforeUserRated = await getItem(AsyncStorageKey.FEEDBACK_MODAL_USER_RATED)
 
     logDebug('[Feedback Modal] Before reset', {
       lastShownDate: beforeLastShownDate,
@@ -74,14 +75,14 @@ export async function resetFeedbackModal(): Promise<void> {
     })
 
     await Promise.all([
-      secureStore.remove(SecureStoreKey.FEEDBACK_MODAL_LAST_SHOWN_DATE),
-      secureStore.remove(SecureStoreKey.FEEDBACK_MODAL_HAS_BEEN_SHOWN),
-      secureStore.remove(SecureStoreKey.FEEDBACK_MODAL_USER_RATED),
+      removeItem(AsyncStorageKey.FEEDBACK_MODAL_LAST_SHOWN_DATE),
+      removeItem(AsyncStorageKey.FEEDBACK_MODAL_HAS_BEEN_SHOWN),
+      removeItem(AsyncStorageKey.FEEDBACK_MODAL_USER_RATED),
     ])
 
-    const afterLastShownDate = await secureStore.get(SecureStoreKey.FEEDBACK_MODAL_LAST_SHOWN_DATE)
-    const afterHasBeenShown = await secureStore.get(SecureStoreKey.FEEDBACK_MODAL_HAS_BEEN_SHOWN)
-    const afterUserRated = await secureStore.get(SecureStoreKey.FEEDBACK_MODAL_USER_RATED)
+    const afterLastShownDate = await getItem(AsyncStorageKey.FEEDBACK_MODAL_LAST_SHOWN_DATE)
+    const afterHasBeenShown = await getItem(AsyncStorageKey.FEEDBACK_MODAL_HAS_BEEN_SHOWN)
+    const afterUserRated = await getItem(AsyncStorageKey.FEEDBACK_MODAL_USER_RATED)
 
     const allCleared = !afterLastShownDate && !afterHasBeenShown && !afterUserRated
 

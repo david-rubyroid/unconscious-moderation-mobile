@@ -94,7 +94,6 @@ function DrinkTrackerWeekDays() {
   })
 
   const getDayIcon = (
-    isCurrentDay: boolean,
     hasSession: boolean,
   ): React.ReactNode => {
     if (hasSession) {
@@ -149,7 +148,7 @@ function DrinkTrackerWeekDays() {
                 {dayName}
               </ThemedText>
 
-              {getDayIcon(isCurrentDay, hasSession)}
+              {getDayIcon(hasSession)}
             </Pressable>
           )
         })}

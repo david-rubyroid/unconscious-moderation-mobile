@@ -22,7 +22,6 @@ import {
 } from '@/components'
 import { Colors, withOpacity } from '@/constants/theme'
 
-import { shouldShowFeedbackModal } from '@/utils/feedback-modal'
 import { scale, verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
@@ -107,7 +106,6 @@ function HomeScreen() {
   const { data: daysWithActivities, isLoading: isLoadingDays } = useGetDaysWithActivities()
 
   const [dailyActivitiesDay, setDailyActivitiesDay] = useState<number>(1)
-  const [showFeedbackModal, setShowFeedbackModal] = useState(false)
 
   const hasActiveStreak = currentStreak?.streak?.is_active
   const isLoading = isLoadingUser || isLoadingStreak || isLoadingDays
@@ -126,24 +124,10 @@ function HomeScreen() {
   const handleSetDailyActivitiesDay = (day: number) => {
     setDailyActivitiesDay(day)
   }
-  const handleCloseFeedbackModal = () => {
-    setShowFeedbackModal(false)
-  }
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
     setDailyActivitiesDay(daysWithActivities?.unlockedDaysCount || 1)
-  }, [daysWithActivities?.unlockedDaysCount])
-
-  useEffect(() => {
-    const checkShouldShowModal = async () => {
-      const unlockedDays = daysWithActivities?.unlockedDaysCount
-      const shouldShow = await shouldShowFeedbackModal(unlockedDays)
-
-      setShowFeedbackModal(shouldShow)
-    }
-
-    checkShouldShowModal()
   }, [daysWithActivities?.unlockedDaysCount])
 
   if (isLoading) {
@@ -209,10 +193,7 @@ function HomeScreen() {
 
       <ExternalResources />
 
-      <FeedBackModal
-        visible={showFeedbackModal}
-        onClose={handleCloseFeedbackModal}
-      />
+      <FeedBackModal unlockedDaysCount={daysWithActivities?.unlockedDaysCount} />
     </ScreenContainer>
   )
 }
