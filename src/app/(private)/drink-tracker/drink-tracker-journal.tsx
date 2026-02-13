@@ -76,6 +76,10 @@ const styles = StyleSheet.create({
     gap: verticalScale(18),
     paddingBottom: verticalScale(24),
   },
+  emptyState: {
+    textAlign: 'center',
+    fontStyle: 'italic',
+  },
 })
 
 function DrinkTrackerJournalScreen() {
@@ -131,25 +135,33 @@ function DrinkTrackerJournalScreen() {
         )}
 
         <View style={styles.reflectionsList}>
-          {sortedReflections.map(item => (
-            <View key={item.id} style={styles.card}>
-              <ThemedText style={styles.cardTitle}>
-                {t('post-drinking-summary')}
-              </ThemedText>
-
-              <ThemedText type="default" style={styles.cardDate}>
-                {formatCardDate(item.createdAt)}
-              </ThemedText>
-
-              {item.feeling != null && item.feeling !== '' && (
-                <ThemedText type="default" style={styles.cardDate}>
-                  {item.feeling}
+          {sortedReflections.length === 0
+            ? (
+                <ThemedText style={[styles.cardDate, styles.emptyState]}>
+                  {t('no-reflections-yet')}
                 </ThemedText>
-              )}
+              )
+            : (
+                sortedReflections.map(item => (
+                  <View key={item.id} style={styles.card}>
+                    <ThemedText style={styles.cardTitle}>
+                      {t('post-drinking-summary')}
+                    </ThemedText>
 
-              <ThemedText>{item.learnings}</ThemedText>
-            </View>
-          ))}
+                    <ThemedText type="default" style={styles.cardDate}>
+                      {formatCardDate(item.createdAt)}
+                    </ThemedText>
+
+                    {item.feeling != null && item.feeling !== '' && (
+                      <ThemedText type="default" style={styles.cardDate}>
+                        {item.feeling}
+                      </ThemedText>
+                    )}
+
+                    <ThemedText>{item.learnings}</ThemedText>
+                  </View>
+                ))
+              )}
         </View>
 
         <Button
