@@ -38,7 +38,6 @@ const iconContainerStyle = {
   width: 100,
   backgroundColor: '#BFE3C0',
   borderRadius: '50%' as const,
-  marginBottom: verticalScale(32),
 }
 
 const youReInStyle = {
@@ -108,7 +107,10 @@ function StartTrackingScreen() {
   }
 
   return (
-    <ScreenContainer horizontalPadding={30} contentContainerStyle={freeDrinkTrackerStyles.container}>
+    <ScreenContainer
+      horizontalPadding={30}
+      contentContainerStyle={freeDrinkTrackerStyles.container}
+    >
       <Pressable
         style={freeDrinkTrackerStyles.backButton}
         onPress={router.back}
@@ -121,12 +123,20 @@ function StartTrackingScreen() {
       </Pressable>
 
       <View style={iconContainerStyle}>
-        <CocktailsIcon width={50} height={67} color={Colors.light.primary} />
+        <CocktailsIcon
+          width={50}
+          height={67}
+          color={Colors.light.primary}
+        />
       </View>
 
       <View style={freeDrinkTrackerStyles.titleContainer}>
         <Pressable onPress={handleShowDescription}>
-          <AlertIcon width={13} height={13} style={freeDrinkTrackerStyles.alertIcon} />
+          <AlertIcon
+            width={13}
+            height={13}
+            style={freeDrinkTrackerStyles.alertIcon}
+          />
         </Pressable>
 
         <ThemedText
@@ -137,13 +147,15 @@ function StartTrackingScreen() {
         </ThemedText>
       </View>
 
-      <ThemedText type="defaultSemiBold" style={youReInStyle}>
-        {t('you-re-in')}
-      </ThemedText>
+      <View>
+        <ThemedText type="defaultSemiBold" style={youReInStyle}>
+          {t('you-re-in')}
+        </ThemedText>
 
-      <ThemedText style={freeDrinkTrackerStyles.description}>
-        {t('this-is-your-moment')}
-      </ThemedText>
+        <ThemedText style={freeDrinkTrackerStyles.description}>
+          {t('this-is-your-moment')}
+        </ThemedText>
+      </View>
 
       {hasActiveStreak && (
         <View style={freeDrinkTrackerStyles.activeStreakContainer}>
@@ -181,19 +193,23 @@ function StartTrackingScreen() {
       </View>
 
       <Button
-        style={freeDrinkTrackerStyles.button}
         title={hasActiveStreak ? t('continue-tracking') : t('start-tracking')}
         onPress={hasActiveStreak ? () => router.back() : handleSubmit(onSubmit)}
         disabled={isStartingStreak}
       />
 
-      <ThemedText type="defaultSemiBold" style={freeDrinkTrackerStyles.footerText}>
-        {t('already-whole')}
-      </ThemedText>
+      <View>
+        <ThemedText
+          type="defaultSemiBold"
+          style={freeDrinkTrackerStyles.footerText}
+        >
+          {t('already-whole')}
+        </ThemedText>
 
-      <ThemedText style={freeDrinkTrackerStyles.footerText}>
-        {t('lets-just-move-a-few-wires-around')}
-      </ThemedText>
+        <ThemedText style={freeDrinkTrackerStyles.footerText}>
+          {t('lets-just-move-a-few-wires-around')}
+        </ThemedText>
+      </View>
 
       <BottomSheetPopup
         visible={showDescription}

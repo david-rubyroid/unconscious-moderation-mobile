@@ -10,6 +10,10 @@ export const freeDrinkTrackerStyles = StyleSheet.create({
   container: {
     position: 'relative',
     alignItems: 'center',
+    gap: verticalScale(32),
+  },
+  resetTrackingContainer: {
+    gap: verticalScale(21),
   },
   backButton: {
     position: 'absolute',
@@ -18,15 +22,13 @@ export const freeDrinkTrackerStyles = StyleSheet.create({
   title: {
     textAlign: 'center',
     color: Colors.light.primary4,
-    marginVertical: verticalScale(26),
   },
   titleContainer: {
     position: 'relative',
-    marginBottom: verticalScale(32),
   },
   alertIcon: {
     position: 'absolute',
-    top: -5,
+    top: 0,
     right: -20,
   },
   description: {
@@ -38,21 +40,17 @@ export const freeDrinkTrackerStyles = StyleSheet.create({
     paddingHorizontal: scale(30),
     borderRadius: scale(10),
     backgroundColor: withOpacity(Colors.light.white, 0.5),
-    marginBottom: verticalScale(20),
   },
   whenWasYourLastDrinkContainer: {
     width: '100%',
     alignItems: 'flex-start',
-    marginBottom: verticalScale(16),
   },
   whenWasYourLastDrink: {
     color: Colors.light.primary4,
-    marginBottom: verticalScale(8),
   },
   formContainer: {
     width: '100%',
     gap: verticalScale(16),
-    marginBottom: verticalScale(32),
   },
   timeInput: {
     width: '100%',
@@ -60,9 +58,6 @@ export const freeDrinkTrackerStyles = StyleSheet.create({
     borderWidth: 0,
     borderColor: Colors.light.primary4,
     backgroundColor: withOpacity(Colors.light.white, 0.5),
-  },
-  button: {
-    marginBottom: verticalScale(32),
   },
   footerText: {
     textAlign: 'center',
@@ -98,6 +93,9 @@ export const freeDrinkTrackerStyles = StyleSheet.create({
     color: Colors.light.primary4,
   },
   popupButton: {
+    alignSelf: 'center',
+  },
+  button: {
     alignSelf: 'center',
   },
 })
