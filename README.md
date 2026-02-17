@@ -1,6 +1,21 @@
-# Welcome to your Expo app 👋
+# Unconscious Moderation
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Mobile app (Expo) and backend API.
+
+## Tech stack
+
+**Backend** (separate repo, hosted on AWS App Runner):
+
+- REST API, JWT (access + refresh)
+- Environments: dev / prod via `EXPO_PUBLIC_API_URL`
+
+**Mobile app** (this repo):
+
+- **Expo** (SDK 54), **React Native**, **TypeScript**
+- **expo-router** — routing, **TanStack React Query** — API requests, **ky** — HTTP client
+- **react-hook-form** + **Zod** — forms and validation
+- **OneSignal** — push notifications, **RevenueCat** — subscriptions, **Mixpanel** — analytics
+- Build and OTA: **EAS**
 
 ## Get started
 

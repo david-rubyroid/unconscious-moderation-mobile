@@ -62,8 +62,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(20),
     backgroundColor: Colors.light.white,
     borderRadius: scale(20),
-    maxHeight: verticalScale(103),
-    overflow: 'hidden',
   },
   preparationStepItemImageStyle: {
     resizeMode: 'cover',
@@ -164,8 +162,16 @@ function PreDrinkChecklistScreen() {
         <Trans
           i18nKey="pre-drink-checklist:description"
           components={[
-            <ThemedText type="defaultSemiBold" key="0" style={styles.preparationMessageBold} />,
-            <ThemedText type="defaultSemiBold" key="1" style={styles.preparationMessageBold} />,
+            <ThemedText
+              type="defaultSemiBold"
+              key="0"
+              style={styles.preparationMessageBold}
+            />,
+            <ThemedText
+              type="defaultSemiBold"
+              key="1"
+              style={styles.preparationMessageBold}
+            />,
           ]}
         />
       </ThemedText>
@@ -177,7 +183,7 @@ function PreDrinkChecklistScreen() {
       >
         <View style={styles.preparationStepsWrapper}>
           <View style={styles.progressStepsContainer}>
-            <ProgressSteps steps={steps} connectorHeight={verticalScale(80)} />
+            <ProgressSteps steps={steps} connectorHeight={verticalScale(100)} />
           </View>
 
           <View style={styles.keyMomentsCardsContainer}>
@@ -190,11 +196,17 @@ function PreDrinkChecklistScreen() {
               >
                 <View style={styles.preparationStepItemOverlay} />
 
-                <ThemedText type="defaultSemiBold" style={styles.preparationStepItemTitle}>
+                <ThemedText
+                  type="defaultSemiBold"
+                  style={styles.preparationStepItemTitle}
+                >
                   {t('hydration')}
                 </ThemedText>
 
-                <ThemedText type="default" style={styles.preparationStepItemDescription}>
+                <ThemedText
+                  type="default"
+                  style={styles.preparationStepItemDescription}
+                >
                   {t('hydration-description')}
                 </ThemedText>
               </ImageBackground>
@@ -208,11 +220,17 @@ function PreDrinkChecklistScreen() {
               >
                 <View style={styles.preparationStepItemOverlay} />
 
-                <ThemedText type="defaultSemiBold" style={styles.preparationStepItemTitle}>
+                <ThemedText
+                  type="defaultSemiBold"
+                  style={styles.preparationStepItemTitle}
+                >
                   {t('self-hypnosis')}
                 </ThemedText>
 
-                <ThemedText type="default" style={styles.preparationStepItemDescription}>
+                <ThemedText
+                  type="default"
+                  style={styles.preparationStepItemDescription}
+                >
                   {t('self-hypnosis-description')}
                 </ThemedText>
               </ImageBackground>
@@ -226,11 +244,17 @@ function PreDrinkChecklistScreen() {
               >
                 <View style={styles.preparationStepItemOverlay} />
 
-                <ThemedText type="defaultSemiBold" style={styles.preparationStepItemTitle}>
+                <ThemedText
+                  type="defaultSemiBold"
+                  style={styles.preparationStepItemTitle}
+                >
                   {t('mantra')}
                 </ThemedText>
 
-                <ThemedText type="default" style={styles.preparationStepItemDescription}>
+                <ThemedText
+                  type="default"
+                  style={styles.preparationStepItemDescription}
+                >
                   {t('mantra-description')}
                 </ThemedText>
               </ImageBackground>
