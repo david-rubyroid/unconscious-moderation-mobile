@@ -91,6 +91,9 @@ export const actionDayStyles = StyleSheet.create({
     borderBottomRightRadius: scale(10),
     borderBottomWidth: 0,
   },
+  tableRowHighlight: {
+    backgroundColor: withOpacity(Colors.light.primary, 0.15),
+  },
   tableCellReading: {
     width: scale(115),
     paddingTop: 12,

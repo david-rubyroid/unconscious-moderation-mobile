@@ -59,6 +59,7 @@ export default function ActionDayScreen() {
     control,
     handleSubmit,
     setValue,
+    watch,
     formState: { isValid },
   } = useForm<BloodPressureFormValues>({
     resolver: zodResolver(bloodPressureFormSchema) as Resolver<BloodPressureFormValues>,
@@ -135,7 +136,10 @@ export default function ActionDayScreen() {
 
           <BloodPressureForm control={control} />
 
-          <BloodPressureTable />
+          <BloodPressureTable
+            systolicPressure={watch('systolicPressure')}
+            diastolicPressure={watch('diastolicPressure')}
+          />
         </>
       )}
 

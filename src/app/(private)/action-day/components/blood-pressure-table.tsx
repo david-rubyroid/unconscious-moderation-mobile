@@ -4,15 +4,34 @@ import { View } from 'react-native'
 import FillHeartIcon from '@/assets/icons/fill-heart'
 import FillHeartWithArrowIcon from '@/assets/icons/fill-heart-with-arrow'
 import WarningIcon from '@/assets/icons/warning'
-import { ThemedText } from '@/components'
-import { Colors } from '@/constants/theme'
-import { BLOOD_PRESSURE_CATEGORIES } from '@/utils/blood-pressure'
-import { scale } from '@/utils/responsive'
 
+import { ThemedText } from '@/components'
+
+import { Colors } from '@/constants/theme'
+
+import {
+  BLOOD_PRESSURE_CATEGORIES,
+  getBloodPressureCategory,
+} from '@/utils/blood-pressure'
+
+import { scale } from '@/utils/responsive'
 import { actionDayStyles } from '../styles'
 
-export function BloodPressureTable() {
+interface BloodPressureTableProps {
+  systolicPressure?: number
+  diastolicPressure?: number
+}
+
+export function BloodPressureTable({
+  systolicPressure,
+  diastolicPressure,
+}: BloodPressureTableProps) {
   const { t } = useTranslation('action-days')
+
+  const highlightedCategory
+    = systolicPressure && diastolicPressure
+      ? getBloodPressureCategory(systolicPressure, diastolicPressure)
+      : null
 
   return (
     <>
@@ -40,6 +59,8 @@ export function BloodPressureTable() {
                 ? FillHeartWithArrowIcon
                 : WarningIcon
 
+          const isHighlighted = key === highlightedCategory
+
           return (
             <View
               key={key}
@@ -47,9 +68,13 @@ export function BloodPressureTable() {
                 actionDayStyles.tableRow,
                 isFirst && actionDayStyles.tableRowFirst,
                 isLast && actionDayStyles.tableRowLast,
+                isHighlighted && actionDayStyles.tableRowHighlight,
               ]}
             >
-              <ThemedText type="defaultSemiBold" style={actionDayStyles.tableCellReading}>
+              <ThemedText
+                type="defaultSemiBold"
+                style={actionDayStyles.tableCellReading}
+              >
                 {reading}
               </ThemedText>
 
