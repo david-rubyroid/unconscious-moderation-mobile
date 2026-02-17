@@ -25,7 +25,7 @@
     "prompts": {
       "1": {
         "title": "RAIN technique",
-        "description": "Close your eyes and take three deep breaths. Try the RAIN technique with whatever emotions showed up for you today: Recognize what you're feeling right now without trying to change it, Allow these emotions to be present instead of pushing them away, Investigate where you feel them in your body (tight chest? tense shoulders? fluttery stomach?) and offer yourself Natural kindness, remember you are not defined by my emotions, these feelings are temporary and will pass.\n\n<0>Write about this process, what did you discover about how emotions actually move through you when you don't resist them?</0>"
+        "description": "Close your eyes and take three deep breaths. Try the RAIN technique with whatever emotions showed up for you today:\n<2>Recognize</2> what you're feeling right now\nwithout trying to change it.\n<3>Allow</3> these emotions to be present instead of pushing them away.\n<4>Investigate</4> where you feel them in your body (tight chest? tense shoulders? fluttery stomach?) and offer yourself.\n<4>Natural kindness</4>, remember you are not defined by my emotions, these feelings are temporary and will pass.\n\n<0>Write about this process, what did you discover about how emotions actually move through you when you don't resist them?</0>"
       }
     }
   },

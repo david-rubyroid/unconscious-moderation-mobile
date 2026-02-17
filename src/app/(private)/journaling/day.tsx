@@ -41,6 +41,9 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     marginBottom: 10,
   },
+  promptDescriptionBold: {
+    fontWeight: '600',
+  },
   promptInput: {
     borderWidth: 1,
     borderColor: withOpacity(Colors.light.black, 0.2),
@@ -153,6 +156,9 @@ function JournalingDayScreen() {
             components={[
               <ThemedText key="0" type="default" style={{ color: Colors.light.primary }} />,
               <ThemedText key="1" type="default" style={{ color: Colors.light.primary }} />,
+              <ThemedText key="2" type="default" style={styles.promptDescriptionBold} />,
+              <ThemedText key="3" type="default" style={styles.promptDescriptionBold} />,
+              <ThemedText key="4" type="default" style={styles.promptDescriptionBold} />,
             ]}
           />
         </ThemedText>
