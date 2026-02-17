@@ -55,6 +55,10 @@ export function useAudioPlayer(audioUri: string): UseAudioPlayerReturn {
   const isLoading = status === undefined || (duration === 0 && currentTime === 0)
 
   const play = () => {
+    // When not looping, allow replay from start after track has ended
+    if (player && duration > 0 && !isPlaying && currentTime >= duration - 0.5) {
+      player.seekTo(0)
+    }
     player?.play()
   }
   const pause = () => {

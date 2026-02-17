@@ -37,6 +37,7 @@ interface AudioPlayerProps {
   lockScreenTitle?: string
   lockScreenArtist?: string
   showLockScreenControls?: boolean
+  loop?: boolean
 }
 
 const CIRCLE_SIZE = 300
@@ -145,6 +146,7 @@ function AudioPlayer({
   lockScreenTitle,
   lockScreenArtist = 'Unconscious Moderation',
   showLockScreenControls = true,
+  loop = false,
 }: AudioPlayerProps) {
   const hasCalledOnPlayStartRef = useRef(false)
 
@@ -360,9 +362,9 @@ function AudioPlayer({
   // Set loop mode
   useEffect(() => {
     if (player) {
-      player.loop = true
+      player.loop = loop
     }
-  }, [player])
+  }, [player, loop])
   // Load saved position on mount
   useEffect(() => {
     getAudioPosition(audioUri).then(setSavedPosition)
