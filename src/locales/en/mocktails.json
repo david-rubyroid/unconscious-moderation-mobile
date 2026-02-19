@@ -1,0 +1,55 @@
+{
+  "title": "Mocktails",
+  "description": "Get creative! Discover the\n mocktail recipes we have for you.",
+  "mocktail-1": {
+    "title": "Citrus Stillness Mocktail"
+  },
+  "mocktail-2": {
+    "title": "Cranberry Punch Mocktail"
+  },
+  "mocktail-3": {
+    "title": "Watermelon Clear Mocktail"
+  },
+  "mocktail-4": {
+    "title": "Green Apple Lift Mocktail"
+  },
+  "mocktail-5": {
+    "title": "Pineapple Clarity Mocktail"
+  },
+  "mocktail-6": {
+    "title": "Pineapple Ginger Fizz Mocktail"
+  },
+  "mocktail-7": {
+    "title": "Strawberry Champagne Fizz Mocktail"
+  },
+  "mocktail-8": {
+    "title": "White Latte"
+  },
+  "mocktail-9": {
+    "title": "Coconut Coquito Mocktail"
+  },
+  "mocktail-10": {
+    "title": "Maple Ginger Mule Mocktail"
+  },
+  "mocktail-11": {
+    "title": "Berry Fizz Mocktail"
+  },
+  "mocktail-12": {
+    "title": "Golden Harvest Mocktail"
+  },
+  "mocktail-13": {
+    "title": "Dracula's Mojito Mocktail"
+  },
+  "mocktail-14": {
+    "title": "Grapefruit Twist Mocktail"
+  },
+  "mocktail-15": {
+    "title": "Piña Colada Mocktail"
+  },
+  "mocktail-16": {
+    "title": "Coconut Lemonade Mocktail"
+  },
+  "mocktail-17": {
+    "title": "Blueberry Mint Mocktail"
+  }
+}

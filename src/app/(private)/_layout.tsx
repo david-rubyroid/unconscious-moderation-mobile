@@ -84,6 +84,7 @@ function ProtectedLayout() {
         <Stack.Screen name="hypnosis" />
         <Stack.Screen name="reading" />
         <Stack.Screen name="movement" />
+        <Stack.Screen name="moktails" />
 
         <Stack.Screen name="blinkist" />
         <Stack.Screen name="master-class" />

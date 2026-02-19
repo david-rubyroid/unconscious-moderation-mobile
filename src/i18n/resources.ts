@@ -21,6 +21,7 @@ import enLogin from '@/locales/en/login.json'
 import enManageUrges from '@/locales/en/manage-urges.json'
 import enMantra from '@/locales/en/mantra.json'
 import enMedicalReport from '@/locales/en/medical-report.json'
+import enMocktails from '@/locales/en/mocktails.json'
 import enMovement from '@/locales/en/movement.json'
 import enMyProgress from '@/locales/en/my-progress.json'
 import enPhotoRecord from '@/locales/en/photo-record.json'
@@ -78,6 +79,7 @@ const localeFiles = {
   'en/drink-tracker-journal': enDrinkTrackerJournal,
   'en/connection-days': enConnectionDays,
   'en/action-days': enActionDays,
+  'en/mocktails': enMocktails,
 }
 
 export function getResources() {
