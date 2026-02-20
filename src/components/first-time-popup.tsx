@@ -6,6 +6,7 @@ import { Image, StyleSheet, View } from 'react-native'
 import { Colors } from '@/constants/theme'
 
 import { moderateScale, scale, verticalScale } from '@/utils/responsive'
+
 import Button from './button'
 import ThemedText from './themed-text'
 
@@ -13,7 +14,6 @@ interface FirstTimePopupProps {
   screenNumber: number
   imageSource: any
 }
-
 interface FirstTimePopupContent {
   title: string
   subtitle: string
@@ -71,11 +71,13 @@ const styles = StyleSheet.create({
 })
 
 function FirstTimePopup({ screenNumber, imageSource }: FirstTimePopupProps) {
+  const { back } = useRouter()
   const { t } = useTranslation('home')
 
-  const { back } = useRouter()
-
-  const content = t(`first-time-popups.${screenNumber}`, { returnObjects: true })
+  const content = t(
+    `first-time-popups.${screenNumber}`,
+    { returnObjects: true },
+  )
   const { title, subtitle } = content as FirstTimePopupContent
 
   const navigateToHome = () => {

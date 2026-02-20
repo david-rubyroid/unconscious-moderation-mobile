@@ -21,6 +21,7 @@ export interface User {
   referralSource: UserReferralSource
   gifts?: Gift[]
   fears?: Fear[]
+  yourAnchor?: string | null
   medicalQuestionsCompletedAt: Date | null
   createdAt: Date
 }

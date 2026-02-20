@@ -3,17 +3,25 @@ import { Stack } from 'expo-router'
 import { ThemedGradient, TrophyManager } from '@/components'
 
 import { useAuth } from '@/context/auth/use'
+import { logDebug } from '@/utils/logger'
 
 function ProtectedLayout() {
   const { user } = useAuth()
+
+  logDebug('yourAnchor', { yourAnchor: user?.yourAnchor })
 
   const isBasicInfoCompleted = Boolean(user?.gender && user?.age && user?.referralSource)
   const isGiftsCompleted = Boolean(user?.gifts && user?.gifts.length > 0)
   const isFearsCompleted = Boolean(user?.fears && user?.fears.length > 0)
   const isMedicalQuestionsCompleted = Boolean(user?.medicalQuestionsCompletedAt)
+  const isYourAnchorCompleted = Boolean(user?.yourAnchor)
 
   const isHomeScreenAvailable
-    = isBasicInfoCompleted && isGiftsCompleted && isFearsCompleted && isMedicalQuestionsCompleted
+    = isBasicInfoCompleted
+      && isGiftsCompleted
+      && isFearsCompleted
+      && isMedicalQuestionsCompleted
+      && isYourAnchorCompleted
 
   return (
     <ThemedGradient>
@@ -29,13 +37,15 @@ function ProtectedLayout() {
         </Stack.Protected>
 
         <Stack.Protected guard={!isGiftsCompleted}>
-          <Stack.Screen
-            name="gifts"
-          />
+          <Stack.Screen name="gifts" />
         </Stack.Protected>
 
         <Stack.Protected guard={!isFearsCompleted}>
           <Stack.Screen name="fears" />
+        </Stack.Protected>
+
+        <Stack.Protected guard={!isYourAnchorCompleted}>
+          <Stack.Screen name="your-anchor" />
         </Stack.Protected>
 
         <Stack.Protected guard={!isMedicalQuestionsCompleted}>
@@ -78,7 +88,6 @@ function ProtectedLayout() {
         <Stack.Screen name="my-progress" />
 
         <Stack.Screen name="journaling/day" />
-        <Stack.Screen name="journaling/intro" />
 
         <Stack.Screen name="box-breathing" />
         <Stack.Screen name="hypnosis" />

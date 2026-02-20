@@ -143,7 +143,7 @@ function FearsScreen() {
   const handleSaveFears = () => {
     addFears({ fears: selectedFears }, {
       onSuccess: () => {
-        replace('/(private)/shared-awareness')
+        replace('/(private)/your-anchor')
       },
       onError: () => {
         Toast.show({

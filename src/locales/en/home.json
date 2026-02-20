@@ -1,6 +1,7 @@
 {
   "welcome": "Welcome, {{name}}",
   "reminder": "Reminder:",
+  "your-anchor": "Your Anchor:",
   "last-drink": "Last Drink:",
   "start": "Start",
   "start-session": "Start Session",

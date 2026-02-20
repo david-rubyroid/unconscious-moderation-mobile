@@ -38,6 +38,7 @@ import enRegister from '@/locales/en/register.json'
 import enToolkit from '@/locales/en/toolkit.json'
 import enTrophies from '@/locales/en/trophies.json'
 import enWelcomeToYourJourney from '@/locales/en/welcome-to-your-journey.json'
+import enYourAnchor from '@/locales/en/your-anchor.json'
 
 const localeFiles = {
   'en/intro': enIntro,
@@ -80,6 +81,7 @@ const localeFiles = {
   'en/connection-days': enConnectionDays,
   'en/action-days': enActionDays,
   'en/mocktails': enMocktails,
+  'en/your-anchor': enYourAnchor,
 }
 
 export function getResources() {

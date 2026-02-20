@@ -1,21 +1,33 @@
 import { useRouter } from 'expo-router'
 import { useMemo, useState } from 'react'
-
 import { Trans, useTranslation } from 'react-i18next'
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
-
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-
 import Toast from 'react-native-toast-message'
 
 import { useUserGiftsAdd } from '@/api/queries/user'
 
-import { Button, Modal, TextInput, ThemedGradient, ThemedText } from '@/components'
+import {
+  Button,
+  Modal,
+  TextInput,
+  ThemedGradient,
+  ThemedText,
+} from '@/components'
 
-import { LIFESTYLE_UPGRADES, MENTAL_EMOTIONAL_CLARITY, PHYSICAL_EMOTIONAL_BENEFITS } from '@/constants/gifts-and-fears'
-
+import {
+  LIFESTYLE_UPGRADES,
+  MENTAL_EMOTIONAL_CLARITY,
+  PHYSICAL_EMOTIONAL_BENEFITS,
+} from '@/constants/gifts-and-fears'
 import { Colors, withOpacity } from '@/constants/theme'
-import { moderateScale, scale, scaleWithMax, verticalScale } from '@/utils/responsive'
+
+import {
+  moderateScale,
+  scale,
+  scaleWithMax,
+  verticalScale,
+} from '@/utils/responsive'
 
 const styles = StyleSheet.create({
   container: {

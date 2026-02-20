@@ -45,7 +45,11 @@ const styles = StyleSheet.create({
   },
   quoteContainer: {
     paddingHorizontal: scale(19),
-    marginBottom: verticalScale(31),
+    marginBottom: verticalScale(19),
+  },
+  yourAnchorContainer: {
+    paddingHorizontal: scale(19),
+    marginBottom: verticalScale(19),
   },
   lastDrinkContainer: {
     paddingHorizontal: scale(33),
@@ -155,6 +159,18 @@ function HomeScreen() {
 
         <ThemedText type="defaultSemiBold" style={styles.breneBrownQuoteAuthor}>
           {tQuotes(`day-${dailyActivitiesDay}.author`)}
+        </ThemedText>
+      </View>
+
+      <View style={styles.yourAnchorContainer}>
+        <ThemedText type="defaultSemiBold" style={styles.reminder}>
+          {t('your-anchor')}
+        </ThemedText>
+
+        <ThemedText type="default" style={styles.breneBrownQuote}>
+          "
+          {user?.yourAnchor}
+          "
         </ThemedText>
       </View>
 

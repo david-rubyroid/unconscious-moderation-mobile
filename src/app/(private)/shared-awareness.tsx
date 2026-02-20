@@ -1,45 +1,60 @@
 import { useRouter } from 'expo-router'
+import { Trans, useTranslation } from 'react-i18next'
+import { StyleSheet, View } from 'react-native'
 
-import { useTranslation } from 'react-i18next'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import {
+  useGetUserFears,
+  useGetUserGifts,
+  useUpdateUser,
+} from '@/api/queries/user'
 
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import {
+  AwarenessSection,
+  Button,
+  ScreenContainer,
+  ThemedText,
+} from '@/components'
 
-import { useGetUserFears, useGetUserGifts, useUpdateUser } from '@/api/queries/user'
-
-import { AwarenessSection, Button, ThemedGradient, ThemedText } from '@/components'
-import { Colors } from '@/constants/theme'
-import { verticalScale } from '@/utils/responsive'
+import { Colors, withOpacity } from '@/constants/theme'
+import { useAuth } from '@/context/auth/use'
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingHorizontal: 21,
+    gap: 20,
   },
   title: {
+    fontWeight: 700,
     textAlign: 'center',
     color: Colors.light.primary4,
-    fontWeight: 700,
-    marginBottom: 22,
   },
   description: {
     textAlign: 'center',
     color: Colors.light.primary4,
-    marginBottom: 20,
+  },
+  yourAnchorContainer: {
+    gap: 10,
+    padding: 17,
+    backgroundColor: withOpacity(Colors.light.white, 0.5),
+    borderRadius: 15,
+  },
+  yourAnchorTextBold: {
+    textAlign: 'center',
+    color: Colors.light.primary4,
+  },
+  yourAnchorText: {
+    textAlign: 'center',
+    color: Colors.light.primary4,
+    fontWeight: 400,
   },
   section: {
+    gap: 25,
     padding: 16,
     borderRadius: 10,
-    flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 25,
-  },
-  buttonContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
+    flexDirection: 'row',
   },
   button: {
+    alignSelf: 'center',
     width: 233,
   },
 })
@@ -47,11 +62,14 @@ const styles = StyleSheet.create({
 function SharedAwarenessScreen() {
   const { replace } = useRouter()
   const { t } = useTranslation('questions')
-  const { top, bottom } = useSafeAreaInsets()
+
+  const { user } = useAuth()
 
   const { data: fears } = useGetUserFears()
   const { data: gifts } = useGetUserGifts()
   const { mutate: updateUser, isPending: isUpdatingUser } = useUpdateUser()
+
+  const anchor = user?.yourAnchor ?? ''
 
   const handleContinue = () => {
     updateUser({
@@ -63,35 +81,59 @@ function SharedAwarenessScreen() {
     })
   }
   return (
-    <ThemedGradient style={[{ paddingTop: top + verticalScale(10), paddingBottom: bottom + verticalScale(10) }, styles.container]}>
-      <ThemedText style={styles.title} type="defaultSemiBold">{t('shared-awareness-title')}</ThemedText>
+    <ScreenContainer contentContainerStyle={styles.container}>
+      <ThemedText
+        style={styles.title}
+        type="defaultSemiBold"
+      >
+        {t('shared-awareness-title')}
+      </ThemedText>
 
-      <ThemedText style={styles.description} type="default">{t('shared-awareness-description')}</ThemedText>
+      <ThemedText
+        style={styles.description}
+        type="default"
+      >
+        {t('shared-awareness-description')}
+      </ThemedText>
 
-      <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
-        <View style={styles.section}>
-          <AwarenessSection
-            title={t('shared-awareness-gifts')}
-            items={gifts}
+      <View style={styles.yourAnchorContainer}>
+        <ThemedText
+          type="preSubtitle"
+          style={styles.yourAnchorText}
+        >
+          <Trans
+            i18nKey="questions:your-anchor"
+            values={{ anchor }}
+            components={[
+              <ThemedText
+                key="0"
+                type="preSubtitle"
+                style={styles.yourAnchorTextBold}
+              />,
+            ]}
           />
-          <AwarenessSection
-            title={t('shared-awareness-fears')}
-            items={fears}
-          />
-        </View>
-      </ScrollView>
+        </ThemedText>
+      </View>
 
-      <View style={styles.buttonContainer}>
-        <Button
-          loading={isUpdatingUser}
-          disabled={isUpdatingUser}
-          style={styles.button}
-          title={t('shared-awareness-button')}
-          onPress={handleContinue}
+      <View style={styles.section}>
+        <AwarenessSection
+          title={t('shared-awareness-gifts')}
+          items={gifts}
+        />
+        <AwarenessSection
+          title={t('shared-awareness-fears')}
+          items={fears}
         />
       </View>
-    </ThemedGradient>
 
+      <Button
+        loading={isUpdatingUser}
+        disabled={isUpdatingUser}
+        style={styles.button}
+        title={t('shared-awareness-button')}
+        onPress={handleContinue}
+      />
+    </ScreenContainer>
   )
 }
 

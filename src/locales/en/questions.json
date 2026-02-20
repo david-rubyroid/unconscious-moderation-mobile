@@ -23,6 +23,7 @@
   "advertisement": "Advertisement",
   "other": "Other",
   "continue": "Continue",
+  "your-anchor": "<0>Your Anchor</0>:\n\"{{anchor}}\"",
 
   "why-do-you-want-to-change-your-drinking-habits": "Why do you <0>want to \nchange</0> your drinking habits? What do \nyou <1>hope to gain</1> from this change?</0>",
   "mental-emotional-clarity": "Mental + Emotional Clarity",

@@ -1,14 +1,22 @@
 import { MaterialIcons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
-import { openBrowserAsync, WebBrowserPresentationStyle } from 'expo-web-browser'
-import { useTranslation } from 'react-i18next'
+import {
+  openBrowserAsync,
+  WebBrowserPresentationStyle,
+} from 'expo-web-browser'
+import { Trans, useTranslation } from 'react-i18next'
 
 import { Alert, Pressable, StyleSheet, View } from 'react-native'
 
-import { useDeleteAccount, useGetCurrentUser, useLogout } from '@/api/queries/auth'
+import {
+  useDeleteAccount,
+  useGetCurrentUser,
+  useLogout,
+} from '@/api/queries/auth'
 
 import AlertIcon from '@/assets/icons/alert'
 import ShieldIcon from '@/assets/icons/shield'
+
 import {
   AwarenessSection,
   Header,
@@ -19,6 +27,7 @@ import {
   ThemedText,
   TrophyCards,
 } from '@/components'
+
 import { Colors, withOpacity } from '@/constants/theme'
 import { scale, verticalScale } from '@/utils/responsive'
 
@@ -62,7 +71,7 @@ const styles = StyleSheet.create({
   myTLineTitle: {
     textAlign: 'center',
     color: Colors.light.primary4,
-    marginBottom: verticalScale(20),
+    marginBottom: verticalScale(16),
   },
   awarenessSection: {
     padding: scale(16),
@@ -107,6 +116,22 @@ const styles = StyleSheet.create({
     color: Colors.light.primary4,
     marginBottom: verticalScale(20),
   },
+  yourAnchorContainer: {
+    gap: scale(10),
+    padding: scale(17),
+    backgroundColor: withOpacity(Colors.light.white, 0.5),
+    borderRadius: scale(15),
+    marginBottom: verticalScale(16),
+  },
+  yourAnchorText: {
+    textAlign: 'center',
+    color: Colors.light.primary4,
+    fontWeight: 400,
+  },
+  yourAnchorTextBold: {
+    textAlign: 'center',
+    color: Colors.light.primary4,
+  },
 })
 
 function ProfileScreen() {
@@ -116,6 +141,10 @@ function ProfileScreen() {
   const { data: user } = useGetCurrentUser()
   const { mutateAsync: logout } = useLogout()
   const { mutateAsync: deleteAccount } = useDeleteAccount()
+
+  const gifts = user?.gifts
+  const fears = user?.fears
+  const anchor = user?.yourAnchor ?? ''
 
   const handleLogout = () => {
     Alert.alert(
@@ -177,8 +206,6 @@ function ProfileScreen() {
       presentationStyle: WebBrowserPresentationStyle.AUTOMATIC,
     })
   }
-  const gifts = user?.gifts
-  const fears = user?.fears
 
   return (
     <ScreenContainer gradientColors={Colors.light.profileScreenGradient}>
@@ -201,6 +228,25 @@ function ProfileScreen() {
       </ThemedText>
 
       <TrophyCards />
+
+      <View style={styles.yourAnchorContainer}>
+        <ThemedText
+          type="preSubtitle"
+          style={styles.yourAnchorText}
+        >
+          <Trans
+            i18nKey="questions:your-anchor"
+            values={{ anchor }}
+            components={[
+              <ThemedText
+                key="0"
+                type="preSubtitle"
+                style={styles.yourAnchorTextBold}
+              />,
+            ]}
+          />
+        </ThemedText>
+      </View>
 
       <ThemedText type="preSubtitle" style={styles.myTLineTitle}>
         {t('my-t-line')}

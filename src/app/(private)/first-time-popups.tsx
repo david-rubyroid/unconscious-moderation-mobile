@@ -50,12 +50,11 @@ export default function FirstTimePopupsModal() {
   ]
 
   const containerWidth = SCREEN_WIDTH - HORIZONTAL_PADDING
-  const contentHeight = 620
+  const contentHeight = 600
 
   return (
     <View style={styles.overlay}>
       <View style={styles.container}>
-        {/* Pagination dots */}
         <View style={styles.paginationContainer}>
           <Pagination.Basic
             progress={progress}
@@ -80,7 +79,6 @@ export default function FirstTimePopupsModal() {
           />
         </View>
 
-        {/* Carousel */}
         <View style={styles.carouselWrapper}>
           <Carousel
             loop={false}
