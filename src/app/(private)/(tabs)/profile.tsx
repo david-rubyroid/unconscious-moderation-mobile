@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     paddingVertical: scale(21),
     paddingHorizontal: scale(28),
     backgroundColor: withOpacity(Colors.light.white, 0.5),
-    marginBottom: verticalScale(20),
+    marginBottom: verticalScale(16),
   },
   currentStreakText: {
     textAlign: 'center',
@@ -74,17 +74,16 @@ const styles = StyleSheet.create({
     marginBottom: verticalScale(16),
   },
   awarenessSection: {
-    padding: scale(16),
     borderRadius: scale(10),
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: scale(25),
-    marginBottom: verticalScale(20),
+    marginBottom: verticalScale(16),
   },
   settingsTitle: {
     textAlign: 'center',
     color: Colors.light.primary4,
-    marginBottom: verticalScale(20),
+    marginBottom: verticalScale(16),
   },
   settingsContainer: {
     gap: scale(10),
@@ -114,7 +113,7 @@ const styles = StyleSheet.create({
   trophiesTitle: {
     textAlign: 'center',
     color: Colors.light.primary4,
-    marginBottom: verticalScale(20),
+    marginBottom: verticalScale(16),
   },
   yourAnchorContainer: {
     gap: scale(10),
