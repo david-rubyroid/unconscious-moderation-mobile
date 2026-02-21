@@ -1,13 +1,13 @@
 import type { DrinkLogResponse } from '@/api/queries/drink-log/dto'
 import type { DrinkType } from '@/api/queries/drink-session/dto'
 
+import { Image } from 'expo-image'
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   ActivityIndicator,
   Alert,
-  Image,
   Pressable,
   StyleSheet,
   View,

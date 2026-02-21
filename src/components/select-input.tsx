@@ -1,7 +1,7 @@
 import type { StyleProp } from 'react-native'
 
 import { memo, useState } from 'react'
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { FlatList, Pressable, StyleSheet, View } from 'react-native'
 
 import Check from '@/assets/icons/check'
 
@@ -103,8 +103,7 @@ interface SelectOptionItemProps {
 
 const SelectOptionItem = memo(
   ({ item, isSelected, isLast, onSelect }: SelectOptionItemProps) => (
-    <TouchableOpacity
-      activeOpacity={0.7}
+    <Pressable
       style={[styles.optionItem, isLast && styles.lastOption]}
       onPress={() => onSelect(item)}
     >
@@ -120,7 +119,7 @@ const SelectOptionItem = memo(
           <Check />
         </View>
       )}
-    </TouchableOpacity>
+    </Pressable>
   ),
   (prevProps, nextProps) =>
     prevProps.item.value === nextProps.item.value
@@ -153,8 +152,7 @@ function SelectInput({
     <View style={styles.container}>
       {label && <ThemedText type="defaultSemiBold" style={styles.label}>{label}</ThemedText>}
 
-      <TouchableOpacity
-        activeOpacity={0.7}
+      <Pressable
         onPress={() => setShowPicker(true)}
         style={styles.inputContainer}
       >
@@ -169,7 +167,7 @@ function SelectInput({
           editable={false}
           pointerEvents="none"
         />
-      </TouchableOpacity>
+      </Pressable>
 
       <BottomSheetPopup
         gradientColors={gradientColors}

@@ -1,7 +1,7 @@
+import { Image } from 'expo-image'
 import { useRouter } from 'expo-router'
 import { Trans, useTranslation } from 'react-i18next'
-
-import { Image, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
 import { Colors } from '@/constants/theme'
 

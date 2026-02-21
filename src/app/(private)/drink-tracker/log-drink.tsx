@@ -1,9 +1,10 @@
 import type { DrinkType } from '@/api/queries/drink-session/dto'
 
+import { Image } from 'expo-image'
 import { useFocusEffect, useRouter } from 'expo-router'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Image, Pressable, StyleSheet, View } from 'react-native'
+import { Pressable, StyleSheet, View } from 'react-native'
 import Toast from 'react-native-toast-message'
 
 import { useLogDrink } from '@/api/queries/drink-log'

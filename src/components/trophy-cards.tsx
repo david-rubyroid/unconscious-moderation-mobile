@@ -1,7 +1,8 @@
 import type { TrophyType } from '@/api/queries/sobriety-tracker/dto'
 
+import { Image } from 'expo-image'
 import { Trans, useTranslation } from 'react-i18next'
-import { Image, ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, StyleSheet, View } from 'react-native'
 
 import { useGetTrophies } from '@/api/queries/sobriety-tracker'
 

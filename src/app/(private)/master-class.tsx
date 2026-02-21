@@ -1,8 +1,7 @@
+import { Image } from 'expo-image'
 import { useLocalSearchParams } from 'expo-router'
-
 import { useTranslation } from 'react-i18next'
-
-import { Image, Linking, Pressable, StyleSheet, View } from 'react-native'
+import { Linking, Pressable, StyleSheet, View } from 'react-native'
 
 import TrailerPlay from '@/assets/icons/trailer-play'
 import masterClassLogo from '@/assets/images/master-class.webp'

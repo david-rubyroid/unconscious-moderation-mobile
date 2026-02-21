@@ -2,7 +2,7 @@ import type { ViewStyle } from 'react-native'
 
 import { useEffect, useRef, useState } from 'react'
 
-import { Animated, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Animated, Pressable, StyleSheet, View } from 'react-native'
 
 import ArrowIcon from '@/assets/icons/arrow'
 
@@ -84,16 +84,15 @@ function Accordion({
 
   return (
     <View style={[styles.container, style]}>
-      <TouchableOpacity
+      <Pressable
         style={[styles.header, headerStyle]}
         onPress={handleToggle}
-        activeOpacity={0.7}
       >
         <View style={styles.headerContent}>{header}</View>
         <Animated.View style={{ transform: [{ rotate }] }}>
           <ArrowIcon color={Colors.light.primary4} />
         </Animated.View>
-      </TouchableOpacity>
+      </Pressable>
 
       <Animated.View
         style={[

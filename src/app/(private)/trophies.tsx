@@ -1,8 +1,9 @@
 import type { TrophyType } from '@/api/queries/sobriety-tracker/dto'
 
+import { Image } from 'expo-image'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Image, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import Svg, { Path } from 'react-native-svg'
 
 import { useGetCurrentSobrietyStreak, useGetTrophies } from '@/api/queries/sobriety-tracker'

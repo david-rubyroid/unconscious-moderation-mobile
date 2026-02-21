@@ -1,8 +1,9 @@
 import type { TrophyType } from '@/api/queries/sobriety-tracker/dto'
 
+import { Image } from 'expo-image'
 import { useRouter } from 'expo-router'
 import { Trans, useTranslation } from 'react-i18next'
-import { Image, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
 import threeDays from '@/assets/images/trophies/3-days.webp'
 import sevenDays from '@/assets/images/trophies/7-days.webp'

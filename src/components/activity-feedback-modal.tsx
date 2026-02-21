@@ -1,11 +1,11 @@
 import type { ImageSourcePropType } from 'react-native'
-
 import type { ActivityFeedbackType } from '@/hooks/use-activity-feedback'
 
+import { Image } from 'expo-image'
 import LottieView from 'lottie-react-native'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Image, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
 import confettiAnimation from '@/assets/animations/confetti.json'
 import DislikeIcon from '@/assets/icons/dislike'

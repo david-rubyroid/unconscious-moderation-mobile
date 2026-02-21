@@ -4,8 +4,8 @@ import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import {
+  Pressable,
   StyleSheet,
-  TouchableOpacity,
   View,
 } from 'react-native'
 import { z } from 'zod'
@@ -178,7 +178,7 @@ function VerifyPasswordScreen() {
         <View style={styles.resendContainer}>
           {canResend
             ? (
-                <TouchableOpacity
+                <Pressable
                   style={styles.resendButton}
                   onPress={handleResendCode}
                   disabled={isResending}
@@ -186,7 +186,7 @@ function VerifyPasswordScreen() {
                   <ThemedText style={styles.resendText}>
                     {isResending ? t('resending') : t('resend-code')}
                   </ThemedText>
-                </TouchableOpacity>
+                </Pressable>
               )
             : (
                 <ThemedText style={styles.resendTimer}>

@@ -5,7 +5,7 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import { useEffect, useState } from 'react'
 
 import { Controller } from 'react-hook-form'
-import { Modal, Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Modal, Platform, Pressable, StyleSheet, View } from 'react-native'
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -273,18 +273,16 @@ function ControlledDateInput<T extends FieldValues>({
                     animatedOverlayStyle,
                   ]}
                 >
-                  <TouchableOpacity
+                  <Pressable
                     style={StyleSheet.absoluteFill}
-                    activeOpacity={1}
                     onPress={() => setShowPicker(false)}
                   />
-                  <TouchableOpacity
-                    activeOpacity={1}
+                  <Pressable
                     onPress={e => e.stopPropagation()}
                   >
                     <Animated.View style={[styles.iosPickerContainer, animatedPickerStyle]}>
                       <View style={styles.pickerHeader}>
-                        <TouchableOpacity
+                        <Pressable
                           style={styles.pickerHeaderButton}
                           onPress={() => {
                             // Reset temp date on cancel
@@ -295,8 +293,8 @@ function ControlledDateInput<T extends FieldValues>({
                           <ThemedText style={{ color: Colors.light.primary, fontSize: 16 }}>
                             Cancel
                           </ThemedText>
-                        </TouchableOpacity>
-                        <TouchableOpacity
+                        </Pressable>
+                        <Pressable
                           style={styles.pickerHeaderButton}
                           onPress={() => {
                             const finalDate = iosTempDate !== null ? iosTempDate : currentDate
@@ -308,7 +306,7 @@ function ControlledDateInput<T extends FieldValues>({
                           <ThemedText style={{ color: Colors.light.primary, fontSize: 16, fontWeight: '600' }}>
                             Done
                           </ThemedText>
-                        </TouchableOpacity>
+                        </Pressable>
                       </View>
 
                       <View style={styles.singlePickerContainer}>
@@ -329,7 +327,7 @@ function ControlledDateInput<T extends FieldValues>({
                         />
                       </View>
                     </Animated.View>
-                  </TouchableOpacity>
+                  </Pressable>
                 </Animated.View>
               </Modal>
             )
@@ -352,8 +350,7 @@ function ControlledDateInput<T extends FieldValues>({
           <View style={styles.container}>
             {label && <ThemedText type="defaultSemiBold" style={styles.label}>{label}</ThemedText>}
 
-            <TouchableOpacity
-              activeOpacity={0.7}
+            <Pressable
               onPress={handlePress}
               style={styles.inputContainer}
             >
@@ -368,7 +365,7 @@ function ControlledDateInput<T extends FieldValues>({
                 editable={false}
                 pointerEvents="none"
               />
-            </TouchableOpacity>
+            </Pressable>
 
             {renderPicker()}
 

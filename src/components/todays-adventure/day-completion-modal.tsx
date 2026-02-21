@@ -1,7 +1,8 @@
+import { Image } from 'expo-image'
 import LottieView from 'lottie-react-native'
 import { useEffect, useRef } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-import { Image, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
 import confettiAnimation from '@/assets/animations/confetti.json'
 import MedalIcon from '@/assets/images/daily-activity-medal.webp'

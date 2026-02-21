@@ -1,8 +1,9 @@
+import { Image } from 'expo-image'
 import * as ImagePicker from 'expo-image-picker'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Image, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import Toast from 'react-native-toast-message'
 
 import TakePhotoIcon from '@/assets/icons/take-photo'

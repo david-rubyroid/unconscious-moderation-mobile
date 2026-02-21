@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router'
 import { useMemo, useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Toast from 'react-native-toast-message'
 
@@ -207,7 +207,7 @@ function GiftsScreen() {
 
             <View style={styles.sectionContent}>
               {mentalEmotionalClarity.map((item, index) => (
-                <TouchableOpacity
+                <Pressable
                   style={[
                     styles.sectionItem,
                     index === mentalEmotionalClarity.length - 1 && styles.lastItem,
@@ -223,7 +223,7 @@ function GiftsScreen() {
                   >
                     {item.label}
                   </ThemedText>
-                </TouchableOpacity>
+                </Pressable>
               ))}
             </View>
           </View>
@@ -238,7 +238,7 @@ function GiftsScreen() {
 
             <View style={styles.sectionContent}>
               {physicalEmotionalBenefits.map((item, index) => (
-                <TouchableOpacity
+                <Pressable
                   style={[
                     styles.sectionItem,
                     index === physicalEmotionalBenefits.length - 1 && styles.lastItem,
@@ -254,7 +254,7 @@ function GiftsScreen() {
                   >
                     {item.label}
                   </ThemedText>
-                </TouchableOpacity>
+                </Pressable>
               ))}
             </View>
           </View>
@@ -269,7 +269,7 @@ function GiftsScreen() {
 
             <View style={styles.sectionContent}>
               {lifestyleUpgrades.map((item, index) => (
-                <TouchableOpacity
+                <Pressable
                   style={[
                     styles.sectionItem,
                     index === lifestyleUpgrades.length - 1 && styles.lastItem,
@@ -285,7 +285,7 @@ function GiftsScreen() {
                   >
                     {item.label}
                   </ThemedText>
-                </TouchableOpacity>
+                </Pressable>
               ))}
             </View>
           </View>
@@ -300,7 +300,7 @@ function GiftsScreen() {
 
             <View style={styles.sectionContent}>
               {others.map((item, index) => (
-                <TouchableOpacity
+                <Pressable
                   style={[
                     styles.sectionItem,
                     index === others.length - 1 && styles.lastItem,
@@ -316,23 +316,23 @@ function GiftsScreen() {
                   >
                     {item}
                   </ThemedText>
-                </TouchableOpacity>
+                </Pressable>
               ))}
 
-              <TouchableOpacity
+              <Pressable
                 style={styles.sectionItem}
                 onPress={() => setModalVisible(true)}
               >
                 <ThemedText style={styles.sectionItemText}>{t('type-here')}</ThemedText>
-              </TouchableOpacity>
+              </Pressable>
 
               {others.length === 0 && (
-                <TouchableOpacity
+                <Pressable
                   style={styles.sectionItem}
                   onPress={() => setModalVisible(true)}
                 >
                   <ThemedText style={styles.sectionItemText}>{t('type-here')}</ThemedText>
-                </TouchableOpacity>
+                </Pressable>
               )}
             </View>
           </View>

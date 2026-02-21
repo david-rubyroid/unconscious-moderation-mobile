@@ -3,7 +3,7 @@ import { useRouter } from 'expo-router'
 import { useMemo, useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 
-import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native'
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Toast from 'react-native-toast-message'
@@ -179,7 +179,7 @@ function FearsScreen() {
 
             <View style={styles.sectionContent}>
               {fears.map((item, index) => (
-                <TouchableOpacity
+                <Pressable
                   style={[
                     styles.sectionItem,
                     index === fears.length - 1 && styles.lastItem,
@@ -189,7 +189,7 @@ function FearsScreen() {
                   onPress={() => handleSelectFear(item.value)}
                 >
                   <ThemedText style={[styles.sectionItemText, selectedFears.includes(item.value) && styles.sectionItemSelectedText]}>{item.label}</ThemedText>
-                </TouchableOpacity>
+                </Pressable>
               ))}
             </View>
           </View>
@@ -204,7 +204,7 @@ function FearsScreen() {
 
             <View style={styles.sectionContent}>
               {others.map((item, index) => (
-                <TouchableOpacity
+                <Pressable
                   style={[
                     styles.sectionItem,
                     index === others.length - 1 && styles.lastItem,
@@ -220,23 +220,23 @@ function FearsScreen() {
                   >
                     {item}
                   </ThemedText>
-                </TouchableOpacity>
+                </Pressable>
               ))}
 
-              <TouchableOpacity
+              <Pressable
                 style={styles.sectionItem}
                 onPress={() => setModalVisible(true)}
               >
                 <ThemedText style={styles.sectionItemText}>{t('type-here')}</ThemedText>
-              </TouchableOpacity>
+              </Pressable>
 
               {others.length === 0 && (
-                <TouchableOpacity
+                <Pressable
                   style={styles.sectionItem}
                   onPress={() => setModalVisible(true)}
                 >
                   <ThemedText style={styles.sectionItemText}>{t('type-here')}</ThemedText>
-                </TouchableOpacity>
+                </Pressable>
               )}
             </View>
           </View>

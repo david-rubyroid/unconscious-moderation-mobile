@@ -1,8 +1,9 @@
+import { Image } from 'expo-image'
+
 import { useLocalSearchParams } from 'expo-router'
 
 import { useTranslation } from 'react-i18next'
-
-import { Image, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
 import blinkistLogo from '@/assets/images/blinkist/blinkist-logo.webp'
 

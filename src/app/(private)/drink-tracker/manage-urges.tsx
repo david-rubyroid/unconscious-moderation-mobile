@@ -1,8 +1,8 @@
+import { Image } from 'expo-image'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-
-import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native'
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native'
 
 import { useGetDrinkSession } from '@/api/queries/drink-session'
 
@@ -10,7 +10,6 @@ import AlertIcon from '@/assets/icons/alert'
 import boxBreathingImage from '@/assets/images/manage-urge/box-breathing.webp'
 import quickWritingImage from '@/assets/images/manage-urge/quick-writing.webp'
 import selfHypnosisImage from '@/assets/images/manage-urge/self-hypnosis.webp'
-
 import manageUrgeVideoImage from '@/assets/images/manage-urge/urge.webp'
 
 import {

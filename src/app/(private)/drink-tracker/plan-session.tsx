@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { Trans, useTranslation } from 'react-i18next'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Pressable, StyleSheet, View } from 'react-native'
 import z from 'zod'
 
 import {
@@ -323,14 +323,13 @@ function PlanAndPrepareScreen() {
                 {t('what-type-of-drink-will-you-stick-with')}
               </ThemedText>
 
-              <TouchableOpacity
+              <Pressable
                 onPress={() => {
                   openModal('drink-type-description')
                 }}
-                activeOpacity={0.7}
               >
                 <AlertIcon />
-              </TouchableOpacity>
+              </Pressable>
             </View>
 
             <DrinkSelector
@@ -354,15 +353,14 @@ function PlanAndPrepareScreen() {
           </View>
 
           <View style={styles.inputContainer}>
-            <TouchableOpacity
+            <Pressable
               style={styles.alertIconContainer}
               onPress={() => {
                 openModal('drink-limit-description')
               }}
-              activeOpacity={0.7}
             >
               <AlertIcon />
-            </TouchableOpacity>
+            </Pressable>
 
             <ControlledTextInput
               control={control}
@@ -384,14 +382,13 @@ function PlanAndPrepareScreen() {
                 {t('whats-your-budget-for-the-night')}
               </ThemedText>
 
-              <TouchableOpacity
+              <Pressable
                 onPress={() => {
                   openModal('max-spending-description')
                 }}
-                activeOpacity={0.7}
               >
                 <AlertIcon />
-              </TouchableOpacity>
+              </Pressable>
             </View>
 
             <View style={styles.budgetInputContentContainer}>

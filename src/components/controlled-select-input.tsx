@@ -3,7 +3,7 @@ import type { StyleProp } from 'react-native'
 
 import { memo, useState } from 'react'
 import { Controller } from 'react-hook-form'
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { FlatList, Pressable, StyleSheet, View } from 'react-native'
 
 import Check from '@/assets/icons/check'
 import { Colors, withOpacity } from '@/constants/theme'
@@ -97,8 +97,7 @@ interface SelectOptionItemProps {
 
 const SelectOptionItem = memo(
   ({ item, isSelected, isLast, onSelect }: SelectOptionItemProps) => (
-    <TouchableOpacity
-      activeOpacity={0.7}
+    <Pressable
       style={[styles.optionItem, isLast && styles.lastOption]}
       onPress={() => onSelect(item)}
     >
@@ -114,7 +113,7 @@ const SelectOptionItem = memo(
           <Check />
         </View>
       )}
-    </TouchableOpacity>
+    </Pressable>
   ),
   (prevProps, nextProps) =>
     prevProps.item.value === nextProps.item.value
@@ -151,8 +150,7 @@ function ControlledSelectInput<T extends FieldValues>({
           <View style={styles.container}>
             {label && <ThemedText type="defaultSemiBold" style={styles.label}>{label}</ThemedText>}
 
-            <TouchableOpacity
-              activeOpacity={0.7}
+            <Pressable
               onPress={() => setShowPicker(true)}
               style={styles.inputContainer}
             >
@@ -167,7 +165,7 @@ function ControlledSelectInput<T extends FieldValues>({
                 editable={false}
                 pointerEvents="none"
               />
-            </TouchableOpacity>
+            </Pressable>
 
             <BottomSheetPopup
               gradientColors={gradientColors}
