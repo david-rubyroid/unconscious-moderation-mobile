@@ -1,5 +1,6 @@
 export { default as Accordion } from './accordion'
 export { ActivityFeedbackModal } from './activity-feedback-modal'
+export { default as AlcoholFreeFor } from './alcohol-free-for'
 export { default as AudioPlayer } from './audio-player'
 export { default as AwarenessSection } from './awareness-section'
 export { default as BottomSheetPopup } from './bottom-sheet-popup'

@@ -1,12 +1,27 @@
 import { useRouter } from 'expo-router'
+import * as Sharing from 'expo-sharing'
+import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Pressable, StyleSheet, View } from 'react-native'
+import { Alert, Pressable, StyleSheet, View } from 'react-native'
+import ViewShot from 'react-native-view-shot'
 
-import { useGetCurrentSobrietyStreak, useGetSobrietyStats } from '@/api/queries/sobriety-tracker'
+import {
+  useGetCurrentSobrietyStreak,
+  useGetSobrietyStats,
+} from '@/api/queries/sobriety-tracker'
 
 import CocktailsIcon from '@/assets/icons/cocktail'
 
-import { Button, Header, ScreenContainer, SobrietyTimer, ThemedText } from '@/components'
+import ShareIcon from '@/assets/icons/share'
+
+import {
+  AlcoholFreeFor,
+  Button,
+  Header,
+  ScreenContainer,
+  SobrietyTimer,
+  ThemedText,
+} from '@/components'
 import { Colors, withOpacity } from '@/constants/theme'
 import { scale, verticalScale } from '@/utils/responsive'
 
@@ -79,8 +94,22 @@ const styles = StyleSheet.create({
     borderRadius: scale(36),
     backgroundColor: '#BFE3C0',
   },
+  shareButton: {
+    flexDirection: 'row',
+    gap: scale(8),
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: scale(20),
+    borderRadius: scale(36),
+    backgroundColor: Colors.light.primary4,
+  },
+  shareButtonText: {
+    fontWeight: '500',
+    color: Colors.light.white,
+  },
   resetButtonText: {
     color: Colors.light.primary,
+    fontWeight: '500',
   },
   statsContainer: {
     width: '100%',
@@ -121,6 +150,10 @@ const styles = StyleSheet.create({
   continueButton: {
     marginTop: verticalScale(36),
   },
+  hiddenViewShotContainer: {
+    position: 'absolute',
+    opacity: 0,
+  },
 })
 function MyProgressScreen() {
   const { t } = useTranslation('my-progress')
@@ -128,6 +161,9 @@ function MyProgressScreen() {
   // Get current streak and stats data
   const { data: currentStreak } = useGetCurrentSobrietyStreak()
   const { data: stats } = useGetSobrietyStats()
+
+  const viewShotRef = useRef<ViewShot>(null)
+  const [isSharing, setIsSharing] = useState(false)
 
   // Calculate display values
   const lastPauseDate = currentStreak?.streak?.started_at
@@ -147,77 +183,134 @@ function MyProgressScreen() {
 
     push('/free-drink-tracker/start-tracking')
   }
+  const handleShare = async () => {
+    if (!viewShotRef.current) {
+      return
+    }
+
+    try {
+      setIsSharing(true)
+
+      const isAvailable = await Sharing.isAvailableAsync()
+      if (!isAvailable) {
+        Alert.alert(t('error'), 'Sharing is not available on this device')
+        return
+      }
+
+      const uri = await viewShotRef.current.capture?.()
+      if (!uri) {
+        throw new Error('Failed to capture view')
+      }
+
+      await Sharing.shareAsync(uri, {
+        mimeType: 'image/png',
+        dialogTitle: t('share'),
+      })
+    }
+    catch (error) {
+      console.error('Error sharing:', error)
+      Alert.alert(t('error'), 'Failed to share. Please try again.')
+    }
+    finally {
+      setIsSharing(false)
+    }
+  }
 
   return (
-    <ScreenContainer contentContainerStyle={styles.container}>
-      <Header title={t('my-progress')} />
+    <>
+      <ScreenContainer contentContainerStyle={styles.container}>
+        <Header title={t('my-progress')} />
 
-      <View style={styles.trackerContainer}>
-        <View style={styles.iconContainer}>
-          <CocktailsIcon width={37} height={51} color={Colors.light.primary} />
-        </View>
+        <View style={styles.trackerContainer}>
+          <View style={styles.iconContainer}>
+            <CocktailsIcon width={37} height={51} color={Colors.light.primary} />
+          </View>
 
-        <ThemedText
-          type="preSubtitle"
-          style={styles.trackerTitle}
-        >
-          {t('drink-free-tracker')}
-        </ThemedText>
+          <ThemedText
+            type="preSubtitle"
+            style={styles.trackerTitle}
+          >
+            {t('drink-free-tracker')}
+          </ThemedText>
 
-        <ThemedText type="defaultSemiBold" style={styles.currentStreakText}>
-          {t('current-streak')}
-        </ThemedText>
+          <ThemedText type="defaultSemiBold" style={styles.currentStreakText}>
+            {t('current-streak')}
+          </ThemedText>
 
-        <SobrietyTimer size="large" />
+          <SobrietyTimer size="large" />
 
-        <View style={styles.buttonsContainer}>
-          <Pressable onPress={handleStartTracking} style={styles.resetButton}>
-            <ThemedText
-              type="defaultSemiBold"
-              style={styles.resetButtonText}
+          <View style={styles.buttonsContainer}>
+            <Pressable
+              disabled={isSharing}
+              onPress={handleShare}
+              style={styles.shareButton}
             >
-              {currentStreak?.streak?.is_active ? t('reset') : t('start')}
-            </ThemedText>
-          </Pressable>
+              <ShareIcon />
+
+              <ThemedText style={styles.shareButtonText}>
+                {t('share-my-progress')}
+              </ThemedText>
+            </Pressable>
+
+            <Pressable
+              disabled={isSharing}
+              onPress={handleStartTracking}
+              style={styles.resetButton}
+            >
+              <ThemedText style={styles.resetButtonText}>
+                {currentStreak?.streak?.is_active ? t('reset') : t('start')}
+              </ThemedText>
+            </Pressable>
+          </View>
         </View>
-      </View>
 
-      <View style={styles.statsContainer}>
-        <View style={[styles.statBlock, styles.statBlockFirst]}>
-          <View style={styles.statHeader}>
-            <ThemedText type="defaultSemiBold" style={styles.statTitle}>
-              {t('last-pause-began-on')}
-            </ThemedText>
+        <View style={styles.statsContainer}>
+          <View style={[styles.statBlock, styles.statBlockFirst]}>
+            <View style={styles.statHeader}>
+              <ThemedText type="defaultSemiBold" style={styles.statTitle}>
+                {t('last-pause-began-on')}
+              </ThemedText>
 
-            <ThemedText type="defaultSemiBold" style={styles.statValue}>
-              {lastPauseDate || t('not-started-yet')}
+              <ThemedText type="defaultSemiBold" style={styles.statValue}>
+                {lastPauseDate || t('not-started-yet')}
+              </ThemedText>
+            </View>
+
+            <ThemedText style={styles.statSubtitle}>
+              {t('every-new-beginning-holds-power')}
             </ThemedText>
           </View>
 
-          <ThemedText style={styles.statSubtitle}>
-            {t('every-new-beginning-holds-power')}
-          </ThemedText>
-        </View>
+          <View style={[styles.statBlock, styles.statBlockLast]}>
+            <View style={styles.statHeader}>
+              <ThemedText type="defaultSemiBold" style={styles.statTitle}>
+                {t('longest-streak')}
+              </ThemedText>
 
-        <View style={[styles.statBlock, styles.statBlockLast]}>
-          <View style={styles.statHeader}>
-            <ThemedText type="defaultSemiBold" style={styles.statTitle}>
-              {t('longest-streak')}
-            </ThemedText>
+              <ThemedText type="defaultSemiBold" style={styles.statValue}>
+                {longestStreakValue || t('no-data')}
+              </ThemedText>
+            </View>
 
-            <ThemedText type="defaultSemiBold" style={styles.statValue}>
-              {longestStreakValue || t('no-data')}
+            <ThemedText style={styles.statSubtitle}>
+              {t('ready-to-go-even-further')}
             </ThemedText>
           </View>
-
-          <ThemedText style={styles.statSubtitle}>
-            {t('ready-to-go-even-further')}
-          </ThemedText>
         </View>
-      </View>
 
-      <Button style={styles.continueButton} title={t('my-trophies')} onPress={() => push('/trophies')} />
-    </ScreenContainer>
+        <Button
+          style={styles.continueButton}
+          title={t('my-trophies')}
+          onPress={() => push('/trophies')}
+        />
+      </ScreenContainer>
+
+      <View style={styles.hiddenViewShotContainer} collapsable={false}>
+        <ViewShot ref={viewShotRef} options={{ format: 'png', quality: 1 }}>
+          <AlcoholFreeFor />
+        </ViewShot>
+      </View>
+    </>
   )
 }
 

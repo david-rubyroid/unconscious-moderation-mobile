@@ -22,6 +22,18 @@ export interface SobrietyTimerProps {
   showIcon?: boolean
   onError?: (_error: Error) => void
   style?: ViewStyle
+  streakStartDate?: Date
+  maxUnits?: number
+  circleColor?: string
+  circleBackgroundColor?: string
+  autoUpdate?: boolean
+  customSize?: {
+    circleSize: number
+    strokeWidth: number
+    valueSize: number
+    labelSize: number
+  }
+  disableScroll?: boolean
 }
 
 export interface CircularProgressProps {
@@ -34,4 +46,5 @@ export interface CircularProgressProps {
   valueSize: number
   labelSize: number
   color?: string
+  backgroundColor?: string
 }

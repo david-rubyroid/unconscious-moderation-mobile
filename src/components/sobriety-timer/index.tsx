@@ -58,23 +58,36 @@ function SobrietyTimer({
   showIcon = false,
   onError,
   style,
+  streakStartDate,
+  maxUnits,
+  circleColor = Colors.light.primary,
+  circleBackgroundColor,
+  autoUpdate = true,
+  customSize,
+  disableScroll = false,
 }: SobrietyTimerProps) {
   const { t } = useTranslation('free-drink-tracker')
 
-  // Get current streak from API
-  const { data: currentStreak, error } = useGetCurrentSobrietyStreak()
+  // Get current streak from API only if streakStartDate is not provided
+  const { data: currentStreak, error } = useGetCurrentSobrietyStreak({
+    enabled: !streakStartDate,
+  })
 
   // State for current time (updates every second)
   const [currentTime, setCurrentTime] = useState(() => new Date())
 
-  // Auto-update every second
+  // Auto-update every second only if autoUpdate is true
   useEffect(() => {
+    if (!autoUpdate) {
+      return
+    }
+
     const interval = setInterval(() => {
       setCurrentTime(new Date())
     }, 1000)
 
     return () => clearInterval(interval)
-  }, [])
+  }, [autoUpdate])
 
   // Handle errors
   useEffect(() => {
@@ -85,8 +98,11 @@ function SobrietyTimer({
 
   // Calculate time breakdown
   const breakdown = useMemo(() => {
+    // Use provided streakStartDate or get from API
+    const startDate = streakStartDate || currentStreak?.streak?.started_at
+
     // If no active streak, return zeros
-    if (!currentStreak?.streak?.started_at) {
+    if (!startDate) {
       return {
         years: 0,
         months: 0,
@@ -98,7 +114,7 @@ function SobrietyTimer({
     }
 
     try {
-      return calculateTimeBreakdown(new Date(currentStreak.streak.started_at))
+      return calculateTimeBreakdown(new Date(startDate))
     }
     catch (err) {
       if (onError) {
@@ -115,23 +131,19 @@ function SobrietyTimer({
     }
     // currentTime is intentionally included to recalculate every second
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentStreak, currentTime, onError])
+  }, [currentStreak, currentTime, onError, streakStartDate])
 
   // Get display units
   const displayUnits = useMemo(() => {
-    return getDisplayUnits(breakdown)
-  }, [breakdown])
+    const allUnits = getDisplayUnits(breakdown)
+    return maxUnits ? allUnits.slice(-maxUnits) : allUnits
+  }, [breakdown, maxUnits])
 
-  const config = SIZE_CONFIG[size]
+  const config = customSize || SIZE_CONFIG[size]
 
-  return (
-    <View style={[styles.container, style]}>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.scrollView}
-        contentContainerStyle={styles.circularContainer}
-      >
+  const renderContent = () => {
+    const circles = (
+      <>
         {showIcon && (
           <View style={styles.iconContainer}>
             <CocktailsIcon width={20} height={26} color={Colors.light.primary} />
@@ -148,10 +160,36 @@ function SobrietyTimer({
             strokeWidth={config.strokeWidth}
             valueSize={config.valueSize}
             labelSize={config.labelSize}
-            color={Colors.light.primary}
+            color={circleColor}
+            backgroundColor={circleBackgroundColor}
           />
         ))}
+      </>
+    )
+
+    if (disableScroll) {
+      return (
+        <View style={styles.circularContainer}>
+          {circles}
+        </View>
+      )
+    }
+
+    return (
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.scrollView}
+        contentContainerStyle={styles.circularContainer}
+      >
+        {circles}
       </ScrollView>
+    )
+  }
+
+  return (
+    <View style={[styles.container, style]}>
+      {renderContent()}
     </View>
   )
 }

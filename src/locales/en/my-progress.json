@@ -1,9 +1,10 @@
 {
   "my-progress": "My Progress",
-  "drink-free-tracker": "Drink-Free Tracker",
+  "drink-free-tracker": "Alcohol-Free Tracker",
   "current-streak": "Current Streak",
   "total-days-without-drinking": "Total Days Without Drinking",
   "reset": "Reset",
+  "share-my-progress": "Share my progress",
 
   "last-pause-began-on": "Last pause began on",
   "every-new-beginning-holds-power": "Every new beginning holds power.",

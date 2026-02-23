@@ -36,6 +36,7 @@ function CircularProgressComponent({
   valueSize,
   labelSize,
   color = Colors.light.primary,
+  backgroundColor = Colors.light.gray2,
 }: CircularProgressProps) {
   const radius = (size - strokeWidth) / 2
   const circumference = radius * 2 * Math.PI
@@ -51,7 +52,7 @@ function CircularProgressComponent({
           cx={center}
           cy={center}
           r={radius}
-          stroke={Colors.light.gray2}
+          stroke={backgroundColor}
           strokeWidth={strokeWidth}
           fill="transparent"
         />
