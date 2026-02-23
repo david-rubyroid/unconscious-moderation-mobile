@@ -1,14 +1,18 @@
 import { useRouter } from 'expo-router'
+import { openBrowserAsync, WebBrowserPresentationStyle } from 'expo-web-browser'
 import { useTranslation } from 'react-i18next'
+
 import { Pressable, StyleSheet, View } from 'react-native'
 
 import { useGetSubscription } from '@/api/queries/subscriptions'
-
 import ArrowIcon from '@/assets/icons/arrow'
 import BlinkistIcon from '@/assets/icons/blinkist'
+import BonusBoostIcon from '@/assets/icons/bonus-boost'
 import MasterClassIcon from '@/assets/icons/master-class'
+
 import LockIcon from '@/assets/icons/outline-lock'
 
+import { getBonusBoostVideoUrl } from '@/constants/bonus-boost'
 import { Colors, withOpacity } from '@/constants/theme'
 
 import { scale, verticalScale } from '@/utils/responsive'
@@ -88,6 +92,12 @@ function ExtraCredit({ dailyActivitiesDay }: ExtraCreditProps) {
       },
     })
   }
+  const handleOpenBonusBoost = () => {
+    void openBrowserAsync(getBonusBoostVideoUrl(dailyActivitiesDay), {
+      presentationStyle: WebBrowserPresentationStyle.AUTOMATIC,
+      createTask: false,
+    })
+  }
 
   return (
     <Accordion
@@ -99,6 +109,16 @@ function ExtraCredit({ dailyActivitiesDay }: ExtraCreditProps) {
       defaultOpen
     >
       <View style={styles.items}>
+        <Pressable style={styles.item} onPress={handleOpenBonusBoost}>
+          <View style={styles.iconContainer}>
+            <BonusBoostIcon />
+          </View>
+
+          <ThemedText type="defaultSemiBold" style={styles.text}>{t('bonus-boost')}</ThemedText>
+
+          {isPremium ? <ArrowIcon color={Colors.light.primary4} style={styles.icon} /> : <LockIcon style={styles.icon} />}
+        </Pressable>
+
         <Pressable style={styles.item} onPress={handleOpenBlinkist}>
           <View style={styles.iconContainer}>
             <BlinkistIcon />

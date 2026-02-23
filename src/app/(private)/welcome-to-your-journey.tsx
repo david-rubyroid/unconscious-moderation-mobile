@@ -1,7 +1,12 @@
 import { Image } from 'expo-image'
 import { useRouter } from 'expo-router'
 import { Trans, useTranslation } from 'react-i18next'
-import { ImageBackground, ScrollView, StyleSheet, View } from 'react-native'
+import {
+  ImageBackground,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native'
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
