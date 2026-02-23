@@ -6,6 +6,7 @@ export interface VideoLoadingState {
   isLoading: boolean
   isBuffering: boolean
   canPlay: boolean
+  hasError: boolean
   status: string
 }
 
@@ -23,6 +24,7 @@ export function useVideoLoading(player: VideoPlayer | null): VideoLoadingState {
         isLoading: false,
         isBuffering: false,
         canPlay: false,
+        hasError: false,
         status: 'idle',
       }
     }
@@ -33,6 +35,7 @@ export function useVideoLoading(player: VideoPlayer | null): VideoLoadingState {
       isBuffering: status === 'loading',
       // Video is ready to play when not loading and not in error state
       canPlay: status !== 'loading' && status !== 'error',
+      hasError: status === 'error',
       status,
     }
   })
@@ -49,6 +52,7 @@ export function useVideoLoading(player: VideoPlayer | null): VideoLoadingState {
         isBuffering: playerStatus === 'loading',
         // Video is ready to play when not loading and not in error state
         canPlay: playerStatus !== 'loading' && playerStatus !== 'error',
+        hasError: playerStatus === 'error',
         status: playerStatus,
       })
     })

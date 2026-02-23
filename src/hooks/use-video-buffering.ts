@@ -66,13 +66,18 @@ export function useVideoBuffering(player: VideoPlayer | null): BufferingProgress
 /**
  * Checks if enough video has been loaded to start playback
  * @param player VideoPlayer instance
- * @param minBufferSeconds Minimum number of seconds needed to start playback (default: 5)
+ * @param minBufferSeconds Minimum number of seconds needed to start playback (default: 3)
  */
 export function useCanStartPlayback(
   player: VideoPlayer | null,
-  minBufferSeconds: number = 5,
+  minBufferSeconds: number = 3,
 ): boolean {
   const { duration, bufferedTime, isBuffering } = useVideoBuffering(player)
+
+  // If video metadata loaded (duration > 0), consider it ready for local videos
+  if (duration > 0 && !isBuffering) {
+    return true
+  }
 
   // If video is short (less than minBufferSeconds), can start immediately
   if (duration > 0 && duration < minBufferSeconds) {

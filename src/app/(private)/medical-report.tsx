@@ -131,7 +131,7 @@ function MedicalReportScreen() {
   )
 
   const loadingState = useVideoLoading(player)
-  const canStartPlayback = useCanStartPlayback(player, 5)
+  const canStartPlayback = useCanStartPlayback(player, 3)
   const animatedVideoStyle = useVideoFade(loadingState.isLoading)
 
   const handlePlay = () => {
