@@ -170,6 +170,7 @@ function MyProgressScreen() {
     ? formatMonthDay(currentStreak.streak.started_at)
     : null
 
+  const isActiveStreak = currentStreak?.streak?.is_active
   const longestStreakDays = stats?.longestStreak?.durationDays ?? 0
   const longestStreakValue = longestStreakDays > 0
     ? `(${longestStreakDays} ${longestStreakDays === 1 ? t('day') : t('days')})`
@@ -240,17 +241,19 @@ function MyProgressScreen() {
           <SobrietyTimer size="large" />
 
           <View style={styles.buttonsContainer}>
-            <Pressable
-              disabled={isSharing}
-              onPress={handleShare}
-              style={styles.shareButton}
-            >
-              <ShareIcon />
+            {isActiveStreak && (
+              <Pressable
+                disabled={isSharing}
+                onPress={handleShare}
+                style={styles.shareButton}
+              >
+                <ShareIcon />
 
-              <ThemedText style={styles.shareButtonText}>
-                {t('share-my-progress')}
-              </ThemedText>
-            </Pressable>
+                <ThemedText style={styles.shareButtonText}>
+                  {t('share-my-progress')}
+                </ThemedText>
+              </Pressable>
+            )}
 
             <Pressable
               disabled={isSharing}
@@ -258,7 +261,7 @@ function MyProgressScreen() {
               style={styles.resetButton}
             >
               <ThemedText style={styles.resetButtonText}>
-                {currentStreak?.streak?.is_active ? t('reset') : t('start')}
+                {isActiveStreak ? t('reset') : t('start')}
               </ThemedText>
             </Pressable>
           </View>
