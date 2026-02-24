@@ -23,6 +23,7 @@ import {
   ThemedText,
 } from '@/components'
 import { Colors, withOpacity } from '@/constants/theme'
+import { logDebug } from '@/utils/logger'
 import { scale, verticalScale } from '@/utils/responsive'
 
 // Helper function to format date as (Month/Day)
@@ -175,7 +176,7 @@ function MyProgressScreen() {
   const longestStreakValue = longestStreakDays > 0
     ? `(${longestStreakDays} ${longestStreakDays === 1 ? t('day') : t('days')})`
     : null
-
+  logDebug('longestStreakDays', { longestStreakDays })
   const handleStartTracking = () => {
     if (currentStreak?.streak?.is_active) {
       push('/free-drink-tracker/reset-tracking')

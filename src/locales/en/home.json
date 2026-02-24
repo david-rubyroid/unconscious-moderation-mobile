@@ -77,5 +77,14 @@
     "needs-some-work": "Needs some work",
     "type-here": "Type here",
     "save": "Save"
+  },
+
+  "active-drink-session": {
+    "title": "Active Drink <0>Session</0>",
+    "max-drinks": "Max Drinks",
+    "time-since-first-drink": "Time Since First Drink",
+    "drink-type": "Drink Type",
+    "budget": "Budget",
+    "go-to-session": "Go to Drink Session"
   }
 }

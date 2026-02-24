@@ -2,9 +2,20 @@ import type { Step } from '@/components/progress-steps'
 
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { Trans, useTranslation } from 'react-i18next'
-import { ImageBackground, Pressable, ScrollView, StyleSheet, View } from 'react-native'
+import {
+  Alert,
+  ImageBackground,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native'
 
 import { useGetDrinkSession, useUpdateDrinkSession } from '@/api/queries/drink-session'
+import {
+  useGetCurrentSobrietyStreak,
+  useResetSobrietyStreak,
+} from '@/api/queries/sobriety-tracker'
 
 import selfHypnosisImage from '@/assets/images/end-of-trial.webp'
 import mantraImage from '@/assets/images/plan-and-prepare.webp'
@@ -100,6 +111,9 @@ function PreDrinkChecklistScreen() {
   const { data: session } = useGetDrinkSession(Number(sessionId))
   const { mutate: updateDrinkSession } = useUpdateDrinkSession(Number(sessionId))
 
+  const { data: currentStreak } = useGetCurrentSobrietyStreak()
+  const { mutate: resetStreak } = useResetSobrietyStreak()
+
   const { t } = useTranslation('pre-drink-checklist')
 
   const steps = [
@@ -117,6 +131,7 @@ function PreDrinkChecklistScreen() {
     },
   ] as Step[]
   const isReadyToStartDrinkSession = steps.every(step => step.status === 'completed')
+  const hasActiveFreeDrinkTracker = currentStreak?.streak?.is_active === true
 
   const navigateToHydration = () => {
     push({
@@ -136,7 +151,7 @@ function PreDrinkChecklistScreen() {
       params: { sessionId },
     })
   }
-  const startDrinkSession = () => {
+  const activateSession = () => {
     updateDrinkSession({
       status: 'active',
     }, {
@@ -150,6 +165,48 @@ function PreDrinkChecklistScreen() {
         showErrorToast('Oops! Something went wrong', getErrorMessage(error))
       },
     })
+  }
+
+  const startDrinkSession = () => {
+    if (hasActiveFreeDrinkTracker) {
+      Alert.alert(
+        t('start-session-alert.title'),
+        t('start-session-alert.message'),
+        [
+          {
+            text: t('start-session-alert.cancel'),
+            style: 'cancel',
+          },
+          {
+            text: t('start-session-alert.continue'),
+            onPress: () => {
+              resetStreak(
+                {
+                  resetAt: new Date().toISOString(),
+                  reason: 'Started a conscious drinking session',
+                  feelings: '',
+                  supportNeeded: '',
+                },
+                {
+                  onSuccess: () => {
+                    activateSession()
+                  },
+                  onError: (error) => {
+                    showErrorToast(
+                      t('start-session-alert.error-title'),
+                      getErrorMessage(error, t('start-session-alert.error-message')),
+                    )
+                  },
+                },
+              )
+            },
+          },
+        ],
+      )
+      return
+    }
+
+    activateSession()
   }
 
   return (

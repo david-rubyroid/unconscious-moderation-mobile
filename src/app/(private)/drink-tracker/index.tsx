@@ -14,6 +14,7 @@ import {
 } from '@/components'
 
 import { Colors } from '@/constants/theme'
+
 import { verticalScale } from '@/utils/responsive'
 
 import FirstTimePopUp from './first-time-pop-up'
@@ -90,7 +91,6 @@ function DrinkTrackerScreen() {
       })
       return
     }
-
     if (isSessionCompleted) {
       push({
         pathname: '/drink-tracker/reflect-reinforce',
@@ -98,7 +98,6 @@ function DrinkTrackerScreen() {
       })
       return
     }
-
     if (isSessionActive) {
       push({
         pathname: '/drink-tracker/drink-with-awareness',

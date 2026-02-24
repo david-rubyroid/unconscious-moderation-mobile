@@ -1,4 +1,5 @@
 export { default as Accordion } from './accordion'
+export { default as ActiveDrinkSession } from './active-drink-session'
 export { ActivityFeedbackModal } from './activity-feedback-modal'
 export { default as AlcoholFreeFor } from './alcohol-free-for'
 export { default as AudioPlayer } from './audio-player'

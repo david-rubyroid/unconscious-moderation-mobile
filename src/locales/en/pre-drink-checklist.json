@@ -12,5 +12,14 @@
   "mantra-description": "Repeat your chosen mantra whenever\nyou need to refocus and stay in\ncontrol.",
 
   "tip": "<0>Tip:</0> Bring headphones with you!",
-  "start": "Start"
+  "start": "Start",
+
+  "start-session-alert": {
+    "title": "Active Alcohol-Free Tracker",
+    "message": "If you activate a drink session, your alcohol-free tracker will be reset. Do you want to continue?",
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "error-title": "Error",
+    "error-message": "Failed to reset the alcohol-free tracker. Please try again."
+  }
 }
