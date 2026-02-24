@@ -1,20 +1,22 @@
 import { openBrowserAsync, WebBrowserPresentationStyle } from 'expo-web-browser'
 import { useTranslation } from 'react-i18next'
-import { Linking, Pressable, StyleSheet, View } from 'react-native'
+import { Linking, Pressable, Share, StyleSheet, View } from 'react-native'
 
 import AmazonIcon from '@/assets/icons/amazon'
-
 import ArrowIcon from '@/assets/icons/arrow'
-
 import DotsIcon from '@/assets/icons/dots'
-
+import ShareIcon from '@/assets/icons/share'
 import SupportIcon from '@/assets/icons/support'
-
 import YouTubeIcon from '@/assets/icons/youtube'
 
-import { EXTERNAL_RESOURCES_LINKS } from '@/constants/external-resources'
+import {
+  APP_SHARE_URL,
+  EXTERNAL_RESOURCES_LINKS,
+} from '@/constants/external-resources'
 import { Colors, withOpacity } from '@/constants/theme'
+
 import { scale, verticalScale } from '@/utils/responsive'
+
 import ThemedText from './themed-text'
 
 const styles = StyleSheet.create({
@@ -68,6 +70,18 @@ function ExternalResources() {
   const handleOpenSupport = () => {
     Linking.openURL('mailto:support@um.app')
   }
+  const handleShareToFriend = async () => {
+    try {
+      const message = t('share-message', { appUrl: APP_SHARE_URL })
+
+      await Share.share({
+        message,
+      })
+    }
+    catch (error) {
+      console.error('Error sharing:', error)
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -94,12 +108,36 @@ function ExternalResources() {
           <ArrowIcon color={Colors.light.primary4} style={styles.arrowIcon} />
         </Pressable>
 
+        <Pressable style={styles.item} onPress={handleShareToFriend}>
+          <View style={styles.iconContainer}>
+            <ShareIcon
+              height={24}
+              width={29}
+              color={Colors.light.primary}
+            />
+          </View>
+
+          <ThemedText
+            type="defaultSemiBold"
+            style={styles.text}
+          >
+            {t('share-to-friend')}
+          </ThemedText>
+
+          <ArrowIcon color={Colors.light.primary4} style={styles.arrowIcon} />
+        </Pressable>
+
         <Pressable style={styles.item} onPress={handleOpenSupport}>
           <View style={styles.iconContainer}>
             <SupportIcon />
           </View>
 
-          <ThemedText type="defaultSemiBold" style={styles.text}>{t('support')}</ThemedText>
+          <ThemedText
+            type="defaultSemiBold"
+            style={styles.text}
+          >
+            {t('support')}
+          </ThemedText>
 
           <ArrowIcon color={Colors.light.primary4} style={styles.arrowIcon} />
         </Pressable>

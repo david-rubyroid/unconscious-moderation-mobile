@@ -1,5 +1,7 @@
 {
   "youtube": "Keep Growing on YouTube",
   "amazon": "Amazon Storefront",
-  "support": "Contact Support"
+  "support": "Contact Support",
+  "share-to-friend": "Share to a Friend",
+  "share-message": "Hey! I've been using this app that helps you pause and make more conscious choices around drinking. It's been surprisingly powerful for me, so I wanted to share in case it helps you too.\n\n{{appUrl}}"
 }
