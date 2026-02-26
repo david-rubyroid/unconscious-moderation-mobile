@@ -1,5 +1,6 @@
 {
   "expo": {
+    "owner": "unconscious_moderation",
     "name": "Unconscious Moderation",
     "slug": "unconscious-moderation",
     "version": "1.4.57",
@@ -89,14 +90,14 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "519a1254-d5cf-46b3-9a60-ce647b4532a0"
+        "projectId": "0db769a6-5039-462d-8458-23d53380e27d"
       }
     },
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/519a1254-d5cf-46b3-9a60-ce647b4532a0"
+      "url": "https://u.expo.dev/0db769a6-5039-462d-8458-23d53380e27d"
     }
   }
 }
