@@ -8,7 +8,7 @@
 
 - **CharacterDialogWindow — презентационный компонент:** только `View` с персонажами и облачками, без Modal, без навигации, без фона. Растягивается на весь контейнер (`flex: 1`, `width: '100%'`).
 - **Контейнер и навигация — на стороне родителя:**
-  - **Вариант 1 (модальное окно):** родитель оборачивает в `<Modal variant="gradient">` и рендерит кнопки навигации (стрелки) отдельно.
+  - **Вариант 1 (модальное окно):** родитель оборачивает в `<Modal variant="gradient" heightPercentage={90}>` и рендерит кнопки навигации (стрелки) отдельно. Проп `heightPercentage` позволяет настроить высоту модального окна (например, 90% от высоты экрана), при этом убирается внутренний padding и контент растягивается на всю высоту.
   - **Вариант 2 (полный экран с блюром):** родитель создаёт overlay с блюром и вставляет CharacterDialogWindow внутрь.
   - **Вариант 3 (инлайн):** родитель вставляет CharacterDialogWindow в обычный контейнер (ScrollView, карточка и т.п.).
 - **Кнопка закрытия:** управляется родителем (например, через backdrop Modal или кнопку X).
@@ -51,13 +51,13 @@ narissaBubble: {
 
 **Удалено:** `visible`, `onNext`, `onPrev`, `showNavigation`, `backgroundVariant`. Всё это контролируется родителем.
 
-### Размеры
+### Размеры и позиционирование
 
 | Компонент           | Пропы                                                                 | Описание |
 |---------------------|-----------------------------------------------------------------------|----------|
 | **SpeechBubble**    | `width?`, `height?`                                                   | Явные размеры SVG облачка. Текст по центру (`textAlign: 'center'`, контейнер с `justifyContent`/`alignItems: 'center'`). |
-| **DialogCharacterSlot** | `bubbleSize?: { width, height }`, `characterSize?: { width, height }` | Размеры облачка и персонажа. |
-| **DialogScene**     | У `buddy` и `narissa`: `bubbleSize?`, `size?`                         | Опциональные размеры облачка и персонажа на уровне сцены. |
+| **DialogCharacterSlot** | `bubbleSize?: { width, height }`, `characterSize?: { width, height }`, `bubblePosition?: ViewStyle` | Размеры облачка и персонажа, а также позиция облачка относительно персонажа. |
+| **DialogScene**     | У `buddy` и `narissa`: `bubbleSize?`, `size?`, `bubblePosition?`, `position?` | Опциональные размеры облачка, персонажа и позиционирование на уровне сцены. `position` — ViewStyle для позиционирования персонажа (напр., `{ position: 'absolute', top: 50, right: 0 }`). `bubblePosition` — ViewStyle для позиционирования облачка относительно персонажа (напр., `{ top: -60, left: -70 }`). |
 
 ---
 
@@ -86,3 +86,46 @@ narissaBubble: {
 1. **Только Buddy** — один персонаж + одно облачко.
 2. **Только Narissa** — один персонаж + одно облачко.
 3. **Дуэт** — оба персонажа, два облачка (Buddy справа сверху, Narissa слева снизу в layout окна).
+
+### Пример с кастомным позиционированием
+
+```tsx
+const scene: DialogScene = {
+  variant: 'duo',
+  buddy: {
+    text: 'We\'ll check in with you during this session.',
+    size: { width: 146, height: 155 },
+    bubbleSize: { width: 141, height: 100 },
+    // Позиция персонажа на экране
+    position: {
+      position: 'absolute',
+      top: verticalScale(50),
+      right: scale(-10),
+    },
+    // Позиция облачка относительно персонажа
+    bubblePosition: {
+      top: -verticalScale(60),
+      left: -scale(70),
+    },
+  },
+  narissa: {
+    text: 'Trust us, it really helps. We\'re here for you.',
+    size: { width: 143, height: 149 },
+    bubbleSize: { width: 140, height: 100 },
+    // Позиция персонажа на экране
+    position: {
+      position: 'absolute',
+      bottom: verticalScale(0),
+      left: scale(0),
+    },
+    // Позиция облачка относительно персонажа
+    bubblePosition: {
+      top: -verticalScale(40),
+      right: -scale(85),
+    },
+  },
+}
+```
+
+Если `position` не указан для duo-варианта, используются дефолтные позиции из стилей компонента.
+Если `bubblePosition` не указан, используются дефолтные позиции облачка относительно персонажа.

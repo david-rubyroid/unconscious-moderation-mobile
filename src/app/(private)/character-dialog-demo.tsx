@@ -2,9 +2,7 @@ import type { DialogScene } from '@/components/character-dialog'
 
 import { useState } from 'react'
 
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native'
-
-import ChevronIcon from '@/assets/icons/chevron'
+import { ScrollView, StyleSheet, View } from 'react-native'
 
 import {
   Button,
@@ -23,12 +21,32 @@ const TEST_SCENES: DialogScene[] = [
     variant: 'buddy',
     buddy: {
       text: 'Hey, I\'m Buddy.\n I\'m literally the\n friend who keeps\n it real. hydrated!',
+      bubblePosition: {
+        top: -verticalScale(70),
+        left: -scale(60),
+      },
     },
   },
   {
     variant: 'narissa',
     narissa: {
-      text: 'Trust me, it really is worth it to pace yourself. You\'re doing amazing!',
+      bubbleSize: {
+        width: 143,
+        height: 100,
+      },
+      bubblePosition: {
+        top: -verticalScale(30),
+        right: -scale(75),
+      },
+      size: {
+        width: 198,
+        height: 207,
+      },
+      position: {
+        top: verticalScale(100),
+        left: scale(0),
+      },
+      text: 'Hi, I\'m Narissa, your Water\n Queen!',
     },
   },
   {
@@ -43,6 +61,15 @@ const TEST_SCENES: DialogScene[] = [
         width: 146,
         height: 155,
       },
+      position: {
+        position: 'absolute',
+        top: verticalScale(80),
+        right: scale(15),
+      },
+      bubblePosition: {
+        top: -verticalScale(55),
+        left: -scale(65),
+      },
     },
     narissa: {
       bubbleSize: {
@@ -53,6 +80,15 @@ const TEST_SCENES: DialogScene[] = [
       size: {
         width: 143,
         height: 149,
+      },
+      position: {
+        position: 'absolute',
+        bottom: verticalScale(30),
+        left: scale(15),
+      },
+      bubblePosition: {
+        top: -verticalScale(35),
+        right: -scale(80),
       },
     },
   },
@@ -116,17 +152,17 @@ function CharacterDialogDemoScreen() {
     setModalVisible(true)
   }
 
-  const handleNext = () => {
-    if (currentSceneIndex < TEST_SCENES.length - 1) {
-      setCurrentSceneIndex(currentSceneIndex + 1)
-    }
-  }
+  // const handleNext = () => {
+  //   if (currentSceneIndex < TEST_SCENES.length - 1) {
+  //     setCurrentSceneIndex(currentSceneIndex + 1)
+  //   }
+  // }
 
-  const handlePrev = () => {
-    if (currentSceneIndex > 0) {
-      setCurrentSceneIndex(currentSceneIndex - 1)
-    }
-  }
+  // const handlePrev = () => {
+  //   if (currentSceneIndex > 0) {
+  //     setCurrentSceneIndex(currentSceneIndex - 1)
+  //   }
+  // }
 
   const currentScene = TEST_SCENES[currentSceneIndex]
 
@@ -198,6 +234,7 @@ function CharacterDialogDemoScreen() {
         onClose={() => setModalVisible(false)}
         variant="gradient"
         fullWidth
+        heightPercentage={50}
       >
         <CharacterDialogWindow
           scene={currentScene}
@@ -205,7 +242,7 @@ function CharacterDialogDemoScreen() {
         />
 
         {/* Navigation controls */}
-        <View style={styles.navigationContainer}>
+        {/* <View style={styles.navigationContainer}>
           <Pressable
             style={[
               styles.navButton,
@@ -231,7 +268,7 @@ function CharacterDialogDemoScreen() {
           >
             <ChevronIcon width={scale(20)} height={scale(20)} />
           </Pressable>
-        </View>
+        </View> */}
       </Modal>
     </ScreenContainer>
   )

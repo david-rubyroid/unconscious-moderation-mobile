@@ -25,6 +25,7 @@ interface DialogCharacterSlotProps {
   text: string
   characterSize?: { width: number, height: number }
   bubbleSize?: { width: number, height: number }
+  bubblePosition?: StyleProp<ViewStyle>
   idlePaused?: boolean
   reduceMotionEnabled?: boolean
   style?: StyleProp<ViewStyle>
@@ -74,6 +75,7 @@ function DialogCharacterSlot({
   text,
   characterSize = DEFAULT_CHARACTER_SIZE,
   bubbleSize,
+  bubblePosition,
   idlePaused = false,
   reduceMotionEnabled = false,
   style,
@@ -100,6 +102,12 @@ function DialogCharacterSlot({
     },
   ]
 
+  const bubbleContainerStyle = [
+    styles.bubbleContainer,
+    bubblePosition
+    || (character === 'buddy' ? styles.buddyBubble : styles.narissaBubble),
+  ]
+
   useEffect(() => {
     if (reduceMotionEnabled || idlePaused) {
       phase.value = 0
@@ -123,12 +131,7 @@ function DialogCharacterSlot({
   return (
     <View style={[styles.container, style]}>
       <Animated.View style={[styles.animatedGroup, animatedStyle]}>
-        <View
-          style={[
-            styles.bubbleContainer,
-            character === 'buddy' ? styles.buddyBubble : styles.narissaBubble,
-          ]}
-        >
+        <View style={bubbleContainerStyle}>
           <SpeechBubble
             text={text}
             character={character}

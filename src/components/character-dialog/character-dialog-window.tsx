@@ -16,11 +16,15 @@ export interface DialogScene {
     text: string
     size?: { width: number, height: number }
     bubbleSize?: { width: number, height: number }
+    bubblePosition?: StyleProp<ViewStyle>
+    position?: StyleProp<ViewStyle>
   }
   narissa?: {
     text: string
     size?: { width: number, height: number }
     bubbleSize?: { width: number, height: number }
+    bubblePosition?: StyleProp<ViewStyle>
+    position?: StyleProp<ViewStyle>
   }
 }
 
@@ -67,8 +71,10 @@ function CharacterDialogWindow({
           text={buddy.text}
           characterSize={buddy.size}
           bubbleSize={buddy.bubbleSize}
+          bubblePosition={buddy.bubblePosition}
           reduceMotionEnabled={reduceMotionEnabled}
           amplitude={buddyAmplitude}
+          style={buddy.position}
         />
       )
     }
@@ -80,8 +86,10 @@ function CharacterDialogWindow({
           text={narissa.text}
           characterSize={narissa.size}
           bubbleSize={narissa.bubbleSize}
+          bubblePosition={narissa.bubblePosition}
           reduceMotionEnabled={reduceMotionEnabled}
           amplitude={narissaAmplitude}
+          style={narissa.position}
         />
       )
     }
@@ -94,9 +102,10 @@ function CharacterDialogWindow({
             text={buddy.text}
             characterSize={buddy.size}
             bubbleSize={buddy.bubbleSize}
+            bubblePosition={buddy.bubblePosition}
             reduceMotionEnabled={reduceMotionEnabled}
             amplitude={buddyAmplitude}
-            style={styles.buddySlotDuo}
+            style={buddy.position}
           />
 
           <DialogCharacterSlot
@@ -104,9 +113,10 @@ function CharacterDialogWindow({
             text={narissa.text}
             characterSize={narissa.size}
             bubbleSize={narissa.bubbleSize}
+            bubblePosition={narissa.bubblePosition}
             reduceMotionEnabled={reduceMotionEnabled}
             amplitude={narissaAmplitude}
-            style={styles.narissaSlotDuo}
+            style={narissa.position}
           />
         </>
       )

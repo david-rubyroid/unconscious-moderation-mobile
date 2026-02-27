@@ -20,6 +20,7 @@ interface ModalProps {
   onClose: () => void
   children: React.ReactNode
   fullWidth?: boolean
+  heightPercentage?: number
   onUserDismiss?: () => void
   variant?: 'default' | 'gradient'
 }
@@ -57,6 +58,7 @@ function Modal({
   onClose,
   children,
   fullWidth = false,
+  heightPercentage,
   onUserDismiss,
   variant = 'default',
 }: ModalProps) {
@@ -68,6 +70,7 @@ function Modal({
   }
 
   const isGradient = variant === 'gradient'
+  const hasCustomHeight = heightPercentage !== undefined
 
   return (
     <RNModal
@@ -81,21 +84,25 @@ function Modal({
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <Pressable style={StyleSheet.absoluteFill} onPress={handleClose} />
+
         <View
           style={[
             styles.modal,
             !isGradient && styles.defaultBackground,
             !isGradient && styles.modalWithPadding,
             fullWidth && styles.fullWidth,
+            hasCustomHeight && { height: `${heightPercentage}%` },
           ]}
         >
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View>
+            <View style={hasCustomHeight && { height: '100%' }}>
               {isGradient
                 ? (
                     <ImageBackground
                       source={modalBgImage}
-                      style={styles.gradientContainer}
+                      style={hasCustomHeight
+                        ? { height: '100%' }
+                        : styles.gradientContainer}
                       resizeMode="cover"
                     >
                       {children}
