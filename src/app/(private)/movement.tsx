@@ -2,8 +2,11 @@ import { MaterialIcons } from '@expo/vector-icons'
 
 import { useLocalSearchParams } from 'expo-router'
 import { VideoView } from 'expo-video'
+import { useEffect, useRef } from 'react'
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
+
+import { useCompleteActivity } from '@/api/queries/daily-activities'
 
 import { ActivityFeedbackModal } from '@/components'
 
@@ -21,6 +24,10 @@ function MovementScreen() {
   const { day } = useLocalSearchParams()
   const dayNumber = Number(day)
   const insets = useSafeAreaInsets()
+  const hasCompletedRef = useRef(false)
+  const wasPlayingRef = useRef(false)
+
+  const { mutateAsync: completeActivity } = useCompleteActivity()
 
   const {
     isFeedbackModalVisible,
@@ -37,15 +44,48 @@ function MovementScreen() {
 
   const { player, loadingState, canStartPlayback } = useVideoActivity({
     videoUrl,
-    activityCompletion: dayNumber >= 1 && dayNumber <= 30
-      ? {
-          day: dayNumber,
-          activityType: 'movement',
-        }
-      : undefined,
   })
 
-  // If day is invalid or video is not found
+  useEffect(() => {
+    if (!player || hasCompletedRef.current) {
+      return
+    }
+
+    // Validate day range
+    if (dayNumber < 1 || dayNumber > 30) {
+      return
+    }
+
+    const checkPlaying = () => {
+      const isPlaying = player.playing
+      if (isPlaying && !wasPlayingRef.current && !hasCompletedRef.current) {
+        hasCompletedRef.current = true
+        completeActivity({
+          day: dayNumber,
+          activityType: 'movement',
+        }).catch(() => {
+          hasCompletedRef.current = false
+        })
+      }
+      wasPlayingRef.current = isPlaying
+    }
+
+    wasPlayingRef.current = player.playing
+
+    const subscription = player.addListener('statusChange', () => {
+      checkPlaying()
+    })
+
+    const interval = setInterval(checkPlaying, 500)
+
+    checkPlaying()
+
+    return () => {
+      subscription.remove()
+      clearInterval(interval)
+    }
+  }, [player, dayNumber, completeActivity])
+
   if (!dayNumber || dayNumber < 1 || dayNumber > 30 || !videoUrl) {
     return (
       <SafeAreaView style={videoPlayerScreenStyles.container} edges={['top', 'bottom']}>
