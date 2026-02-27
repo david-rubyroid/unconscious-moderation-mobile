@@ -34,17 +34,26 @@ Mobile app (Expo) and backend API.
    ```
 
    **Important:** For TikTok integration, you need to register your app in TikTok Ads Manager:
-   - Go to **TikTok Ads Manager → Tools → Events Manager → Connect data source → App**
-   - Select **TikTok SDK** and provide app details:
-     - iOS: `com.llc.mydry30`
-     - Android: `com.mydryjourney`
-   - Generate **TikTok App ID** for both platforms and add them to `.env`:
+   - Go to **TikTok Ads Manager → Tools → Business Center → Assets → Apps**
+   - Click **Add App** → Select platform (iOS/Android)
+   - Enter your App Store listing URL (iOS) or Google Play URL (Android)
+   - Complete the **SDK Setup Guide** and copy credentials from **Step 03: Initialize app**
+   - Add to `.env`:
      ```
-     EXPO_PUBLIC_TIKTOK_APP_ID_IOS=your-tiktok-app-id
-     EXPO_PUBLIC_TIKTOK_APP_ID_ANDROID=your-tiktok-app-id
+     EXPO_PUBLIC_TIKTOK_APP_ID_IOS=759780986137565944
+     EXPO_PUBLIC_TIKTOK_APP_SECRET_IOS=TTIORalelwy43mfvlkAdzVKd9Lk2UeFt
      ```
+   - **Note:** Android support is not yet implemented (TODO)
 
-3. Start the app
+3. For iOS: Rebuild native code after adding credentials
+
+   ```bash
+   npx expo prebuild --platform ios --clean
+   cd ios && pod install && cd ..
+   npx expo run:ios
+   ```
+
+4. Start the app
 
    ```bash
    npx expo start

@@ -13,26 +13,37 @@ public class ExpoTikTokBusinessModule: Module {
         throw Exception(name: "InitializationError", description: "TikTok App ID is required")
       }
       
+      guard let appSecret = config["appSecret"] as? String else {
+        throw Exception(name: "InitializationError", description: "TikTok App Secret is required")
+      }
+      
       let debugMode = config["debugMode"] as? Bool ?? false
       
       // Get app bundle ID
       let appId = Bundle.main.bundleIdentifier ?? "com.llc.mydry30"
       
-      // Create TikTok configuration (requires both Bundle ID and TikTok App ID)
-      let tiktokConfig = TikTokConfig(appId: appId, tiktokAppId: tiktokAppId)
+      // Create TikTok configuration
+      // accessToken = App Secret from TikTok Ads Manager
+      guard let tiktokConfig = TikTokConfig(
+        accessToken: appSecret,
+        appId: appId,
+        tiktokAppId: tiktokAppId
+      ) else {
+        throw Exception(name: "InitializationError", description: "Failed to create TikTok configuration")
+      }
       
       // Initialize TikTok Business SDK
-      if let tiktokConfig = tiktokConfig {
-        TikTokBusiness.initializeSdk(tiktokConfig)
-        self.isInitialized = true
-        
-        if debugMode {
-          print("[TikTok Business SDK] Initialized successfully")
-          print("[TikTok Business SDK] Bundle ID: \(appId)")
-          print("[TikTok Business SDK] TikTok App ID: \(tiktokAppId)")
-        }
-      } else {
-        throw Exception(name: "InitializationError", description: "Failed to create TikTok configuration")
+      if debugMode {
+        tiktokConfig.setLogLevel(TikTokLogLevelDebug)
+      }
+      
+      TikTokBusiness.initializeSdk(tiktokConfig)
+      self.isInitialized = true
+      
+      if debugMode {
+        print("[TikTok Business SDK] Initialized successfully")
+        print("[TikTok Business SDK] Bundle ID: \(appId)")
+        print("[TikTok Business SDK] TikTok App ID: \(tiktokAppId)")
       }
     }
     

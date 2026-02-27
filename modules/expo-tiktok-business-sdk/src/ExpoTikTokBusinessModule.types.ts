@@ -1,5 +1,6 @@
 /**
  * TypeScript types for TikTok Business SDK module
+ * Updated: 2026-02-27 - Added appSecret parameter
  */
 
 export interface TikTokSDKConfig {
@@ -7,6 +8,10 @@ export interface TikTokSDKConfig {
    * TikTok App ID from TikTok Ads Manager
    */
   tiktokAppId: string
+  /**
+   * TikTok App Secret from TikTok Ads Manager
+   */
+  appSecret: string
   /**
    * Enable debug mode for development
    * Default: false

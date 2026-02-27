@@ -38,6 +38,23 @@ function getTikTokAppId(): string | null {
 }
 
 /**
+ * Gets the appropriate TikTok App Secret based on the platform
+ * @returns The TikTok App Secret for the current platform, or null if not configured
+ */
+function getTikTokAppSecret(): string | null {
+  if (Platform.OS === 'ios') {
+    return process.env.EXPO_PUBLIC_TIKTOK_APP_SECRET_IOS ?? null
+  }
+
+  if (Platform.OS === 'android') {
+    // TODO: Android implementation
+    return null
+  }
+
+  return null
+}
+
+/**
  * Checks if analytics should be enabled
  * Analytics are disabled in:
  * - Development mode (__DEV__)
@@ -105,10 +122,19 @@ export async function initializeTikTok(
   }
 
   const tiktokAppId = getTikTokAppId()
+  const appSecret = getTikTokAppSecret()
 
   if (!tiktokAppId) {
     logWarn(
       `[TikTok] App ID is not configured for ${Platform.OS}. Set EXPO_PUBLIC_TIKTOK_APP_ID_${Platform.OS.toUpperCase()} environment variable.`,
+      { platform: Platform.OS },
+    )
+    return
+  }
+
+  if (!appSecret) {
+    logWarn(
+      `[TikTok] App Secret is not configured for ${Platform.OS}. Set EXPO_PUBLIC_TIKTOK_APP_SECRET_${Platform.OS.toUpperCase()} environment variable.`,
       { platform: Platform.OS },
     )
     return
@@ -132,6 +158,7 @@ export async function initializeTikTok(
     // Initialize custom TikTok Business SDK module
     await ExpoTikTokBusiness.initialize({
       tiktokAppId,
+      appSecret,
       debugMode,
       autoTrackAppLifecycle,
     })

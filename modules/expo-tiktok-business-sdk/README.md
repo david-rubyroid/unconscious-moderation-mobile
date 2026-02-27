@@ -21,15 +21,28 @@ This module is installed as a local dependency in the project:
 
 ## iOS Setup
 
-### 1. Add TikTok App ID to environment variables
+### 1. Get TikTok App ID and App Secret
+
+**From TikTok Ads Manager:**
+
+1. Go to **Tools** → **Business Center** → **Assets** → **Apps**
+2. Click **Add App** → **iOS App**
+3. Enter your App Store listing URL
+4. After creating, go to **SDK Setup Guide** → **Initialize app**
+5. Copy your credentials:
+   - **TikTok App ID** (e.g., `759780986137565944`)
+   - **App Secret** (e.g., `TTIORalelwy43mfvlkAdzVKd9Lk2UeFt`)
+
+### 2. Add credentials to environment variables
 
 In your `.env` file:
 
 ```
-EXPO_PUBLIC_TIKTOK_APP_ID_IOS=your_tiktok_app_id_here
+EXPO_PUBLIC_TIKTOK_APP_ID_IOS=759780986137565944
+EXPO_PUBLIC_TIKTOK_APP_SECRET_IOS=TTIORalelwy43mfvlkAdzVKd9Lk2UeFt
 ```
 
-### 2. Configure the plugin
+### 3. Configure the plugin
 
 The config plugin will automatically:
 - Add TikTok App ID to Info.plist
@@ -45,7 +58,7 @@ Add to `app.json`:
 }
 ```
 
-### 3. Rebuild native code
+### 4. Rebuild native code
 
 ```bash
 npx expo prebuild --clean
@@ -63,6 +76,7 @@ import ExpoTikTokBusiness from 'expo-tiktok-business-sdk';
 
 await ExpoTikTokBusiness.initialize({
   tiktokAppId: process.env.EXPO_PUBLIC_TIKTOK_APP_ID_IOS!,
+  appSecret: process.env.EXPO_PUBLIC_TIKTOK_APP_SECRET_IOS!,
   debugMode: __DEV__,
   autoTrackAppLifecycle: true
 });
