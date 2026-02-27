@@ -14,7 +14,7 @@ Mobile app (Expo) and backend API.
 - **Expo** (SDK 54), **React Native**, **TypeScript**
 - **expo-router** — routing, **TanStack React Query** — API requests, **ky** — HTTP client
 - **react-hook-form** + **Zod** — forms and validation
-- **OneSignal** — push notifications, **RevenueCat** — subscriptions, **Mixpanel** — analytics
+- **OneSignal** — push notifications, **RevenueCat** — subscriptions, **Mixpanel** — analytics, **TikTok App Events SDK** — ad conversion tracking
 - Build and OTA: **EAS**
 
 ## Get started
@@ -25,7 +25,26 @@ Mobile app (Expo) and backend API.
    npm install
    ```
 
-2. Start the app
+2. Configure environment variables
+
+   Copy `.env.example` to `.env` and fill in the required values:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   **Important:** For TikTok integration, you need to register your app in TikTok Ads Manager:
+   - Go to **TikTok Ads Manager → Tools → Events Manager → Connect data source → App**
+   - Select **TikTok SDK** and provide app details:
+     - iOS: `com.llc.mydry30`
+     - Android: `com.mydryjourney`
+   - Generate **TikTok App ID** for both platforms and add them to `.env`:
+     ```
+     EXPO_PUBLIC_TIKTOK_APP_ID_IOS=your-tiktok-app-id
+     EXPO_PUBLIC_TIKTOK_APP_ID_ANDROID=your-tiktok-app-id
+     ```
+
+3. Start the app
 
    ```bash
    npx expo start

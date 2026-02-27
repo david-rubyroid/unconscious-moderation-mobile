@@ -14,6 +14,7 @@ import { Button, ScreenContainer, ThemedText } from '@/components'
 import { Colors, withOpacity } from '@/constants/theme'
 
 import { useRevenueCat } from '@/hooks/use-revenuecat'
+import { useTikTok } from '@/hooks/use-tiktok'
 
 import { moderateScale, scale, verticalScale } from '@/utils/responsive'
 
@@ -141,7 +142,13 @@ function PurchaseScreen() {
   const router = useRouter()
   const queryClient = useQueryClient()
 
-  const { getOfferings, purchasePackage, isLoading, presentOfferCodeRedemption } = useRevenueCat()
+  const {
+    getOfferings,
+    purchasePackage,
+    isLoading,
+    presentOfferCodeRedemption,
+  } = useRevenueCat()
+  const { trackPurchase } = useTikTok()
 
   const [selectedPackage, setSelectedPackage] = useState<PurchasesPackage | null>(null)
   const [isLoadingOfferings, setIsLoadingOfferings] = useState(true)
@@ -170,8 +177,21 @@ function PurchaseScreen() {
 
     const customerInfo = await purchasePackage(selectedPackage)
 
-    // If purchase was successful, invalidate subscription cache and navigate back
     if (customerInfo) {
+      const price = selectedPackage.product?.price ?? 0
+      const currency = selectedPackage.product?.currencyCode ?? 'USD'
+      const productId = selectedPackage.identifier
+
+      trackPurchase(
+        price,
+        currency,
+        [{
+          content_id: productId,
+          content_name: selectedPackage.product?.title ?? 'Subscription',
+          quantity: 1,
+        }],
+      )
+
       queryClient.invalidateQueries({ queryKey: ['subscriptions', 'me'] })
       router.back()
     }

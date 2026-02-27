@@ -28,6 +28,7 @@ import {
 } from '@/services/mixpanel'
 import { initializeOneSignal } from '@/services/onesignal'
 import { initializeRevenueCat } from '@/services/revenuecat'
+import { initializeTikTok } from '@/services/tiktok'
 
 import { logDebug, logError } from '@/utils/logger'
 import { preloadImages } from '@/utils/preload-assets'
@@ -53,6 +54,11 @@ initializeMixpanel()
   })
   .catch((error) => {
     logError('[Mixpanel] Failed to initialize on app startup', error)
+  })
+
+initializeTikTok({ debugMode: __DEV__, autoTrackAppLifecycle: true })
+  .catch((error) => {
+    logError('[TikTok] Failed to initialize on app startup', error)
   })
 
 const styles = StyleSheet.create({
