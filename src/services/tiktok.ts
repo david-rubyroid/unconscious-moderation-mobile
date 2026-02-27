@@ -1,4 +1,4 @@
-import TiktokSDK from 'expo-tiktok-business'
+import ExpoTikTokBusiness from 'expo-tiktok-business-sdk'
 import { Platform } from 'react-native'
 
 import {
@@ -11,6 +11,14 @@ import {
 let isConfigured = false
 
 /**
+ * Check if platform is supported
+ * Currently only iOS is supported, Android is TODO
+ */
+function isPlatformSupported(): boolean {
+  return Platform.OS === 'ios'
+}
+
+/**
  * Gets the appropriate TikTok App ID based on the platform
  * @returns The TikTok App ID for the current platform, or null if not configured
  */
@@ -20,7 +28,9 @@ function getTikTokAppId(): string | null {
   }
 
   if (Platform.OS === 'android') {
-    return process.env.EXPO_PUBLIC_TIKTOK_APP_ID_ANDROID ?? null
+    // TODO: Android implementation
+    logWarn('[TikTok] Android support is not yet implemented')
+    return null
   }
 
   // TikTok SDK is only for iOS/Android
@@ -71,6 +81,10 @@ interface TikTokSDKConfig {
  * TikTok SDK tracks conversion events for ad optimization,
  * while RevenueCat handles subscription management and iOS SKAdNetwork attribution.
  *
+ * Platform support:
+ * - iOS: ✅ Fully supported
+ * - Android: ❌ Not yet implemented (TODO)
+ *
  * @param config - Optional configuration object
  */
 export async function initializeTikTok(
@@ -81,9 +95,18 @@ export async function initializeTikTok(
     return
   }
 
-  const appId = getTikTokAppId()
+  // Check platform support
+  if (!isPlatformSupported()) {
+    logWarn(
+      `[TikTok] Platform ${Platform.OS} is not supported yet. Currently only iOS is supported.`,
+      { platform: Platform.OS },
+    )
+    return
+  }
 
-  if (!appId) {
+  const tiktokAppId = getTikTokAppId()
+
+  if (!tiktokAppId) {
     logWarn(
       `[TikTok] App ID is not configured for ${Platform.OS}. Set EXPO_PUBLIC_TIKTOK_APP_ID_${Platform.OS.toUpperCase()} environment variable.`,
       { platform: Platform.OS },
@@ -101,31 +124,17 @@ export async function initializeTikTok(
 
     logDebug('[TikTok] Initializing SDK', {
       platform: Platform.OS,
-      appIdPrefix: `${appId.substring(0, 8)}...`,
+      appIdPrefix: `${tiktokAppId.substring(0, 8)}...`,
       debugMode,
       autoTrackAppLifecycle,
     })
 
-    // Initialize TikTok SDK with platform-specific app IDs
-    // First argument: app bundle IDs (from app.json)
-    // Second argument: TikTok App IDs (from TikTok Ads Manager)
-    // Third argument: options
-    await TiktokSDK.initialize(
-      {
-        ios: 'com.llc.mydry30',
-        android: 'com.mydryjourney',
-        default: 'com.mydryjourney',
-      },
-      {
-        ios: process.env.EXPO_PUBLIC_TIKTOK_APP_ID_IOS!,
-        android: process.env.EXPO_PUBLIC_TIKTOK_APP_ID_ANDROID!,
-        default: process.env.EXPO_PUBLIC_TIKTOK_APP_ID_ANDROID!,
-      },
-      {
-        debugMode,
-        autoTrackAppLifecycle,
-      },
-    )
+    // Initialize custom TikTok Business SDK module
+    await ExpoTikTokBusiness.initialize({
+      tiktokAppId,
+      debugMode,
+      autoTrackAppLifecycle,
+    })
 
     isConfigured = true
     logInfo('[TikTok] Successfully initialized')
@@ -153,6 +162,11 @@ export function trackTikTokEvent(
   eventName: string,
   properties?: Record<string, any>,
 ): void {
+  if (!isPlatformSupported()) {
+    logDebug(`[TikTok] Platform ${Platform.OS} not supported, skipping event tracking`)
+    return
+  }
+
   if (!isConfigured) {
     logWarn('[TikTok] Cannot track event - TikTok not initialized')
     return
@@ -164,7 +178,7 @@ export function trackTikTokEvent(
   }
 
   try {
-    TiktokSDK.trackEvent(eventName, properties)
+    ExpoTikTokBusiness.trackEvent(eventName, properties)
     logDebug('[TikTok] Event tracked', { eventName, properties })
   }
   catch (error) {
@@ -181,6 +195,11 @@ export function trackTikTokSearch(
   query: string,
   options?: Record<string, any>,
 ): void {
+  if (!isPlatformSupported()) {
+    logDebug(`[TikTok] Platform ${Platform.OS} not supported, skipping search tracking`)
+    return
+  }
+
   if (!isConfigured) {
     logWarn('[TikTok] Cannot track search - TikTok not initialized')
     return
@@ -193,7 +212,7 @@ export function trackTikTokSearch(
   }
 
   try {
-    TiktokSDK.trackSearch(query, options)
+    ExpoTikTokBusiness.trackSearch(query, options)
     logDebug('[TikTok] Search tracked', { query, options })
   }
   catch (error) {
@@ -214,6 +233,11 @@ export function trackTikTokPurchase(
   contents: Array<{ content_id: string, content_name: string, quantity: number }>,
   options?: Record<string, any>,
 ): void {
+  if (!isPlatformSupported()) {
+    logDebug(`[TikTok] Platform ${Platform.OS} not supported, skipping purchase tracking`)
+    return
+  }
+
   if (!isConfigured) {
     logWarn('[TikTok] Cannot track purchase - TikTok not initialized')
     return
@@ -229,7 +253,7 @@ export function trackTikTokPurchase(
   }
 
   try {
-    TiktokSDK.trackCompletePurchase(value, currency, contents, options)
+    ExpoTikTokBusiness.trackPurchase(value, currency, contents, options)
     logDebug('[TikTok] Purchase tracked', { value, currency, contents, options })
   }
   catch (error) {

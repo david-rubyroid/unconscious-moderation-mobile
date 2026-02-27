@@ -81,7 +81,8 @@
           "photosPermission": "Allow access to your photos.",
           "cameraPermission": "Allow access to your camera."
         }
-      ]
+      ],
+      "./modules/expo-tiktok-business-sdk/app.plugin.js"
     ],
     "experiments": {
       "typedRoutes": true,

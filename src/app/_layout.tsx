@@ -56,6 +56,7 @@ initializeMixpanel()
     logError('[Mixpanel] Failed to initialize on app startup', error)
   })
 
+// Initialize TikTok Business SDK on app startup (iOS only)
 initializeTikTok({ debugMode: __DEV__, autoTrackAppLifecycle: true })
   .catch((error) => {
     logError('[TikTok] Failed to initialize on app startup', error)

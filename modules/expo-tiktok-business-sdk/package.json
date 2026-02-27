@@ -1,0 +1,28 @@
+{
+  "name": "expo-tiktok-business-sdk",
+  "version": "1.0.0",
+  "description": "Custom Expo module for TikTok Business SDK integration (iOS only)",
+  "author": "",
+  "license": "MIT",
+  "keywords": [
+    "expo",
+    "tiktok",
+    "business-sdk",
+    "ios"
+  ],
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "echo 'No build needed for local module'"
+  },
+  "peerDependencies": {
+    "expo": "*",
+    "expo-modules-core": "*",
+    "react": "*",
+    "react-native": "*"
+  },
+  "devDependencies": {
+    "@expo/config-plugins": "^9.0.0",
+    "typescript": "^5.0.0"
+  }
+}
