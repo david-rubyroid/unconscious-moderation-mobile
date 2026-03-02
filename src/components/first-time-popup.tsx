@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native'
 
 import { Colors } from '@/constants/theme'
 
-import { moderateScale, scale, verticalScale } from '@/utils/responsive'
+import { moderateScale, scale } from '@/utils/responsive'
 
 import Button from './button'
 import ThemedText from './themed-text'
@@ -28,26 +28,26 @@ const styles = StyleSheet.create({
   title: {
     color: Colors.light.primary4,
     textAlign: 'center',
-    marginBottom: verticalScale(32),
+    marginBottom: 32,
   },
   subtitle: {
     color: Colors.light.primary4,
     textAlign: 'center',
-    marginBottom: verticalScale(12),
+    marginBottom: 12,
   },
   descriptionContainer: {
     backgroundColor: Colors.light.white,
     borderRadius: moderateScale(10),
     paddingHorizontal: scale(16),
     marginHorizontal: scale(16),
-    minHeight: verticalScale(273),
+    minHeight: 273,
     justifyContent: 'center',
     alignItems: 'center',
   },
   description: {
     color: Colors.light.primary4,
     textAlign: 'center',
-    marginBottom: verticalScale(12),
+    marginBottom: 12,
   },
   descriptionBold: {
     color: Colors.light.primary4,
@@ -59,12 +59,12 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     width: '100%',
-    height: verticalScale(300),
+    height: 300,
     resizeMode: 'contain',
   },
   buttonContainer: {
     position: 'absolute',
-    bottom: -260,
+    bottom: -240,
     left: 16,
     right: 16,
   },

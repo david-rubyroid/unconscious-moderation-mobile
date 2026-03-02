@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-
 import { StyleSheet, View } from 'react-native'
 
 import { useGetCurrentUser } from '@/api/queries/auth'
@@ -18,6 +17,7 @@ import {
   ThemedText,
   TodaysAdventure,
 } from '@/components'
+
 import { Colors } from '@/constants/theme'
 
 import { scale, verticalScale } from '@/utils/responsive'

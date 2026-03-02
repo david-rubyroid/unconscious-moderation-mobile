@@ -50,7 +50,7 @@ export default function FirstTimePopupsModal() {
   ]
 
   const containerWidth = SCREEN_WIDTH - HORIZONTAL_PADDING
-  const contentHeight = 600
+  const contentHeight = 615
 
   return (
     <View style={styles.overlay}>
