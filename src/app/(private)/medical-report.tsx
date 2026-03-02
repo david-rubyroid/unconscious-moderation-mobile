@@ -1,13 +1,17 @@
+import type {
+  AppStateStatus,
+} from 'react-native'
 import { useRouter } from 'expo-router'
-
 import { useVideoPlayer, VideoView } from 'expo-video'
-
-import { useEffect, useState } from 'react'
-
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-
-import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native'
-
+import {
+  ActivityIndicator,
+  AppState,
+  Pressable,
+  StyleSheet,
+  View,
+} from 'react-native'
 import Animated from 'react-native-reanimated'
 
 import PlaySmall from '@/assets/icons/play-small'
@@ -16,7 +20,6 @@ import Skip from '@/assets/icons/skip'
 import { BottomSheetPopup, Button, ScreenContainer, ThemedText } from '@/components'
 
 import { Colors, withOpacity } from '@/constants/theme'
-
 import { VIDEOS_LINKS } from '@/constants/video-links'
 
 import { useCanStartPlayback } from '@/hooks/use-video-buffering'
@@ -120,6 +123,8 @@ function MedicalReportScreen() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
   const [shouldLoadVideo, setShouldLoadVideo] = useState(true)
+  const isPlayingRef = useRef(isPlaying)
+  isPlayingRef.current = isPlaying
 
   const player = useVideoPlayer(
     shouldLoadVideo ? VIDEOS_LINKS.medicalReportVideo : null,
@@ -170,6 +175,21 @@ function MedicalReportScreen() {
       setShowPopup(true)
     })
 
+    return () => subscription.remove()
+  }, [player])
+
+  useEffect(() => {
+    if (!player)
+      return
+
+    const handleAppStateChange = (nextAppState: AppStateStatus) => {
+      if (nextAppState === 'active' && isPlayingRef.current) {
+        player.play()
+      }
+    }
+
+    // eslint-disable-next-line react-web-api/no-leaked-event-listener
+    const subscription = AppState.addEventListener('change', handleAppStateChange)
     return () => subscription.remove()
   }, [player])
 

@@ -1,8 +1,10 @@
+import { Link } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { StyleSheet, View } from 'react-native'
 
 import { useGetCurrentUser } from '@/api/queries/auth'
+
 import { useGetDaysWithActivities } from '@/api/queries/daily-activities'
 
 import {
@@ -19,7 +21,6 @@ import {
 } from '@/components'
 
 import { Colors } from '@/constants/theme'
-
 import { scale, verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
@@ -81,6 +82,7 @@ function HomeScreen() {
 
   return (
     <ScreenContainer scrollable>
+      <Link href="/medical-report">asdasda</Link>
       <ThemedText type="subtitle" style={styles.welcome}>
         {t('welcome', { name: user?.firstName })}
       </ThemedText>
