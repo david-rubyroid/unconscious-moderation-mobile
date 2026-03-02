@@ -7,13 +7,13 @@ import { ImageBackground, Pressable, StyleSheet, View } from 'react-native'
 import BoxBreathingIcon from '@/assets/icons/box-breathing'
 import DrinkIcon from '@/assets/icons/drink'
 import LampIcon from '@/assets/icons/lamp'
-import MoktailIcon from '@/assets/icons/moktail'
+import MocktailsIcon from '@/assets/icons/mocktails'
 import UrgeSurfingMeditationIcon from '@/assets/icons/urge-surfing-meditation'
 
 import boxBreathingImage from '@/assets/images/toolkit/box-breathing.webp'
 import drinkTrackerImage from '@/assets/images/toolkit/drink-tracker.webp'
 import insightsImage from '@/assets/images/toolkit/insights.webp'
-import moktailImage from '@/assets/images/toolkit/moktails.webp'
+import mocktailsImage from '@/assets/images/toolkit/mocktails.webp'
 import urgeSurfingMeditationImage from '@/assets/images/toolkit/urge-surfing-meditation.webp'
 
 import { ExternalResources, ScreenContainer, ThemedText } from '@/components'
@@ -79,8 +79,8 @@ function ToolkitScreen() {
       createTask: false,
     })
   }
-  const navigateToMoktails = () => {
-    router.push('/moktails')
+  const navigateToMocktails = () => {
+    router.push('/mocktails')
   }
 
   return (
@@ -136,17 +136,17 @@ function ToolkitScreen() {
           </ImageBackground>
         </Pressable>
 
-        <Pressable onPress={navigateToMoktails}>
+        <Pressable onPress={navigateToMocktails}>
           <ImageBackground
-            source={moktailImage}
+            source={mocktailsImage}
             style={styles.toolkit}
             imageStyle={styles.toolkitImageStyle}
           >
             <View style={styles.toolkitOverlay} />
             <ThemedText style={styles.toolkitText} type="defaultSemiBold">
-              {t('moktails')}
+              {t('mocktails')}
             </ThemedText>
-            <MoktailIcon />
+            <MocktailsIcon />
           </ImageBackground>
         </Pressable>
 

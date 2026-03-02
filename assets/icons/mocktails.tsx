@@ -3,7 +3,7 @@ import type { SvgProps } from 'react-native-svg'
 import * as React from 'react'
 import Svg, { Path } from 'react-native-svg'
 
-function MoktailIcon({ color = '#fff', ...props }: SvgProps) {
+function MocktailsIcon({ color = '#fff', ...props }: SvgProps) {
   return (
     <Svg
       width={24}
@@ -19,4 +19,4 @@ function MoktailIcon({ color = '#fff', ...props }: SvgProps) {
     </Svg>
   )
 }
-export default MoktailIcon
+export default MocktailsIcon
