@@ -30,7 +30,6 @@ export interface DialogScene {
 
 interface CharacterDialogWindowProps {
   scene: DialogScene
-  onClose?: () => void
   style?: StyleProp<ViewStyle>
 }
 

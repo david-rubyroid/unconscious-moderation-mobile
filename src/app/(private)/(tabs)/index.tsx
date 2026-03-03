@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next'
 import { StyleSheet, View } from 'react-native'
 
 import { useGetCurrentUser } from '@/api/queries/auth'
-import { useGetDaysWithActivities } from '@/api/queries/daily-activities'
 
+import { useGetDaysWithActivities } from '@/api/queries/daily-activities'
 import {
   ActiveDrinkSession,
   DailyActivitiesDays,
