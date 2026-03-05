@@ -4,7 +4,7 @@
     "name": "Unconscious Moderation",
     "slug": "unconscious-moderation",
     "version": "1.4.58",
-    "orientation": "portrait",
+    "orientation": "default",
     "scheme": "com.mydryjourney",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -49,6 +49,12 @@
         "onesignal-expo-plugin",
         {
           "mode": "development"
+        }
+      ],
+      [
+        "expo-screen-orientation",
+        {
+          "initialOrientation": "DEFAULT"
         }
       ],
       "expo-audio",

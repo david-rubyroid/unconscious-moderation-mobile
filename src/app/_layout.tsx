@@ -1,6 +1,6 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 import { SplashScreen, Stack, usePathname } from 'expo-router'
-
+import * as ScreenOrientation from 'expo-screen-orientation'
 import { StatusBar } from 'expo-status-bar'
 
 import { useEffect } from 'react'
@@ -80,6 +80,12 @@ function AppContent() {
     isFirstLaunch,
   } = useAuth()
   const pathname = usePathname()
+
+  useEffect(() => {
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT).catch((err) => {
+      logError('Failed to lock screen orientation to portrait', err)
+    })
+  }, [])
 
   useEffect(() => {
     preloadImages().catch((err) => {
