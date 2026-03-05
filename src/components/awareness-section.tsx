@@ -1,5 +1,7 @@
 import { useTranslation } from 'react-i18next'
-import { StyleSheet, View } from 'react-native'
+import { Pressable, StyleSheet, View } from 'react-native'
+
+import EditIcon from '@/assets/icons/edit'
 
 import { Colors, withOpacity } from '@/constants/theme'
 
@@ -17,6 +19,8 @@ interface AwarenessSectionProps {
   title: string
   items?: AwarenessItem[]
   translationNamespace?: string
+  variant?: 'gifts' | 'fears'
+  onEditPress?: () => void
 }
 
 const styles = StyleSheet.create({
@@ -44,9 +48,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: Colors.light.primary4,
   },
+  sectionTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: scale(10),
+  },
 })
 
-function AwarenessSection({ title, items, translationNamespace = 'questions' }: AwarenessSectionProps) {
+function AwarenessSection({ title, items, translationNamespace = 'questions', onEditPress }: AwarenessSectionProps) {
   const { t } = useTranslation(translationNamespace)
 
   if (!items || items.length === 0) {
@@ -55,12 +65,22 @@ function AwarenessSection({ title, items, translationNamespace = 'questions' }: 
 
   return (
     <View style={styles.sectionContent}>
-      <ThemedText
-        type="defaultSemiBold"
-        style={styles.sectionTitle}
-      >
-        {title}
-      </ThemedText>
+      <View style={styles.sectionTitleContainer}>
+        <ThemedText
+          type="defaultSemiBold"
+          style={styles.sectionTitle}
+        >
+          {title}
+        </ThemedText>
+
+        {onEditPress && (
+          <Pressable
+            onPress={onEditPress}
+          >
+            <EditIcon color={Colors.light.primary} />
+          </Pressable>
+        )}
+      </View>
 
       {items.map((item) => {
         const textKey = item.gift || item.fear

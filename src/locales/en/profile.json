@@ -1,7 +1,7 @@
 {
   "title": "My Account",
   "current-streak": "Current Streak",
-  "my-t-line": "My T-Line",
+  "your-t-line": "Your T-Line",
   "gifts": "Gifts",
   "fears": "Fears",
   "settings": "Settings",
@@ -18,5 +18,15 @@
   "delete-account-error": "Failed to delete account. Please try again.",
   "logout-title": "Log Out",
   "logout-message": "Are you sure you want to log out?",
-  "logout-error": "Failed to log out. Please try again."
+  "logout-error": "Failed to log out. Please try again.",
+  "edit-gifts-title": "Edit Gifts",
+  "edit-fears-title": "Edit Fears",
+  "edit-your-anchor-title": "Edit Your Anchor",
+  "gifts-updated-successfully": "Gifts updated successfully",
+  "fears-updated-successfully": "Fears updated successfully",
+  "anchor-updated-successfully": "Anchor updated successfully",
+  "failed-to-update-gifts": "Failed to update gifts. Please try again.",
+  "failed-to-update-fears": "Failed to update fears. Please try again.",
+  "failed-to-update-anchor": "Failed to update anchor. Please try again.",
+  "success": "Success"
 }

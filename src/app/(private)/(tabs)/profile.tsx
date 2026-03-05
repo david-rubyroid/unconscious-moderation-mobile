@@ -15,6 +15,8 @@ import {
 } from '@/api/queries/auth'
 
 import AlertIcon from '@/assets/icons/alert'
+import EditIcon from '@/assets/icons/edit'
+
 import ShieldIcon from '@/assets/icons/shield'
 
 import {
@@ -27,7 +29,6 @@ import {
   ThemedText,
   TrophyCards,
 } from '@/components'
-
 import { Colors, withOpacity } from '@/constants/theme'
 import { scale, verticalScale } from '@/utils/responsive'
 
@@ -116,11 +117,16 @@ const styles = StyleSheet.create({
     marginBottom: verticalScale(16),
   },
   yourAnchorContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: scale(10),
     padding: scale(17),
     backgroundColor: withOpacity(Colors.light.white, 0.5),
     borderRadius: scale(15),
     marginBottom: verticalScale(16),
+  },
+  yourAnchorTextContainer: {
+    flex: 1,
   },
   yourAnchorText: {
     textAlign: 'center',
@@ -134,7 +140,7 @@ const styles = StyleSheet.create({
 })
 
 function ProfileScreen() {
-  const { replace } = useRouter()
+  const { replace, push } = useRouter()
   const { t } = useTranslation('profile')
 
   const { data: user } = useGetCurrentUser()
@@ -229,26 +235,34 @@ function ProfileScreen() {
       <TrophyCards />
 
       <View style={styles.yourAnchorContainer}>
-        <ThemedText
-          type="preSubtitle"
-          style={styles.yourAnchorText}
+        <View style={styles.yourAnchorTextContainer}>
+          <ThemedText
+            type="preSubtitle"
+            style={styles.yourAnchorText}
+          >
+            <Trans
+              i18nKey="questions:your-anchor"
+              values={{ anchor }}
+              components={[
+                <ThemedText
+                  key="0"
+                  type="preSubtitle"
+                  style={styles.yourAnchorTextBold}
+                />,
+              ]}
+            />
+          </ThemedText>
+        </View>
+
+        <Pressable
+          onPress={() => push('/edit-your-anchor')}
         >
-          <Trans
-            i18nKey="questions:your-anchor"
-            values={{ anchor }}
-            components={[
-              <ThemedText
-                key="0"
-                type="preSubtitle"
-                style={styles.yourAnchorTextBold}
-              />,
-            ]}
-          />
-        </ThemedText>
+          <EditIcon width={20} height={20} />
+        </Pressable>
       </View>
 
       <ThemedText type="preSubtitle" style={styles.myTLineTitle}>
-        {t('my-t-line')}
+        {t('your-t-line')}
       </ThemedText>
 
       {((gifts && gifts.length > 0) || (fears && fears.length > 0))
@@ -258,11 +272,13 @@ function ProfileScreen() {
                 title={t('gifts')}
                 items={gifts}
                 translationNamespace="questions"
+                onEditPress={() => push('/edit-gifts')}
               />
               <AwarenessSection
                 title={t('fears')}
                 items={fears}
                 translationNamespace="questions"
+                onEditPress={() => push('/edit-fears')}
               />
             </View>
           )

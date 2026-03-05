@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, View } from 'react-native'
 
 import { useGetCurrentUser } from '@/api/queries/auth'
 
-import EditIcon from '@/assets/icons/edit'
+import GearWheelIcon from '@/assets/icons/gear-wheel'
 
 import { Colors, withOpacity } from '@/constants/theme'
 
@@ -84,7 +84,7 @@ function ProfileCard() {
       <Pressable
         onPress={navigateToEditProfile}
       >
-        <EditIcon />
+        <GearWheelIcon />
       </Pressable>
     </View>
   )
