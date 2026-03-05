@@ -1,12 +1,16 @@
+import type { SvgProps } from 'react-native-svg'
+
 import * as React from 'react'
 import Svg, { Path } from 'react-native-svg'
 
-function Cross() {
+function Cross({ width = 13, height = 13, ...props }: SvgProps) {
   return (
     <Svg
-      width={13}
-      height={13}
+      width={width}
+      height={height}
       fill="none"
+      viewBox="0 0 13 13"
+      {...props}
     >
       <Path
         stroke="#013766"

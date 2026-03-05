@@ -31,6 +31,8 @@ const CRITICAL_IMAGE_ASSETS = [
  * Loaded in background after critical so startup stays fast.
  */
 const DEFERRED_IMAGE_ASSETS = [
+  require('@/assets/images/characters/buddy.png'),
+  require('@/assets/images/characters/narissa.png'),
   require('@/assets/images/drink-with-awareness.webp'),
   require('@/assets/images/end-of-trial.webp'),
   require('@/assets/images/mantra.webp'),

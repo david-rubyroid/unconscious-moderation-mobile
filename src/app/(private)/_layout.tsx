@@ -97,6 +97,8 @@ function ProtectedLayout() {
 
         <Stack.Screen name="blinkist" />
         <Stack.Screen name="master-class" />
+
+        <Stack.Screen name="character-dialog-demo" />
       </Stack>
     </ThemedGradient>
   )

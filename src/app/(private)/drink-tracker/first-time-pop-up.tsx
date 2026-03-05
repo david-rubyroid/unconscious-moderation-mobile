@@ -1,11 +1,12 @@
+import type { DialogScene } from '@/components'
+
 import { useEffect, useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-
 import { Pressable, StyleSheet, View } from 'react-native'
 
 import ChevronIcon from '@/assets/icons/chevron'
 
-import { Modal, ThemedText } from '@/components'
+import { CharacterDialogWindow, Modal, ThemedText } from '@/components'
 
 import { Colors, getResponsiveFontSize, getResponsiveLineHeight } from '@/constants/theme'
 
@@ -21,9 +22,16 @@ const styles = StyleSheet.create({
   modalTitleBold: {
     color: Colors.light.primary4,
   },
+  modalTitleDialog: {
+    position: 'absolute',
+    bottom: 0,
+  },
   modalContent: {
     alignItems: 'center',
     gap: verticalScale(26),
+  },
+  modalContentWithDialogs: {
+    height: '100%',
   },
   modalStepContent: {
     alignItems: 'center',
@@ -60,18 +68,74 @@ const styles = StyleSheet.create({
     transform: [{ translateY: -15 }],
     zIndex: 10,
   },
+  pressableRightDialog: {
+    right: 32,
+  },
+  pressableLeftDialog: {
+    left: 32,
+  },
   modalArrowIconLeft: {
     transform: [{ rotate: '180deg' }],
   },
 })
 
-const MAX_ONBOARDING_MODAL_STEPS = 3
+const MAX_ONBOARDING_MODAL_STEPS = 5
 
 function FirstTimePopUp() {
   const { t } = useTranslation('drink-tracker')
 
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [onboardingModalStep, setOnboardingModalStep] = useState(1)
+
+  const stepsWithOtherContent = [1, 2, 3] // steps that have other content
+  const stepsWithDialogs = [4, 5] // steps that have a dialog
+
+  const TEST_SCENES: Record<number, DialogScene> = {
+    4: {
+      variant: 'narissa',
+      narissa: {
+        bubbleSize: {
+          width: 143,
+          height: 100,
+        },
+        bubblePosition: {
+          top: -30,
+          right: -75,
+        },
+        size: {
+          width: 198,
+          height: 207,
+        },
+        position: {
+          top: 70,
+          left: -20,
+        },
+        text: t('onboarding-modal.4.title'),
+      },
+    },
+    5: {
+      variant: 'buddy',
+      buddy: {
+        size: {
+          width: 189,
+          height: 200,
+        },
+        bubbleSize: {
+          width: 163,
+          height: 115,
+        },
+        bubblePosition: {
+          top: -70,
+          left: -60,
+        },
+        position: {
+          top: 50,
+          right: -20,
+        },
+        text: t('onboarding-modal.5.title'),
+      },
+    },
+  }
 
   const handleCloseModal = () => {
     setIsModalVisible(false)
@@ -106,51 +170,92 @@ function FirstTimePopUp() {
   }, [])
 
   return (
-    <Modal variant="gradient" visible={isModalVisible} onClose={handleCloseModal}>
-      <View style={styles.modalContent}>
+    <Modal
+      variant="gradient"
+      visible={isModalVisible}
+      onClose={handleCloseModal}
+      height={stepsWithDialogs.includes(onboardingModalStep) ? 450 : undefined}
+    >
+      <View style={[
+        styles.modalContent,
+        stepsWithDialogs.includes(onboardingModalStep) && styles.modalContentWithDialogs,
+      ]}
+      >
         <Pressable
           onPress={handlePreviousStep}
-          style={styles.pressableLeft}
+          style={[
+            styles.pressableLeft,
+          ]}
         >
           <ChevronIcon style={styles.modalArrowIconLeft} />
         </Pressable>
 
         <Pressable
           onPress={handleNextStep}
-          style={styles.pressableRight}
+          style={[
+            styles.pressableRight,
+          ]}
         >
           <ChevronIcon />
         </Pressable>
 
-        <ThemedText type="preSubtitle" style={styles.modalTitle}>
-          <Trans
-            i18nKey="drink-tracker:onboarding-modal.title"
-            components={[
-              <ThemedText
-                key="0"
-                type="preSubtitle"
-                style={styles.modalTitleBold}
-              />,
-            ]}
-          />
-        </ThemedText>
+        {
+          stepsWithDialogs.includes(onboardingModalStep)
+          && (
+            <>
+              <CharacterDialogWindow scene={TEST_SCENES[onboardingModalStep]} />
 
-        <View style={styles.modalStepContent}>
-          <ThemedText
-            type="preSubtitle"
-            style={styles.modalStepTitle}
-          >
-            {t(`onboarding-modal.${onboardingModalStep}.title`)}
-          </ThemedText>
+              <ThemedText type="preSubtitle" style={[styles.modalTitle, styles.modalTitleDialog]}>
+                <Trans
+                  i18nKey={`drink-tracker:onboarding-modal.${onboardingModalStep}.description`}
+                  components={[
+                    <ThemedText
+                      key="0"
+                      type="preSubtitle"
+                      style={styles.modalTitleBold}
+                    />,
+                  ]}
+                />
+              </ThemedText>
+            </>
+          )
 
-          <ThemedText type="title" style={styles.modalStepDescription}>
-            {t(`onboarding-modal.${onboardingModalStep}.description`)}
-          </ThemedText>
-        </View>
+        }
 
-        <ThemedText type="preSubtitle" style={styles.modalStepDescription2}>
-          {t(`onboarding-modal.${onboardingModalStep}.description2`)}
-        </ThemedText>
+        {stepsWithOtherContent.includes(onboardingModalStep)
+          && (
+            <>
+              <ThemedText type="preSubtitle" style={styles.modalTitle}>
+                <Trans
+                  i18nKey="drink-tracker:onboarding-modal.title"
+                  components={[
+                    <ThemedText
+                      key="0"
+                      type="preSubtitle"
+                      style={styles.modalTitleBold}
+                    />,
+                  ]}
+                />
+              </ThemedText>
+
+              <View style={styles.modalStepContent}>
+                <ThemedText
+                  type="preSubtitle"
+                  style={styles.modalStepTitle}
+                >
+                  {t(`onboarding-modal.${onboardingModalStep}.title`)}
+                </ThemedText>
+
+                <ThemedText type="title" style={styles.modalStepDescription}>
+                  {t(`onboarding-modal.${onboardingModalStep}.description`)}
+                </ThemedText>
+              </View>
+
+              <ThemedText type="preSubtitle" style={styles.modalStepDescription2}>
+                {t(`onboarding-modal.${onboardingModalStep}.description2`)}
+              </ThemedText>
+            </>
+          )}
       </View>
     </Modal>
   )

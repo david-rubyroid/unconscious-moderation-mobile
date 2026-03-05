@@ -25,7 +25,7 @@
 
     "1": {
       "title": "(Before)",
-      "description": "Plan & Prepare",
+      "description": "Plan &\n Prepare",
       "description2": "Define your limits and intentions."
     },
     "2": {
@@ -37,6 +37,14 @@
       "title": "(After)",
       "description": "Reflect & Reinforce",
       "description2": "Learn from the experience and\nbuild momentum."
+    },
+    "4": {
+      "title": "Hi, I'm Narissa, your Water\n Queen!",
+      "description": "<0>I'm here to keep you hydrated\n always</0>. Listen to me, and you'll\n thank me tomorrow, trust me."
+    },
+    "5": {
+      "title": "Hey, I'm Buddy.\n I'm literally the\n friend who keeps\n it real.",
+      "description": "<0>I'm here to remind you what\nyou said you'd do</0>, help you stay\n aware, and make sure this stays\n fun and conscious. I've got your\n back."
     }
   },
 
