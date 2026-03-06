@@ -1,6 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 import { SplashScreen, Stack, usePathname } from 'expo-router'
-import * as ScreenOrientation from 'expo-screen-orientation'
 import { StatusBar } from 'expo-status-bar'
 
 import { useEffect } from 'react'
@@ -28,7 +27,7 @@ import {
 } from '@/services/mixpanel'
 import { initializeOneSignal } from '@/services/onesignal'
 import { initializeRevenueCat } from '@/services/revenuecat'
-import { initializeTikTok } from '@/services/tiktok'
+import { initializeTikTok, trackTikTokAppLaunch } from '@/services/tiktok'
 
 import { logDebug, logError } from '@/utils/logger'
 import { preloadImages } from '@/utils/preload-assets'
@@ -58,6 +57,9 @@ initializeMixpanel()
 
 // Initialize TikTok Business SDK on app startup (iOS only)
 initializeTikTok({ debugMode: __DEV__, autoTrackAppLifecycle: true })
+  .then(() => {
+    trackTikTokAppLaunch()
+  })
   .catch((error) => {
     logError('[TikTok] Failed to initialize on app startup', error)
   })
@@ -80,12 +82,6 @@ function AppContent() {
     isFirstLaunch,
   } = useAuth()
   const pathname = usePathname()
-
-  useEffect(() => {
-    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT).catch((err) => {
-      logError('Failed to lock screen orientation to portrait', err)
-    })
-  }, [])
 
   useEffect(() => {
     preloadImages().catch((err) => {

@@ -1,4 +1,3 @@
-import { Link } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { StyleSheet, View } from 'react-native'
@@ -81,7 +80,6 @@ function HomeScreen() {
 
   return (
     <ScreenContainer scrollable>
-      <Link href="/character-dialog-demo">asdad</Link>
       <ThemedText type="subtitle" style={styles.welcome}>
         {t('welcome', { name: user?.firstName })}
       </ThemedText>

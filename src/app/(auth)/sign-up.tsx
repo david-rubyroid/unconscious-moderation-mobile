@@ -24,6 +24,7 @@ import {
 import { Colors, withOpacity } from '@/constants/theme'
 
 import { useAuthSuccess } from '@/hooks/use-auth-success'
+import { useTikTok } from '@/hooks/use-tiktok'
 
 import { authFormStyles } from '@/styles/auth-forms'
 
@@ -35,6 +36,7 @@ function RegisterScreen() {
   const { t } = useTranslation('register')
 
   const { handleAuthSuccess } = useAuthSuccess()
+  const { trackEvent } = useTikTok()
   const { mutateAsync: register, isPending } = useRegistration()
 
   const registerFormSchema = useMemo(() => createRegistrationSchema(t), [t])
@@ -60,6 +62,7 @@ function RegisterScreen() {
   const onSubmit = async (data: z.infer<typeof registerFormSchema>) => {
     await register(data, {
       onSuccess: async ({ accessToken, refreshToken }) => {
+        trackEvent('registration', { method: 'email' })
         await handleAuthSuccess(accessToken, refreshToken)
       },
       onError: (error) => {

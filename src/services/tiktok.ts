@@ -33,8 +33,15 @@ function getTikTokAppId(): string | null {
     return null
   }
 
-  // TikTok SDK is only for iOS/Android
   return null
+}
+
+/**
+ * Gets the short TikTok App ID (used by native TikTokConfig)
+ * @returns EXPO_PUBLIC_TIKTOK_APP_ID or null
+ */
+function getTikTokShortAppId(): string | null {
+  return process.env.EXPO_PUBLIC_TIKTOK_APP_ID ?? null
 }
 
 /**
@@ -75,18 +82,11 @@ function shouldSendAnalytics(): boolean {
 }
 
 /**
- * Configuration options for TikTok SDK
+ * Optional overrides when initializing TikTok SDK (debug and lifecycle only).
+ * Full config (accessToken, appId, tiktokAppId, appSecret) comes from env.
  */
-interface TikTokSDKConfig {
-  /**
-   * Enable debug mode for development
-   * Default: false
-   */
+interface TikTokInitOptions {
   debugMode?: boolean
-  /**
-   * Automatically track app lifecycle events (Launch)
-   * Default: true
-   */
   autoTrackAppLifecycle?: boolean
 }
 
@@ -98,14 +98,14 @@ interface TikTokSDKConfig {
  * TikTok SDK tracks conversion events for ad optimization,
  * while RevenueCat handles subscription management and iOS SKAdNetwork attribution.
  *
- * Platform support:
+ * Platform support:`
  * - iOS: ✅ Fully supported
  * - Android: ❌ Not yet implemented (TODO)
  *
  * @param config - Optional configuration object
  */
 export async function initializeTikTok(
-  config: TikTokSDKConfig = {},
+  config: TikTokInitOptions = {},
 ): Promise<void> {
   if (isConfigured) {
     logDebug('[TikTok] Already initialized')
@@ -122,11 +122,20 @@ export async function initializeTikTok(
   }
 
   const tiktokAppId = getTikTokAppId()
+  const appId = getTikTokShortAppId()
   const appSecret = getTikTokAppSecret()
 
   if (!tiktokAppId) {
     logWarn(
       `[TikTok] App ID is not configured for ${Platform.OS}. Set EXPO_PUBLIC_TIKTOK_APP_ID_${Platform.OS.toUpperCase()} environment variable.`,
+      { platform: Platform.OS },
+    )
+    return
+  }
+
+  if (!appId) {
+    logWarn(
+      '[TikTok] Short App ID is not configured. Set EXPO_PUBLIC_TIKTOK_APP_ID environment variable.',
       { platform: Platform.OS },
     )
     return
@@ -155,13 +164,14 @@ export async function initializeTikTok(
       autoTrackAppLifecycle,
     })
 
-    // Initialize custom TikTok Business SDK module
-    await ExpoTikTokBusiness.initialize({
+    const nativeConfig = {
+      appId,
       tiktokAppId,
       appSecret,
       debugMode,
       autoTrackAppLifecycle,
-    })
+    }
+    await ExpoTikTokBusiness.initialize(nativeConfig)
 
     isConfigured = true
     logInfo('[TikTok] Successfully initialized')

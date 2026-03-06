@@ -1,9 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons'
 
 import { router } from 'expo-router'
-import * as ScreenOrientation from 'expo-screen-orientation'
 import { VideoView } from 'expo-video'
-import { useEffect } from 'react'
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -55,18 +53,6 @@ function UrgeSurfingMeditationScreen() {
   const orientation = useOrientation()
 
   const { player, loadingState, canStartPlayback } = useVideoActivity({ videoUrl })
-
-  useEffect(() => {
-    ScreenOrientation.unlockAsync().catch((err) => {
-      console.error('Failed to unlock screen orientation', err)
-    })
-
-    return () => {
-      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT).catch((err) => {
-        console.error('Failed to lock screen orientation to portrait', err)
-      })
-    }
-  }, [])
 
   if (!videoUrl) {
     return (

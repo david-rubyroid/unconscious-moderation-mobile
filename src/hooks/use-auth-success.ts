@@ -2,6 +2,8 @@ import { useCallback } from 'react'
 
 import { useAuth } from '@/context/auth/use'
 
+import { trackTikTokEvent } from '@/services/tiktok'
+
 import { saveAuthTokens } from '@/utils/auth'
 
 /**
@@ -17,6 +19,7 @@ export function useAuthSuccess() {
 
       if (accessToken && refreshToken) {
         setHasToken(true)
+        trackTikTokEvent('login', { source: 'auth_success' })
       }
     },
     [setHasToken],
