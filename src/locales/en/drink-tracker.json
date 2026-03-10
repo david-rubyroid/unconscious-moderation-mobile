@@ -3,12 +3,14 @@
   "motivational-message": "We're really proud of you for being\n here and <0>being honest with yourself!</0>",
   "insights-dashboard": "Insights Dashboard",
   "drink-tracker-journal": "Drink Tracker Journal",
+  "home": "Home",
   "actions": {
     "start": "Start",
     "continue": "Continue",
     "plan-session": "Plan Session",
     "view-calendar": "View Calendar",
-    "start-today-session": "Start Today's Session"
+    "start-today-session": "Start Today's Session",
+    "start-session": "Start Session"
   },
   "won-days": "Won Days: [{{days}}]",
   "drink-days": "Drink Days: [{{days}}]",

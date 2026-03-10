@@ -1,7 +1,6 @@
 import { useRouter } from 'expo-router'
 import { Trans, useTranslation } from 'react-i18next'
 import { Pressable, StyleSheet, View } from 'react-native'
-import Toast from 'react-native-toast-message'
 
 import { useGetCurrentDrinkSession } from '@/api/queries/drink-session'
 
@@ -38,10 +37,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: verticalScale(20),
   },
-  planSessionButton: {
-    width: 174,
-  },
-  startTodaySessionButton: {
+  startSessionButton: {
     width: 265,
   },
   calendarContainer: {
@@ -61,55 +57,61 @@ const styles = StyleSheet.create({
 
 function DrinkTrackerScreen() {
   const { push } = useRouter()
-
   const { t } = useTranslation('drink-tracker')
 
-  // get current drink session for today if exists or active
   const { data: currentDrinkSession } = useGetCurrentDrinkSession()
 
   const isSessionActive = currentDrinkSession?.status === 'active'
   const isSessionCompleted = currentDrinkSession?.status === 'completed'
+  const isSessionPlanned = currentDrinkSession?.status === 'planned'
 
-  const startSessionButtonTitle = isSessionActive
-    ? t('continue-with-active-session')
-    : isSessionCompleted
-      ? t('completed-session')
-      : t('actions.start-today-session')
+  const hasAllSessionFields
+    = currentDrinkSession?.whereLocation
+      && currentDrinkSession?.whoWith
+      && currentDrinkSession?.whyReason
 
-  const navigateToPlanSession = () => {
-    push('/drink-tracker/plan-session')
-  }
+  const shouldShowContinue = currentDrinkSession && hasAllSessionFields
+
+  const buttonTitle = shouldShowContinue
+    ? isSessionActive
+      ? t('continue-with-active-session')
+      : isSessionCompleted
+        ? t('completed-session')
+        : 'Continue Session'
+    : t('actions.start-session')
+
   const navigateToInsightsDashboard = () => {
     push('/drink-tracker/insights-dashboard')
   }
-  const navigateToStartTodaySession = () => {
-    if (!currentDrinkSession) {
-      Toast.show({
-        type: 'info',
-        text1: t('info-no-session-found'),
-        text2: t('info-no-session-found-description'),
-      })
+
+  const navigateToStartOrContinueSession = () => {
+    if (!shouldShowContinue) {
+      push('/drink-tracker/create-session-step-1')
       return
     }
+
     if (isSessionCompleted) {
       push({
         pathname: '/drink-tracker/reflect-reinforce',
-        params: { sessionId: currentDrinkSession?.id },
-      })
-      return
-    }
-    if (isSessionActive) {
-      push({
-        pathname: '/drink-tracker/drink-with-awareness',
-        params: { sessionId: currentDrinkSession?.id },
+        params: { sessionId: currentDrinkSession.id },
       })
       return
     }
 
-    push({
-      pathname: '/drink-tracker/pre-drink-checklist',
-      params: { sessionId: currentDrinkSession?.id },
-    })
+    if (isSessionActive) {
+      push({
+        pathname: '/drink-tracker/drink-with-awareness',
+        params: { sessionId: currentDrinkSession.id },
+      })
+      return
+    }
+
+    if (isSessionPlanned) {
+      push({
+        pathname: '/drink-tracker/pre-drink-checklist',
+        params: { sessionId: currentDrinkSession.id },
+      })
+    }
   }
 
   return (
@@ -141,17 +143,10 @@ function DrinkTrackerScreen() {
 
         <View style={styles.actionsContainer}>
           <Button
-            onPress={navigateToPlanSession}
-            style={styles.planSessionButton}
-            title={t('actions.plan-session')}
+            onPress={navigateToStartOrContinueSession}
+            title={buttonTitle}
             variant="secondary"
-          />
-
-          <Button
-            onPress={navigateToStartTodaySession}
-            title={startSessionButtonTitle}
-            variant="secondary"
-            style={styles.startTodaySessionButton}
+            style={styles.startSessionButton}
           />
         </View>
       </View>

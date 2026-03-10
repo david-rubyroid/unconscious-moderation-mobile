@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
 })
 
 function PreDrinkChecklistScreen() {
-  const { push, replace } = useRouter()
+  const { push, replace, back } = useRouter()
   const { sessionId } = useLocalSearchParams()
 
   const { data: session } = useGetDrinkSession(Number(sessionId))
@@ -132,6 +132,11 @@ function PreDrinkChecklistScreen() {
   ] as Step[]
   const isReadyToStartDrinkSession = steps.every(step => step.status === 'completed')
   const hasActiveFreeDrinkTracker = currentStreak?.streak?.is_active === true
+
+  const handleBackPress = () => {
+    // Since all create-session steps use replace, just go back to drink tracker
+    back()
+  }
 
   const navigateToHydration = () => {
     push({
@@ -211,7 +216,7 @@ function PreDrinkChecklistScreen() {
 
   return (
     <ScreenContainer scrollable={false}>
-      <Header title={t('title')} />
+      <Header title={t('title')} onBackPress={handleBackPress} />
 
       <DrinkTrackerWeekDays />
 

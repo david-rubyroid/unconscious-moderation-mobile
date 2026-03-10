@@ -1,6 +1,5 @@
 import type { CalendarDayData } from '@/components/calendar/types'
 
-import { useRouter } from 'expo-router'
 import { useTranslation } from 'react-i18next'
 import { Alert } from 'react-native'
 
@@ -27,7 +26,6 @@ export function useDaySummaryLogic({
   dayData,
   onClose,
 }: UseDaySummaryLogicProps) {
-  const { push } = useRouter()
   const { t } = useTranslation('drink-tracker')
   const { mutateAsync: deleteSession } = useDeleteDrinkSession()
 
@@ -58,13 +56,12 @@ export function useDaySummaryLogic({
   const isPlanned = dayData?.status === 'planned'
 
   const handleEditSession = () => {
-    push({
-      pathname: '/drink-tracker/plan-session',
-      params: {
-        sessionId: dayData?.id,
-      },
-    })
-    onClose()
+    // TODO: Implement edit functionality with new create-session flow
+    Alert.alert(
+      t('day-summary.edit-session'),
+      'Edit functionality will be available soon.',
+      [{ text: 'OK' }],
+    )
   }
   const handleDeleteSession = () => {
     if (!dayData?.id) {

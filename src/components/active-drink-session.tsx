@@ -16,7 +16,6 @@ import {
 } from '@/constants/theme'
 
 import { getCurrencySymbol } from '@/utils/currency'
-import { getDrinkIcon } from '@/utils/drink-icons'
 import { getDrinkSessionStats } from '@/utils/drink-session-stats'
 import { scale, verticalScale } from '@/utils/responsive'
 
@@ -81,7 +80,6 @@ const styles = StyleSheet.create({
 function ActiveDrinkSession() {
   const { push } = useRouter()
   const { t } = useTranslation('home')
-  const { t: tDrinkTracker } = useTranslation('drink-tracker')
 
   const { data: currentDrinkSession } = useGetCurrentDrinkSession()
   const { data: sessionDrinks } = useGetSessionDrinks(currentDrinkSession?.id)
@@ -104,9 +102,6 @@ function ActiveDrinkSession() {
   const hasActiveDrinkSession = currentDrinkSession?.status === 'active'
 
   const currencySymbol = getCurrencySymbol(currentDrinkSession?.currency)
-  const drinkTypeLabel = tDrinkTracker(
-    `day-summary.drink-type-options.${currentDrinkSession?.drinkType}`,
-  )
 
   if (!hasActiveDrinkSession) {
     return <LastDrinkBlock />
@@ -163,20 +158,6 @@ function ActiveDrinkSession() {
 
             <ThemedText type="defaultSemiBold" style={styles.infoValue}>
               {timeSinceFirstDrink}
-            </ThemedText>
-          </View>
-        </View>
-
-        <View style={styles.infoCard}>
-          {getDrinkIcon(currentDrinkSession.drinkType)}
-
-          <View style={styles.infoCardContent}>
-            <ThemedText style={styles.infoLabel}>
-              {t('active-drink-session.drink-type')}
-            </ThemedText>
-
-            <ThemedText type="defaultSemiBold" style={styles.infoValue}>
-              {drinkTypeLabel}
             </ThemedText>
           </View>
         </View>

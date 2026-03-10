@@ -1,5 +1,6 @@
 import type { CalendarDayData } from '@/components/calendar/types'
 
+import { useRouter } from 'expo-router'
 import { useState } from 'react'
 
 import { findDayData, isFutureDay } from '@/utils/calendar-date'
@@ -17,11 +18,21 @@ interface UseCalendarDayModalReturn {
 }
 
 export function useCalendarDayModal({ daysData }: UseCalendarDayModalProps): UseCalendarDayModalReturn {
+  const { push } = useRouter()
   const [selectedDay, setSelectedDay] = useState<Date | null>(null)
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   const handleDayPress = (day: Date, dayData?: CalendarDayData) => {
     const futureDay = isFutureDay(day)
+
+    // Future day without session: navigate to create session flow
+    if (futureDay && !dayData) {
+      push({
+        pathname: '/drink-tracker/create-session-step-1',
+        params: { selectedDate: day.toISOString() },
+      })
+      return
+    }
 
     // Show modal for:
     // - Past days: completed sessions or abstained days (no dayData)

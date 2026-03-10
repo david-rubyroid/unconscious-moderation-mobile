@@ -25,7 +25,6 @@ import enMocktails from '@/locales/en/mocktails.json'
 import enMovement from '@/locales/en/movement.json'
 import enMyProgress from '@/locales/en/my-progress.json'
 import enPhotoRecord from '@/locales/en/photo-record.json'
-import enPlanSession from '@/locales/en/plan-session.json'
 import enPreDrinkChecklist from '@/locales/en/pre-drink-checklist.json'
 import enProfile from '@/locales/en/profile.json'
 import enPurchase from '@/locales/en/purchase.json'
@@ -53,7 +52,6 @@ const localeFiles = {
   'en/home': enHome,
   'en/toolkit': enToolkit,
   'en/drink-tracker': enDrinkTracker,
-  'en/plan-session': enPlanSession,
   'en/pre-drink-checklist': enPreDrinkChecklist,
   'en/hydration': enHydration,
   'en/hypnosis': enHypnosis,

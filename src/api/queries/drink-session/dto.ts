@@ -1,12 +1,38 @@
-export type DrinkType = 'wine' | 'beer' | 'spirits' | 'cocktails' | 'hard-seltzer-ready-to-drink' | 'other'
 export type Currency = 'USD' | 'MXN' | 'COP' | 'EUR'
+
+// DrinkType still used for drink-log (individual drinks during session)
+export type DrinkType = 'wine' | 'beer' | 'spirits' | 'cocktails' | 'hard-seltzer-ready-to-drink' | 'other'
+
+export type WhereLocation
+  = | 'home'
+    | 'bar_restaurant'
+    | 'event_party'
+    | 'someone_elses_place'
+    | 'outdoors'
+    | 'hotel_travel'
+
+export type WhoWith
+  = | 'alone'
+    | 'partner_date'
+    | 'friends_family'
+    | 'coworkers_work_event'
+    | 'mixed_group'
+
+export type WhyReason
+  = | 'celebrating'
+    | 'strong_emotion'
+    | 'bored'
+    | 'social_pressure'
+    | 'habit_routine'
+
 interface CreateDrinkSessionRequest {
   plannedStartTime: string // ISO date string
   maxDrinkCount: number
-  drinkType: DrinkType
-  drinkTypeOther?: string
   currency: Currency
   budget?: number
+  whereLocation?: WhereLocation
+  whoWith?: WhoWith
+  whyReason?: WhyReason
 }
 
 interface CreateDrinkSessionResponse {
@@ -14,10 +40,11 @@ interface CreateDrinkSessionResponse {
   userId: number
   plannedStartTime: string
   maxDrinkCount: number
-  drinkType: DrinkType
-  drinkTypeOther?: string
   currency: Currency
   budget?: number
+  whereLocation?: WhereLocation
+  whoWith?: WhoWith
+  whyReason?: WhyReason
   actualStartTime?: string
   actualEndTime?: string
   actualDrinkCount?: number
@@ -36,10 +63,11 @@ interface DrinkSessionResponse {
   userId: number
   plannedStartTime: string
   maxDrinkCount: number
-  drinkType: DrinkType
-  drinkTypeOther?: string
   currency: Currency
   budget?: number
+  whereLocation?: WhereLocation
+  whoWith?: WhoWith
+  whyReason?: WhyReason
   actualStartTime?: string
   actualEndTime?: string
   actualDrinkCount?: number
@@ -56,14 +84,15 @@ interface UpdateDrinkSessionRequest {
   quickWriting?: string
   plannedStartTime?: string
   maxDrinkCount?: number
-  drinkTypeOther?: string
   currency?: Currency
   budget?: number
+  whereLocation?: WhereLocation
+  whoWith?: WhoWith
+  whyReason?: WhyReason
   actualStartTime?: string
   endTime?: string
   actualDrinkCount?: number
   actualSpending?: number
-  drinkType?: DrinkType
   status?: 'planned' | 'active' | 'completed' | 'cancelled'
   hydrated?: boolean
   selfHypnosis?: boolean
@@ -75,13 +104,14 @@ interface UpdateDrinkSessionResponse {
   userId: number
   plannedStartTime: string
   maxDrinkCount: number
-  drinkTypeOther?: string
   budget?: number
+  whereLocation?: WhereLocation
+  whoWith?: WhoWith
+  whyReason?: WhyReason
   actualStartTime?: string
   actualEndTime?: string
   actualDrinkCount?: number
   actualSpending?: number
-  drinkType: DrinkType
   currency: Currency
   status?: 'planned' | 'active' | 'completed' | 'cancelled'
   createdAt: string

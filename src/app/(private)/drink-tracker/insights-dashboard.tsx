@@ -13,14 +13,21 @@ import {
 } from '@/components'
 
 import { useMonthlyMetrics } from '@/hooks/use-monthly-metrics'
-import { verticalScale } from '@/utils/responsive'
+import { scale, verticalScale } from '@/utils/responsive'
 
 const styles = StyleSheet.create({
   container: {
     gap: verticalScale(26),
   },
   button: {
-    alignSelf: 'center',
+    flex: 1,
+  },
+  homeButton: {
+    width: 106,
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+    gap: scale(16),
   },
 })
 
@@ -63,12 +70,20 @@ function InsightsDashboardScreen() {
           showEndTime={false}
         />
 
-        <Button
-          style={styles.button}
-          title={t('drink-tracker-journal')}
-          variant="secondary"
-          onPress={navigateToDrinkTrackerJournal}
-        />
+        <View style={styles.buttonsContainer}>
+          <Button
+            style={styles.homeButton}
+            title={t('home')}
+            onPress={() => {}}
+          />
+
+          <Button
+            style={styles.button}
+            title={t('drink-tracker-journal')}
+            variant="secondary"
+            onPress={navigateToDrinkTrackerJournal}
+          />
+        </View>
       </View>
     </ScreenContainer>
   )
