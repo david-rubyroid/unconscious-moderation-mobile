@@ -23,8 +23,6 @@ const styles = StyleSheet.create({
   },
   title: {
     color: Colors.light.primary,
-    fontWeight: '700',
-    fontSize: 20,
     textAlign: 'center',
   },
   optionsContainer: {
@@ -94,7 +92,7 @@ function CreateSessionStep3Screen() {
   return (
     <ScreenContainer>
       <View style={styles.container}>
-        <ThemedText style={styles.title}>
+        <ThemedText type="preSubtitle" style={styles.title}>
           Why are you drinking?
         </ThemedText>
 

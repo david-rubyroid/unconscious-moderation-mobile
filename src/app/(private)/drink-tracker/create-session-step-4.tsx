@@ -34,8 +34,6 @@ const styles = StyleSheet.create({
   },
   title: {
     color: Colors.light.primary,
-    fontWeight: '700',
-    fontSize: 20,
     textAlign: 'center',
   },
   formsContainer: {
@@ -176,7 +174,7 @@ function CreateSessionStep4Screen() {
   return (
     <ScreenContainer>
       <View style={styles.container}>
-        <ThemedText style={styles.title}>New Session</ThemedText>
+        <ThemedText type="preSubtitle" style={styles.title}>New Session</ThemedText>
 
         <View style={styles.formsContainer}>
           <View style={styles.formCard}>

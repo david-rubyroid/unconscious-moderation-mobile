@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
 })
 
 function ReflectReinforceScreen() {
-  const { push } = useRouter()
+  const { push, replace } = useRouter()
   const { t } = useTranslation('reflect-reinforce')
 
   const [reflectReinforce, setReflectReinforce] = useState('')
@@ -233,7 +233,7 @@ function ReflectReinforceScreen() {
     })
   }
   const navigateToDrinkTrackerJournal = () => {
-    push('/drink-tracker/insights-dashboard')
+    replace('/drink-tracker/insights-dashboard')
   }
 
   useEffect(() => {

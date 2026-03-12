@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 })
 
 function InsightsDashboardScreen() {
-  const { push } = useRouter()
+  const { push, back } = useRouter()
   const { t } = useTranslation('drink-tracker')
 
   const now = new Date()
@@ -49,10 +49,13 @@ function InsightsDashboardScreen() {
   const navigateToDrinkTrackerJournal = () => {
     push('/drink-tracker/drink-tracker-journal')
   }
+  const navigateToHome = () => {
+    back()
+  }
 
   return (
     <ScreenContainer>
-      <Header title={t('insights-dashboard')} />
+      <Header title={t('insights-dashboard')} backButton={false} />
 
       <View style={styles.container}>
         <DrinkSessionsCalendar
@@ -74,7 +77,7 @@ function InsightsDashboardScreen() {
           <Button
             style={styles.homeButton}
             title={t('home')}
-            onPress={() => {}}
+            onPress={navigateToHome}
           />
 
           <Button
